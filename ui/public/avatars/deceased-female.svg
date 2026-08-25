@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260" fill="none">
+  <defs>
+    <linearGradient id="bgF" x1="0" y1="0" x2="200" y2="260" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FCE7F3"/>
+      <stop offset="100%" stop-color="#FBCFE8"/>
+    </linearGradient>
+    <linearGradient id="bodyF" x1="100" y1="140" x2="100" y2="250" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#BE185D"/>
+      <stop offset="100%" stop-color="#9D174D"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="200" height="260" rx="20" fill="url(#bgF)"/>
+  <!-- Hair -->
+  <ellipse cx="100" cy="78" rx="46" ry="44" fill="#F9A8D4"/>
+  <!-- Head -->
+  <circle cx="100" cy="88" r="42" fill="#FDE8EF"/>
+  <circle cx="100" cy="88" r="38" fill="#FCE7F3"/>
+  <!-- Eyes (closed - rest) -->
+  <path d="M82 85 C85 82, 92 82, 95 85" stroke="#BE185D" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <path d="M105 85 C108 82, 115 82, 118 85" stroke="#BE185D" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <!-- Body / Dress -->
+  <path d="M50 155 C50 135, 68 125, 100 125 C132 125, 150 135, 150 155 L155 245 C155 250, 145 250, 100 250 C55 250, 45 250, 45 245 Z" fill="url(#bodyF)"/>
+  <!-- Collar -->
+  <path d="M82 125 L100 142 L118 125" stroke="#831843" stroke-width="2" fill="none"/>
+  <!-- Crescent Moon Symbol -->
+  <circle cx="100" cy="195" r="18" fill="#FBCFE8"/>
+  <circle cx="108" cy="190" r="14" fill="url(#bgF)"/>
+  <!-- Star -->
+  <polygon points="120,185 122,191 128,191 123,195 125,201 120,197 115,201 117,195 112,191 118,191" fill="#FBCFE8" transform="scale(0.7) translate(52, 55)"/>
+</svg>

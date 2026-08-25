@@ -1,0 +1,12 @@
+{
+  "count": 7,
+  "issues": [
+    "CORRUPT TAG src\\pages\\retirement-files\\tabs\\FinancialEntitlementsTab.tsx:200: ={showCreate}",
+    "CORRUPT TAG src\\pages\\retirement-files\\tabs\\FinancialEntitlementsTab.tsx:259: ={!!endingId}",
+    "CORRUPT TAG src\\pages\\retirement-files\\tabs\\NotesTab.tsx:107: ={addOpen}",
+    "CORRUPT TAG src\\pages\\retirement-files\\tabs\\PledgesAndExemptionsTab.tsx:652: ={pledgeCreateOpen}",
+    "CORRUPT TAG src\\pages\\retirement-files\\tabs\\PledgesAndExemptionsTab.tsx:839: ={pledgeEditOpen}",
+    "CORRUPT TAG src\\pages\\retirement-files\\tabs\\PledgesAndExemptionsTab.tsx:893: ={exemptionCreateOpen}",
+    "CORRUPT TAG src\\pages\\retirement-files\\tabs\\PledgesAndExemptionsTab.tsx:976: ={exemptionEditOpen}"
+  ]
+}

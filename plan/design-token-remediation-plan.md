@@ -124,7 +124,7 @@ M0 (تمهيد+git+baseline)
 ```powershell
 cd ui
 rg "<أنماط الموجة>" src      # يجب أن ترجع 0
-npm run lint                   # 0 errors
+npm run lint                   # لا أخطاء جديدة عن خط الأساس (306 — راجع §سجل التنفيذ)
 npm run build                  # pass
 npm test                       # pass
 npm run preview                # checklist المعاينة الخاصة بالموجة (§6.2)
@@ -137,7 +137,7 @@ git add -A; git commit -m "feat(tokens): <M#> - <وصف>"   # Q4=A
 
 ### 6.1 البوابة الشاملة (M6)
 - [ ] `rg` لكل أنماط التقرير §2 (ألوان hex ثابتة، `text-[Npx]` المستهدفة، `z-` العشوائية، `duration-*` غير المربوطة، `style=` داخلي) = قيم مستهدفة بعد الموجات.
-- [ ] `npm run lint` + `npm run build` + `npm test` — pass.
+- [ ] `npm run lint` — **لا أخطاء جديدة** مقارنة بخط الأساس (306 أخطاء / 76 تحذيرًا — `plan/m0-baseline-lint.txt`)؛ `npm run build` + `npm test` pass.
 - [ ] checklist §6.2 كامل، Light **و** Dark **و** RTL.
 - [ ] حالات §6 المُغلقة: contrast (F-01)، Portal (F-04)، Recharts DOM (F-26)، reduced-motion (F-22)، طباعة (F-45/51/53)، `document.write` (F-42).
 - [ ] `docs/design-token-audit.md` محدّث (الحالات + §6).
@@ -191,7 +191,7 @@ git add -A; git commit -m "feat(tokens): <M#> - <وصف>"   # Q4=A
 
 1. **53/53** نتيجة مُحسمة ومُوثّقة (قائمة M1+M2+M3+M5) — وF-46/F-48/49/50 موثّقة « بلا عمل ».
 2. مسحات `rg` لنماط كل موجة = 0 بعد تنفيذها.
-3. `lint` + `build` + `test` pass بعد كل موجة و**في المجموع**.
+3. `build` + `test` pass بعد كل موجة وفي المجموع؛ `lint` بلا أخطاء **جديدة** عن خط الأساس (306).
 4. checklist §6.2 مكتمل Light/Dark/RTL بعد كل موجة معنيّة.
 5. كل قرارات M4 السبع موثّقة بقرار صريح.
 6. `docs/design-token-audit.md` محدّث بحالات «مُصلَح» + إغلاق §6.
@@ -204,3 +204,19 @@ git add -A; git commit -m "feat(tokens): <M#> - <وصف>"   # Q4=A
 1. المستخدم يعتمد الخطة (أو يطلب تعديل الموجات).
 2. تنفيذ **M0** (تمهيد + git + خط أساس) — يبدأ التنفيذ الفعلي.
 3. متابعة M1 → M6 بالبوابات، مع مراجعة §6.2 بعد كل موجة.
+
+---
+
+## سجل التنفيذ
+
+### M0 — مكتمل (2026-10-02)
+- [x] **git**: `git init` على فرع `main` + `.gitignore` جذري (node_modules, bin/obj, *.zip, .audit-documents, dist, logs, .vs) + **commit مرجعي `6b25409`** — 1634 ملفًا، بلا ملفات >10MB، شجرة نظيفة.
+- [x] **خط الأساس**:
+  - `npm run build` — **PASS** (tsc -b + vite)
+  - `npm test` — **PASS** (81/81، 0 فشل)
+  - `npm run lint` — **FAIL سابق (دَين قائم قبل الخطة)**: 306 أخطاء + 76 تحذيرًا (382 إجمالي) — التقرير الكامل: `plan/m0-baseline-lint.txt`
+- [x] checklist المعاينة §6.2 جاهز للاستخدام بعد كل موجة.
+- [x] حسم تداخل **F-12..F-18** → تُنفَّذ في M5 (soft-status) لا M2.
+- **تعديل بوابة الخروج**: بند `lint` صار «لا أخطاء جديدة عن خط الأساس (306)» — الصفر المطلق دَين قائم خارج نطاق خطة الرموز (§5، §6.1، §9 مُحدَّثة).
+
+### M1 — لم تبدأ

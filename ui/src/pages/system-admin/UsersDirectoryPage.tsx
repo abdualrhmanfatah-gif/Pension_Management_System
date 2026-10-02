@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import {
 Building2, ChevronDown, ChevronUp, Pencil, RotateCcw,
     Shield, ShieldCheck,
@@ -15,6 +15,7 @@ import { Badge, Button, Card, CrudPageLayout, Heading, Text, useConfirm } from "
 import { queryKeys } from "@/constants/queryKeys";
 import { useApiMutation,useCrudState } from "@/hooks";
 import { normalizeApiError } from "@/lib/errorUtils";
+import { kpiToneClass } from "@/lib/utils";
 
 // ─── Types ─────────────────────────────────────────────
 
@@ -279,12 +280,12 @@ export function UsersDirectoryPage() {
             {/* Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 {[
-                    { label: "إجمالي المستخدمين", value: totalCount, color: "text-primary" },
-                    { label: "الأدوار", value: roles.length, color: "text-purple-600" },
+                    { label: "إجمالي المستخدمين", value: totalCount, color: "primary" },
+                    { label: "الأدوار", value: roles.length, color: "special" },
                 ].map((stat) => (
                     <Card key={stat.label} className="p-4">
                         <Text variant="caption">{stat.label}</Text>
-                        <Text variant="body" className={`md:text-xl lg:text-2xl font-bold ${stat.color}`}>{stat.value}</Text>
+                        <Text variant="body" className={`md:text-xl lg:text-2xl font-bold ${kpiToneClass(stat.color)}`}>{stat.value}</Text>
                     </Card>
                 ))}
             </div>

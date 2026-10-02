@@ -1,7 +1,8 @@
-import React from 'react';
+﻿import React from 'react';
 
 import type { ReportDataRow } from '@/api/reports';
 import { Card } from "@/components/ui/Card";
+import { kpiToneClass } from "@/lib/utils";
 
 interface ReportKPICardsProps {
     data?: ReportDataRow[];
@@ -24,8 +25,8 @@ export const ReportKPICards: React.FC<ReportKPICardsProps> = ({ data, columns, c
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 text-start">
                 {visibleKPIs.map((kpi, idx) => (
                     <Card key={idx} className="p-5">
-                        <h4 className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">{kpi.label}</h4>
-                        <div className={`text-2xl font-black font-mono ${kpi.color || 'text-primary'}`}>
+                        <h4 className="text-caption sm:text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">{kpi.label}</h4>
+                        <div className={`text-2xl font-black font-mono ${kpiToneClass(kpi.color)}`}>
                             {typeof kpi.value === 'number'
                                 ? new Intl.NumberFormat('ar-YE').format(kpi.value)
                                 : kpi.value}
@@ -47,7 +48,7 @@ export const ReportKPICards: React.FC<ReportKPICardsProps> = ({ data, columns, c
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 text-start">
             <Card className="p-5">
-                <h4 className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">إجمالي السجلات</h4>
+                <h4 className="text-caption sm:text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">إجمالي السجلات</h4>
                 <div className="text-2xl font-black text-foreground font-mono">
                     {data.length}
                 </div>
@@ -59,7 +60,7 @@ export const ReportKPICards: React.FC<ReportKPICardsProps> = ({ data, columns, c
 
                 return (
                     <Card key={idx} className="p-5">
-                        <h4 className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">{metric.label}</h4>
+                        <h4 className="text-caption sm:text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">{metric.label}</h4>
                         <div className="text-2xl font-black text-primary font-mono">
                             {formatValue(val, metric.type)}
                         </div>

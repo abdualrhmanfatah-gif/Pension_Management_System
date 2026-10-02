@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback, useMemo,useState } from "react";
 
 import { reportsApi } from "@/api/accounting";
@@ -67,9 +67,9 @@ export function ProvisionsReport({ fiscalYearId, asOfDate: propAsOfDate, externa
   }, [data]);
 
   const customKPIs = classified ? [
-    { label: 'المخصصات والاستحقاقات', value: formatCurrency(classified.totalProvisions), color: 'text-amber-600' },
-    { label: 'مخصصات أخرى', value: formatCurrency(classified.totalOtherProvisions), color: 'text-orange-600' },
-    { label: 'إجمالي المخصصات', value: formatCurrency(classified.totalAllProvisions), color: 'text-red-600' },
+    { label: 'المخصصات والاستحقاقات', value: formatCurrency(classified.totalProvisions), color: 'warning' },
+    { label: 'مخصصات أخرى', value: formatCurrency(classified.totalOtherProvisions), color: 'warning' },
+    { label: 'إجمالي المخصصات', value: formatCurrency(classified.totalAllProvisions), color: 'danger' },
   ] : [];
 
   const chartContent = classified ? (

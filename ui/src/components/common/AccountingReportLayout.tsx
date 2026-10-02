@@ -6,6 +6,7 @@ import { Heading } from '@/components/ui';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { kpiToneClass } from '@/lib/utils';
 
 import { ChartToggle } from './charts';
 import { ReportKPICards } from './ReportKPICards';
@@ -80,10 +81,10 @@ export const AccountingReportLayout: React.FC<AccountingReportLayoutProps> = ({
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {customKPIs.map((kpi, idx) => (
             <Card key={idx} className="p-5">
-              <h4 className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
+              <h4 className="text-caption sm:text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
                 {kpi.label}
               </h4>
-              <div className={`text-2xl font-black font-mono ${kpi.color || 'text-primary'}`}>
+              <div className={`text-2xl font-black font-mono ${kpiToneClass(kpi.color)}`}>
                 {typeof kpi.value === 'number'
                   ? new Intl.NumberFormat('ar-YE').format(kpi.value)
                   : kpi.value}

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
 import { fiscalYearsApi, quartersApi,reportsApi } from "@/api/accounting";
@@ -110,10 +110,10 @@ export function QuarterlyReport({ fiscalYearId, externalFilters, hideInternalCon
   }, [data, selectedQuarter]);
 
   const customKPIs = data ? [
-    { label: 'إجمالي الإيرادات', value: formatCurrency(data.totalRevenue), color: 'text-green-600' },
-    { label: 'إجمالي المصروفات', value: formatCurrency(data.totalExpenses), color: 'text-red-600' },
+    { label: 'إجمالي الإيرادات', value: formatCurrency(data.totalRevenue), color: 'success' },
+    { label: 'إجمالي المصروفات', value: formatCurrency(data.totalExpenses), color: 'danger' },
     { label: 'صافي الدخل الفصلي', value: formatCurrency(data.netIncome), color: data.netIncome >= 0 ? 'text-green-600' : 'text-red-600' },
-    { label: 'الفصل', value: selectedQuarter?.quarterName || '', color: 'text-primary' },
+    { label: 'الفصل', value: selectedQuarter?.quarterName || '', color: 'primary' },
   ] : [];
 
   const chartContent = data ? (

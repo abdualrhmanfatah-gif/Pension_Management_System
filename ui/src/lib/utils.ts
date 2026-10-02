@@ -73,14 +73,14 @@ export function normalizeArabicDigits(str: string): string {
  */
 export function getStatusColorClass(statusID: number | null | undefined): string {
     switch (statusID) {
-        case 1: return "text-blue-600 dark:text-blue-400";       // جديد
-        case 2: return "text-emerald-600 dark:text-emerald-400"; // نشط
-        case 3: return "text-destructive";                      // موقوف
-        case 4: return "text-slate-500 dark:text-slate-400";    // مغلق
-        case 5: return "text-orange-500 dark:text-orange-400";  // ناقص
-        case 6: return "text-amber-600 dark:text-amber-500";    // معلق
-        case 7: return "text-sky-600 dark:text-sky-400";        // تحت المراجعة
-        case 8: return "text-destructive";                      // مرفوض
+        case 1: return "text-info";               // جديد
+        case 2: return "text-success";             // نشط
+        case 3: return "text-destructive";         // موقوف
+        case 4: return "text-muted-foreground";    // مغلق
+        case 5: return "text-warning";             // ناقص
+        case 6: return "text-warning";             // معلق
+        case 7: return "text-info";                // تحت المراجعة
+        case 8: return "text-destructive";         // مرفوض
         default: return "text-foreground";
     }
 }
@@ -92,4 +92,21 @@ export function getStatusColorClass(statusID: number | null | undefined): string
 export function getDefaultDeceasedAvatar(gender?: number | null): string {
     return gender === 2 ? "/avatars/deceased-female.svg" : "/avatars/deceased-male.svg";
 }
+
+/** مفاتيح لونية دلالية لبطاقات KPI — تُترجم إلى tokens عبر KPI_TONE_CLASS */
+export type KpiTone = 'default' | 'primary' | 'success' | 'danger' | 'warning' | 'info' | 'special';
+
+export const KPI_TONE_CLASS: Record<KpiTone, string> = {
+    default: 'text-foreground',
+    primary: 'text-primary',
+    success: 'text-success',
+    danger: 'text-danger',
+    warning: 'text-warning',
+    info: 'text-info',
+    special: 'text-special',
+};
+
+/** يحوّل مفتاح النبرة إلى كلاس Tailwind؛ القيم غير المعروفة تُمرَّر كما هي (سلوك آمن) */
+export const kpiToneClass = (tone?: string): string =>
+    KPI_TONE_CLASS[tone as KpiTone] ?? tone ?? KPI_TONE_CLASS.primary;
 

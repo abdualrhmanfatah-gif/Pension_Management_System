@@ -63,13 +63,22 @@ export default {
           foreground: "hsl(var(--popover-foreground))",
         },
         success: {
-          DEFAULT: "#10b981",
+          DEFAULT: "hsl(var(--gov-success))",
           foreground: "#ffffff",
         },
         warning: {
-          DEFAULT: "#f59e0b",
+          DEFAULT: "hsl(var(--gov-warning))",
           foreground: "#ffffff",
         },
+        danger: {
+          DEFAULT: "hsl(var(--gov-danger))",
+          foreground: "#ffffff",
+        },
+        info: {
+          DEFAULT: "hsl(var(--gov-info))",
+          foreground: "#ffffff",
+        },
+        special: "hsl(var(--gov-special))",
         brand: {
           DEFAULT: "#1b3a5c",
           foreground: "#ffffff",
@@ -116,6 +125,16 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      transitionDuration: {
+        fast: "var(--transition-duration-fast)",
+        base: "var(--transition-duration-base)",
+        slow: "var(--transition-duration-slow)",
+        bounce: "var(--transition-duration-bounce)",
+      },
+      transitionTimingFunction: {
+        standard: "var(--transition-easing-standard)",
+        bounce: "var(--transition-easing-bounce)",
       },
       zIndex: {
         dialog: "9999",

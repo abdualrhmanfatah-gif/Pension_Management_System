@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
 import { fiscalYearsApi, quartersApi,reportsApi } from "@/api/accounting";
@@ -86,10 +86,10 @@ export function CumulativePnLReport({ fiscalYearId, hideInternalControls }: Cumu
   const selectedYear = fiscalYears?.find((y: FiscalYearSummaryDto) => y.fiscalYearID === selectedYearId);
 
   const customKPIs = [
-    { label: 'الإيرادات التراكمية', value: formatCurrency(cumulativeRevenue), color: 'text-green-600' },
-    { label: 'المصروفات التراكمية', value: formatCurrency(cumulativeExpenses), color: 'text-red-600' },
+    { label: 'الإيرادات التراكمية', value: formatCurrency(cumulativeRevenue), color: 'success' },
+    { label: 'المصروفات التراكمية', value: formatCurrency(cumulativeExpenses), color: 'danger' },
     { label: 'صافي الدخل التراكمي', value: formatCurrency(cumulativeRevenue - cumulativeExpenses), color: (cumulativeRevenue - cumulativeExpenses) >= 0 ? 'text-green-600' : 'text-red-600' },
-    { label: 'السنة المالية', value: selectedYear?.yearName || '', color: 'text-primary' },
+    { label: 'السنة المالية', value: selectedYear?.yearName || '', color: 'primary' },
   ];
 
   const chartContent = cumulativeData.length > 0 ? (

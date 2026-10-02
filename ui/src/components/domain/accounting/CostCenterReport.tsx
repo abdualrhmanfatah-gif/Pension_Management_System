@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
 import { costCentersApi, fiscalYearsApi,reportsApi } from "@/api/accounting";
@@ -53,10 +53,10 @@ export function CostCenterReport({ fiscalYearId, hideInternalControls }: CostCen
   const totalExpenses = expenseAccounts.reduce((s: number, a: TrialBalanceItemDto) => s + a.balance, 0);
 
   const customKPIs = [
-    { label: 'عدد مراكز التكلفة', value: costCenters?.length || 0, color: 'text-foreground' },
-    { label: 'إجمالي الإيرادات', value: formatCurrency(totalRevenue), color: 'text-green-600' },
-    { label: 'إجمالي المصروفات', value: formatCurrency(totalExpenses), color: 'text-red-600' },
-    { label: 'السنة المالية', value: selectedYear?.yearName || '', color: 'text-primary' },
+    { label: 'عدد مراكز التكلفة', value: costCenters?.length || 0, color: 'default' },
+    { label: 'إجمالي الإيرادات', value: formatCurrency(totalRevenue), color: 'success' },
+    { label: 'إجمالي المصروفات', value: formatCurrency(totalExpenses), color: 'danger' },
+    { label: 'السنة المالية', value: selectedYear?.yearName || '', color: 'primary' },
   ];
 
   const chartContent = costCenters && costCenters.length > 0 ? (

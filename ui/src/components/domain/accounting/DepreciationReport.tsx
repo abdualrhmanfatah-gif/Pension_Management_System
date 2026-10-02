@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import { TrendingDown } from "lucide-react";
 import { useCallback,useMemo, useState } from "react";
 
@@ -62,10 +62,10 @@ export function DepreciationReport(_props: DepreciationReportProps) {
   }, [filters.assetType]);
 
   const customKPIs = [
-    { label: 'عدد الأصول النشطة', value: stats.count, color: 'text-foreground' },
-    { label: 'إجمالي التكلفة', value: formatCurrency(stats.totalCost), color: 'text-blue-600' },
-    { label: 'الإهلاك المتراكم', value: formatCurrency(stats.totalAccumulated), color: 'text-red-600' },
-    { label: 'القيمة الدفترية', value: formatCurrency(stats.totalNetBook), color: 'text-green-600' },
+    { label: 'عدد الأصول النشطة', value: stats.count, color: 'default' },
+    { label: 'إجمالي التكلفة', value: formatCurrency(stats.totalCost), color: 'info' },
+    { label: 'الإهلاك المتراكم', value: formatCurrency(stats.totalAccumulated), color: 'danger' },
+    { label: 'القيمة الدفترية', value: formatCurrency(stats.totalNetBook), color: 'success' },
   ];
 
   const chartContent = filteredAssets.filter(a => a.status === 0).length > 0 ? (

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
 import { fiscalYearsApi,reportsApi } from "@/api/accounting";
@@ -80,7 +80,7 @@ export function YearOverYearReport({ fiscalYearId, externalFilters, hideInternal
     { label: 'الإيرادات', value: `${formatCurrency(income1.totalRevenue)} (${revenueChange >= 0 ? '+' : ''}${revenueChange.toFixed(1)}%)`, color: revenueChange >= 0 ? 'text-green-600' : 'text-red-600' },
     { label: 'المصروفات', value: `${formatCurrency(income1.totalExpenses)} (${expenseChange >= 0 ? '+' : ''}${expenseChange.toFixed(1)}%)`, color: expenseChange <= 0 ? 'text-green-600' : 'text-red-600' },
     { label: 'صافي الدخل', value: `${formatCurrency(income1.netIncome)} (${netIncomeChange >= 0 ? '+' : ''}${netIncomeChange.toFixed(1)}%)`, color: netIncomeChange >= 0 ? 'text-green-600' : 'text-red-600' },
-    { label: 'السنة المقارنة', value: `${year1?.yearName || ''} vs ${year2?.yearName || ''}`, color: 'text-primary' },
+    { label: 'السنة المقارنة', value: `${year1?.yearName || ''} vs ${year2?.yearName || ''}`, color: 'primary' },
   ] : [];
 
   const chartContent = income1 && income2 ? (

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback, useMemo,useState } from "react";
 
 import { reportsApi } from "@/api/accounting";
@@ -71,10 +71,10 @@ export function LiabilitiesReport({ fiscalYearId, asOfDate: propAsOfDate, extern
   }, [data]);
 
   const customKPIs = classified ? [
-    { label: 'الالتزامات قصيرة الأجل', value: formatCurrency(classified.totalCurrent), color: 'text-amber-600' },
-    { label: 'الالتزامات طويلة الأجل', value: formatCurrency(classified.totalNonCurrent), color: 'text-orange-600' },
-    { label: 'التزامات أخرى', value: formatCurrency(classified.totalOther), color: 'text-foreground' },
-    { label: 'إجمالي الديون', value: formatCurrency(classified.totalLiabilities), color: 'text-red-600' },
+    { label: 'الالتزامات قصيرة الأجل', value: formatCurrency(classified.totalCurrent), color: 'warning' },
+    { label: 'الالتزامات طويلة الأجل', value: formatCurrency(classified.totalNonCurrent), color: 'warning' },
+    { label: 'التزامات أخرى', value: formatCurrency(classified.totalOther), color: 'default' },
+    { label: 'إجمالي الديون', value: formatCurrency(classified.totalLiabilities), color: 'danger' },
   ] : [];
 
   const chartContent = classified ? (

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
 import { accountsApi, reportsApi } from "@/api/accounting";
@@ -78,10 +78,10 @@ export function SubledgerReport({ fromDate: propFromDate, toDate: propToDate, ex
   ) : undefined;
 
   const customKPIs = data ? [
-    { label: 'الحساب', value: `${data.accountCode} - ${data.accountName}`, color: 'text-foreground' },
-    { label: 'الرصيد الافتتاحي', value: formatCurrency(data.openingBalance), color: 'text-foreground' },
-    { label: 'إجمالي المدين', value: formatCurrency(data.totalDebit), color: 'text-blue-600' },
-    { label: 'إجمالي الدائن', value: formatCurrency(data.totalCredit), color: 'text-green-600' },
+    { label: 'الحساب', value: `${data.accountCode} - ${data.accountName}`, color: 'default' },
+    { label: 'الرصيد الافتتاحي', value: formatCurrency(data.openingBalance), color: 'default' },
+    { label: 'إجمالي المدين', value: formatCurrency(data.totalDebit), color: 'info' },
+    { label: 'إجمالي الدائن', value: formatCurrency(data.totalCredit), color: 'success' },
   ] : [];
 
   const filterBar = hideInternalControls ? undefined : (

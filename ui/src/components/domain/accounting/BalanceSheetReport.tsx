@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import { ChevronDown, ChevronLeft } from "lucide-react";
 import { useCallback,useState } from "react";
 
@@ -125,9 +125,9 @@ export function BalanceSheetReport({ fiscalYearId, asOfDate, externalFilters, hi
   }, [fiscalYearId, filters.toDate]);
 
   const customKPIs = data ? [
-    { label: 'إجمالي الأصول', value: formatCurrency(data.totalAssets), color: 'text-blue-600' },
-    { label: 'إجمالي الخصوم', value: formatCurrency(data.totalLiabilities), color: 'text-amber-600' },
-    { label: 'حقوق الملكية', value: formatCurrency(data.totalEquity), color: 'text-green-600' },
+    { label: 'إجمالي الأصول', value: formatCurrency(data.totalAssets), color: 'info' },
+    { label: 'إجمالي الخصوم', value: formatCurrency(data.totalLiabilities), color: 'warning' },
+    { label: 'حقوق الملكية', value: formatCurrency(data.totalEquity), color: 'success' },
     { label: 'الحالة', value: data.isBalanced ? 'متوازنة' : 'غير متوازنة', color: data.isBalanced ? 'text-green-600' : 'text-red-600' },
   ] : [];
 

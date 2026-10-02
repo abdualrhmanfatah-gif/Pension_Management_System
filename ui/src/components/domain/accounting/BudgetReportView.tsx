@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { budgetApi } from "@/api/budget";
@@ -71,10 +71,10 @@ export function BudgetReportView({ fiscalYearId, hideInternalControls }: BudgetR
   }, [data]);
 
   const customKPIs = data ? [
-    { label: 'المخطط', value: formatCurrency(data.totalPlanned), color: 'text-primary' },
-    { label: 'الفعلي', value: formatCurrency(data.totalActual), color: 'text-foreground' },
+    { label: 'المخطط', value: formatCurrency(data.totalPlanned), color: 'primary' },
+    { label: 'الفعلي', value: formatCurrency(data.totalActual), color: 'default' },
     { label: 'الفرق', value: formatCurrency(Math.abs(data.totalVariance)), color: data.totalVariance >= 0 ? 'text-red-600' : 'text-green-600' },
-    { label: 'نسبة الانحراف', value: `${Math.abs(data.totalVariancePercentage)}%`, color: 'text-primary' },
+    { label: 'نسبة الانحراف', value: `${Math.abs(data.totalVariancePercentage)}%`, color: 'primary' },
   ] : [];
 
   const chartContent = data ? (

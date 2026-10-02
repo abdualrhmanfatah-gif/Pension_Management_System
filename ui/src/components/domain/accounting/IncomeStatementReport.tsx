@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
 import { fiscalYearsApi,reportsApi } from "@/api/accounting";
@@ -107,10 +107,10 @@ export function IncomeStatementReport({ fiscalYearId, hideInternalControls }: In
   };
 
   const customKPIs = data ? [
-    { label: 'إجمالي الإيرادات', value: formatCurrency(data.totalRevenue), color: 'text-green-600' },
-    { label: 'إجمالي المصروفات', value: formatCurrency(data.totalExpenses), color: 'text-red-600' },
+    { label: 'إجمالي الإيرادات', value: formatCurrency(data.totalRevenue), color: 'success' },
+    { label: 'إجمالي المصروفات', value: formatCurrency(data.totalExpenses), color: 'danger' },
     { label: 'صافي الدخل', value: formatCurrency(data.netIncome), color: data.netIncome >= 0 ? 'text-green-600' : 'text-red-600' },
-    { label: 'النسبة', value: data.totalRevenue > 0 ? `${((data.netIncome / data.totalRevenue) * 100).toFixed(1)}%` : '0%', color: 'text-primary' },
+    { label: 'النسبة', value: data.totalRevenue > 0 ? `${((data.netIncome / data.totalRevenue) * 100).toFixed(1)}%` : '0%', color: 'primary' },
   ] : [];
 
   const chartContent = data ? (

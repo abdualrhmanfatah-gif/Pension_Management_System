@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import { AlertCircle,CheckCircle } from "lucide-react";
 import { useCallback,useMemo, useState } from "react";
 
@@ -299,10 +299,10 @@ export function TrialBalanceReport({
   );
 
   const customKPIs = [
-    { label: 'إجمالي الحسابات', value: totalAccounts, color: 'text-foreground' },
-    { label: 'حسابات مدينة', value: debitAccounts, color: 'text-blue-600' },
-    { label: 'حسابات دائنة', value: creditAccounts, color: 'text-green-600' },
-    { label: 'حسابات فرعية', value: postableAccounts, color: 'text-foreground' },
+    { label: 'إجمالي الحسابات', value: totalAccounts, color: 'default' },
+    { label: 'حسابات مدينة', value: debitAccounts, color: 'info' },
+    { label: 'حسابات دائنة', value: creditAccounts, color: 'success' },
+    { label: 'حسابات فرعية', value: postableAccounts, color: 'default' },
   ];
 
   const chartContent = (

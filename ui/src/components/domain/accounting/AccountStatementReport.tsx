@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
 import { accountsApi, reportsApi } from "@/api/accounting";
@@ -80,10 +80,10 @@ export function AccountStatementReport({ fiscalYearId, fromDate: propFromDate, t
   ) : undefined;
 
   const customKPIs = items.length > 0 ? [
-    { label: 'عدد الحركات', value: items.length, color: 'text-foreground' },
-    { label: 'إجمالي المدين', value: formatCurrency(items.reduce((s, i) => s + i.debit, 0)), color: 'text-blue-600' },
-    { label: 'إجمالي الدائن', value: formatCurrency(items.reduce((s, i) => s + i.credit, 0)), color: 'text-green-600' },
-    { label: 'الرصيد النهائي', value: formatCurrency(items[items.length - 1]?.runningBalance ?? 0), color: 'text-primary' },
+    { label: 'عدد الحركات', value: items.length, color: 'default' },
+    { label: 'إجمالي المدين', value: formatCurrency(items.reduce((s, i) => s + i.debit, 0)), color: 'info' },
+    { label: 'إجمالي الدائن', value: formatCurrency(items.reduce((s, i) => s + i.credit, 0)), color: 'success' },
+    { label: 'الرصيد النهائي', value: formatCurrency(items[items.length - 1]?.runningBalance ?? 0), color: 'primary' },
   ] : [];
 
   const filterBar = hideInternalControls ? undefined : (

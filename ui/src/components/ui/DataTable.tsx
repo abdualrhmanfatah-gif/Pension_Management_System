@@ -1,4 +1,4 @@
-import type { ColumnDef } from "@tanstack/react-table";
+﻿import type { ColumnDef } from "@tanstack/react-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import {
     ArrowDown,
@@ -164,7 +164,7 @@ function MobileCardView<T>({
                                             "flex items-center gap-2 px-3 py-2",
                                             idx < dataColumns.length - 1 && "border-b border-border/60"
                                         )}>
-                                            <span className="text-[10px] font-bold text-muted-foreground shrink-0 min-w-[60px] text-end">
+                                            <span className="text-caption font-bold text-muted-foreground shrink-0 min-w-[60px] text-end">
                                                 {col.header}
                                             </span>
                                             <span className="text-xs flex-1 text-start font-medium break-words min-w-0">
@@ -416,7 +416,7 @@ function DataTable<T>({
                                                 : undefined
                                         }
                                     >
-                                        <span className="inline-flex items-center gap-2 text-xs sm:text-[13px] font-extrabold tracking-wide">
+                                        <span className="inline-flex items-center gap-2 text-xs sm:text-sm font-extrabold tracking-wide">
                                             {col.header}
                                             {col.sortable && (
                                                 <span
@@ -596,7 +596,7 @@ function DataTable<T>({
                 {pagination && (totalPages > 1 || pagination.pageSizeOptions) && (
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-2 px-3 sm:px-4 py-2 bg-muted/10 border-t border-border/60">
                         <div className="flex items-center gap-2 order-2 sm:order-1">
-                            <p className="text-[10px] text-muted-foreground font-medium whitespace-nowrap sm:whitespace-normal break-words">
+                            <p className="text-caption text-muted-foreground font-medium whitespace-nowrap sm:whitespace-normal break-words">
                                 عرض{" "}
                                 <span className="font-semibold text-foreground">
                                     {pagination.total > 0
@@ -622,13 +622,13 @@ function DataTable<T>({
 
                             {pagination.pageSizeOptions && pagination.onPageSizeChange && (
                                 <div className="flex items-center gap-1.5">
-                                    <span className="text-[10px] text-muted-foreground">عرض</span>
+                                    <span className="text-caption text-muted-foreground">عرض</span>
                                     <select
                                         value={pagination.pageSize}
                                         onChange={(e) =>
                                             pagination.onPageSizeChange?.(Number(e.target.value))
                                         }
-                                        className="h-6 text-[10px] rounded-md border border-border/60 bg-background px-1.5 py-0.5 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                        className="h-6 text-caption rounded-md border border-border/60 bg-background px-1.5 py-0.5 focus:outline-none focus:ring-2 focus:ring-primary/30"
                                         aria-label="عدد السجلات في الصفحة"
                                     >
                                         {pagination.pageSizeOptions.map((size) => (
@@ -661,7 +661,7 @@ function DataTable<T>({
                                 </Button>
 
                                 <span
-                                    className="text-[10px] text-muted-foreground font-medium mx-1"
+                                    className="text-caption text-muted-foreground font-medium mx-1"
                                     aria-live="polite"
                                 >
                                     الصفحة {pagination.page}
@@ -720,7 +720,7 @@ function DataTable<T>({
                                             size="icon"
                                             onClick={() => pagination.onPageChange(p)}
                                             className={cn(
-                                                "h-7 w-7 text-[10px] font-bold transition-all duration-300 rounded-lg",
+                                                "h-7 w-7 text-caption font-bold transition-all duration-300 rounded-lg",
                                                 p === pagination.page
                                                     ? "bg-primary text-primary-foreground scale-105"
                                                     : "text-muted-foreground hover:text-primary hover:bg-primary/5"

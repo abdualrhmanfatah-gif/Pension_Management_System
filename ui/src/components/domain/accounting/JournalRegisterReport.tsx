@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
 import { reportsApi } from "@/api/accounting";
@@ -112,9 +112,9 @@ export function JournalRegisterReport({ fiscalYearId, fromDate: propFromDate, to
   ) : undefined;
 
   const customKPIs = data ? [
-    { label: 'عدد القيود', value: data.totalEntries, color: 'text-foreground' },
-    { label: 'إجمالي المدين', value: formatCurrency(data.grandTotalDebit), color: 'text-blue-600' },
-    { label: 'إجمالي الدائن', value: formatCurrency(data.grandTotalCredit), color: 'text-green-600' },
+    { label: 'عدد القيود', value: data.totalEntries, color: 'default' },
+    { label: 'إجمالي المدين', value: formatCurrency(data.grandTotalDebit), color: 'info' },
+    { label: 'إجمالي الدائن', value: formatCurrency(data.grandTotalCredit), color: 'success' },
   ] : [];
 
   const filterBar = hideInternalControls ? undefined : (

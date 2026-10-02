@@ -273,6 +273,8 @@
     --gov-danger-bg: 0 60% 95%;
     --gov-info: 205 55% 48%;
     --gov-info-bg: 205 55% 95%;
+    /* Purple — حالات خاصة (استثناء/تمييز) — F-08 */
+    --gov-special: 262 83% 58%;
 
     /* ── Spacing Scale ── */
     --space-1: 0.25rem;
@@ -315,10 +317,17 @@
     --z-toast: 800;
 
     /* ── Transition Tokens ── */
-    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition-duration-fast: 150ms;
+    --transition-duration-base: 200ms;
+    --transition-duration-slow: 300ms;
+    --transition-duration-bounce: 300ms;
+    --transition-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-easing-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* shorthand مدموج (مدة + تخفيف) لاستخدام `transition: <prop> var(--transition-*)` */
+    --transition-fast: var(--transition-duration-fast) var(--transition-easing-standard);
+    --transition-base: var(--transition-duration-base) var(--transition-easing-standard);
+    --transition-slow: var(--transition-duration-slow) var(--transition-easing-standard);
+    --transition-bounce: var(--transition-duration-bounce) var(--transition-easing-bounce);
   }
 
   /* ── Dark Mode ── */
@@ -406,10 +415,10 @@
   /* ── Reduced Motion ── */
   @media (prefers-reduced-motion: reduce) {
     :root {
-      --transition-fast: 0.01ms;
-      --transition-base: 0.01ms;
-      --transition-slow: 0.01ms;
-      --transition-bounce: 0.01ms;
+      --transition-duration-fast: 0.01ms;
+      --transition-duration-base: 0.01ms;
+      --transition-duration-slow: 0.01ms;
+      --transition-duration-bounce: 0.01ms;
     }
     *,
     *::before,

@@ -1,17 +1,17 @@
 /**
  * Chart color palette — single source of truth for all chart colors.
- * Uses HSL values that complement the Tailwind design tokens.
+ * مُشتقة من رموز التصميم (تتبع الثيم Light/Dark).
  */
 
 export const chartColors = {
   /** Primary blue — main data series */
-  primary: "hsl(215, 75%, 36%)",
+  primary: "hsl(var(--primary))",
   /** Success green — positive values, revenue, credit */
-  success: "hsl(142, 71%, 45%)",
+  success: "hsl(var(--gov-success))",
   /** Warning amber — liabilities, warnings */
-  warning: "hsl(38, 92%, 50%)",
+  warning: "hsl(var(--gov-warning))",
   /** Danger red — expenses, debits, losses */
-  danger: "hsl(0, 84%, 60%)",
+  danger: "hsl(var(--gov-danger))",
   /** Purple — secondary series, pie chart accent */
   purple: "hsl(262, 83%, 58%)",
   /** Pink — pie chart accent */

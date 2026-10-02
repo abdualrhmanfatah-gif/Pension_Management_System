@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
 import { accountsApi, reportsApi } from "@/api/accounting";
@@ -117,10 +117,10 @@ export function GeneralLedgerReport({ fromDate: propFromDate, toDate: propToDate
   );
 
   const customKPIs = data ? [
-    { label: 'الرصيد الافتتاحي', value: formatCurrency(data.openingBalance), color: 'text-foreground' },
-    { label: 'إجمالي المدين', value: formatCurrency(data.totalDebit), color: 'text-blue-600' },
-    { label: 'إجمالي الدائن', value: formatCurrency(data.totalCredit), color: 'text-green-600' },
-    { label: 'الرصيد الختامي', value: formatCurrency(data.closingBalance), color: 'text-primary' },
+    { label: 'الرصيد الافتتاحي', value: formatCurrency(data.openingBalance), color: 'default' },
+    { label: 'إجمالي المدين', value: formatCurrency(data.totalDebit), color: 'info' },
+    { label: 'إجمالي الدائن', value: formatCurrency(data.totalCredit), color: 'success' },
+    { label: 'الرصيد الختامي', value: formatCurrency(data.closingBalance), color: 'primary' },
   ] : [];
 
   return (

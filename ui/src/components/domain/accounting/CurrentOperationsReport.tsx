@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo,useState } from "react";
 
 import { periodsApi,reportsApi } from "@/api/accounting";
@@ -71,10 +71,10 @@ export function CurrentOperationsReport({ fiscalYearId, externalFilters, hideInt
   }, [trialBalance]);
 
   const customKPIs = classified ? [
-    { label: 'الإيرادات', value: formatCurrency(classified.totalRevenue), color: 'text-green-600' },
-    { label: 'المصروفات', value: formatCurrency(classified.totalExpenses), color: 'text-red-600' },
+    { label: 'الإيرادات', value: formatCurrency(classified.totalRevenue), color: 'success' },
+    { label: 'المصروفات', value: formatCurrency(classified.totalExpenses), color: 'danger' },
     { label: 'صافي الدخل', value: formatCurrency(classified.totalRevenue - classified.totalExpenses), color: (classified.totalRevenue - classified.totalExpenses) >= 0 ? 'text-green-600' : 'text-red-600' },
-    { label: 'الفترة', value: selectedPeriod?.periodName || '', color: 'text-primary' },
+    { label: 'الفترة', value: selectedPeriod?.periodName || '', color: 'primary' },
   ] : [];
 
   const chartContent = classified ? (

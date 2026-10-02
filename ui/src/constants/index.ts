@@ -246,8 +246,8 @@ export const PERSON_DOC_FILTER_AR = {
 } as const;
 
 export const DOC_STATUS_COLOR = {
-  uploaded: "text-green-600",
-  missing: "text-red-600",
-  pledge: "text-amber-600",
-  exempted: "text-purple-600",
+  uploaded: "text-success",
+  missing: "text-danger",
+  pledge: "text-warning",
+  exempted: "text-special",
 } as const;

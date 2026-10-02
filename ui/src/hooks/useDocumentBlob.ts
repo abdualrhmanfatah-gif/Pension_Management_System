@@ -1,0 +1,61 @@
+import { useEffect, useState } from "react";
+
+import api, { getFileRelativeUrl } from "@/api/axios";
+
+/**
+ * جلب ملف كـ blob URL مع التنظيف التلقائي.
+ * يمر عبر JWT interceptor (authenticated).
+ *
+ * الجلب بمسار نسبي (baseURL: "") فيبقى الطلب same-origin عبر Vite proxy
+ * في التطوير و URL Rewrite في الإنتاج: بلا preflight وبلا CORS.
+ */
+export function useDocumentBlob(
+    filePath: string | null | undefined,
+    options?: { enabled?: boolean }
+): { blobUrl: string | null; loading: boolean } {
+    const [blobUrl, setBlobUrl] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (!filePath || options?.enabled === false) {
+            setBlobUrl(null);
+            return;
+        }
+
+        let cancelled = false;
+        setLoading(true);
+
+        const url = getFileRelativeUrl(filePath);
+        if (!url) {
+            setBlobUrl(null);
+            setLoading(false);
+            return;
+        }
+
+        api.get(url, { baseURL: "", responseType: "blob" })
+            .then((res) => {
+                if (cancelled) return;
+                const blob = new Blob([res.data], {
+                    type: res.headers["content-type"] || "application/octet-stream",
+                });
+                const objectUrl = URL.createObjectURL(blob);
+                setBlobUrl(objectUrl);
+            })
+            .catch(() => {
+                if (!cancelled) setBlobUrl(null);
+            })
+            .finally(() => {
+                if (!cancelled) setLoading(false);
+            });
+
+        return () => {
+            cancelled = true;
+            setBlobUrl((prev) => {
+                if (prev) URL.revokeObjectURL(prev);
+                return null;
+            });
+        };
+    }, [filePath, options?.enabled]);
+
+    return { blobUrl, loading };
+}

@@ -1,0 +1,28 @@
+# ===== .NET =====
+[Bb]in/
+[Oo]bj/
+artifacts/
+TestResults/
+.vs/
+*.user
+*.suo
+
+# ===== Node =====
+node_modules/
+dist/
+dist-ssr/
+*.local
+*.log
+logs/
+
+# ===== Generated / backups =====
+*.zip
+.audit-documents/
+.debug-harness/
+
+# ===== OS / editor =====
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.sw?

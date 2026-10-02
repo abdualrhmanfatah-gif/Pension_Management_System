@@ -294,16 +294,16 @@ export function QuarterDetailsPage() {
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Card className="border-none rounded-3xl p-6">
-                  <div className="flex items-center gap-3 mb-3"><div className="p-2 bg-blue-100 rounded-xl"><TrendingUp className="w-5 h-5 text-blue-600" /></div><span className="text-sm text-muted-foreground">إجمالي السحب من البنك</span></div>
-                  <Text variant="body" className="text-lg md:text-xl lg:text-2xl font-bold text-blue-700">{formatCurrency(details.totalWithdrawn)}</Text>
+                  <div className="flex items-center gap-3 mb-3"><div className="p-2 bg-info/10 rounded-xl"><TrendingUp className="w-5 h-5 text-info" /></div><span className="text-sm text-muted-foreground">إجمالي السحب من البنك</span></div>
+                  <Text variant="body" className="text-lg md:text-xl lg:text-2xl font-bold text-info">{formatCurrency(details.totalWithdrawn)}</Text>
                 </Card>
                 <Card className="border-none rounded-3xl p-6">
-                  <div className="flex items-center gap-3 mb-3"><div className="p-2 bg-red-100 rounded-xl"><TrendingDown className="w-5 h-5 text-red-600" /></div><span className="text-sm text-muted-foreground">إجمالي الصرف الفعلي</span></div>
-                  <Text variant="body" className="text-lg md:text-xl lg:text-2xl font-bold text-red-700">{formatCurrency(details.totalSpent)}</Text>
+                  <div className="flex items-center gap-3 mb-3"><div className="p-2 bg-danger/10 rounded-xl"><TrendingDown className="w-5 h-5 text-danger" /></div><span className="text-sm text-muted-foreground">إجمالي الصرف الفعلي</span></div>
+                  <Text variant="body" className="text-lg md:text-xl lg:text-2xl font-bold text-danger">{formatCurrency(details.totalSpent)}</Text>
                 </Card>
                 <Card className="border-none rounded-3xl p-6">
-                  <div className="flex items-center gap-3 mb-3"><div className="p-2 bg-green-100 rounded-xl"><Wallet className="w-5 h-5 text-green-600" /></div><span className="text-sm text-muted-foreground">المتبقي</span></div>
-                  <Text variant="body" className={cn("text-lg md:text-xl lg:text-2xl font-bold", details.remainingBalance >= 0 ? "text-green-700" : "text-red-700")}>{formatCurrency(details.remainingBalance)}</Text>
+                  <div className="flex items-center gap-3 mb-3"><div className="p-2 bg-success/10 rounded-xl"><Wallet className="w-5 h-5 text-success" /></div><span className="text-sm text-muted-foreground">المتبقي</span></div>
+                  <Text variant="body" className={cn("text-lg md:text-xl lg:text-2xl font-bold", details.remainingBalance >= 0 ? "text-success" : "text-danger")}>{formatCurrency(details.remainingBalance)}</Text>
                 </Card>
               </div>
 
@@ -331,8 +331,8 @@ export function QuarterDetailsPage() {
                         <table className="w-full text-base text-foreground" role="table" aria-label="أوامر الصرف">
                       <thead className="bg-muted/50 sticky top-0 z-10"><tr><th className="text-end p-4 text-sm md:text-base lg:text-xl">الفترة</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">الافتتاحي</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">سحب من البنك</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">الصرف الفعلي</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">الختامي</th></tr></thead>
                       <tbody>
-                        {details.periods.map((p) => (<tr key={p.periodID} className="border-t border-border/50 hover:bg-muted/20"><td className="p-4 font-medium">{p.periodName}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(p.openingBalance)}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-blue-600">{p.withdrawn > 0 ? `+${formatCurrency(p.withdrawn)}` : "—"}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">{p.spent > 0 ? `-${formatCurrency(p.spent)}` : "—"}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(p.closingBalance)}</td></tr>))}
-                        <tr className="bg-muted/30 font-bold"><td className="p-4">الإجمالي</td><td className="p-4">—</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-blue-600">+{formatCurrency(details.totalWithdrawn)}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">-{formatCurrency(details.totalSpent)}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(details.remainingBalance)}</td></tr>
+                        {details.periods.map((p) => (<tr key={p.periodID} className="border-t border-border/50 hover:bg-muted/20"><td className="p-4 font-medium">{p.periodName}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(p.openingBalance)}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-info">{p.withdrawn > 0 ? `+${formatCurrency(p.withdrawn)}` : "—"}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">{p.spent > 0 ? `-${formatCurrency(p.spent)}` : "—"}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(p.closingBalance)}</td></tr>))}
+                        <tr className="bg-muted/30 font-bold"><td className="p-4">الإجمالي</td><td className="p-4">—</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-info">+{formatCurrency(details.totalWithdrawn)}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">-{formatCurrency(details.totalSpent)}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(details.remainingBalance)}</td></tr>
                       </tbody>
                     </table>
                     </div>
@@ -447,10 +447,10 @@ export function QuarterDetailsPage() {
                   <table className="print-table">
                     <thead><tr><th>البيان</th><th>المبلغ (ريال يمني)</th></tr></thead>
                     <tbody>
-                      <tr><td className="text-start font-bold">إجمالي السحب من البنك</td><td className="mono fb text-blue-700">{formatCurrency(details.totalWithdrawn)}</td></tr>
-                      <tr><td className="text-start font-bold">إجمالي الصرف الفعلي</td><td className="mono fb text-red-600">{formatCurrency(details.totalSpent)}</td></tr>
+                      <tr><td className="text-start font-bold">إجمالي السحب من البنك</td><td className="mono fb text-info">{formatCurrency(details.totalWithdrawn)}</td></tr>
+                      <tr><td className="text-start font-bold">إجمالي الصرف الفعلي</td><td className="mono fb text-danger">{formatCurrency(details.totalSpent)}</td></tr>
                     </tbody>
-                    <tfoot><tr><td className="text-start font-black text-xs">الرصيد المتبقي المرحل</td><td className={cn("mono fb text-xs", details.remainingBalance >= 0 ? "text-green-700" : "text-red-600")}>{formatCurrency(details.remainingBalance)}</td></tr></tfoot>
+                    <tfoot><tr><td className="text-start font-black text-xs">الرصيد المتبقي المرحل</td><td className={cn("mono fb text-xs", details.remainingBalance >= 0 ? "text-success" : "text-danger")}>{formatCurrency(details.remainingBalance)}</td></tr></tfoot>
                   </table>
                 </section>
 
@@ -464,13 +464,13 @@ export function QuarterDetailsPage() {
                         <tr key={p.periodID}>
                           <td className="font-bold">{p.periodName}</td>
                           <td className="mono fb">{formatCurrency(p.openingBalance)}</td>
-                          <td className="mono fb text-blue-700">{p.withdrawn > 0 ? `+${formatCurrency(p.withdrawn)}` : "—"}</td>
-                          <td className="mono fb text-red-600">{p.spent > 0 ? `-${formatCurrency(p.spent)}` : "—"}</td>
+                          <td className="mono fb text-info">{p.withdrawn > 0 ? `+${formatCurrency(p.withdrawn)}` : "—"}</td>
+                          <td className="mono fb text-danger">{p.spent > 0 ? `-${formatCurrency(p.spent)}` : "—"}</td>
                           <td className="mono fb">{formatCurrency(p.closingBalance)}</td>
                         </tr>
                       ))}
                     </tbody>
-                    <tfoot><tr><td className="font-black text-xs">الإجمالي</td><td>—</td><td className="mono fb text-blue-700">+{formatCurrency(details.totalWithdrawn)}</td><td className="mono fb text-red-600">-{formatCurrency(details.totalSpent)}</td><td className="mono fb">{formatCurrency(details.remainingBalance)}</td></tr></tfoot>
+                    <tfoot><tr><td className="font-black text-xs">الإجمالي</td><td>—</td><td className="mono fb text-info">+{formatCurrency(details.totalWithdrawn)}</td><td className="mono fb text-danger">-{formatCurrency(details.totalSpent)}</td><td className="mono fb">{formatCurrency(details.remainingBalance)}</td></tr></tfoot>
                   </table>
                 </section>
 
@@ -480,7 +480,7 @@ export function QuarterDetailsPage() {
                     <div className="print-section-heading"><div className="print-section-number">3</div><span className="print-section-title">تفصيل المصروفات حسب الحساب</span></div>
                     <table className="print-table">
                       <thead><tr><th>كود الحساب</th><th>اسم الحساب</th><th>المبلغ</th><th>عدد القيود</th></tr></thead>
-                      <tbody>{details.expenseBreakdown.map((e) => (<tr key={e.accountID}><td className="mono fb">{e.accountCode}</td><td className="font-bold">{e.accountName}</td><td className="mono fb text-red-600">{formatCurrency(e.amount)}</td><td className="fb">{e.entryCount}</td></tr>))}</tbody>
+                      <tbody>{details.expenseBreakdown.map((e) => (<tr key={e.accountID}><td className="mono fb">{e.accountCode}</td><td className="font-bold">{e.accountName}</td><td className="mono fb text-danger">{formatCurrency(e.amount)}</td><td className="fb">{e.entryCount}</td></tr>))}</tbody>
                     </table>
                   </section>
                 )}
@@ -496,14 +496,14 @@ export function QuarterDetailsPage() {
                           <tr key={v.voucherID}>
                             <td className="mono fb">{v.voucherNumber}</td>
                             <td>{new Date(v.voucherDate).toLocaleDateString("ar-YE")}</td>
-                            <td className="mono fb text-red-600">{formatCurrency(v.amount)}</td>
+                            <td className="mono fb text-danger">{formatCurrency(v.amount)}</td>
                             <td className="font-bold">{v.payeeName || "—"}</td>
                             <td>{v.description || "—"}</td>
                             <td className="mono">{v.debitAccountCode}</td>
                           </tr>
                         ))}
                       </tbody>
-                      <tfoot><tr><td className="font-black">الإجمالي ({quarterVouchers.length} سند)</td><td>—</td><td className="mono fb text-red-600 text-xs">{formatCurrency(quarterVouchers.reduce((sum, v) => sum + v.amount, 0))}</td><td colSpan={3}>—</td></tr></tfoot>
+                      <tfoot><tr><td className="font-black">الإجمالي ({quarterVouchers.length} سند)</td><td>—</td><td className="mono fb text-danger text-xs">{formatCurrency(quarterVouchers.reduce((sum, v) => sum + v.amount, 0))}</td><td colSpan={3}>—</td></tr></tfoot>
                     </table>
                   </section>
                 )}
@@ -526,7 +526,7 @@ export function QuarterDetailsPage() {
                             <tr key={item.accountID}>
                               <td className="mono fb" dir="ltr">{item.accountCode}</td>
                               <td className="font-bold">{item.accountName}</td>
-                              <td><span className={cn("px-1.5 rounded-full text-[9px] font-extrabold", item.accountNature === "Debit" ? "bg-blue-100 text-blue-700" : "bg-green-100 text-green-700")}>{item.accountNature === "Debit" ? "مدين" : "دائن"}</span></td>
+                              <td><span className={cn("px-1.5 rounded-full text-[9px] font-extrabold", item.accountNature === "Debit" ? "bg-info/10 text-info" : "bg-success/10 text-success")}>{item.accountNature === "Debit" ? "مدين" : "دائن"}</span></td>
                               <td className="mono fb">{formatCurrency(item.openingDebit)}</td>
                               <td className="mono fb">{formatCurrency(item.openingCredit)}</td>
                               <td className="mono fb">{formatCurrency(item.movementDebit)}</td>

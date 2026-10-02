@@ -92,18 +92,18 @@ export function ProjectDetailPage() {
                 <StatCard 
                     title="الإنفاق الفعلي" 
                     value={`${summary?.totalActualSpent?.toLocaleString() || 0} ر.ي`} 
-                    icon={<TrendingUp className="w-4 h-4 text-emerald-500" />} 
+                    icon={<TrendingUp className="w-4 h-4 text-success" />} 
                     variant="emerald"
                 />
                 <StatCard 
                     title="عدد الأصول" 
                     value={summary?.propertyCount || 0} 
-                    icon={<Building2 className="w-4 h-4 text-blue-500" />} 
+                    icon={<Building2 className="w-4 h-4 text-info" />} 
                 />
                 <StatCard 
                     title="نسبة الإنجاز" 
                     value={`${summary?.progressPercentage || 0}%`} 
-                    icon={<LayoutDashboard className="w-4 h-4 text-amber-500" />} 
+                    icon={<LayoutDashboard className="w-4 h-4 text-warning" />} 
                     variant="amber"
                 />
             </div>

@@ -102,14 +102,14 @@ export function CashFlowPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <Text variant="description">التدفقات التشغيلية</Text>
-                  <Text variant="body" className={`text-lg md:text-xl lg:text-2xl font-bold ${report.netOperatingCashFlow >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <Text variant="body" className={`text-lg md:text-xl lg:text-2xl font-bold ${report.netOperatingCashFlow >= 0 ? 'text-success' : 'text-danger'}`}>
                     {formatCurrency(report.netOperatingCashFlow)}
                   </Text>
                 </div>
                 {report.netOperatingCashFlow >= 0 ? (
-                  <TrendingUp className="w-6 h-6 text-green-600" />
+                  <TrendingUp className="w-6 h-6 text-success" />
                 ) : (
-                  <TrendingDown className="w-6 h-6 text-red-600" />
+                  <TrendingDown className="w-6 h-6 text-danger" />
                 )}
               </div>
             </Card>
@@ -117,14 +117,14 @@ export function CashFlowPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <Text variant="description">التدفقات الاستثمارية</Text>
-                  <Text variant="body" className={`text-lg md:text-xl lg:text-2xl font-bold ${report.netInvestingCashFlow >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <Text variant="body" className={`text-lg md:text-xl lg:text-2xl font-bold ${report.netInvestingCashFlow >= 0 ? 'text-success' : 'text-danger'}`}>
                     {formatCurrency(report.netInvestingCashFlow)}
                   </Text>
                 </div>
                 {report.netInvestingCashFlow >= 0 ? (
-                  <TrendingUp className="w-6 h-6 text-green-600" />
+                  <TrendingUp className="w-6 h-6 text-success" />
                 ) : (
-                  <TrendingDown className="w-6 h-6 text-red-600" />
+                  <TrendingDown className="w-6 h-6 text-danger" />
                 )}
               </div>
             </Card>
@@ -132,14 +132,14 @@ export function CashFlowPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <Text variant="description">التدفقات التمويلية</Text>
-                  <Text variant="body" className={`text-lg md:text-xl lg:text-2xl font-bold ${report.netFinancingCashFlow >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <Text variant="body" className={`text-lg md:text-xl lg:text-2xl font-bold ${report.netFinancingCashFlow >= 0 ? 'text-success' : 'text-danger'}`}>
                     {formatCurrency(report.netFinancingCashFlow)}
                   </Text>
                 </div>
                 {report.netFinancingCashFlow >= 0 ? (
-                  <TrendingUp className="w-6 h-6 text-green-600" />
+                  <TrendingUp className="w-6 h-6 text-success" />
                 ) : (
-                  <TrendingDown className="w-6 h-6 text-red-600" />
+                  <TrendingDown className="w-6 h-6 text-danger" />
                 )}
               </div>
             </Card>
@@ -150,7 +150,7 @@ export function CashFlowPage() {
             <div className="flex items-center justify-between">
               <div>
                 <Text variant="description">صافي التدفق النقدي</Text>
-                <Text variant="body" className={`text-xl md:text-2xl lg:text-3xl font-bold ${report.netCashFlow >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                <Text variant="body" className={`text-xl md:text-2xl lg:text-3xl font-bold ${report.netCashFlow >= 0 ? 'text-success' : 'text-danger'}`}>
                   {formatCurrency(report.netCashFlow)}
                 </Text>
               </div>
@@ -168,8 +168,8 @@ export function CashFlowPage() {
               <div className="p-4 bg-muted/30">
                 <Heading level="h3" className="font-bold text-lg">التدفقات التشغيلية</Heading>
                 <div className="flex gap-4 text-sm mt-2">
-                  <span className="text-green-600">وارد: {formatCurrency(report.operatingCashInflow)}</span>
-                  <span className="text-red-600">صادر: {formatCurrency(report.operatingCashOutflow)}</span>
+                  <span className="text-success">وارد: {formatCurrency(report.operatingCashInflow)}</span>
+                  <span className="text-danger">صادر: {formatCurrency(report.operatingCashOutflow)}</span>
                 </div>
               </div>
               <div className="p-4 max-h-64 overflow-y-auto">
@@ -181,13 +181,13 @@ export function CashFlowPage() {
                       <div key={i} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
                         <div className="flex items-center gap-2">
                           {item.type === "Inflow" ? (
-                            <ArrowDown className="w-4 h-4 text-green-600" />
+                            <ArrowDown className="w-4 h-4 text-success" />
                           ) : (
-                            <ArrowUp className="w-4 h-4 text-red-600" />
+                            <ArrowUp className="w-4 h-4 text-danger" />
                           )}
                           <span className="text-sm">{item.accountName}</span>
                         </div>
-                        <span className={`text-sm font-medium ${item.type === "Inflow" ? "text-green-600" : "text-red-600"}`}>
+                        <span className={`text-sm font-medium ${item.type === "Inflow" ? "text-success" : "text-danger"}`}>
                           {formatCurrency(item.amount)}
                         </span>
                       </div>
@@ -202,8 +202,8 @@ export function CashFlowPage() {
               <div className="p-4 bg-muted/30">
                 <Heading level="h3" className="font-bold text-lg">التدفقات الاستثمارية</Heading>
                 <div className="flex gap-4 text-sm mt-2">
-                  <span className="text-green-600">وارد: {formatCurrency(report.investingCashInflow)}</span>
-                  <span className="text-red-600">صادر: {formatCurrency(report.investingCashOutflow)}</span>
+                  <span className="text-success">وارد: {formatCurrency(report.investingCashInflow)}</span>
+                  <span className="text-danger">صادر: {formatCurrency(report.investingCashOutflow)}</span>
                 </div>
               </div>
               <div className="p-4 max-h-64 overflow-y-auto">
@@ -215,13 +215,13 @@ export function CashFlowPage() {
                       <div key={i} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
                         <div className="flex items-center gap-2">
                           {item.type === "Inflow" ? (
-                            <ArrowDown className="w-4 h-4 text-green-600" />
+                            <ArrowDown className="w-4 h-4 text-success" />
                           ) : (
-                            <ArrowUp className="w-4 h-4 text-red-600" />
+                            <ArrowUp className="w-4 h-4 text-danger" />
                           )}
                           <span className="text-sm">{item.accountName}</span>
                         </div>
-                        <span className={`text-sm font-medium ${item.type === "Inflow" ? "text-green-600" : "text-red-600"}`}>
+                        <span className={`text-sm font-medium ${item.type === "Inflow" ? "text-success" : "text-danger"}`}>
                           {formatCurrency(item.amount)}
                         </span>
                       </div>
@@ -236,8 +236,8 @@ export function CashFlowPage() {
               <div className="p-4 bg-muted/30">
                 <Heading level="h3" className="font-bold text-lg">التدفقات التمويلية</Heading>
                 <div className="flex gap-4 text-sm mt-2">
-                  <span className="text-green-600">وارد: {formatCurrency(report.financingCashInflow)}</span>
-                  <span className="text-red-600">صادر: {formatCurrency(report.financingCashOutflow)}</span>
+                  <span className="text-success">وارد: {formatCurrency(report.financingCashInflow)}</span>
+                  <span className="text-danger">صادر: {formatCurrency(report.financingCashOutflow)}</span>
                 </div>
               </div>
               <div className="p-4 max-h-64 overflow-y-auto">
@@ -249,13 +249,13 @@ export function CashFlowPage() {
                       <div key={i} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
                         <div className="flex items-center gap-2">
                           {item.type === "Inflow" ? (
-                            <ArrowDown className="w-4 h-4 text-green-600" />
+                            <ArrowDown className="w-4 h-4 text-success" />
                           ) : (
-                            <ArrowUp className="w-4 h-4 text-red-600" />
+                            <ArrowUp className="w-4 h-4 text-danger" />
                           )}
                           <span className="text-sm">{item.accountName}</span>
                         </div>
-                        <span className={`text-sm font-medium ${item.type === "Inflow" ? "text-green-600" : "text-red-600"}`}>
+                        <span className={`text-sm font-medium ${item.type === "Inflow" ? "text-success" : "text-danger"}`}>
                           {formatCurrency(item.amount)}
                         </span>
                       </div>

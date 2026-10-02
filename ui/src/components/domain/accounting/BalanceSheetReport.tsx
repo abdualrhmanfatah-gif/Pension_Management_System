@@ -1,4 +1,4 @@
-﻿import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { ChevronDown, ChevronLeft } from "lucide-react";
 import { useCallback,useState } from "react";
 
@@ -128,7 +128,7 @@ export function BalanceSheetReport({ fiscalYearId, asOfDate, externalFilters, hi
     { label: 'إجمالي الأصول', value: formatCurrency(data.totalAssets), color: 'info' },
     { label: 'إجمالي الخصوم', value: formatCurrency(data.totalLiabilities), color: 'warning' },
     { label: 'حقوق الملكية', value: formatCurrency(data.totalEquity), color: 'success' },
-    { label: 'الحالة', value: data.isBalanced ? 'متوازنة' : 'غير متوازنة', color: data.isBalanced ? 'text-green-600' : 'text-red-600' },
+    { label: 'الحالة', value: data.isBalanced ? 'متوازنة' : 'غير متوازنة', color: data.isBalanced ? 'text-success' : 'text-danger' },
   ] : [];
 
   const chartContent = data ? (
@@ -173,9 +173,9 @@ export function BalanceSheetReport({ fiscalYearId, asOfDate, externalFilters, hi
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div className="border rounded-xl overflow-hidden">
-            <div className="bg-blue-50 p-3 font-medium text-blue-800">الأصول</div>
+            <div className="bg-info/10 p-3 font-medium text-info">الأصول</div>
             {data.assets.map((a: BalanceSheetSectionDto) => <SectionRow key={a.accountID} section={a} depth={0} />)}
-            <div className="flex justify-between p-3 bg-blue-50/50 font-medium border-t">
+            <div className="flex justify-between p-3 bg-info/10 font-medium border-t">
               <span>إجمالي الأصول</span>
               <span className="font-mono text-foreground">{formatCurrency(data.totalAssets)}</span>
             </div>
@@ -183,18 +183,18 @@ export function BalanceSheetReport({ fiscalYearId, asOfDate, externalFilters, hi
 
           <div className="space-y-4">
             <div className="border rounded-xl overflow-hidden">
-              <div className="bg-amber-50 p-3 font-medium text-amber-800">الخصوم</div>
+              <div className="bg-warning/10 p-3 font-medium text-warning">الخصوم</div>
               {data.liabilities.map((l: BalanceSheetSectionDto) => <SectionRow key={l.accountID} section={l} depth={0} />)}
-              <div className="flex justify-between p-3 bg-amber-50/50 font-medium border-t">
+              <div className="flex justify-between p-3 bg-warning/10 font-medium border-t">
                 <span>إجمالي الخصوم</span>
                 <span className="font-mono text-foreground">{formatCurrency(data.totalLiabilities)}</span>
               </div>
             </div>
 
             <div className="border rounded-xl overflow-hidden">
-              <div className="bg-green-50 p-3 font-medium text-green-800">حقوق الملكية</div>
+              <div className="bg-success/10 p-3 font-medium text-success">حقوق الملكية</div>
               {data.equity.map((e: BalanceSheetSectionDto) => <SectionRow key={e.accountID} section={e} depth={0} />)}
-              <div className="flex justify-between p-3 bg-green-50/50 font-medium border-t">
+              <div className="flex justify-between p-3 bg-success/10 font-medium border-t">
                 <span>إجمالي حقوق الملكية</span>
                 <span className="font-mono">{formatCurrency(data.totalEquity)}</span>
               </div>
@@ -204,7 +204,7 @@ export function BalanceSheetReport({ fiscalYearId, asOfDate, externalFilters, hi
           <div className="lg:col-span-2">
             <div className={cn(
               "p-3 rounded-xl text-center font-medium",
-              data.isBalanced ? "bg-green-50 text-green-700" : "bg-destructive/10 text-destructive"
+              data.isBalanced ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"
             )}>
               {data.isBalanced
                 ? "الميزانية متوازنة ✓ — الأصول = الخصوم + حقوق الملكية"

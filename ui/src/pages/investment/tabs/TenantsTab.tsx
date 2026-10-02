@@ -77,7 +77,7 @@ export function TenantsTab() {
             render: (row: TenantDto) => (
                 <div className="flex items-center gap-1">
                     <span className="font-medium font-mono">{row.ratingScore}</span>
-                    <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                    <Star className="w-4 h-4 text-warning fill-warning" />
                 </div>
             )
         },
@@ -92,7 +92,7 @@ export function TenantsTab() {
                     <Button variant="ghost" size="sm" className="min-h-[44px] min-w-[44px] p-0" onClick={() => navigate(`/investment/leasing/tenants/${row.tenantID}`)}>
                         <Eye className="w-4 h-4" />
                     </Button>
-                    <Button variant="ghost" size="sm" className="min-h-[44px] min-w-[44px] p-0 text-blue-600" onClick={() => crud.openEdit(row)}>
+                    <Button variant="ghost" size="sm" className="min-h-[44px] min-w-[44px] p-0 text-info" onClick={() => crud.openEdit(row)}>
                         <Edit className="w-4 h-4" />
                     </Button>
                     <Button variant="ghost" size="sm" className="min-h-[44px] min-w-[44px] p-0 text-destructive" onClick={() => handleDelete(row)}>

@@ -34,7 +34,7 @@ export function MaintenanceDetailsPage() {
     if (isError) {
         return (
             <div className="flex flex-col items-center justify-center p-6 sm:p-20 text-center space-y-4 animate-in fade-in duration-500" dir="rtl">
-                <div className="p-4 bg-red-500/5 rounded-full text-red-600 ">
+                <div className="p-4 bg-danger/5 rounded-full text-danger ">
                     <AlertCircle className="w-12 h-12" />
                 </div>
                 <Heading level="h2" className="text-base md:text-lg lg:text-xl font-bold">تعذر تحميل بيانات البلاغ</Heading>
@@ -46,7 +46,7 @@ export function MaintenanceDetailsPage() {
     if (!request) {
         return (
             <div className="flex flex-col items-center justify-center p-6 sm:p-20 text-center space-y-4 animate-in fade-in duration-500" dir="rtl">
-                <div className="p-4 bg-red-500/5 rounded-full text-red-600 ">
+                <div className="p-4 bg-danger/5 rounded-full text-danger ">
                     <AlertCircle className="w-12 h-12" />
                 </div>
                 <Heading level="h2" className="text-base md:text-lg lg:text-xl font-bold">عذراً، البلاغ غير موجود</Heading>
@@ -122,19 +122,19 @@ export function MaintenanceDetailsPage() {
                 <StatCard
                     title="الأولوية"
                     value={getPriorityLabel(request.priority)}
-                    icon={<AlertOctagon className="w-4 h-4 text-amber-500" />}
+                    icon={<AlertOctagon className="w-4 h-4 text-warning" />}
                     variant={request.priority === 'Urgent' ? 'rose' : 'blue'}
                 />
                 <StatCard
                     title="التكلفة التقديرية"
                     value="—"
-                    icon={<DollarSign className="w-4 h-4 text-emerald-500" />}
+                    icon={<DollarSign className="w-4 h-4 text-success" />}
                     variant="emerald"
                 />
                 <StatCard
                     title="المسؤول"
                     value="إدارة الأصول"
-                    icon={<Info className="w-4 h-4 text-blue-500" />}
+                    icon={<Info className="w-4 h-4 text-info" />}
                 />
             </div>
 

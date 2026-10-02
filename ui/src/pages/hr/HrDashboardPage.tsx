@@ -89,8 +89,8 @@ export function HrDashboardPage() {
         <Card className="lg:col-span-2 p-6 border-border bg-card border-2">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-orange-500/10 rounded-xl">
-                <Clock className="h-5 w-5 text-orange-500" />
+              <div className="p-2 bg-warning/10 rounded-xl">
+                <Clock className="h-5 w-5 text-warning" />
               </div>
                <Heading level="h3" className="font-black text-lg">أحدث طلبات الإجازة</Heading>
             </div>
@@ -136,8 +136,8 @@ export function HrDashboardPage() {
         <Card className="p-6 border-border bg-card border-2 relative overflow-hidden">
           <div className="relative z-10 flex flex-col h-full">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-emerald-500/10 rounded-xl ">
-                <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+              <div className="p-2 bg-success/10 rounded-xl ">
+                <CheckCircle2 className="h-5 w-5 text-success" />
               </div>
                <Heading level="h3" className="font-black text-lg">المهام السريعة</Heading>
             </div>

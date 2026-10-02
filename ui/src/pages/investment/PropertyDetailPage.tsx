@@ -71,18 +71,18 @@ export function PropertyDetailPage() {
                 <StatCard 
                     title="القيمة السوقية" 
                     value={`${property.currentMarketValue.toLocaleString('ar-YE')} ر.ي`} 
-                    icon={<DollarSign className="w-4 h-4 text-emerald-500" />} 
+                    icon={<DollarSign className="w-4 h-4 text-success" />} 
                     variant="emerald"
                 />
                 <StatCard 
                     title="عدد الوحدات" 
                     value={property.units?.length || 0} 
-                    icon={<Building2 className="w-4 h-4 text-blue-500" />} 
+                    icon={<Building2 className="w-4 h-4 text-info" />} 
                 />
                 <StatCard 
                     title="تاريخ الاستحواذ" 
                     value={property.acquisitionDate || "—"} 
-                    icon={<Calendar className="w-4 h-4 text-amber-500" />} 
+                    icon={<Calendar className="w-4 h-4 text-warning" />} 
                     variant="amber"
                 />
             </div>

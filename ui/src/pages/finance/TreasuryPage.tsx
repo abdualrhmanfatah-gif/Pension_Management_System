@@ -109,8 +109,8 @@ export function TreasuryPage() {
       <StickyHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-emerald-100 dark:bg-emerald-900/30">
-              <Vault className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+            <div className="p-2 rounded-xl bg-success/10 ">
+              <Vault className="h-6 w-6 text-success " />
             </div>
             <Heading level="h2">الخزينة</Heading>
           </div>
@@ -167,34 +167,34 @@ export function TreasuryPage() {
           </Card>
           <Card className="p-4">
             <div className="flex items-center gap-2 text-muted-foreground text-sm mb-1">
-              <ArrowDownRight className="h-4 w-4 text-green-600" />
+              <ArrowDownRight className="h-4 w-4 text-success" />
               إجمالي المدين (الوارد)
             </div>
-            <Text variant="body" className="font-bold text-green-600">
+            <Text variant="body" className="font-bold text-success">
               {formatCurrency(totalDebit)}
             </Text>
           </Card>
           <Card className="p-4">
             <div className="flex items-center gap-2 text-muted-foreground text-sm mb-1">
-              <ArrowUpRight className="h-4 w-4 text-red-600" />
+              <ArrowUpRight className="h-4 w-4 text-danger" />
               إجمالي الدائن (الصادر)
             </div>
-            <Text variant="body" className="font-bold text-red-600">
+            <Text variant="body" className="font-bold text-danger">
               {formatCurrency(totalCredit)}
             </Text>
           </Card>
           <Card className="p-4">
             <div className="flex items-center gap-2 text-muted-foreground text-sm mb-1">
               {closingBalance >= 0 ? (
-                <TrendingUp className="h-4 w-4 text-emerald-600" />
+                <TrendingUp className="h-4 w-4 text-success" />
               ) : (
-                <TrendingDown className="h-4 w-4 text-red-600" />
+                <TrendingDown className="h-4 w-4 text-danger" />
               )}
               الرصيد الختامي
             </div>
             <Text
               variant="body"
-              className={`font-bold ${closingBalance >= 0 ? "text-emerald-600" : "text-red-600"}`}
+              className={`font-bold ${closingBalance >= 0 ? "text-success" : "text-danger"}`}
             >
               {formatCurrency(closingBalance)}
             </Text>

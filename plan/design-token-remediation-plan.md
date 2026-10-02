@@ -243,5 +243,17 @@ git add -A; git commit -m "feat(tokens): <M#> - <وصف>"   # Q4=A
 - **البوابات**: rg sweeps ✓ (متابعة `translate-x` كـ false-positive لـ `slate-`) | build PASS | test 0 فشل | lint = 306/76 تمامًا.
 - **مخاطر معاينة**: (1) pill فئة SYSTEM = `bg-muted-foreground text-white` قد يخف تباينه في `.dark`؛ (2) gov tokens بلا overrides داكن (F-03 مؤجل) → تباين نصوص دلالية في الوضع الداكن يحتاج تحقق §6.2.
 
-### M3 — لم تبدأ
-**الصفحات**: F-30..F-41, F-44, F-55 — ثم §5b (M4..M6) ثم مؤجلات الطباعة.
+### M3 — مكتمل (2026-10-02)
+**14 نتيجة (صفحات + رفع/محرر)**:
+- **F-30**: صفحات المصادقة `LoginPage`/`ChangePasswordPage` — إضافة عائلة `--gov-hero` (hero/mid/end/accent/fg — قيم مطابقة للـ palette الأصلية #142257/#18358f/#163ab6) + مفاتيح config؛ التدرج/الزخارف/الزجاج `bg-white/5|10`/النصوص/الأزرار/الحقول → hero tokens.
+  - **بقايا مقصودة**: تنبيها `bg-red-500/10 border-red-400/20 text-red-300` بقيا خامًا — لا يوجد رمز أحمر فاتح لسطح ثابت داكن (تباين `text-danger` ≈ 2:1 يفشل؛ Q3 يشترط تحسّن القياس) → يُعاد بحثه مع F-03.
+- **F-31..F-41 + F-44**: تحويل آلي مُتحقق (سكربت ASCII مؤقت في temp، 322 استبدالًا في 34 ملفًا): خرائط shade→token مع الحفاظ على alpha (`/5,/10,/15,…`)، إسقاط 24 صيغة `dark:` مكررة، رمادية→`muted(-foreground)`؛ + يدوي: `DocumentUploadView:603` `bg-white`→`bg-card`.
+  - `text-white` على أزرار/شارات صلبة (`bg-success … text-white`) أُبقي — سياقي ومقروء ✓.
+  - إصلاح تباين: شارتا `StocktakePage:134,383` `bg-green-600`→`bg-success` + **`text-white` إضافي** (كان text-emerald-800 من badgeVariants على خلفية صلبة ≈ 2.5:1 أصلًا، صار 5.4:1 ✓ تحسّن مقيس).
+  - `badgeVariants.ts`/`AlertBanner`/`ErrorBoundary` — خارج M3 (F-12/M5 soft-status مشروط بـ F-03).
+- **F-55**: إضافة `--overlay: 0 0% 0%` + مفتاح config (جاهز لـ F-25)؛ `CornerEditor` `bg-black/5|60` → `bg-overlay/5|60`؛ `text-white` على الـ badge بقي (overlay أسود ثابت).
+- **البوابات**: sweep صفر فئات palette في كل نطاق M3 + صفر `primary-N/bg-white` في auth | build PASS | test 0 فشل | lint = 306/76 تمامًا.
+- **خط التحويل**: 41 ملفًا متغيّرًا (+288/−270).
+
+### M4 — لم تبدأ
+**§5b القرارات**: ثم M5 (soft-status مشروط بـ F-03) → M6 → مؤجلات الطباعة (F-02, F-42, F-45, F-47, F-51, F-52, F-53).

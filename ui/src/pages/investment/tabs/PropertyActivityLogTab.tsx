@@ -133,8 +133,8 @@ export function PropertyActivityLogTab({ propertyId }: PropertyActivityLogTabPro
                 />
             )}
             
-            <div className="text-[10px] sm:text-xs text-muted-foreground bg-blue-50/50 p-3 rounded-lg border border-blue-100 italic flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+            <div className="text-[10px] sm:text-xs text-muted-foreground bg-info/10 p-3 rounded-lg border border-info/10 italic flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-info" />
                 ملاحظة: يتم أرشفة كافة العمليات لضمان أعلى مستويات الرقابة والشفافية في إدارة الاستثمارات.
             </div>
         </div>

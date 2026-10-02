@@ -37,7 +37,7 @@ export function TransactionsTab({ projectId }: TransactionsTabProps) {
             key: "direction",
             header: "النوع",
             render: (row: TransactionDto) => (
-                <div className={`flex items-center justify-center w-8 h-8 rounded-full ${row.isCredit ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
+                <div className={`flex items-center justify-center w-8 h-8 rounded-full ${row.isCredit ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
                     {row.isCredit ?
                         <ArrowUpRight className="w-4 h-4" /> :
                         <ArrowDownRight className="w-4 h-4" />
@@ -66,7 +66,7 @@ export function TransactionsTab({ projectId }: TransactionsTabProps) {
             key: "amount",
             header: "المبلغ",
             render: (row: TransactionDto) => (
-                <span className={`font-bold font-mono ${row.isCredit ? "text-emerald-600" : "text-red-600"}`}>
+                <span className={`font-bold font-mono ${row.isCredit ? "text-success" : "text-danger"}`}>
                     {row.isCredit ? "+" : "-"}{row.amount.toLocaleString()} ر.ي
                 </span>
             )

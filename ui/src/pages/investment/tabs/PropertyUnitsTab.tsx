@@ -87,13 +87,13 @@ export function PropertyUnitsTab({ propertyId }: PropertyUnitsTabProps) {
             render: (row) => (
                 <div className="flex items-center gap-2">
                     <Button variant="ghost" size="icon" onClick={() => crud.openViewer(row)} title="الوثائق والمستندات">
-                        <FileText className="w-4 h-4 text-blue-500" />
+                        <FileText className="w-4 h-4 text-info" />
                     </Button>
                     <Button variant="ghost" size="icon" onClick={() => crud.openEdit(row)}>
                         <Edit className="w-4 h-4 text-muted-foreground" />
                     </Button>
                     <Button variant="ghost" size="icon" onClick={() => handleDelete(row)}>
-                        <Trash2 className="w-4 h-4 text-red-500" />
+                        <Trash2 className="w-4 h-4 text-danger" />
                     </Button>
                 </div>
             )

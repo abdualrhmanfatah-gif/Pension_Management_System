@@ -73,7 +73,7 @@ export function PortfoliosPage() {
             key: "totalTargetCapital",
             header: "رأس المال المستهدف",
             render: (row) => (
-                <span className="font-semibold text-emerald-600">
+                <span className="font-semibold text-success">
                     {row.totalTargetCapital.toLocaleString()} ر.ي
                 </span>
             )
@@ -97,10 +97,10 @@ export function PortfoliosPage() {
                     </Link>
                     {canManage && (
                         <>
-                            <Button variant="ghost" size="sm" className="text-blue-600" title="تعديل" onClick={(e) => { e.stopPropagation(); crud.openEdit(row); }}>
+                            <Button variant="ghost" size="sm" className="text-info" title="تعديل" onClick={(e) => { e.stopPropagation(); crud.openEdit(row); }}>
                                 <Edit className="w-4 h-4" />
                             </Button>
-                            <Button variant="ghost" size="sm" className="text-red-600" title="حذف" onClick={(e) => { e.stopPropagation(); handleDelete(row); }}>
+                            <Button variant="ghost" size="sm" className="text-danger" title="حذف" onClick={(e) => { e.stopPropagation(); handleDelete(row); }}>
                                 <Trash2 className="w-4 h-4" />
                             </Button>
                         </>

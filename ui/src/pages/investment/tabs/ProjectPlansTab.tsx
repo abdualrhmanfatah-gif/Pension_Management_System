@@ -62,7 +62,7 @@ export function ProjectPlansTab({ projectId }: ProjectPlansTabProps) {
             key: "plannedAmount",
             header: "المبلغ المخطط",
             render: (row: InvestmentPlanDto) => (
-                <span className="font-semibold text-blue-600 font-mono">
+                <span className="font-semibold text-info font-mono">
                     {row.plannedAmount.toLocaleString()} ر.ي
                 </span>
             )
@@ -71,7 +71,7 @@ export function ProjectPlansTab({ projectId }: ProjectPlansTabProps) {
             key: "actualSpent",
             header: "الإنفاق الفعلي",
             render: (row: InvestmentPlanDto) => (
-                <span className="font-semibold text-emerald-600 font-mono">
+                <span className="font-semibold text-success font-mono">
                     {row.actualSpent.toLocaleString()} ر.ي
                 </span>
             )
@@ -88,7 +88,7 @@ export function ProjectPlansTab({ projectId }: ProjectPlansTabProps) {
                         <Edit className="w-4 h-4 text-muted-foreground" />
                     </Button>
                     <Button variant="ghost" size="icon" onClick={() => handleDelete(row)} title="حذف">
-                        <Trash2 className="w-4 h-4 text-red-500" />
+                        <Trash2 className="w-4 h-4 text-danger" />
                     </Button>
                 </div>
             )

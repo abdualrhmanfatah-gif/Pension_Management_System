@@ -131,7 +131,7 @@ function InventoryStocktakeTab({ fiscalYearId }: { fiscalYearId: string }) {
         <div className="flex items-center gap-2">
           <StatusBadge status={stocktake.status} config={STOCKTAKE_STATUS} />
           {stocktake.status === "Adjusted" && (
-            <Badge variant="success" className="bg-green-600">
+            <Badge variant="success" className="bg-success text-white">
               <CheckCircle2 className="w-3 h-3 ml-1" /> تمت التسوية
             </Badge>
           )}
@@ -161,9 +161,9 @@ function InventoryStocktakeTab({ fiscalYearId }: { fiscalYearId: string }) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">أصناف بها فروق</p>
-                <p className="text-lg md:text-xl lg:text-2xl font-bold text-yellow-600">{stocktake.itemsWithVariance}</p>
+                <p className="text-lg md:text-xl lg:text-2xl font-bold text-warning">{stocktake.itemsWithVariance}</p>
               </div>
-              <AlertTriangle className="w-8 h-8 text-yellow-600" />
+              <AlertTriangle className="w-8 h-8 text-warning" />
             </div>
           </CardContent>
         </Card>
@@ -172,9 +172,9 @@ function InventoryStocktakeTab({ fiscalYearId }: { fiscalYearId: string }) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">قيمة الفروق</p>
-                <p className="text-lg md:text-xl lg:text-2xl font-bold text-red-600">{formatCurrency(stocktake.totalVarianceValue)}</p>
+                <p className="text-lg md:text-xl lg:text-2xl font-bold text-danger">{formatCurrency(stocktake.totalVarianceValue)}</p>
               </div>
-              <Calculator className="w-8 h-8 text-red-600" />
+              <Calculator className="w-8 h-8 text-danger" />
             </div>
           </CardContent>
         </Card>
@@ -234,7 +234,7 @@ function InventoryStocktakeTab({ fiscalYearId }: { fiscalYearId: string }) {
                           )}
                         </TableCell>
                         <TableCell className="text-center">
-                          <span className={variance > 0 ? "text-green-600 font-bold" : variance < 0 ? "text-red-600 font-bold" : ""}>
+                          <span className={variance > 0 ? "text-success font-bold" : variance < 0 ? "text-danger font-bold" : ""}>
                             {variance > 0 ? `+${variance}` : variance}
                           </span>
                         </TableCell>
@@ -380,12 +380,12 @@ function AssetStocktakeTab({ fiscalYearId }: { fiscalYearId: string }) {
         <div className="flex items-center gap-2">
           <StatusBadge status={stocktake.status} config={STOCKTAKE_STATUS} />
           {stocktake.status === "Completed" && (
-            <Badge variant="success" className="bg-green-600">
+            <Badge variant="success" className="bg-success text-white">
               <CheckCircle2 className="w-3 h-3 ml-1" /> تم إتمام الجرد
             </Badge>
           )}
           {hasEdits && isInProgress && (
-            <Badge variant="outline" className="border-yellow-500 text-yellow-600">
+            <Badge variant="outline" className="border-warning text-warning">
               توجد تعديلات غير محفوظة
             </Badge>
           )}
@@ -420,9 +420,9 @@ function AssetStocktakeTab({ fiscalYearId }: { fiscalYearId: string }) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">موجودة</p>
-                <p className="text-lg md:text-xl lg:text-2xl font-bold text-green-600">{stocktake.summary.presentAssets}</p>
+                <p className="text-lg md:text-xl lg:text-2xl font-bold text-success">{stocktake.summary.presentAssets}</p>
               </div>
-              <CheckCircle2 className="w-8 h-8 text-green-600" />
+              <CheckCircle2 className="w-8 h-8 text-success" />
             </div>
           </CardContent>
         </Card>
@@ -431,9 +431,9 @@ function AssetStocktakeTab({ fiscalYearId }: { fiscalYearId: string }) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">مفقودة</p>
-                <p className="text-lg md:text-xl lg:text-2xl font-bold text-red-600">{stocktake.summary.missingAssets}</p>
+                <p className="text-lg md:text-xl lg:text-2xl font-bold text-danger">{stocktake.summary.missingAssets}</p>
               </div>
-              <AlertTriangle className="w-8 h-8 text-red-600" />
+              <AlertTriangle className="w-8 h-8 text-danger" />
             </div>
           </CardContent>
         </Card>
@@ -479,8 +479,8 @@ function AssetStocktakeTab({ fiscalYearId }: { fiscalYearId: string }) {
                         key={line.stocktakeLineID}
                         className={cn(
                           "transition-colors",
-                          edits[line.stocktakeLineID] ? "bg-amber-50/80 dark:bg-amber-950/30" : "hover:bg-muted/30",
-                          isMissing && "bg-red-50/50 dark:bg-red-950/20"
+                          edits[line.stocktakeLineID] ? "bg-warning/10 " : "hover:bg-muted/30",
+                          isMissing && "bg-danger/10 "
                         )}
                       >
                         <TableCell className="text-center">

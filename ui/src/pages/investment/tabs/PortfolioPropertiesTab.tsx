@@ -67,7 +67,7 @@ export function PortfolioPropertiesTab({ portfolioId }: PortfolioPropertiesTabPr
             key: "currentMarketValue",
             header: "القيمة السوقية",
             render: (row) => (
-                <span className="font-semibold text-emerald-600 font-mono">
+                <span className="font-semibold text-success font-mono">
                     {row.currentMarketValue.toLocaleString()} ر.ي
                 </span>
             )

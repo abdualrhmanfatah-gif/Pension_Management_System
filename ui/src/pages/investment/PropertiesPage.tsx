@@ -85,7 +85,7 @@ export function PropertiesPage() {
             key: "currentMarketValue",
             header: "القيمة السوقية",
             render: (row) => (
-                <span className="font-semibold text-emerald-600">
+                <span className="font-semibold text-success">
                     {row.currentMarketValue.toLocaleString()} ر.ي
                 </span>
             )
@@ -98,7 +98,7 @@ export function PropertiesPage() {
                     href={row.googleMapsUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center text-blue-600 hover:underline gap-1"
+                    className="inline-flex items-center text-info hover:underline gap-1"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <MapPin className="w-4 h-4" /> خريطة
@@ -119,12 +119,12 @@ export function PropertiesPage() {
                         <Eye className="w-4 h-4" />
                     </Link>
                     {canEdit && (
-                        <Button variant="ghost" size="sm" className="text-blue-600" title="تعديل" onClick={(e) => { e.stopPropagation(); crud.openEdit(row); }}>
+                        <Button variant="ghost" size="sm" className="text-info" title="تعديل" onClick={(e) => { e.stopPropagation(); crud.openEdit(row); }}>
                             <Edit className="w-4 h-4" />
                         </Button>
                     )}
                     {canDelete && (
-                        <Button variant="ghost" size="sm" className="text-red-600" title="حذف" onClick={(e) => { e.stopPropagation(); handleDelete(row); }}>
+                        <Button variant="ghost" size="sm" className="text-danger" title="حذف" onClick={(e) => { e.stopPropagation(); handleDelete(row); }}>
                             <Trash2 className="w-4 h-4" />
                         </Button>
                     )}

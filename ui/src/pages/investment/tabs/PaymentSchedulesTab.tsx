@@ -68,7 +68,7 @@ export function PaymentSchedulesTab({ contractId }: PaymentSchedulesTabProps) {
         {
             key: "paidAmount",
             header: "المبلغ المدفوع",
-            render: (row) => <span className="text-emerald-600 font-bold font-mono">{row.paidAmount.toLocaleString()} ر.ي</span>
+            render: (row) => <span className="text-success font-bold font-mono">{row.paidAmount.toLocaleString()} ر.ي</span>
         },
         {
             key: "status",
@@ -84,7 +84,7 @@ export function PaymentSchedulesTab({ contractId }: PaymentSchedulesTabProps) {
             header: "الإجراءات",
             render: (row) => (
                 <div className="flex items-center gap-1">
-                    <Button variant="ghost" size="icon" onClick={() => crud.openViewer(row)} title="الوثائق والمستندات" className="text-amber-600 hover:bg-amber-50">
+                    <Button variant="ghost" size="icon" onClick={() => crud.openViewer(row)} title="الوثائق والمستندات" className="text-warning hover:bg-warning/10">
                         <FileText className="w-4 h-4" />
                     </Button>
                     <Button variant="ghost" size="sm" className="h-11 gap-2" onClick={() => crud.openEdit(row)}>

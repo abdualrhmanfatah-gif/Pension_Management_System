@@ -211,7 +211,7 @@ if(total===0)window.print();
             header: "رقم الملف",
             className: "w-[90px]",
             render: (row) => (
-                <span className={cn("font-mono font-black text-primary truncate block", !row.hasDocuments && "text-rose-600 dark:text-rose-400")}>{row.fileNumber}</span>
+                <span className={cn("font-mono font-black text-primary truncate block", !row.hasDocuments && "text-danger ")}>{row.fileNumber}</span>
             ),
         },
         {
@@ -220,7 +220,7 @@ if(total===0)window.print();
             className: "w-[200px]",
             render: (row) => (
                 <div className="flex flex-col text-start min-w-0">
-                    <span className={cn("font-bold text-sm truncate", getStatusColorClass(row.statusID), !row.hasDocuments && "text-rose-700 dark:text-rose-300")}>
+                    <span className={cn("font-bold text-sm truncate", getStatusColorClass(row.statusID), !row.hasDocuments && "text-danger ")}>
                         <User className="w-3.5 h-3.5 inline ms-1 text-muted-foreground shrink-0" />
                         {row.retireeFullName}
                     </span>
@@ -241,7 +241,7 @@ if(total===0)window.print();
                     row.fileStatusColor === "success" ? "success" :
                         row.fileStatusColor === "warning" ? "warning" :
                             row.fileStatusColor === "destructive" ? "danger" : "outline"
-                } className={cn("font-bold text-[10px] sm:text-xs", !row.hasDocuments && "border-rose-400 dark:border-rose-600")}>
+                } className={cn("font-bold text-[10px] sm:text-xs", !row.hasDocuments && "border-danger ")}>
                     {row.fileStatusName || "—"}
                 </Badge>
             ),
@@ -268,7 +268,7 @@ if(total===0)window.print();
                     {row.lastUploadedByUserName}
                 </span>
             ) : (
-                <span className="text-xs text-rose-500 dark:text-rose-400 italic font-medium">— لم يُدخل بعد</span>
+                <span className="text-xs text-danger  italic font-medium">— لم يُدخل بعد</span>
             ),
         },
         {
@@ -289,7 +289,7 @@ if(total===0)window.print();
                     <Button
                         size="icon"
                         variant="ghost"
-                        className="min-h-[44px] min-w-[44px] text-amber-600"
+                        className="min-h-[44px] min-w-[44px] text-warning"
                         onClick={(e) => { e.stopPropagation(); handlePrintMissingDocuments(row.fileID); }}
                         title="تقرير الوثائق الناقصة"
                     >
@@ -298,7 +298,7 @@ if(total===0)window.print();
                     <Button
                         size="icon"
                         variant="ghost"
-                        className="min-h-[44px] min-w-[44px] text-blue-600"
+                        className="min-h-[44px] min-w-[44px] text-info"
                         onClick={(e) => { e.stopPropagation(); handlePrintDocuments(row.fileID, row.fileNumber); }}
                         title="طباعة جميع الوثائق"
                     >
@@ -310,26 +310,26 @@ if(total===0)window.print();
     ], [navigate, handlePrintDocuments, handlePrintMissingDocuments]);
 
     const renderMobileCard = useCallback((row: RetirementFileItem) => (
-        <div className={cn("p-1.5", !row.hasDocuments && "bg-card dark:bg-gray-900")}>
+        <div className={cn("p-1.5", !row.hasDocuments && "bg-card ")}>
             {/* Line 1: icon + file number + name (right), badges (left) */}
             <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5 min-w-0 flex-1">
                     <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${!row.hasDocuments
-                        ? "bg-rose-100 dark:bg-rose-900/40"
+                        ? "bg-danger/10 "
                         : (row.missingDocumentsCount ?? 0) > 0
-                            ? "bg-amber-100 dark:bg-amber-900/30"
-                            : "bg-green-100 dark:bg-green-900/30"
+                            ? "bg-warning/10 "
+                            : "bg-success/10 "
                         }`}>
                         {!row.hasDocuments
-                            ? <AlertTriangle className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+                            ? <AlertTriangle className="w-3.5 h-3.5 text-danger " />
                             : (row.missingDocumentsCount ?? 0) > 0
-                                ? <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                                : <CheckCircle2 className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
+                                ? <AlertTriangle className="w-3.5 h-3.5 text-warning " />
+                                : <CheckCircle2 className="w-3.5 h-3.5 text-success " />
                         }
                     </div>
                     <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-1 min-w-0">
-                            <span className={cn("font-mono font-bold text-[13px] shrink-0", !row.hasDocuments && "text-rose-700 dark:text-rose-300")}>{row.fileNumber}</span>
+                            <span className={cn("font-mono font-bold text-[13px] shrink-0", !row.hasDocuments && "text-danger ")}>{row.fileNumber}</span>
                             <span className="text-[11px] text-muted-foreground truncate">{row.retireeFullName}</span>
                         </div>
                         <div className="flex items-center gap-0.5 flex-wrap">
@@ -337,7 +337,7 @@ if(total===0)window.print();
                                 row.fileStatusColor === "success" ? "success" :
                                     row.fileStatusColor === "warning" ? "warning" :
                                         row.fileStatusColor === "destructive" ? "danger" : "outline"
-                            } className={cn("text-[8px] h-3.5 px-1", !row.hasDocuments && "border-rose-400 dark:border-rose-600")}>
+                            } className={cn("text-[8px] h-3.5 px-1", !row.hasDocuments && "border-danger ")}>
                                 {row.fileStatusName || "—"}
                             </Badge>
                             {!row.hasDocuments && (
@@ -357,7 +357,7 @@ if(total===0)window.print();
             <div className="flex items-center justify-between gap-2 mt-1 pt-1 border-t border-border/60">
                 <div className="min-w-0 flex-1 truncate">
                     {!row.hasDocuments ? (
-                        <p className="text-[10px] text-rose-500 dark:text-rose-400 flex items-center gap-1 font-medium truncate">
+                        <p className="text-[10px] text-danger  flex items-center gap-1 font-medium truncate">
                             <AlertTriangle className="w-3 h-3 shrink-0" />
                             لم تُرفع أي وثائق بعد
                         </p>
@@ -367,7 +367,7 @@ if(total===0)window.print();
                             {row.lastUploadedByUserName}
                         </p>
                     ) : (
-                        <p className="text-[10px] text-rose-500 dark:text-rose-400 italic font-medium truncate" dir="rtl">
+                        <p className="text-[10px] text-danger  italic font-medium truncate" dir="rtl">
                             لم يُدخل بعد
                         </p>
                     )}
@@ -376,7 +376,7 @@ if(total===0)window.print();
                     <Button
                         variant="link"
                         size="sm"
-                        className="h-auto p-0 text-[10px] text-amber-600 dark:text-amber-400"
+                        className="h-auto p-0 text-[10px] text-warning "
                         onClick={(e) => { e.stopPropagation(); handlePrintMissingDocuments(row.fileID, row.fileNumber, row.retireeFullName); }}
                     >
                         <FileText className="w-3 h-3 ms-0.5" />
@@ -386,7 +386,7 @@ if(total===0)window.print();
                     <Button
                         variant="link"
                         size="sm"
-                        className="h-auto p-0 text-[10px] text-blue-600 dark:text-blue-400"
+                        className="h-auto p-0 text-[10px] text-info "
                         onClick={(e) => { e.stopPropagation(); handlePrintDocuments(row.fileID, row.fileNumber); }}
                     >
                         <Printer className="w-3 h-3 ms-0.5" />
@@ -454,8 +454,8 @@ if(total===0)window.print();
                     <div className="overflow-hidden">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 md:gap-4 px-3 pb-3 md:px-5 md:pb-4">
                             <div className="rounded-xl border bg-background p-1.5 md:p-4 flex items-center gap-1.5 md:gap-3">
-                                <div className="w-7 h-7 md:w-10 md:h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                                    <FileText className="w-3.5 h-3.5 md:w-5 md:h-5 text-blue-600 dark:text-blue-400" />
+                                <div className="w-7 h-7 md:w-10 md:h-10 rounded-lg bg-info/10  flex items-center justify-center">
+                                    <FileText className="w-3.5 h-3.5 md:w-5 md:h-5 text-info " />
                                 </div>
                                 <div>
                                     <p className="text-base md:text-2xl font-bold">{totalFiles}</p>
@@ -463,8 +463,8 @@ if(total===0)window.print();
                                 </div>
                             </div>
                             <div className="rounded-xl border bg-background p-1.5 md:p-4 flex items-center gap-1.5 md:gap-3">
-                                <div className="w-7 h-7 md:w-10 md:h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                                    <CheckCircle2 className="w-3.5 h-3.5 md:w-5 md:h-5 text-green-600 dark:text-green-400" />
+                                <div className="w-7 h-7 md:w-10 md:h-10 rounded-lg bg-success/10  flex items-center justify-center">
+                                    <CheckCircle2 className="w-3.5 h-3.5 md:w-5 md:h-5 text-success " />
                                 </div>
                                 <div>
                                     <p className="text-base md:text-2xl font-bold">{filesWithDocuments}</p>
@@ -472,8 +472,8 @@ if(total===0)window.print();
                                 </div>
                             </div>
                             <div className="rounded-xl border bg-background p-1.5 md:p-4 flex items-center gap-1.5 md:gap-3">
-                                <div className="w-7 h-7 md:w-10 md:h-10 rounded-lg bg-muted dark:bg-gray-900/30 flex items-center justify-center">
-                                    <Upload className="w-3.5 h-3.5 md:w-5 md:h-5 text-muted-foreground dark:text-gray-400" />
+                                <div className="w-7 h-7 md:w-10 md:h-10 rounded-lg bg-muted  flex items-center justify-center">
+                                    <Upload className="w-3.5 h-3.5 md:w-5 md:h-5 text-muted-foreground " />
                                 </div>
                                 <div>
                                     <p className="text-base md:text-2xl font-bold">{filesWithoutDocuments}</p>
@@ -481,8 +481,8 @@ if(total===0)window.print();
                                 </div>
                             </div>
                             <div className="rounded-xl border bg-background p-1.5 md:p-4 flex items-center gap-1.5 md:gap-3">
-                                <div className="w-7 h-7 md:w-10 md:h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-                                    <AlertTriangle className="w-3.5 h-3.5 md:w-5 md:h-5 text-amber-600 dark:text-amber-400" />
+                                <div className="w-7 h-7 md:w-10 md:h-10 rounded-lg bg-warning/10  flex items-center justify-center">
+                                    <AlertTriangle className="w-3.5 h-3.5 md:w-5 md:h-5 text-warning " />
                                 </div>
                                 <div>
                                     <p className="text-base md:text-2xl font-bold">{filesWithMissing}</p>
@@ -600,7 +600,7 @@ if(total===0)window.print();
                     }
                     renderMobileCard={renderMobileCard}
                     onRowClick={(row) => navigate(`/files/${row.fileID}?tab=documents`)}
-                    rowClassName={(row) => !row.hasDocuments ? "bg-white dark:bg-gray-900" : undefined}
+                    rowClassName={(row) => !row.hasDocuments ? "bg-card" : undefined}
                     className="border-none rounded-none"
                 />
             </Card>

@@ -119,10 +119,10 @@ export function PropertyMaintenanceTab({ propertyId }: PropertyMaintenanceTabPro
             header: "الإجراءات",
             render: (row) => (
                 <div className="flex items-center gap-1">
-                    <Link to={`/investment/maintenance/${row.requestID}`} className="inline-flex items-center justify-center rounded-md min-h-[44px] min-w-[44px] hover:bg-muted text-blue-600 transition-colors" title="عرض التفاصيل الكاملة">
+                    <Link to={`/investment/maintenance/${row.requestID}`} className="inline-flex items-center justify-center rounded-md min-h-[44px] min-w-[44px] hover:bg-muted text-info transition-colors" title="عرض التفاصيل الكاملة">
                         <AlertCircle className="w-4 h-4" />
                     </Link>
-                    <Button variant="ghost" size="icon" onClick={() => crud.openViewer(row)} title="الوثائق" className="min-h-[44px] min-w-[44px] text-amber-600 hover:bg-amber-50">
+                    <Button variant="ghost" size="icon" onClick={() => crud.openViewer(row)} title="الوثائق" className="min-h-[44px] min-w-[44px] text-warning hover:bg-warning/10">
                         <FileText className="w-4 h-4" />
                     </Button>
                     {canManage && (
@@ -135,7 +135,7 @@ export function PropertyMaintenanceTab({ propertyId }: PropertyMaintenanceTabPro
                             variant="outline"
                             size="sm"
                             onClick={() => handleOpenWorkOrder(row)}
-                            className="gap-1.5 text-xs border-emerald-200 text-emerald-700 hover:bg-emerald-50"
+                            className="gap-1.5 text-xs border-success/30 text-success hover:bg-success/10"
                         >
                             <Wrench className="w-3.5 h-3.5" /> الأوامر
                         </Button>

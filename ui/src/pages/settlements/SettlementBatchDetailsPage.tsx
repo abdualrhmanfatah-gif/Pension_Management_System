@@ -192,11 +192,11 @@ export function SettlementBatchDetailsPage() {
                 <div>
                     <div className="font-medium">{row.retireeFullName}</div>
                     {row.retireeID ? (
-                        <div className="text-xs text-green-600 flex items-center gap-1 mt-0.5">
+                        <div className="text-xs text-success flex items-center gap-1 mt-0.5">
                             <CheckCircle2 className="w-4 h-4" /> مطابق
                         </div>
                     ) : (
-                        <div className="text-xs text-amber-600 flex items-center gap-1 mt-0.5">
+                        <div className="text-xs text-warning flex items-center gap-1 mt-0.5">
                             <XCircle className="w-4 h-4" /> غير مطابق
                         </div>
                     )}
@@ -412,7 +412,7 @@ export function SettlementBatchDetailsPage() {
                                 <Button 
                                     variant="outline" 
                                     size="sm" 
-                                    className="gap-2 border-amber-300 hover:bg-amber-100 text-amber-700"
+                                    className="gap-2 border-warning/30 hover:bg-warning/10 text-warning"
                                     onClick={() => fileInputRef.current?.click()}
                                     loading={isGeneratingFailures}
                                 >

@@ -90,7 +90,7 @@ export function ApprovalRequestsTab() {
                     <Button
                         variant="ghost"
                         size="sm"
-                        className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 gap-1"
+                        className="text-success hover:text-success hover:bg-success/10 gap-1"
                         onClick={() => updateStatusMutation.mutate({ id: row.approvalID, status: APPROVAL_STATUS.APPROVED, note: "تم الاعتماد من خلال النظام" })}
                         loading={updateStatusMutation.isPending}
                     >
@@ -99,7 +99,7 @@ export function ApprovalRequestsTab() {
                     <Button
                         variant="ghost"
                         size="sm"
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50 gap-1"
+                        className="text-danger hover:text-danger hover:bg-danger/10 gap-1"
                         onClick={() => updateStatusMutation.mutate({ id: row.approvalID, status: APPROVAL_STATUS.REJECTED, note: "تم الرفض من خلال النظام" })}
                         loading={updateStatusMutation.isPending}
                     >

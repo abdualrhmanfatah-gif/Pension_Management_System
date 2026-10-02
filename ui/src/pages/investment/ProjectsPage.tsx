@@ -62,7 +62,7 @@ export function ProjectsPage() {
             key: "plannedBudget",
             header: "الميزانية المخططة",
             render: (row) => (
-                <span className="font-semibold text-blue-600">
+                <span className="font-semibold text-info">
                     {row.plannedBudget.toLocaleString()} ر.ي
                 </span>
             )

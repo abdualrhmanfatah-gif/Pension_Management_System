@@ -152,7 +152,7 @@ function ApproveDialog({
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle className="text-right text-sm font-black flex items-center gap-2">
-                        <ThumbsUp className="w-4 h-4 text-emerald-600" />
+                        <ThumbsUp className="w-4 h-4 text-success" />
                         اعتماد الملف: {fileName}
                     </DialogTitle>
                 </DialogHeader>
@@ -427,7 +427,7 @@ export function FileReviewListPage() {
                     <Button
                         variant="ghost"
                         size="sm"
-                        className="text-blue-600 dark:text-blue-400 hover:bg-blue-500/15 hover:text-blue-700 dark:hover:text-blue-300"
+                        className="text-info  hover:bg-info/15 hover:text-info dark:hover:text-info"
                         title="مراجعة الملف"
                         onClick={() => navigate(`/files/${row.fileID}/review`)}
                     >
@@ -438,7 +438,7 @@ export function FileReviewListPage() {
                             <Button
                                 variant="ghost"
                                 size="sm"
-                                className="text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/15 hover:text-emerald-700 dark:hover:text-emerald-300"
+                                className="text-success  hover:bg-success/15 hover:text-success dark:hover:text-success"
                                 title="اعتماد"
                                 onClick={() => handleApproveClick(row)}
                                 disabled={approveMutation.isPending}
@@ -448,7 +448,7 @@ export function FileReviewListPage() {
                             <Button
                                 variant="ghost"
                                 size="sm"
-                                className="text-red-600 dark:text-red-400 hover:bg-red-500/15 hover:text-red-700 dark:hover:text-red-300"
+                                className="text-danger  hover:bg-danger/15 hover:text-danger dark:hover:text-danger"
                                 title="رفض"
                                 onClick={() => handleRejectClick(row)}
                                 disabled={rejectMutation.isPending}

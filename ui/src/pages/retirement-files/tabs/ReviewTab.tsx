@@ -159,14 +159,14 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-6">
                     {showDiff && (
-                        <Card className={`rounded-3xl p-8 relative overflow-hidden ${needsReview ? 'border-amber-400/30' : 'border-muted'}`}>
+                        <Card className={`rounded-3xl p-8 relative overflow-hidden ${needsReview ? 'border-warning/30' : 'border-muted'}`}>
                             <div className={`absolute top-0 end-0 p-4 opacity-5`}>
-                                {needsReview ? <AlertTriangle className="w-24 h-24 text-amber-500" /> : <CheckCircle2 className="w-24 h-24 text-emerald-500" />}
+                                {needsReview ? <AlertTriangle className="w-24 h-24 text-warning" /> : <CheckCircle2 className="w-24 h-24 text-success" />}
                             </div>
 
                             {needsReview ? (
                                 <div className="space-y-4 mb-6">
-                                    <Heading level="h3" className="text-base md:text-lg lg:text-xl font-black flex items-center gap-2 text-amber-600">
+                                    <Heading level="h3" className="text-base md:text-lg lg:text-xl font-black flex items-center gap-2 text-warning">
                                         <AlertTriangle className="w-6 h-6" />
                                         يحتاج مراجعة — تم تعديل بيانات الملف
                                     </Heading>
@@ -179,7 +179,7 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
                                 </div>
                             ) : (
                                 <div className="space-y-4 mb-6">
-                                    <Heading level="h3" className="text-base md:text-lg lg:text-xl font-black flex items-center gap-2 text-emerald-600">
+                                    <Heading level="h3" className="text-base md:text-lg lg:text-xl font-black flex items-center gap-2 text-success">
                                         <CheckCircle2 className="w-6 h-6" />
                                         {wasRejected ? "تم رفض المراجعة" : "تم اعتماد المراجعة"}
                                     </Heading>
@@ -232,7 +232,7 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
                                 <div className="flex flex-wrap gap-3 pt-4 border-t border-dashed">
                                     <Button
                                         size="lg"
-                                        className="h-12 px-8 rounded-2xl gap-2 font-black bg-emerald-600 hover:bg-emerald-700 border-none text-white"
+                                        className="h-12 px-8 rounded-2xl gap-2 font-black bg-success hover:bg-success border-none text-white"
                                         onClick={() => handleReviewDecision("approve")}
                                         loading={reviewMutation.isPending}
                                         disabled={!canReviewApprove}
@@ -242,7 +242,7 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
                                     <Button
                                         variant="outline"
                                         size="lg"
-                                        className="h-12 px-8 rounded-2xl gap-2 font-black border-red-500/20 bg-red-500/5 text-red-700 hover:bg-red-100 transition-all"
+                                        className="h-12 px-8 rounded-2xl gap-2 font-black border-danger/20 bg-danger/5 text-danger hover:bg-danger/10 transition-all"
                                         onClick={() => handleReviewDecision("reject")}
                                         loading={reviewMutation.isPending}
                                         disabled={!canReviewReject}
@@ -272,7 +272,7 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
                         {fileSummary && ((fileSummary.missingDocumentsCount || 0) > 0 || (fileSummary.missingDataCount || 0) > 0) && (
                             <AlertBanner
                                 variant="warning"
-                                className="mb-8 items-start border-amber-500/30"
+                                className="mb-8 items-start border-warning/30"
                                 message={
                                     <div className="flex flex-col gap-2">
                                         <div>
@@ -281,17 +281,17 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
                                         </div>
                                     </div>
                                 }
-                                icon={<AlertTriangle className="w-5 h-5 mt-0.5 text-amber-600" />}
+                                icon={<AlertTriangle className="w-5 h-5 mt-0.5 text-warning" />}
                             />
                         )}
 
                         <div className="flex flex-wrap gap-3">
-                            <Button size="lg" className="h-14 px-8 rounded-2xl gap-2 font-black bg-emerald-600 hover:bg-emerald-700 border-none text-white"
+                            <Button size="lg" className="h-14 px-8 rounded-2xl gap-2 font-black bg-success hover:bg-success border-none text-white"
                                 onClick={() => handleStatusAction(REVIEW_ACTION.APPROVE)}
                                 loading={statusMutation.isPending && reviewAction === REVIEW_ACTION.APPROVE}>
                                 <ShieldCheck className="w-5 h-5" /> اعتماد الملف نهائياً
                             </Button>
-                            <Button variant="outline" size="lg" className="h-14 px-8 rounded-2xl gap-2 font-black border-amber-500/20 bg-amber-500/5 text-amber-700 hover:bg-amber-100 transition-all"
+                            <Button variant="outline" size="lg" className="h-14 px-8 rounded-2xl gap-2 font-black border-warning/20 bg-warning/5 text-warning hover:bg-warning/10 transition-all"
                                 onClick={() => setReviewAction(REVIEW_ACTION.RETURN)}>
                                 <History className="w-5 h-5" /> إرجاع للاستكمال
                             </Button>
@@ -317,7 +317,7 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
                                     />
                                     <div className="flex justify-end gap-2 flex-wrap">
                                         <Button variant="ghost" onClick={() => {setReviewAction(null); setReviewNotes("");}} className="rounded-xl font-bold">إلغاء</Button>
-                                        <Button className={`rounded-xl px-8 font-black text-white ${reviewAction === REVIEW_ACTION.REJECT ? 'bg-destructive hover:bg-destructive/90' : 'bg-amber-600 hover:bg-amber-700'}`}
+                                        <Button className={`rounded-xl px-8 font-black text-white ${reviewAction === REVIEW_ACTION.REJECT ? 'bg-destructive hover:bg-destructive/90' : 'bg-warning hover:bg-warning'}`}
                                             disabled={!reviewNotes.trim()}
                                             onClick={() => handleStatusAction(reviewAction)}
                                             loading={statusMutation.isPending}>
@@ -424,15 +424,15 @@ function EntityChangeCard({ change, needsReview, expandedChange, onToggleExpand,
     const isApproved = change.itemStatus === APPROVED;
     const hasDetails = change.fieldDetails && change.fieldDetails.length > 0;
 
-    const statusIcon = isApproved ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : isPending ? <AlertTriangle className="w-4 h-4 text-amber-500" /> : <XCircle className="w-4 h-4 text-red-500" />;
+    const statusIcon = isApproved ? <CheckCircle2 className="w-4 h-4 text-success" /> : isPending ? <AlertTriangle className="w-4 h-4 text-warning" /> : <XCircle className="w-4 h-4 text-danger" />;
     const statusBadge = isApproved ? "معتمد" : isPending ? "بانتظار المراجعة" : "مرفوض";
-    const statusBadgeClass = isApproved ? "bg-emerald-500/5 text-emerald-700 border-emerald-500/20" : isPending ? "bg-amber-500/5 text-amber-700 border-amber-500/20" : "bg-red-500/5 text-red-700 border-red-500/20";
+    const statusBadgeClass = isApproved ? "bg-success/5 text-success border-success/20" : isPending ? "bg-warning/5 text-warning border-warning/20" : "bg-danger/5 text-danger border-danger/20";
 
     return (
         <div className="relative">
             <div className="px-5 py-3 flex items-center justify-between gap-4 hover:bg-muted/5 transition-colors">
                 <div className="flex items-center gap-3 min-w-0 flex-1" onClick={() => hasDetails && onToggleExpand(isExpanded ? null : itemId)}>
-                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${isApproved ? 'bg-emerald-100' : isPending ? 'bg-amber-100' : 'bg-red-100'}`}>
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${isApproved ? 'bg-success/10' : isPending ? 'bg-warning/10' : 'bg-danger/10'}`}>
                         {statusIcon}
                     </div>
                     <div className="min-w-0">
@@ -456,8 +456,8 @@ function EntityChangeCard({ change, needsReview, expandedChange, onToggleExpand,
                         {(change.fieldDetails || []).map((detail, i) => (
                             <div key={i} className="grid grid-cols-1 sm:grid-cols-[1fr_1.5fr_1.5fr] gap-3 text-xs">
                                 <span className="font-bold text-muted-foreground">{translateFieldName(detail.fieldName)}</span>
-                                <span className="bg-red-500/5 dark:bg-red-950/30 text-red-700 dark:text-red-400 p-1.5 rounded-lg line-through">{detail.oldValue || "—"}</span>
-                                <span className="bg-green-500/5 dark:bg-green-950/30 text-green-700 dark:text-green-400 p-1.5 rounded-lg">{detail.newValue || "—"}</span>
+                                <span className="bg-danger/5  text-danger  p-1.5 rounded-lg line-through">{detail.oldValue || "—"}</span>
+                                <span className="bg-success/5  text-success  p-1.5 rounded-lg">{detail.newValue || "—"}</span>
                             </div>
                         ))}
                     </div>
@@ -469,7 +469,7 @@ function EntityChangeCard({ change, needsReview, expandedChange, onToggleExpand,
                     <Button
                         variant="ghost"
                         size="sm"
-                        className="gap-1 text-emerald-700 hover:bg-emerald-100 min-h-[44px]"
+                        className="gap-1 text-success hover:bg-success/10 min-h-[44px]"
                         disabled={!canApprove || isMutating}
                         onClick={onApprove}
                     >
@@ -478,7 +478,7 @@ function EntityChangeCard({ change, needsReview, expandedChange, onToggleExpand,
                     <Button
                         variant="ghost"
                         size="sm"
-                        className="gap-1 text-red-700 hover:bg-red-100 min-h-[44px]"
+                        className="gap-1 text-danger hover:bg-danger/10 min-h-[44px]"
                         disabled={!canReject || isMutating}
                         onClick={onReject}
                     >

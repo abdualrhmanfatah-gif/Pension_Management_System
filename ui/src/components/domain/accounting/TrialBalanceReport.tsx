@@ -1,4 +1,4 @@
-﻿import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { AlertCircle,CheckCircle } from "lucide-react";
 import { useCallback,useMemo, useState } from "react";
 
@@ -203,7 +203,7 @@ export function TrialBalanceReport({
       header: "افتتاحي مدين",
       className: "text-center",
       render: (row) => (
-        <span className="font-mono font-bold text-sm text-blue-600">
+        <span className="font-mono font-bold text-sm text-info">
           {row.openingDebit > 0 ? formatCurrency(row.openingDebit) : "-"}
         </span>
       ),
@@ -213,7 +213,7 @@ export function TrialBalanceReport({
       header: "افتتاحي دائن",
       className: "text-center",
       render: (row) => (
-        <span className="font-mono font-bold text-sm text-green-600">
+        <span className="font-mono font-bold text-sm text-success">
           {row.openingCredit > 0 ? formatCurrency(row.openingCredit) : "-"}
         </span>
       ),
@@ -223,7 +223,7 @@ export function TrialBalanceReport({
       header: "حركه مدين",
       className: "text-center",
       render: (row) => (
-        <span className="font-mono font-bold text-sm text-blue-600">
+        <span className="font-mono font-bold text-sm text-info">
           {row.movementDebit > 0 ? formatCurrency(row.movementDebit) : "-"}
         </span>
       ),
@@ -233,7 +233,7 @@ export function TrialBalanceReport({
       header: "حركه دائن",
       className: "text-center",
       render: (row) => (
-        <span className="font-mono font-bold text-sm text-green-600">
+        <span className="font-mono font-bold text-sm text-success">
           {row.movementCredit > 0 ? formatCurrency(row.movementCredit) : "-"}
         </span>
       ),
@@ -243,7 +243,7 @@ export function TrialBalanceReport({
       header: "ختامي مدين",
       className: "text-center",
       render: (row) => (
-        <span className="font-mono font-bold text-sm text-blue-700">
+        <span className="font-mono font-bold text-sm text-info">
           {row.closingDebit > 0 ? formatCurrency(row.closingDebit) : "-"}
         </span>
       ),
@@ -253,7 +253,7 @@ export function TrialBalanceReport({
       header: "ختامي دائن",
       className: "text-center",
       render: (row) => (
-        <span className="font-mono font-bold text-sm text-green-700">
+        <span className="font-mono font-bold text-sm text-success">
           {row.closingCredit > 0 ? formatCurrency(row.closingCredit) : "-"}
         </span>
       ),
@@ -265,15 +265,15 @@ export function TrialBalanceReport({
       render: (row) => (
         <div className="flex items-center justify-center gap-2">
           <span className={`font-mono font-bold text-lg ${
-            row.balanceType === "Debit" ? "text-blue-600" : "text-green-600"
+            row.balanceType === "Debit" ? "text-info" : "text-success"
           }`}>
             {row.balance > 0 ? formatCurrency(row.balance) : "-"}
           </span>
           {row.balance > 0 && (
             <span className={`text-xs px-1.5 py-0.5 rounded ${
               row.balanceType === "Debit"
-                ? "bg-blue-100 text-blue-700"
-                : "bg-green-100 text-green-700"
+                ? "bg-info/10 text-info"
+                : "bg-success/10 text-success"
             }`}>
               {row.balanceType === "Debit" ? "مدين" : "دائن"}
             </span>
@@ -328,20 +328,20 @@ export function TrialBalanceReport({
   );
 
   const footer = filteredData.length > 0 ? (
-    <div className={`rounded-lg p-4 font-bold ${isBalanced ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+    <div className={`rounded-lg p-4 font-bold ${isBalanced ? 'bg-success/10 border border-success/30' : 'bg-danger/10 border border-danger/30'}`}>
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-3">
           {isBalanced ? (
-            <CheckCircle className="w-6 h-6 text-green-600" />
+            <CheckCircle className="w-6 h-6 text-success" />
           ) : (
-            <AlertCircle className="w-6 h-6 text-red-600" />
+            <AlertCircle className="w-6 h-6 text-danger" />
           )}
           <div>
             <div className="text-lg">
               {isBalanced ? "الميزان متوازن ✓" : "الميزان غير متوازن ✗"}
             </div>
             {!isBalanced && (
-              <div className="text-sm font-normal text-red-600">
+              <div className="text-sm font-normal text-danger">
                 الفرق: {formatCurrency(Math.abs(grandTotalDebit - grandTotalCredit))}
               </div>
             )}
@@ -351,29 +351,29 @@ export function TrialBalanceReport({
           <div className="text-center">
             <div className="text-xs text-muted-foreground">الافتتاحي</div>
             <div className="flex gap-3">
-              <div><span className="text-xs text-muted-foreground">م:</span> <span className="font-mono text-blue-600">{formatCurrency(grandOpeningDebit)}</span></div>
-              <div><span className="text-xs text-muted-foreground">د:</span> <span className="font-mono text-green-600">{formatCurrency(grandOpeningCredit)}</span></div>
+              <div><span className="text-xs text-muted-foreground">م:</span> <span className="font-mono text-info">{formatCurrency(grandOpeningDebit)}</span></div>
+              <div><span className="text-xs text-muted-foreground">د:</span> <span className="font-mono text-success">{formatCurrency(grandOpeningCredit)}</span></div>
             </div>
           </div>
           <div className="text-center">
             <div className="text-xs text-muted-foreground">الحركه</div>
             <div className="flex gap-3">
-              <div><span className="text-xs text-muted-foreground">م:</span> <span className="font-mono text-blue-600">{formatCurrency(grandMovementDebit)}</span></div>
-              <div><span className="text-xs text-muted-foreground">د:</span> <span className="font-mono text-green-600">{formatCurrency(grandMovementCredit)}</span></div>
+              <div><span className="text-xs text-muted-foreground">م:</span> <span className="font-mono text-info">{formatCurrency(grandMovementDebit)}</span></div>
+              <div><span className="text-xs text-muted-foreground">د:</span> <span className="font-mono text-success">{formatCurrency(grandMovementCredit)}</span></div>
             </div>
           </div>
           <div className="text-center">
             <div className="text-xs text-muted-foreground">الختامي</div>
             <div className="flex gap-3">
-              <div><span className="text-xs text-muted-foreground">م:</span> <span className="font-mono text-blue-700">{formatCurrency(grandClosingDebit)}</span></div>
-              <div><span className="text-xs text-muted-foreground">د:</span> <span className="font-mono text-green-700">{formatCurrency(grandClosingCredit)}</span></div>
+              <div><span className="text-xs text-muted-foreground">م:</span> <span className="font-mono text-info">{formatCurrency(grandClosingDebit)}</span></div>
+              <div><span className="text-xs text-muted-foreground">د:</span> <span className="font-mono text-success">{formatCurrency(grandClosingCredit)}</span></div>
             </div>
           </div>
           <div className="text-center">
             <div className="text-xs text-muted-foreground">الإجمالي</div>
             <div className="flex gap-3">
-              <div><span className="text-xs text-muted-foreground">م:</span> <span className="font-mono text-xl text-blue-600">{formatCurrency(grandTotalDebit)}</span></div>
-              <div><span className="text-xs text-muted-foreground">د:</span> <span className="font-mono text-xl text-green-600">{formatCurrency(grandTotalCredit)}</span></div>
+              <div><span className="text-xs text-muted-foreground">م:</span> <span className="font-mono text-xl text-info">{formatCurrency(grandTotalDebit)}</span></div>
+              <div><span className="text-xs text-muted-foreground">د:</span> <span className="font-mono text-xl text-success">{formatCurrency(grandTotalCredit)}</span></div>
             </div>
           </div>
         </div>

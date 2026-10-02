@@ -1082,7 +1082,7 @@ export function CornerEditor({ imageUrl, rotation = 0, initialCorners, corners: 
 
                 ref={containerRef}
 
-                className="relative w-full h-[40vh] sm:h-[60vh] bg-black/5 rounded-lg overflow-hidden select-none"
+                className="relative w-full h-[40vh] sm:h-[60vh] bg-overlay/5 rounded-lg overflow-hidden select-none"
 
             >
 
@@ -1104,7 +1104,7 @@ export function CornerEditor({ imageUrl, rotation = 0, initialCorners, corners: 
 
                 />
 
-                <div className="absolute bottom-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded hidden sm:block">
+                <div className="absolute bottom-2 left-2 bg-overlay/60 text-white text-xs px-2 py-1 rounded hidden sm:block">
 
                     اسحب النقاط الملونة لتعديل حواف المستند
 

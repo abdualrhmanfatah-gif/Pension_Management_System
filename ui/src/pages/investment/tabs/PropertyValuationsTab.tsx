@@ -66,7 +66,7 @@ export function PropertyValuationsTab({ propertyId }: PropertyValuationsTabProps
             key: "marketValue",
             header: "القيمة السوقية",
             render: (row) => (
-                <span className="font-bold text-emerald-600 flex items-center gap-1 font-mono">
+                <span className="font-bold text-success flex items-center gap-1 font-mono">
                     <TrendingUp className="w-3 h-3" />
                     {row.marketValue.toLocaleString()} ر.ي
                 </span>
@@ -79,7 +79,7 @@ export function PropertyValuationsTab({ propertyId }: PropertyValuationsTabProps
             render: (row) => (
                 <div className="flex items-center gap-2">
                     <Button variant="ghost" size="icon" onClick={() => crud.openViewer(row)} title="الوثائق والمستندات">
-                        <FileText className="w-4 h-4 text-blue-500" />
+                        <FileText className="w-4 h-4 text-info" />
                     </Button>
                     {row.valuationReportPath && (
                         <a
@@ -93,7 +93,7 @@ export function PropertyValuationsTab({ propertyId }: PropertyValuationsTabProps
                         </a>
                     )}
                     <Button variant="ghost" size="icon" onClick={() => handleDelete(row)} title="حذف">
-                        <Trash2 className="w-4 h-4 text-red-500" />
+                        <Trash2 className="w-4 h-4 text-danger" />
                     </Button>
                 </div>
             )

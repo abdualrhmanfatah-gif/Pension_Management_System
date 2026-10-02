@@ -81,32 +81,32 @@ export function ChangePasswordPage() {
         : "أدخل كلمة المرور الحالية والجديدة";
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-950 via-primary-900 to-primary-800 p-4">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-hero via-hero-mid to-hero-end p-4">
             <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute -top-40 -start-40 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl" />
-                <div className="absolute -bottom-40 -end-40 w-96 h-96 bg-primary-400/10 rounded-full blur-3xl" />
+                <div className="absolute -top-40 -start-40 w-96 h-96 bg-hero-end/30 rounded-full blur-3xl" />
+                <div className="absolute -bottom-40 -end-40 w-96 h-96 bg-hero-accent/20 rounded-full blur-3xl" />
             </div>
 
             <div className="relative w-full max-w-md animate-fade-in">
                 <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-28 h-28 rounded-3xl bg-white/10 mb-4 overflow-hidden border border-white/10 ">
+                    <div className="inline-flex items-center justify-center w-28 h-28 rounded-3xl bg-hero-fg/10 mb-4 overflow-hidden border border-hero-fg/10 ">
                         <picture>
                           <source srcSet="/pension-logo.webp" type="image/webp" />
                           <img src="/pension-logo.png" alt="الشعار" className="w-full h-full object-contain p-2" />
                         </picture>
                     </div>
-                    <Heading level="h1" className="text-lg md:text-xl lg:text-2xl font-bold text-white">الإدارة العامة لصندوق التقاعد الأمني</Heading>
-                    <Text variant="body" className="text-primary-300/80 mt-1">{title}</Text>
+                    <Heading level="h1" className="text-lg md:text-xl lg:text-2xl font-bold text-hero-fg">الإدارة العامة لصندوق التقاعد الأمني</Heading>
+                    <Text variant="body" className="text-hero-accent/80 mt-1">{title}</Text>
                 </div>
 
-                <div className="bg-white/10 border border-white/10 rounded-2xl p-8 ">
-                    <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/10">
-                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-amber-500/20">
-                            <KeyRound className="h-5 w-5 text-amber-400" />
+                <div className="bg-hero-fg/10 border border-hero-fg/10 rounded-2xl p-8 ">
+                    <div className="flex items-center gap-3 mb-6 pb-4 border-b border-hero-fg/10">
+                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-hero-accent/20">
+                            <KeyRound className="h-5 w-5 text-hero-accent" />
                         </div>
                         <div className="text-end">
-                            <Text variant="label" className="text-white">{user?.fullName}</Text>
-                            <Text variant="body-sm" className="text-primary-300/70">{user?.username}</Text>
+                            <Text variant="label" className="text-hero-fg">{user?.fullName}</Text>
+                            <Text variant="body-sm" className="text-hero-accent/70">{user?.username}</Text>
                         </div>
                     </div>
 
@@ -123,7 +123,7 @@ export function ChangePasswordPage() {
                             <AlertBanner
                                 variant="info"
                                 title={description}
-                                className="bg-primary-500/10 border-primary-400/20 text-primary-200"
+                                className="bg-hero-end/10 border-hero-accent/20 text-hero-accent"
                             />
                         )}
 
@@ -136,7 +136,7 @@ export function ChangePasswordPage() {
                                 placeholder="أدخل كلمة المرور الحالية"
                                 label="كلمة المرور الحالية"
                                 error={errors.currentPassword?.message}
-                                className="bg-white/5 border-white/10 text-white placeholder:text-primary-400/50 focus:ring-primary-400/50 focus:border-transparent pe-10 label:text-primary-200"
+                                className="bg-hero-fg/5 border-hero-fg/10 text-hero-fg placeholder:text-hero-accent/50 focus:ring-hero-accent/50 focus:border-transparent pe-10 label:text-hero-accent"
                                 {...register("currentPassword")}
                             />
                             <Button
@@ -144,7 +144,7 @@ export function ChangePasswordPage() {
                                 size="sm"
                                 type="button"
                                 onClick={() => setShowCurrent(!showCurrent)}
-                                className="absolute end-3 top-8 text-primary-400/70 hover:text-primary-300"
+                                className="absolute end-3 top-8 text-hero-accent/70 hover:text-hero-accent"
                             >
                                 {showCurrent ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             </Button>
@@ -159,7 +159,7 @@ export function ChangePasswordPage() {
                                 placeholder="أدخل كلمة المرور الجديدة"
                                 label="كلمة المرور الجديدة"
                                 error={errors.newPassword?.message}
-                                className="bg-white/5 border-white/10 text-white placeholder:text-primary-400/50 focus:ring-primary-400/50 focus:border-transparent pe-10 label:text-primary-200"
+                                className="bg-hero-fg/5 border-hero-fg/10 text-hero-fg placeholder:text-hero-accent/50 focus:ring-hero-accent/50 focus:border-transparent pe-10 label:text-hero-accent"
                                 {...register("newPassword")}
                             />
                             <Button
@@ -167,7 +167,7 @@ export function ChangePasswordPage() {
                                 size="sm"
                                 type="button"
                                 onClick={() => setShowNew(!showNew)}
-                                className="absolute end-3 top-8 text-primary-400/70 hover:text-primary-300"
+                                className="absolute end-3 top-8 text-hero-accent/70 hover:text-hero-accent"
                             >
                                 {showNew ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             </Button>
@@ -182,7 +182,7 @@ export function ChangePasswordPage() {
                                 placeholder="أعد إدخال كلمة المرور الجديدة"
                                 label="تأكيد كلمة المرور الجديدة"
                                 error={errors.confirmPassword?.message}
-                                className="bg-white/5 border-white/10 text-white placeholder:text-primary-400/50 focus:ring-primary-400/50 focus:border-transparent pe-10 label:text-primary-200"
+                                className="bg-hero-fg/5 border-hero-fg/10 text-hero-fg placeholder:text-hero-accent/50 focus:ring-hero-accent/50 focus:border-transparent pe-10 label:text-hero-accent"
                                 {...register("confirmPassword")}
                             />
                             <Button
@@ -190,7 +190,7 @@ export function ChangePasswordPage() {
                                 size="sm"
                                 type="button"
                                 onClick={() => setShowConfirm(!showConfirm)}
-                                className="absolute end-3 top-8 text-primary-400/70 hover:text-primary-300"
+                                className="absolute end-3 top-8 text-hero-accent/70 hover:text-hero-accent"
                             >
                                 {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             </Button>
@@ -199,7 +199,7 @@ export function ChangePasswordPage() {
                         <Button
                             type="submit"
                             loading={isSubmitting}
-                            className="w-full h-11 text-base bg-primary-500 hover:bg-primary-400 text-white"
+                            className="w-full h-11 text-base bg-hero-end hover:bg-hero-end/90 text-hero-fg"
                         >
                             {!isSubmitting && "تغيير كلمة المرور"}
                         </Button>
@@ -209,7 +209,7 @@ export function ChangePasswordPage() {
                                 type="button"
                                 variant="ghost"
                                 onClick={() => navigate("/dashboard")}
-                                className="w-full h-11 text-base text-primary-300 hover:text-white"
+                                className="w-full h-11 text-base text-hero-accent hover:text-hero-fg"
                             >
                                 إلغاء
                             </Button>
@@ -217,7 +217,7 @@ export function ChangePasswordPage() {
                     </form>
                 </div>
 
-                <Text variant="body-sm" className="text-center text-white mt-6">
+                <Text variant="body-sm" className="text-center text-hero-fg mt-6">
                     جميع الحقوق محفوظة © 2026 —الإدارة العامة لصندوق التقاعد الأمني
                 </Text>
             </div>

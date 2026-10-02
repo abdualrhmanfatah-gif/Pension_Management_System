@@ -85,24 +85,24 @@ export function TenantDetailPage() {
                 <StatCard
                     title="التقييم"
                     value={`${tenant.ratingScore}`}
-                    icon={<Star className="w-4 h-4 text-amber-500 fill-amber-500" />}
+                    icon={<Star className="w-4 h-4 text-warning fill-warning" />}
                     variant="amber"
                 />
                 <StatCard
                     title="العقود النشطة"
                     value={tenant.activeContractsCount || 0}
-                    icon={<FileText className="w-4 h-4 text-blue-500" />}
+                    icon={<FileText className="w-4 h-4 text-info" />}
                 />
                 <StatCard
                     title="رقم التواصل"
                     value={tenant.phone || "—"}
-                    icon={<Phone className="w-4 h-4 text-emerald-500" />}
+                    icon={<Phone className="w-4 h-4 text-success" />}
                     variant="emerald"
                 />
                 <StatCard
                     title="العقارات المستأجرة"
                     value={properties?.length || 0}
-                    icon={<Building2 className="w-4 h-4 text-violet-500" />}
+                    icon={<Building2 className="w-4 h-4 text-special" />}
                 />
             </div>
 

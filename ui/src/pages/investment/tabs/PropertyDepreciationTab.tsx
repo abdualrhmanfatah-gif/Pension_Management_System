@@ -67,14 +67,14 @@ export function PropertyDepreciationTab({ propertyId }: PropertyDepreciationTabP
             key: "depreciationRate",
             header: "نسبة الاستهلاك",
             render: (row) => (
-                <span className="font-semibold text-amber-600 font-mono">{row.depreciationRate}%</span>
+                <span className="font-semibold text-warning font-mono">{row.depreciationRate}%</span>
             )
         },
         {
             key: "depreciationAmount",
             header: "مبلغ الاستهلاك",
             render: (row) => (
-                <span className="text-red-500 font-medium flex items-center gap-1 font-mono">
+                <span className="text-danger font-medium flex items-center gap-1 font-mono">
                     <TrendingDown className="w-3 h-3" />
                     {row.depreciationAmount.toLocaleString()} ر.ي
                 </span>
@@ -84,7 +84,7 @@ export function PropertyDepreciationTab({ propertyId }: PropertyDepreciationTabP
             key: "netBookValue",
             header: "صافي القيمة الدفترية",
             render: (row) => (
-                <span className="text-emerald-600 font-bold font-mono">
+                <span className="text-success font-bold font-mono">
                     {row.netBookValue.toLocaleString()} ر.ي
                 </span>
             )
@@ -98,7 +98,7 @@ export function PropertyDepreciationTab({ propertyId }: PropertyDepreciationTabP
                         variant="ghost"
                         size="icon"
                         onClick={() => crud.openViewer(row)}
-                        className="text-amber-600 hover:bg-amber-50"
+                        className="text-warning hover:bg-warning/10"
                         title="المرفقات والوثائق"
                     >
                         <FileText className="w-4 h-4" />
@@ -107,7 +107,7 @@ export function PropertyDepreciationTab({ propertyId }: PropertyDepreciationTabP
                         variant="ghost"
                         size="icon"
                         onClick={() => handleDelete(row)}
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50 transition-colors"
+                        className="text-danger hover:text-danger hover:bg-danger/10 transition-colors"
                         title="حذف"
                     >
                         <Trash2 className="w-4 h-4" />

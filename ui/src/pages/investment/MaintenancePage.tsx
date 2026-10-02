@@ -33,15 +33,15 @@ export function MaintenancePage() {
     const getStatusBadge = (status: string) => {
         switch (status) {
             case BATCH_STATUS.COMPLETED:
-                return <Badge variant={BADGE_VARIANT.SUCCESS} className="gap-1 bg-emerald-100 text-emerald-700 border-emerald-200">
+                return <Badge variant={BADGE_VARIANT.SUCCESS} className="gap-1 bg-success/10 text-success border-success/30">
                     <CheckCircle2 className="w-3 h-3" /> مكتملة
                 </Badge>;
             case 'InProgress':
-                return <Badge variant={BADGE_VARIANT.INFO} className="gap-1 bg-blue-100 text-blue-700 border-blue-200">
+                return <Badge variant={BADGE_VARIANT.INFO} className="gap-1 bg-info/10 text-info border-info/30">
                     <Clock className="w-3 h-3" /> قيد التنفيذ
                 </Badge>;
             case BATCH_STATUS.NEW:
-                return <Badge variant={BADGE_VARIANT.DANGER} className="gap-1 bg-red-100 text-red-700 border-red-200">
+                return <Badge variant={BADGE_VARIANT.DANGER} className="gap-1 bg-danger/10 text-danger border-danger/30">
                     <AlertCircle className="w-3 h-3" /> جديدة
                 </Badge>;
             default:
@@ -74,8 +74,8 @@ export function MaintenancePage() {
             header: "الأولوية",
             render: (row) => (
                 <div className="flex items-center gap-1.5 text-start">
-                    <div className={`w-2 h-2 rounded-full ${row.priority === PRIORITY.URGENT ? 'bg-red-500 animate-pulse' :
-                        row.priority === PRIORITY.HIGH ? 'bg-amber-500' : 'bg-slate-400'
+                    <div className={`w-2 h-2 rounded-full ${row.priority === PRIORITY.URGENT ? 'bg-danger animate-pulse' :
+                        row.priority === PRIORITY.HIGH ? 'bg-warning' : 'bg-muted'
                     }`} />
                     <span className="text-xs">{row.priority === PRIORITY.URGENT ? 'عاجل جداً' : row.priority === PRIORITY.HIGH ? 'مرتفعة' : 'عادي'}</span>
                 </div>
@@ -107,7 +107,7 @@ export function MaintenancePage() {
                                 setWorkOrderRequest(row);
                                 setWorkOrderOpen(true);
                             }}
-                            className="gap-1 border-emerald-200 text-emerald-700 hover:bg-emerald-50 font-bold"
+                            className="gap-1 border-success/30 text-success hover:bg-success/10 font-bold"
                         >
                             <Wrench className="w-3.5 h-3.5" /> أوامر العمل
                         </Button>

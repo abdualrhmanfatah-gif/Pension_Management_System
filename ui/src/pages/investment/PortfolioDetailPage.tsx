@@ -73,18 +73,18 @@ export function PortfolioDetailPage() {
                 <StatCard 
                     title="الإنفاق الفعلي" 
                     value={`${summary?.totalActualSpent?.toLocaleString() || 0} ر.ي`} 
-                    icon={<TrendingUp className="w-4 h-4 text-emerald-500" />} 
+                    icon={<TrendingUp className="w-4 h-4 text-success" />} 
                     variant="emerald"
                 />
                 <StatCard 
                     title="عدد المشاريع" 
                     value={summary?.projectCount || 0} 
-                    icon={<Building2 className="w-4 h-4 text-blue-500" />} 
+                    icon={<Building2 className="w-4 h-4 text-info" />} 
                 />
                 <StatCard 
                     title="نسبة الإشغال" 
                     value={`${summary?.occupancyRate || 0}%`} 
-                    icon={<PieChart className="w-4 h-4 text-amber-500" />} 
+                    icon={<PieChart className="w-4 h-4 text-warning" />} 
                     variant="amber"
                 />
             </div>

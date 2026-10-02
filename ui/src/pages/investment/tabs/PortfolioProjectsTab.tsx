@@ -53,7 +53,7 @@ export function PortfolioProjectsTab({ portfolioId }: PortfolioProjectsTabProps)
             key: "plannedBudget",
             header: "الميزانية المخططة",
             render: (row) => (
-                <span className="font-semibold text-blue-600 font-mono">
+                <span className="font-semibold text-info font-mono">
                     {row.plannedBudget.toLocaleString()} ر.ي
                 </span>
             )

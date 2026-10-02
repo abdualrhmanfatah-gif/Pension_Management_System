@@ -276,6 +276,13 @@
     /* Purple — حالات خاصة (استثناء/تمييز) — F-08 */
     --gov-special: 262 83% 58%;
 
+    /* Hero (شاشات المصادقة — سطح داكن ثابت لا يتأثر بالسمة) — F-30 */
+    --gov-hero: 222 58% 21%;
+    --gov-hero-mid: 226 71% 33%;
+    --gov-hero-end: 227 78% 40%;
+    --gov-hero-accent: 213 90% 74%;
+    --gov-hero-fg: 0 0% 100%;
+
     /* ── Spacing Scale ── */
     --space-1: 0.25rem;
     --space-2: 0.5rem;
@@ -315,6 +322,9 @@
     --z-popover: 600;
     --z-tooltip: 700;
     --z-toast: 800;
+
+    /* ── Overlay (أغطية ثابتة: حوارات/محرّرات) — F-25/F-55 ── */
+    --overlay: 0 0% 0%;
 
     /* ── Transition Tokens ── */
     --transition-duration-fast: 150ms;

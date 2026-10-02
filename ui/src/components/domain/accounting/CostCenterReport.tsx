@@ -1,4 +1,4 @@
-﻿import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
 import { costCentersApi, fiscalYearsApi,reportsApi } from "@/api/accounting";
@@ -128,7 +128,7 @@ export function CostCenterReport({ fiscalYearId, hideInternalControls }: CostCen
                       <Text variant="description">{cc.name}</Text>
                       <Text variant="body" className="font-bold">{cc.code}</Text>
                     </div>
-                    <div className={`w-3 h-3 rounded-full ${cc.isActive ? "bg-green-500" : "bg-red-500"}`} />
+                    <div className={`w-3 h-3 rounded-full ${cc.isActive ? "bg-success" : "bg-danger"}`} />
                   </div>
                 </Card>
               ))}
@@ -137,8 +137,8 @@ export function CostCenterReport({ fiscalYearId, hideInternalControls }: CostCen
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <Card className="border-none rounded-3xl overflow-hidden">
-              <div className="p-4 bg-green-50">
-                 <Heading level="h3" className="font-bold text-lg text-green-800">الإيرادات - {selectedYear?.yearName}</Heading>
+              <div className="p-4 bg-success/10">
+                 <Heading level="h3" className="font-bold text-lg text-success">الإيرادات - {selectedYear?.yearName}</Heading>
               </div>
               <div className="p-4 max-h-64 overflow-y-auto">
                 {revenueAccounts.length === 0 ? (
@@ -151,7 +151,7 @@ export function CostCenterReport({ fiscalYearId, hideInternalControls }: CostCen
                           <span className="text-xs font-mono text-muted-foreground">{account.accountCode}</span>
                           <span className="text-sm mr-2">{account.accountName}</span>
                         </div>
-                        <span className="text-sm font-medium text-green-600">{formatCurrency(account.balance)}</span>
+                        <span className="text-sm font-medium text-success">{formatCurrency(account.balance)}</span>
                       </div>
                     ))}
                   </div>
@@ -160,8 +160,8 @@ export function CostCenterReport({ fiscalYearId, hideInternalControls }: CostCen
             </Card>
 
             <Card className="border-none rounded-3xl overflow-hidden">
-              <div className="p-4 bg-red-50">
-                 <Heading level="h3" className="font-bold text-lg text-red-800">المصروفات - {selectedYear?.yearName}</Heading>
+              <div className="p-4 bg-danger/10">
+                 <Heading level="h3" className="font-bold text-lg text-danger">المصروفات - {selectedYear?.yearName}</Heading>
               </div>
               <div className="p-4 max-h-64 overflow-y-auto">
                 {expenseAccounts.length === 0 ? (
@@ -174,7 +174,7 @@ export function CostCenterReport({ fiscalYearId, hideInternalControls }: CostCen
                           <span className="text-xs font-mono text-muted-foreground">{account.accountCode}</span>
                           <span className="text-sm mr-2">{account.accountName}</span>
                         </div>
-                        <span className="text-sm font-medium text-red-600">{formatCurrency(account.balance)}</span>
+                        <span className="text-sm font-medium text-danger">{formatCurrency(account.balance)}</span>
                       </div>
                     ))}
                   </div>

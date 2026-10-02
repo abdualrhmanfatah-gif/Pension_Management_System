@@ -79,6 +79,14 @@ export default {
           foreground: "#ffffff",
         },
         special: "hsl(var(--gov-special))",
+        hero: {
+          DEFAULT: "hsl(var(--gov-hero))",
+          mid: "hsl(var(--gov-hero-mid))",
+          end: "hsl(var(--gov-hero-end))",
+          accent: "hsl(var(--gov-hero-accent))",
+          fg: "hsl(var(--gov-hero-fg))",
+        },
+        overlay: "hsl(var(--overlay))",
         brand: {
           DEFAULT: "#1b3a5c",
           foreground: "#ffffff",

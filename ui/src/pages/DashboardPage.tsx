@@ -65,15 +65,15 @@ function ActivityTable({ entries, isLoading }: { entries: RecentActivity[] | und
     const actionStyle = (action: string) => {
         switch (action) {
             case "Create":
-                return "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400";
+                return "bg-success/10 text-success";
             case "Update":
-                return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400";
+                return "bg-info/10 text-info";
             case "Delete":
-                return "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400";
+                return "bg-danger/10 text-danger";
             case "StatusChange":
-                return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400";
+                return "bg-warning/10 text-warning";
             default:
-                return "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400";
+                return "bg-special/10 text-special";
         }
     };
 
@@ -387,8 +387,8 @@ export function DashboardPage() {
                                 data={performanceStats?.monthlyData ?? []}
                                 xKey="month"
                                 lines={[
-                                    { key: "retirees", color: "hsl(346, 84%, 60%)", label: "المتقاعدين" },
-                                    { key: "files", color: "hsl(142, 76%, 36%)", label: "ملفات التقاعد" },
+                                    { key: "retirees", color: chartColors.danger, label: "المتقاعدين" },
+                                    { key: "files", color: chartColors.success, label: "ملفات التقاعد" },
                                  
                                 ]}
                                 height={280}
@@ -503,7 +503,7 @@ export function DashboardPage() {
                                             <Text variant="caption">المتبقي</Text>
                                             <p className={cn(
                                                 "text-lg font-black",
-                                                isOverBudget ? "text-rose-600" : "text-emerald-600"
+                                                isOverBudget ? "text-danger" : "text-success"
                                             )}>
                                                 {formatCurrency(budgetRemaining)}
                                             </p>
@@ -512,8 +512,8 @@ export function DashboardPage() {
                                     <div className="relative h-4 bg-muted rounded-full overflow-hidden">
                                         <div
                                             className={cn(
-                                                "h-full rounded-full transition-all duration-1000",
-                                                budgetPct > 90 ? "bg-rose-500" : budgetPct > 70 ? "bg-amber-500" : "bg-emerald-500"
+                                                "h-full rounded-full transition-all duration-slow",
+                                                budgetPct > 90 ? "bg-danger" : budgetPct > 70 ? "bg-warning" : "bg-success"
                                             )}
                                             style={{ width: `${budgetPct}%` }}
                                         />
@@ -522,7 +522,7 @@ export function DashboardPage() {
                                         <span>المصروف: {formatCurrency(budgetUsed)}</span>
                                         <span className="font-bold text-foreground">{budgetPct}%</span>
                                         {isOverBudget && (
-                                            <span className="font-bold text-rose-600">
+                                            <span className="font-bold text-danger">
                                                 تجاوز: {formatCurrency(-budgetRemaining)}
                                             </span>
                                         )}

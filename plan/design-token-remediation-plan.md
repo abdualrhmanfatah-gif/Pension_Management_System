@@ -209,6 +209,8 @@ git add -A; git commit -m "feat(tokens): <M#> - <وصف>"   # Q4=A
 
 ## سجل التنفيذ
 
+**توجيه المستخدم (2026-10-02)**: تأجيل كل ما هو **طباعة** (F-02, F-42, F-45, F-47, F-51, F-52, F-53) والبدء بالمكونات والصفحات: **M1′ → M2 → M3** ثم §5b — مؤجلات الطباعة تُستأنف لاحقًا.
+
 ### M0 — مكتمل (2026-10-02)
 - [x] **git**: `git init` على فرع `main` + `.gitignore` جذري (node_modules, bin/obj, *.zip, .audit-documents, dist, logs, .vs) + **commit مرجعي `6b25409`** — 1634 ملفًا، بلا ملفات >10MB، شجرة نظيفة.
 - [x] **خط الأساس**:
@@ -219,7 +221,27 @@ git add -A; git commit -m "feat(tokens): <M#> - <وصف>"   # Q4=A
 - [x] حسم تداخل **F-12..F-18** → تُنفَّذ في M5 (soft-status) لا M2.
 - **تعديل بوابة الخروج**: بند `lint` صار «لا أخطاء جديدة عن خط الأساس (306)» — الصفر المطلق دَين قائم خارج نطاق خطة الرموز (§5، §6.1، §9 مُحدَّثة).
 
-### M1 — لم تبدأ
-**توجيه المستخدم (2026-10-02)**: تأجيل كل ما هو **طباعة** (F-02, F-42, F-45, F-47, F-51, F-52, F-53) والبدء بالمكونات والصفحات:
-- الترتيب الحالي: **M1′ (§5 بلا طباعة: F-05, F-06, F-08, F-20, F-23, F-24, F-56) → M2 → M3** ثم §5b.
-- مؤجل: F-02, F-42 (M1) و5f الطباعة (M5) — تُستأنف لاحقًا.
+### M1′ — مكتمل (2026-10-02)
+**commit `3da9240`** — 7 نتائج (§5 بلا طباعة): 
+- **F-05**: `index.css` فصل `--transition-duration-*` (fast/base/slow/bounce = 150/200/300/300ms) عن `--transition-easing-*` + متغيرات الشorthand؛ كتلة reduced-motion تصفر المدد فقط؛ `tailwind.config.js` += `transitionDuration` + `transitionTimingFunction`.
+- **F-06**: `lib/chartColors.ts` → `hsl(var(--primary))` + `hsl(var(--gov-*))`.
+- **F-08**: config `success/warning` م linked بـ gov + مفاتيح جديدة `danger/info/special`؛ `index.css` += `--gov-special: 262 83% 58%`؛ `DOC_STATUS_COLOR` + `getStatusColorClass` → كلاسات دلالية (حُذفت dark: variants المكررة).
+- **F-20**: `DropdownMenu` `text-black` → `text-popover-foreground`.
+- **F-23**: `FormMessage` `text-[0.8rem]` → `text-sm` (= 13px مطابق تمامًا).
+- **F-24**: `DataTable` ست `text-[10px]` → `text-caption` + `text-[13px]` → `text-sm`.
+- **F-56**: `KpiTone`/`KPI_TONE_CLASS`/`kpiToneClass` نُقلت إلى `lib/utils.ts` (أصلًا بسبب `react-refresh/only-export-components`)؛ الواجهتان تحتفظان بـ `color?: string`؛ 18 ملف مستهلك → مفاتيح نبرة.
+- **البوابات**: rg sweeps ✓ | build PASS | test 81/81 | lint = خط الأساس تمامًا (306/76).
+- ملاحظة: أداة `edit` أبلغت نجاحًا مع oldString غير مطابق ( left stray `}` في `utils.ts` ) → رُوّي قبل البناء.
+
+### M2 — مكتمل (2026-10-02)
+**5 نتائج (مكوّنات + لوحة)**:
+- **F-07**: `constants/inventory.ts` خريطا `TRANSACTION_TYPE_GRADIENTS`/`ACCENT_COLORS` → `success/danger/info/warning/muted` برمجي (بدون `-100/-700` ولا hex).
+- **F-09**: `permission-utils.ts` `categoryColors` (26 فئة) → خريطة دلالية محدودة `bg-<tone>/10 text-<tone>` + `bg-muted text-muted-foreground` للمحايد؛ حُذفت 26 صيغة `dark:` مكررة.
+- **F-10**: `FloatingNotification` `CATEGORY_CONFIG` (6 فئات) → gov tones؛ المدد `duration-500/[50ms]/200` → `duration-slow/fast/base`.
+- **F-43**: `DashboardPage` خريطة `actionStyle` → tokens؛ ألوان `ReportLineChart` `hsl(346..)/hsl(142..)` → `chartColors.danger/success`؛ الميزانية `rose/emerald/amber` → `danger/success/warning` + `duration-1000` → `duration-slow`.
+- **F-54**: لوحة الإشعارات `border-white/10 bg-slate-950/95` → `border-border bg-card/95` + كل النصوص الداخلية `text-white(/70)` → `text-card-foreground`/`text-muted-foreground` + مؤشر/مسار/زر/أيقونة → `muted` (توسيع ضروري عن أدلة F-54 لتفادي كسر النص عند تغيير السطح).
+- **البوابات**: rg sweeps ✓ (متابعة `translate-x` كـ false-positive لـ `slate-`) | build PASS | test 0 فشل | lint = 306/76 تمامًا.
+- **مخاطر معاينة**: (1) pill فئة SYSTEM = `bg-muted-foreground text-white` قد يخف تباينه في `.dark`؛ (2) gov tokens بلا overrides داكن (F-03 مؤجل) → تباين نصوص دلالية في الوضع الداكن يحتاج تحقق §6.2.
+
+### M3 — لم تبدأ
+**الصفحات**: F-30..F-41, F-44, F-55 — ثم §5b (M4..M6) ثم مؤجلات الطباعة.

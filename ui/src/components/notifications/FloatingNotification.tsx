@@ -15,12 +15,12 @@ interface FloatingItem {
 }
 
 const CATEGORY_CONFIG: Record<string, { icon: React.ElementType; gradient: string; accent: string; iconColor: string; bgColor: string }> = {
-  WORKFLOW:  { icon: FileText, gradient: 'from-blue-500/20 to-transparent', accent: 'bg-blue-500', iconColor: 'text-blue-400', bgColor: 'bg-blue-500/20' },
-  FINANCIAL: { icon: DollarSign, gradient: 'from-emerald-500/20 to-transparent', accent: 'bg-emerald-500', iconColor: 'text-emerald-400', bgColor: 'bg-emerald-500/20' },
-  SECURITY:  { icon: ShieldAlert, gradient: 'from-red-500/20 to-transparent', accent: 'bg-red-500', iconColor: 'text-red-400', bgColor: 'bg-red-500/20' },
-  SYSTEM:    { icon: Settings, gradient: 'from-slate-500/20 to-transparent', accent: 'bg-slate-500', iconColor: 'text-slate-400', bgColor: 'bg-slate-500/20' },
-  HR:        { icon: Users, gradient: 'from-amber-500/20 to-transparent', accent: 'bg-amber-500', iconColor: 'text-amber-400', bgColor: 'bg-amber-500/20' },
-  PENSIONS:  { icon: Building2, gradient: 'from-violet-500/20 to-transparent', accent: 'bg-violet-500', iconColor: 'text-violet-400', bgColor: 'bg-violet-500/20' },
+  WORKFLOW:  { icon: FileText, gradient: 'from-info/20 to-transparent', accent: 'bg-info', iconColor: 'text-info', bgColor: 'bg-info/20' },
+  FINANCIAL: { icon: DollarSign, gradient: 'from-success/20 to-transparent', accent: 'bg-success', iconColor: 'text-success', bgColor: 'bg-success/20' },
+  SECURITY:  { icon: ShieldAlert, gradient: 'from-danger/20 to-transparent', accent: 'bg-danger', iconColor: 'text-danger', bgColor: 'bg-danger/20' },
+  SYSTEM:    { icon: Settings, gradient: 'from-muted/30 to-transparent', accent: 'bg-muted-foreground', iconColor: 'text-muted-foreground', bgColor: 'bg-muted' },
+  HR:        { icon: Users, gradient: 'from-warning/20 to-transparent', accent: 'bg-warning', iconColor: 'text-warning', bgColor: 'bg-warning/20' },
+  PENSIONS:  { icon: Building2, gradient: 'from-special/20 to-transparent', accent: 'bg-special', iconColor: 'text-special', bgColor: 'bg-special/20' },
 };
 
 const DURATION = 7000;
@@ -120,7 +120,7 @@ export function FloatingNotification() {
         return (
           <div
             key={notification.notificationID}
-            className={`pointer-events-auto relative overflow-hidden rounded-xl border border-white/10 bg-slate-950/95 transition-all duration-500 cursor-pointer group
+            className={`pointer-events-auto relative overflow-hidden rounded-xl border border-border bg-card/95 transition-all duration-slow cursor-pointer group
               ${exiting ? 'opacity-0 translate-x-8 scale-95' : 'opacity-100 translate-x-0 scale-100'}
             `}
             style={{ animation: 'none' }}
@@ -154,9 +154,9 @@ export function FloatingNotification() {
             <div className={`absolute start-0 top-0 bottom-0 w-1 ${config.accent}`} />
 
             {/* Progress bar at bottom */}
-            <div className="absolute bottom-0 inset-x-0 h-1 bg-white/5">
+            <div className="absolute bottom-0 inset-x-0 h-1 bg-muted">
               <div
-                className={`h-full transition-all duration-[50ms] ease-linear ${config.accent} ${paused ? 'opacity-50' : 'opacity-100'}`}
+                className={`h-full transition-all duration-fast ease-linear ${config.accent} ${paused ? 'opacity-50' : 'opacity-100'}`}
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -170,7 +170,7 @@ export function FloatingNotification() {
               {/* Content */}
               <div className="flex-1 min-w-0 py-0.5">
                 <div className="flex items-center gap-2 mb-0.5">
-                  <h4 className="text-sm font-bold text-white truncate">
+                  <h4 className="text-sm font-bold text-card-foreground truncate">
                     {notification.title}
                   </h4>
                   <span className={`shrink-0 text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded-full ${config.accent} text-white`}>
@@ -178,12 +178,12 @@ export function FloatingNotification() {
                   </span>
                 </div>
                 {notification.message && (
-                  <p className="text-xs text-white leading-relaxed line-clamp-2">
+                  <p className="text-xs text-card-foreground leading-relaxed line-clamp-2">
                     {notification.message}
                   </p>
                 )}
-                <p className="text-[10px] sm:text-xs text-white/70 mt-1.5 flex items-center gap-1.5">
-                  <span className="inline-block w-1 h-1 rounded-full bg-slate-600" />
+                <p className="text-[10px] sm:text-xs text-muted-foreground mt-1.5 flex items-center gap-1.5">
+                  <span className="inline-block w-1 h-1 rounded-full bg-muted-foreground/50" />
                   {timeAgo(notification.createdAt)}
                 </p>
               </div>
@@ -192,14 +192,14 @@ export function FloatingNotification() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="shrink-0 opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-white/10 active:scale-90 h-10 w-10"
+                className="shrink-0 opacity-0 group-hover:opacity-100 transition-all duration-base hover:bg-muted active:scale-90 h-10 w-10"
                 onClick={(e: MouseEvent) => {
                   e.stopPropagation();
                   dismiss(notification.notificationID);
                 }}
                 aria-label="إخفاء الإشعار"
               >
-                <X className="w-4 h-4 text-slate-400" />
+                <X className="w-4 h-4 text-muted-foreground" />
               </Button>
             </div>
           </div>

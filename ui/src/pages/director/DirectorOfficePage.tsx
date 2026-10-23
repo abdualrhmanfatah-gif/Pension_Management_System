@@ -45,7 +45,7 @@ export function DirectorOfficePage() {
   const renderCorrespondenceItem = (item: CorrespondenceListItemDto) => (
     <div
       key={item.correspondenceID}
-      className="flex items-center justify-between py-2.5 border-b border-border/50 last:border-0 cursor-pointer hover:bg-muted/50 rounded-lg px-3 transition-colors"
+      className="flex items-center justify-between py-2.5 border-b border-border last:border-0 cursor-pointer hover:bg-muted/50 rounded-lg px-3 transition-colors"
       onClick={() => navigate(`/correspondence/${item.correspondenceID}`)}
     >
       <div className="flex-1 min-w-0">

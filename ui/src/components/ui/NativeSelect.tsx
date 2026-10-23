@@ -1,6 +1,7 @@
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
 
+import { handleNativeSelectEnter } from "@/lib/enterFocus";
 import { cn } from "@/lib/utils";
 
 // ─── Types ─────────────────────────────────────────────
@@ -38,15 +39,16 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, NativeSelectProps>(
         const errorId = `${selectId}-error`;
         const hintId = `${selectId}-hint`;
         const hasError = !!error;
+        const emptyOption = options.find((option) => option.value === "");
 
         return (
-            <div className="space-y-1.5">
+            <div className="min-w-0 space-y-1.5">
                 {label && (
                     <label
                         htmlFor={selectId}
                         className="label-field flex items-center gap-1.5"
                     >
-                        {Icon && <Icon className="w-4 h-4 text-muted-foreground/60" />}
+                        {Icon && <Icon className="w-4 h-4 text-muted-foreground" />}
                         {label}
                         {required && <span className="text-destructive">*</span>}
                     </label>
@@ -58,33 +60,34 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, NativeSelectProps>(
                         value={value}
                         defaultValue={defaultValue}
                         onChange={(e) => onChange(e.target.value)}
+                        onKeyDown={(e) => handleNativeSelectEnter(e.currentTarget, e.nativeEvent)}
                         disabled={disabled}
                         dir={dir}
                         autoFocus={autoFocus}
-                        aria-label={!label ? placeholder : undefined}
+                        aria-label={!label ? emptyOption?.label || placeholder : undefined}
                         aria-invalid={hasError || undefined}
                         aria-describedby={
                             hasError ? errorId : hint ? hintId : undefined
                         }
                         {...ariaProps}
                         className={cn(
-                            "flex h-11 sm:h-10 w-full items-center rounded-md border border-input bg-background ps-3 pe-10 py-2 text-sm transition-all",
+                            "flex h-11 sm:h-10 w-full min-w-0 items-center rounded-md border border-input bg-background ps-3 pe-10 py-2 text-base text-[hsl(var(--select-foreground))] transition-all",
                             // 👇 تم التعديل هنا لإخفاء السهم الافتراضي
                             "appearance-none bg-none [&::-ms-expand]:hidden", 
                             "focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary",
-                            "disabled:cursor-not-allowed disabled:opacity-50",
+                            "disabled:cursor-not-allowed disabled:bg-muted disabled:opacity-100",
                             hasError && "border-destructive focus:ring-destructive/20",
                             className
                         )}
                     >
-                        {placeholder && <option value="">{placeholder}</option>}
+                        {placeholder && !emptyOption && <option value="">{placeholder}</option>}
                         {options.map((opt) => (
                             <option key={opt.value} value={opt.value} disabled={opt.disabled}>
                                 {opt.label}
                             </option>
                         ))}
                     </select>
-                    <div className="absolute end-3 top-1/2 -translate-y-1/2 flex items-center gap-1 pointer-events-none text-muted-foreground/60 group-focus-within:text-primary transition-colors">
+                    <div className="absolute end-3 top-1/2 -translate-y-1/2 flex items-center gap-1 pointer-events-none text-[hsl(var(--select-foreground))] group-focus-within:text-primary transition-colors">
                         <ChevronDown className="w-4 h-4" />
                     </div>
                 </div>

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../PensionMS.Tests/TestPensionAccess.cs" Link="TestPensionAccess.cs" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+    <Using Include="Xunit" />
+    <ProjectReference Include="../PensionMS.API/PensionMS.API.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="../scripts/db-access-indexes-*.sql" Link="scripts/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../scripts/retirement-lifecycle-rollout.sql" Link="scripts/retirement-lifecycle-rollout.sql" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../scripts/branch-access-rollout.sql" Link="scripts/branch-access-rollout.sql" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

@@ -42,7 +42,9 @@ export interface MinistryApprovalItemDto {
     militaryNumber: string;
     fullName: string;
     gender?: number;
+    rankID?: number;
     rankName?: string;
+    categoryID?: number;
     unitName?: string;
     enrollmentDate?: string;
     retirementDate?: string;
@@ -103,14 +105,18 @@ export const ministryApi = {
     },
 
     // Items
-    getBatchItems: (batchId: number, page: number = 1, pageSize: number = 10, q?: string) => 
-        api.get<ApiResponse<PagedResult<MinistryApprovalItemDto>>>(`/ministry-approvals/batches/${batchId}/items?pageNumber=${page}&pageSize=${pageSize}${q ? `&q=${q}` : ''}`).then(r => r.data),
-    getAllItems: (page: number = 1, pageSize: number = 20, q?: string, isProcessed?: boolean) => 
-        api.get<ApiResponse<PagedResult<MinistryApprovalItemDto>>>(`/ministry-approvals/all-items?pageNumber=${page}&pageSize=${pageSize}${q ? `&q=${q}` : ''}${isProcessed !== undefined ? `&isProcessed=${isProcessed}` : ''}`).then(r => r.data),
+    getBatchItems: (batchId: number, page: number = 1, pageSize: number = 10, q?: string, gender?: number) =>
+        api.get<ApiResponse<PagedResult<MinistryApprovalItemDto>>>(`/ministry-approvals/batches/${batchId}/items`, { params: { pageNumber: page, pageSize, q, gender } }).then(r => r.data),
+    getAllItems: (page: number = 1, pageSize: number = 20, q?: string, isProcessed?: boolean, gender?: number) =>
+        api.get<ApiResponse<PagedResult<MinistryApprovalItemDto>>>('/ministry-approvals/all-items', { params: { pageNumber: page, pageSize, q, isProcessed, gender } }).then(r => r.data),
     getItemById: (id: number) => 
         api.get<ApiResponse<MinistryApprovalItemDto>>(`/ministry-approvals/items/${id}`).then(r => r.data),
     addManualItem: (batchId: number, data: unknown) => 
         api.post<ApiResponse<MinistryApprovalItemDto>>(`/ministry-approvals/batches/${batchId}/items`, data).then(r => r.data),
+    updateManualItem: (itemId: number, data: unknown) => 
+        api.put<ApiResponse<MinistryApprovalItemDto>>(`/ministry-approvals/items/${itemId}`, data).then(r => r.data),
+    deleteManualItem: (itemId: number) => 
+        api.delete<ApiResponse<boolean>>(`/ministry-approvals/items/${itemId}`).then(r => r.data),
     processItem: (itemId: number) => 
         api.post<ApiResponse<boolean>>(`/ministry-approvals/items/${itemId}/process`).then(r => r.data),
 

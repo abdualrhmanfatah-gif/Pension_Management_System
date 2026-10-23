@@ -114,7 +114,7 @@ export function AddMissingDocumentDialog({
                             <Search className="absolute end-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
                             <Input 
                                 placeholder="ابحث عن اسم الوثيقة (مثال: شهادة، بطاقة...)" 
-                                className="pe-10 h-12 rounded-xl border-border/60 focus:border-primary"
+                                className="pe-10 h-12 rounded-xl border-border focus:border-primary"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
@@ -122,9 +122,9 @@ export function AddMissingDocumentDialog({
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 max-h-[50vh] sm:max-h-[400px] overflow-y-auto p-1 custom-scrollbar">
                             {filteredTypes.length === 0 ? (
-                                <div className="col-span-full py-12 flex flex-col items-center justify-center text-center bg-muted/20 rounded-2xl border-2 border-dashed border-border/40">
+                                <div className="col-span-full py-12 flex flex-col items-center justify-center text-center bg-muted/20 rounded-2xl border-2 border-dashed border-border">
                                     <div className="p-4 bg-muted rounded-full mb-3">
-                                        <Info className="w-8 h-8 text-muted-foreground/40" />
+                                        <Info className="w-8 h-8 text-muted-foreground" />
                                     </div>
                                     <Text variant="description" className="font-medium max-w-[200px]">
                                         {searchTerm ? "لا توجد وثائق تطابق البحث" : "لا توجد وثائق إضافية متاحة للتسجيل كمتطلبات ناقصة"}
@@ -140,19 +140,19 @@ export function AddMissingDocumentDialog({
                                                 "flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 group relative overflow-hidden",
                                                 isSelected 
                                                     ? "border-primary bg-primary/5 ring-1 ring-primary/20" 
-                                                    : "border-transparent bg-muted/30 hover:bg-muted/60 hover:border-border/60"
+                                                    : "border-transparent bg-muted/30 hover:bg-muted/60 hover:border-border"
                                             )}
                                             onClick={() => toggleSelection(t.id)}
                                         >
                                             <div className={cn(
                                                 "w-5 h-5 rounded border-2 flex items-center justify-center transition-all",
-                                                isSelected ? "bg-primary border-primary" : "border-muted-foreground/30 bg-background"
+                                                isSelected ? "bg-primary border-primary" : "border-muted-foreground bg-background"
                                             )}>
                                                 {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
                                             </div>
                                             <span className={cn(
                                                 "text-sm font-bold transition-colors",
-                                                isSelected ? "text-primary" : "text-foreground/70"
+                                                isSelected ? "text-primary" : "text-foreground"
                                             )}>
                                                 {t.name}
                                             </span>

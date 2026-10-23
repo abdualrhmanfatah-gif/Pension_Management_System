@@ -281,12 +281,12 @@ export function PledgeDialog({
                                 size="sm"
                             />
                             
-                            <div className="flex items-center gap-3 p-4 rounded-2xl border border-primary/20 bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer group mb-1">
+                            <div className="flex items-center gap-3 p-4 rounded-2xl border border-primary bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer group mb-1">
                                 <input 
                                     type="checkbox" 
                                     id="issueOfficialPledge"
                                     {...register("issueOfficialPledge")}
-                                    className="min-h-[44px] min-w-[44px] w-6 h-6 rounded border-primary/30 text-primary focus:ring-primary/20 cursor-pointer"
+                                    className="min-h-[44px] min-w-[44px] w-6 h-6 rounded border-primary text-primary focus:ring-primary/20 cursor-pointer"
                                 />
                                 <label htmlFor="issueOfficialPledge" className="flex flex-col cursor-pointer select-none">
                                     <span className="text-sm font-black text-primary flex items-center gap-1.5">

@@ -23,17 +23,17 @@ export function ErrorAlert({ message, className }: ErrorAlertProps) {
   return (
     <div
       className={cn(
-        "bg-red-50/60 border border-red-200/60 text-red-900 px-5 py-4 rounded-2xl flex items-start gap-4 text-body animate-in fade-in slide-in-from-top-1 backdrop-blur-sm",
+        "bg-red-50/60 border border-red-200 text-red-900 px-5 py-4 rounded-2xl flex items-start gap-4 text-body animate-in fade-in slide-in-from-top-1 backdrop-blur-sm",
         className
       )}
       role="alert"
     >
-      <div className="shrink-0 p-2 bg-red-100/80 rounded-xl border border-white/40">
+      <div className="shrink-0 p-2 bg-red-100/80 rounded-xl border border-white">
         <AlertCircle className="w-5 h-5 text-red-600 stroke-[2.5px]" />
       </div>
       <div className="flex-1 flex flex-col pt-0.5">
         <span className="font-bold mb-0.5">خطأ في الإدخال</span>
-        <span className="text-red-800/90 leading-relaxed">{message}</span>
+        <span className="text-red-800 leading-relaxed">{message}</span>
       </div>
     </div>
   );

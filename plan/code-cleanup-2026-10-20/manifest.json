@@ -1,0 +1,443 @@
+{
+  "backup": "F:\\Projects\\Pension_Management_System\\.artifacts\\code-cleanup-2026-10-20\\original",
+  "files": [
+    {
+      "file": "ui/src/components/common/ActionButtons.tsx",
+      "bytes": 2208,
+      "sha256": "cacbb2e95671ed796b22051ae39334614b93f9d7fc91b4d750c1ea04bdcc1937",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/common/FilterBar.tsx",
+      "bytes": 6010,
+      "sha256": "146ca50a59135a3fc09765e39dde227e987d846334acefc0346bba669c0c9e8f",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/domain/admin/index.ts",
+      "bytes": 368,
+      "sha256": "87aed0a0cf5101106098f1b811fc02b0790d12116d3a66ee80c9539b54724318",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/domain/assets/index.ts",
+      "bytes": 200,
+      "sha256": "fa5985401a677c1dfc167c680d09ae049af67576fb9eb43cc1215230795c1e77",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/domain/correspondence/index.ts",
+      "bytes": 88,
+      "sha256": "dad5973c439be8746de59797a302147635d70c9e13c8c155a23aec13bf57a1a4",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/domain/hr/CreateOrderDialog.tsx",
+      "bytes": 5638,
+      "sha256": "4658189ecacf3036ab329cbe09a5e007bf0ed83a6f7d3cf63ef9f6116806696c",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/domain/hr/index.ts",
+      "bytes": 339,
+      "sha256": "3acc6a8a6fcd7345f224857c4a0dc0bd8539b87636e3aad9696ea4997de36e09",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/domain/inventory/index.ts",
+      "bytes": 244,
+      "sha256": "cc01e5ea89b625f49c73e8ce780b9e38d71e83f1758bbf87c7c783c2c3e18409",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/domain/investment/AccountDialog.tsx",
+      "bytes": 5106,
+      "sha256": "ea94fd3ed7fc0c29f3c8d507f548fcddab7f1a2384a8ce9e284aaa1d3f9013ee",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/domain/investment/TransactionDialog.tsx",
+      "bytes": 8552,
+      "sha256": "c35de38474320cd5f4250da30f85142d5737ddbc2877c8b8d23497e4c611149e",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/domain/investment/index.ts",
+      "bytes": 781,
+      "sha256": "13d62dccf76930d1d62f51ce7dab931834c38601a65a905f50a9d2ba0036d3b0",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/domain/print/index.ts",
+      "bytes": 65,
+      "sha256": "4d6ccf58ce9d8959bb2a739c0bd0cc93debecb89d07f05f620a6f58a1801a891",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/domain/retirement/EndRecipientDialog.tsx",
+      "bytes": 4340,
+      "sha256": "8304b193b693708c1a19614db92db48fbd32029695fdca6eaa621612b665b631",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/domain/retirement/index.ts",
+      "bytes": 1224,
+      "sha256": "6bff1be3a337366c94e63ae948419f1d44db7237468b7a3e99d9373362cae39f",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/domain/salaries/EntitlementFormDialog.tsx",
+      "bytes": 4891,
+      "sha256": "a177e605f5318990223ebcb5bfad04f5a6030a33f1f3aee34d00175d1d93fdca",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/domain/salaries/EntitlementsTab.tsx",
+      "bytes": 6170,
+      "sha256": "4c42903c60d12c978118ff1ba08d23663df47e8588835a95d1de856e2e2275c9",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/domain/salaries/index.ts",
+      "bytes": 247,
+      "sha256": "3bafd984efee5f930872edd24219a4cabaeb9c30ab257967f7cab3fece389d77",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/domain/settlements/index.ts",
+      "bytes": 90,
+      "sha256": "8a41d052f5f0c18714191aa991a1bc7dca9f1c1192410e600c6b466c75bd198e",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/ui/print/PrintField.tsx",
+      "bytes": 1632,
+      "sha256": "36ac3da2a7670ef70ef17179aaf8bc4a82718b3bea48495b9c7c5bc97bee0ded",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/ui/print/PrintSectionHeader.tsx",
+      "bytes": 1074,
+      "sha256": "996aff632a208c391ed4d4b39e8490e5d904d1e590255512c49e5210e946555b",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/components/ui/print/index.ts",
+      "bytes": 691,
+      "sha256": "4df070bdd208efd39621766f4e082de07e7f1ef8b157d7b739338e81f3437c59",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/hooks/useDialogNavigation.ts",
+      "bytes": 2614,
+      "sha256": "9b9c46ca51103db6716c721d944384ea3489ddf7a87032623cbc0e8c99a65269",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/hooks/useKeyboardNavigation.ts",
+      "bytes": 1629,
+      "sha256": "31d418dff8f95d05c0d22d744eee74e0d5bcc2c33dab40fac396ce6cc5800f23",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/hooks/usePensionStatistics.ts",
+      "bytes": 466,
+      "sha256": "6133aa801b03d5f1b83238d60f206290a881205da32181536aa0e45b329fdfad",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/lib/dialogLayers.ts",
+      "bytes": 424,
+      "sha256": "a6ff502acbd49e655e6f1e90896e761f6b7f83952cb40d7e4c6356a04f691e10",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/pages/achievements/AchievementObstacleDetailPage.tsx",
+      "bytes": 11827,
+      "sha256": "a04daf5dd08773b880a5428a52841c8a33ca8a2a66caed89b0e7ac612a21af3a",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/pages/investment/tabs/TransactionsTab.tsx",
+      "bytes": 5396,
+      "sha256": "8e98852f8f0e2e66cbf61bddfce9d15674a015d3eb13000f903eeba5e0af4195",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/pages/retirement-files/tabs/RecipientsTab.tsx",
+      "bytes": 15483,
+      "sha256": "7b8f2f7c759dbb3b2479aa05186a4234fb26696f4e479731fb2a76918d7f477e",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/types/api/fiscal-period.ts",
+      "bytes": 647,
+      "sha256": "72a493a5f06f3bbe5ff3e2870bc3bdf829f81d7559664ad86f723883b8627f5f",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/types/api/journal-entry.ts",
+      "bytes": 1475,
+      "sha256": "d4fc1defdb3a04bb8126c8e581b8e8b1cd440aa014abfc43373d867cb0381f5f",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/types/api/retirement-file.ts",
+      "bytes": 3009,
+      "sha256": "804169afb59a7fbfe090b0bce8924ba77d79dd42215cc72a5d3c077840339dcf",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/types/api/salary-batch.ts",
+      "bytes": 1502,
+      "sha256": "9839543734a9b723fdaff0e28ff533ddfc9ec5a147e96c4800804462f6f27357",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/types/financial-entitlements.ts",
+      "bytes": 624,
+      "sha256": "1c3f483b3e97cd9baa62567aecf5a4aca873e90e0f3e43db0c0f53564fbb4a4c",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Citizen/CitizenAuthService.cs",
+      "bytes": 6515,
+      "sha256": "c76f3ea31407b61db94479ab19035a56696b64d444e901aa812e924f744bc6c7",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Citizen/CitizenDataService.cs",
+      "bytes": 4919,
+      "sha256": "7920dd4b3a63b4eed400bb65bcea1b2a7c8df04cc089ad84ec78081b4eb34bde",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Citizen/CitizenServicePortal.cs",
+      "bytes": 5566,
+      "sha256": "324a5cd0f965e67bac2d56ea6b2b5baf1959217e1f3bf1f2e5d5976f3888b12e",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Citizen/CitizenSupportService.cs",
+      "bytes": 4806,
+      "sha256": "34ee25a7fa7255883fd63b95dc0bb252a04e8c12e8b04995e836b96efb59a56b",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Infrastructure/Jobs/PledgeExpiryCheckerService.cs",
+      "bytes": 2784,
+      "sha256": "f4d0d3cc9f6b56d28aee2ed204a8d4d9a2d527a9c7482aed5b3167b56cb27d99",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/EncryptedValueConverter.cs",
+      "bytes": 672,
+      "sha256": "4875b216839c71e9ad96db97601d8c44fea14cffbdb5cd86888d5b2043efe16d",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Seeders/JournalEntryTypeSeeder.cs",
+      "bytes": 3662,
+      "sha256": "487a9ba63fd8f5046e2572ffe966e34161f1fe122493889c85899083460dc329",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Core/Helpers/DataMasking.cs",
+      "bytes": 1467,
+      "sha256": "5107f03fa644b83a73d41b3f8b4c5792cb3d476eac3da0c9a20dfeb46cc2b26d",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Core/Constants/DocumentStatus.cs",
+      "bytes": 299,
+      "sha256": "d848338b459312e8a0877f5c0ad57793b0ffc2bd4208c49a3263be19ff724d90",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Core/Constants/LeaseStatus.cs",
+      "bytes": 303,
+      "sha256": "aeffa56bb8f91c779055a2514c2a54971a397e70678e210f2eae09dc88c9be61",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Core/Constants/FileReviewStatusConstants.cs",
+      "bytes": 228,
+      "sha256": "3d450f999f63f1748ea07294e07c9f0445b3a9ca883ade02119b157507bb995d",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Core/Interfaces/ICitizenAuthService.cs",
+      "bytes": 345,
+      "sha256": "bf1e5f76facc4251af5faca5b171cd49e276dcf5cd6707590eebec884937888c",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Core/Interfaces/ICitizenDataService.cs",
+      "bytes": 641,
+      "sha256": "76969f7008596a9b8cadf4029fb9aa96448bd0c2c517ad1ea5f6407d0fbda8ad",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Core/Interfaces/ICitizenServicePortal.cs",
+      "bytes": 773,
+      "sha256": "a7c3b64902f3a9cc0230014fdea2b00cb0b427ae0da751d636418c1cccd34359",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Core/Interfaces/ICitizenSupportService.cs",
+      "bytes": 753,
+      "sha256": "11069039940cca6cc2fc55649db76f5e5b67d112513368156ffeb2fc5d858519",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Citizen/CitizenAuthDtos.cs",
+      "bytes": 669,
+      "sha256": "a79db743ed2977e754250f55cfca7fa5afa794643453dabc40b8e4afb6624f57",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Citizen/CitizenDataDtos.cs",
+      "bytes": 1693,
+      "sha256": "e156136efc1a001e3d47d334cb4bf390a9ab95b49b140e9628bb75a703351a7f",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Citizen/CitizenServiceDtos.cs",
+      "bytes": 1436,
+      "sha256": "564f52016cc82cf8dd53652d07d65ca48692811a998bec09748fcc7c294f05d2",
+      "action": "remove"
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Citizen/CitizenSupportDtos.cs",
+      "bytes": 1197,
+      "sha256": "9b36c44925aa76c7d77c2d71a2ac68b210f47ea221de069e6345ea90fa5cac77",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/assets/react.svg",
+      "bytes": 4126,
+      "sha256": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/pages/retirees/image/RetireeStatementPrint/1777575773099.png",
+      "bytes": 202950,
+      "sha256": "f08d583d0cc6e36e6be075a2228c97db34d9f891d11f23398c0427a2f9970a17",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/pages/retirees/image/RetireeStatementPrint/1777575776437.png",
+      "bytes": 202950,
+      "sha256": "f08d583d0cc6e36e6be075a2228c97db34d9f891d11f23398c0427a2f9970a17",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/pages/retirees/image/RetireeStatementPrint/1777575781404.png",
+      "bytes": 202950,
+      "sha256": "f08d583d0cc6e36e6be075a2228c97db34d9f891d11f23398c0427a2f9970a17",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/pages/retirees/image/RetireeStatementPrint/1777575784350.png",
+      "bytes": 202950,
+      "sha256": "f08d583d0cc6e36e6be075a2228c97db34d9f891d11f23398c0427a2f9970a17",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/pages/retirees/image/RetireeStatementPrint/1777575788871.png",
+      "bytes": 202950,
+      "sha256": "f08d583d0cc6e36e6be075a2228c97db34d9f891d11f23398c0427a2f9970a17",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/pages/retirees/image/RetireeStatementPrint/1777575791419.png",
+      "bytes": 202950,
+      "sha256": "f08d583d0cc6e36e6be075a2228c97db34d9f891d11f23398c0427a2f9970a17",
+      "action": "remove"
+    },
+    {
+      "file": "ui/src/pages/retirees/image/RetireeStatementPrint/1777575807944.png",
+      "bytes": 202950,
+      "sha256": "f08d583d0cc6e36e6be075a2228c97db34d9f891d11f23398c0427a2f9970a17",
+      "action": "remove"
+    },
+    {
+      "file": "patch.py",
+      "bytes": 17132,
+      "sha256": "c8644a8e80325798834b1e9b35175e4d514679cfb46227b4236c1f6b014a8ebb",
+      "action": "archive"
+    },
+    {
+      "file": "patch_perf.py",
+      "bytes": 10908,
+      "sha256": "f06fe542ec9d24c0cf15e4dbaf2676797b8c3bd12e31a55c6f3387805bf87d2e",
+      "action": "archive"
+    },
+    {
+      "file": "PensionMS.Tests/DependencyInjectionTests.cs",
+      "bytes": 6025,
+      "sha256": "0511ccf8fc0c2f06bd5d8656f7e8e65a13fdaf52e0211db7c5aaf191b7bec0ec",
+      "action": "modify"
+    },
+    {
+      "file": "ui/src/pages/correspondence/IncomingRegisterPage.tsx",
+      "bytes": 8825,
+      "sha256": "6b039c02ddf934a78f5726b1ce262b686dd5ac08fea103ed2f98617df58f1299",
+      "action": "modify"
+    },
+    {
+      "file": "ui/src/pages/correspondence/OutgoingRegisterPage.tsx",
+      "bytes": 8822,
+      "sha256": "e2cbe2ef9ab796edd4696393e55582722e1b36da7f9c90a3ded7d71babadf38f",
+      "action": "modify"
+    },
+    {
+      "file": "ui/src/pages/retirement-files/DocumentProcessPage.tsx",
+      "bytes": 41305,
+      "sha256": "38a77f43f2ddf92c1abc90fdb453f1b124d4085511c5c2a727e4970d00d94830",
+      "action": "modify"
+    },
+    {
+      "file": "ui/src/components/domain/retirement/DocumentProcessDialog.tsx",
+      "bytes": 41509,
+      "sha256": "552ac21545fdb62ab81af4b2f1a4fd5ac3686567b75b6d0d1d1727440a96e22f",
+      "action": "modify"
+    },
+    {
+      "file": "ui/src/components/ui/ImageCropperDialog.tsx",
+      "bytes": 10355,
+      "sha256": "882f1e73af149033a1f540dd876d40a3e09bd4ed2d8eaab84e2b1d6e33b23358",
+      "action": "modify"
+    },
+    {
+      "file": "ui/package.json",
+      "bytes": 3063,
+      "sha256": "1ebd037fc9aeb842e15d98f035f276710996258188f2ad2323af67fbe45f4b95",
+      "action": "modify"
+    },
+    {
+      "file": "ui/package-lock.json",
+      "bytes": 334510,
+      "sha256": "0d4a7de97ce05d4a20a59f3d58d137222e70bba005cb2ca28f3471cf11ad2084",
+      "action": "modify"
+    },
+    {
+      "file": "ui/src/index.css",
+      "bytes": 31853,
+      "sha256": "dd1efc89acb6a2aacf5eebc46a4e69512b715cdda051e0c456f8a49917fed053",
+      "action": "modify"
+    },
+    {
+      "file": "docs/design-token-audit.md",
+      "bytes": 109198,
+      "sha256": "2beb13d8a712eab44d78ee986df5649d531c27e85f324f21ad189077d8f1020e",
+      "action": "modify"
+    },
+    {
+      "file": "docs/audits/code-duplicates-unused-files-2026-10-18.md",
+      "bytes": 38179,
+      "sha256": "980944062e1ce06c7fdd26a1d2f4a8dd67db7944801c8713206e3de6cf0a20e4",
+      "action": "modify"
+    }
+  ]
+}

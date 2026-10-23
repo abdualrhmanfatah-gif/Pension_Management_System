@@ -1,0 +1,14 @@
+{
+  "source_files": 1768,
+  "matched_files": 358,
+  "matched_lines": 1916,
+  "by_kind": {
+    "review": 589,
+    "suspension": 251,
+    "payment": 406,
+    "numeric_state": 215,
+    "arabic_state": 178,
+    "mutation": 318,
+    "file_state": 201
+  }
+}

@@ -34,28 +34,28 @@ export function NoteBox({
   const config = {
     info: {
       bg: "bg-blue-50/40",
-      border: "border-blue-100/60",
+      border: "border-blue-100",
       text: "text-blue-900",
       accent: "bg-blue-100/80 text-blue-600",
       icon: Info
     },
     warning: {
       bg: "bg-amber-50/50",
-      border: "border-amber-100/60",
+      border: "border-amber-100",
       text: "text-amber-950",
       accent: "bg-amber-100/80 text-amber-600",
       icon: AlertTriangle
     },
     success: {
       bg: "bg-emerald-50/40",
-      border: "border-emerald-100/60",
+      border: "border-emerald-100",
       text: "text-emerald-900",
       accent: "bg-emerald-100/80 text-emerald-600",
       icon: Lightbulb
     },
     help: {
       bg: "bg-slate-50/60",
-      border: "border-slate-200/60",
+      border: "border-slate-200",
       text: "text-slate-800",
       accent: "bg-slate-100/80 text-slate-500",
       icon: HelpCircle
@@ -74,7 +74,7 @@ export function NoteBox({
       )}
     >
       <div className={cn(
-        "shrink-0 p-2.5 rounded-xl h-fit border border-white/40",
+        "shrink-0 p-2.5 rounded-xl h-fit border border-white",
         config.accent
       )}>
         <Icon className="w-5 h-5 stroke-[2.5px]" />
@@ -87,7 +87,7 @@ export function NoteBox({
           </h4>
         )}
         <div className={cn(
-          "text-body leading-relaxed opacity-90 break-words",
+          "text-body leading-relaxed opacity-100 break-words",
           config.text
         )}>
           {children}

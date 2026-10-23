@@ -159,7 +159,7 @@ export function EditableImage({
                     />
                 ) : (
                     <div 
-                        className={cn("flex items-center justify-center bg-muted/50 text-muted-foreground/40 transition-all duration-300", className, canEdit && "cursor-pointer")}
+                        className={cn("flex items-center justify-center bg-muted/50 text-muted-foreground transition-all duration-300", className, canEdit && "cursor-pointer")}
                         onClick={canEdit ? () => { setUploadFile(null); setUploadDialogOpen(true); } : undefined}
                     >
                         {fallbackIcon}

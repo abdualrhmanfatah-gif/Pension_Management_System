@@ -1,11 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
-import { UserPlus } from "lucide-react";
+import { Save, UserPlus } from "lucide-react";
 import { useCallback } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { ministryApi } from "@/api/ministry";
+import { ministryApi, type MinistryApprovalItemDto } from "@/api/ministry";
 import { lookupApi } from "@/api/pension";
 import { ranksApi } from "@/api/ranks";
 import { BaseFormDialog } from "@/components/ui/BaseFormDialog";
@@ -18,6 +18,7 @@ interface Props {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     batchId: number;
+    item?: MinistryApprovalItemDto | null;
 }
 
 const schema = z.object({
@@ -36,22 +37,39 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-export function AddReferralItemDialog({ open, onOpenChange, batchId }: Props) {
+function buildDefaults(item?: MinistryApprovalItemDto | null): FormValues {
+    return {
+        militaryNumber: item?.militaryNumber ?? "",
+        fullName: item?.fullName ?? "",
+        rankID: item?.rankID ? String(item.rankID) : "",
+        categoryID: item?.categoryID ? String(item.categoryID) : "",
+        gender: item?.gender ? String(item.gender) : "1",
+        unitName: item?.unitName ?? "",
+        enrollmentDate: item?.enrollmentDate ?? "",
+        retirementDate: item?.retirementDate ?? "",
+        salary: item?.salary != null ? String(item.salary) : "",
+        linkNumber: item?.linkNumber ?? "",
+        notes: item?.notes ?? "",
+    };
+}
+
+const INVALIDATE_KEYS = [
+    ["force", "items"],
+    ["force", "batch"],
+    ["force", "analytics"],
+    ["force-batches"],
+    ["ministry-batches"],
+    ["ministry-batch-items"],
+    ["ministry-all-items"],
+    ["ministry-stats"],
+];
+
+export function AddReferralItemDialog({ open, onOpenChange, batchId, item }: Props) {
+    const isEdit = !!item;
+
     const form = useForm<FormValues>({
         resolver: zodResolver(schema),
-        defaultValues: {
-            militaryNumber: "",
-            fullName: "",
-            rankID: "",
-            categoryID: "",
-            gender: "1",
-            unitName: "",
-            enrollmentDate: "",
-            retirementDate: "",
-            salary: "",
-            linkNumber: "",
-            notes: "",
-        },
+        defaultValues: buildDefaults(item),
     });
 
     const { data: ranks = [] } = useQuery({
@@ -79,27 +97,25 @@ export function AddReferralItemDialog({ open, onOpenChange, batchId }: Props) {
         [handleClose, onOpenChange]
     );
 
+    type Payload = {
+        militaryNumber: string;
+        fullName: string;
+        rankID?: number | null;
+        categoryID?: number | null;
+        gender?: number;
+        unitName?: string;
+        enrollmentDate?: string | null;
+        retirementDate?: string | null;
+        salary?: number | null;
+        linkNumber?: string;
+        notes?: string;
+    };
+
     const addMutation = useApiMutation(
-        (payload: {
-            militaryNumber: string;
-            fullName: string;
-            rankID?: number | null;
-            categoryID?: number | null;
-            gender?: number;
-            unitName?: string;
-            enrollmentDate?: string | null;
-            retirementDate?: string | null;
-            salary?: number | null;
-            linkNumber?: string;
-            notes?: string;
-        }) => ministryApi.addManualItem(batchId, payload),
+        (payload: Payload) => ministryApi.addManualItem(batchId, payload),
         {
             successMessage: "تم إضافة المحال بنجاح",
-            invalidateKeys: [
-                ["force", "items"],
-                ["force", "batch", batchId],
-                ["force", "analytics"],
-            ],
+            invalidateKeys: INVALIDATE_KEYS,
             onSuccess: () => {
                 form.reset();
                 onOpenChange(false);
@@ -107,9 +123,23 @@ export function AddReferralItemDialog({ open, onOpenChange, batchId }: Props) {
         }
     );
 
+    const editMutation = useApiMutation(
+        (payload: Payload) => ministryApi.updateManualItem(item!.approvalItemID, payload),
+        {
+            successMessage: "تم تعديل بيانات المحال بنجاح",
+            invalidateKeys: INVALIDATE_KEYS,
+            onSuccess: () => {
+                form.reset();
+                onOpenChange(false);
+            },
+        }
+    );
+
+    const mutation = isEdit ? editMutation : addMutation;
+
     const handleSubmit = useCallback(
         (data: FormValues) => {
-            addMutation.mutate({
+            mutation.mutate({
                 militaryNumber: data.militaryNumber.trim(),
                 fullName: data.fullName.trim(),
                 rankID: data.rankID ? Number(data.rankID) : null,
@@ -123,23 +153,34 @@ export function AddReferralItemDialog({ open, onOpenChange, batchId }: Props) {
                 notes: data.notes?.trim() || undefined,
             });
         },
-        [addMutation]
+        [mutation]
     );
 
     return (
         <BaseFormDialog
             open={open}
             onOpenChange={handleOpenChange}
-            title="إضافة محال"
-            description="إدخال بيانات محال واحد إلى هذا الكشف"
+            title={isEdit ? "تعديل بيانات محال" : "إضافة محال"}
+            description={
+                isEdit
+                    ? "تعديل بيانات محال مسجل في هذا الكشف"
+                    : "إدخال بيانات محال واحد إلى هذا الكشف"
+            }
             size="3xl"
-            isLoading={addMutation.isPending}
+            isLoading={mutation.isPending}
             onSubmit={form.handleSubmit(handleSubmit)}
-            submitLabel="إضافة المحال"
-            submitIcon={<UserPlus className="w-4 h-4" />}
+            submitLabel={isEdit ? "حفظ التعديلات" : "إضافة المحال"}
+            submitIcon={
+                isEdit ? (
+                    <Save className="w-4 h-4" />
+                ) : (
+                    <UserPlus className="w-4 h-4" />
+                )
+            }
             cancelLabel="إلغاء"
             resetOnOpen
             reset={form.reset}
+            initialValues={buildDefaults(item)}
             showGlobalError
             formErrors={form.formState.errors}
         >
@@ -252,7 +293,7 @@ export function AddReferralItemDialog({ open, onOpenChange, batchId }: Props) {
                     />
                 </FormField>
 
-                <FormField label="الراتب" error={form.formState.errors.salary?.message}>
+                <FormField label="المعاش" error={form.formState.errors.salary?.message}>
                     <Input
                         {...form.register("salary")}
                         type="number"

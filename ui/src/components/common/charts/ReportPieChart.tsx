@@ -165,7 +165,7 @@ export const ReportPieChart: React.FC<ReportPieChartProps> = ({
 
   return (
     <Card className={cn(
-      "border border-border/60 bg-card shadow-sm transition-shadow duration-200 hover:shadow-md flex flex-col overflow-hidden",
+      "border border-border bg-card shadow-sm transition-shadow duration-200 hover:shadow-md flex flex-col overflow-hidden",
       className
     )}>
 
@@ -207,7 +207,7 @@ export const ReportPieChart: React.FC<ReportPieChartProps> = ({
                       <Cell
                         key={`cell-${index}`}
                         fill={chartConfig[key]?.color}
-                        className="stroke-background hover:opacity-85 transition-opacity duration-200 outline-none"
+                        className="stroke-background hover:opacity-100 transition-opacity duration-200 outline-none"
                         strokeWidth={2}
                       />
                     );
@@ -260,7 +260,7 @@ export const ReportPieChart: React.FC<ReportPieChartProps> = ({
                     className="w-3 h-3 rounded-full shrink-0 shadow-sm ring-1 ring-background"
                     style={{ backgroundColor: color }}
                   />
-                  <span className="text-foreground/90 font-medium text-sm truncate">
+                  <span className="text-foreground font-medium text-sm truncate">
                     {name}
                   </span>
                 </div>

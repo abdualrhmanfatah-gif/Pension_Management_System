@@ -135,7 +135,7 @@ export function LoginHistoryPage() {
                 <Card className="py-20 text-center text-destructive"><p>تعذر تحميل سجل الدخول</p></Card>
             ) : entries.length === 0 ? (
                 <Card className="py-20 text-center text-muted-foreground">
-                    <Search className="w-12 h-12 mx-auto mb-3 opacity-20" />
+                    <Search className="w-12 h-12 mx-auto mb-3 opacity-100" />
                     <p>لا توجد سجلات مطابقة للبحث</p>
                 </Card>
             ) : (

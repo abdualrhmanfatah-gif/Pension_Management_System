@@ -1,0 +1,274 @@
+﻿ M .gitignore
+ M AGENTS.md
+ M PensionMS.API/Controllers/AccountingController.cs
+ M PensionMS.API/Controllers/BankTransactionsController.cs
+ M PensionMS.API/Controllers/DashboardController.cs
+ M PensionMS.API/Controllers/MinistryApprovalsController.cs
+ M PensionMS.API/Controllers/ReportsController.cs
+ M PensionMS.API/Controllers/RetireesController.cs
+ M PensionMS.API/Controllers/RetirementFilesController.cs
+ M PensionMS.API/Controllers/StocktakeController.cs
+ M PensionMS.API/Middleware/ExceptionHandlingMiddleware.cs
+ M PensionMS.API/Program.cs
+ M PensionMS.API/Validators/Validators.cs
+ M PensionMS.Core/DTOs/Reports/ReportDtos.cs
+ M PensionMS.Core/DTOs/Reports/ReportFilterDtos.cs
+ M PensionMS.Core/DTOs/Retirees/RetireeDtos.cs
+ D PensionMS.Core/Interfaces/IAuditAndSnapshotServices.cs
+ M PensionMS.Core/Interfaces/IDashboardService.cs
+ M PensionMS.Core/Interfaces/IMinistryApprovalService.cs
+ M PensionMS.Core/Interfaces/INotificationService.cs
+ M PensionMS.Core/Interfaces/IPayrollGenerationService.cs
+ M PensionMS.Core/Interfaces/IReportService.cs
+ M PensionMS.Core/Interfaces/IRepository.cs
+ M PensionMS.Core/Interfaces/IRetirementFileService.cs
+ M PensionMS.Core/Interfaces/IUnitOfWork.cs
+ M PensionMS.Core/Interfaces/IUserService.cs
+ M PensionMS.Infrastructure/Data/Configurations/CoreRelationsConfiguration.cs
+ M PensionMS.Infrastructure/Data/Configurations/System/SystemCoreConfiguration.cs
+ D PensionMS.Infrastructure/Reporting/AccountingExportService.cs
+ D PensionMS.Infrastructure/Reporting/ExcelReportExporter.cs
+ D PensionMS.Infrastructure/Reporting/PdfReportExporter.cs
+ D PensionMS.Infrastructure/Reporting/ReportDataService.cs
+ M PensionMS.Infrastructure/Reporting/ReportRegistry.cs
+ M PensionMS.Infrastructure/Repositories/Repository.cs
+ M PensionMS.Infrastructure/Repositories/SettlementRepository.cs
+ M PensionMS.Infrastructure/Repositories/UnitOfWork.cs
+ M PensionMS.Infrastructure/Services/Accounting/BankTransactionService.cs
+ M PensionMS.Infrastructure/Services/Accounting/JournalEntryService.cs
+ M PensionMS.Infrastructure/Services/Accounting/VoucherService.cs
+ D PensionMS.Infrastructure/Services/AchievementObstacleService.cs
+ D PensionMS.Infrastructure/Services/AdminNotificationService.cs
+ D PensionMS.Infrastructure/Services/AdminSettingsService.cs
+ D PensionMS.Infrastructure/Services/Aes256EncryptionService.cs
+ D PensionMS.Infrastructure/Services/AgentService.cs
+ M PensionMS.Infrastructure/Services/Assets/FixedAssetService.cs
+ D PensionMS.Infrastructure/Services/AuditLogService.cs
+ D PensionMS.Infrastructure/Services/AuthService.cs
+ D PensionMS.Infrastructure/Services/BankService.cs
+ D PensionMS.Infrastructure/Services/BranchScopeProvider.cs
+ D PensionMS.Infrastructure/Services/BranchService.cs
+ D PensionMS.Infrastructure/Services/ComplianceEngine.cs
+ D PensionMS.Infrastructure/Services/ComplianceService.cs
+ D PensionMS.Infrastructure/Services/DashboardService.cs
+ D PensionMS.Infrastructure/Services/DiscrepancyService.cs
+ D PensionMS.Infrastructure/Services/DocumentExemptionService.cs
+ D PensionMS.Infrastructure/Services/DocumentPledgeService.cs
+ D PensionMS.Infrastructure/Services/DocumentService.cs
+ D PensionMS.Infrastructure/Services/DocumentTypeService.cs
+ D PensionMS.Infrastructure/Services/EntitledPersonService.cs
+ D PensionMS.Infrastructure/Services/EntitlementEngine.cs
+ D PensionMS.Infrastructure/Services/FileNoteService.cs
+ D PensionMS.Infrastructure/Services/FileReviewService.cs
+ D PensionMS.Infrastructure/Services/FileStatusService.cs
+ D PensionMS.Infrastructure/Services/FinancialEntitlementService.cs
+ D PensionMS.Infrastructure/Services/GuardianService.cs
+ M PensionMS.Infrastructure/Services/HR/HrAttendanceService.cs
+ D PensionMS.Infrastructure/Services/INotificationClient.cs
+ D PensionMS.Infrastructure/Services/ImmutableAuditService.cs
+ M PensionMS.Infrastructure/Services/Inventory/InventoryCustodyService.cs
+ M PensionMS.Infrastructure/Services/Inventory/InventoryItemService.cs
+ M PensionMS.Infrastructure/Services/Inventory/SimpleStocktakeService.cs
+ M PensionMS.Infrastructure/Services/Investment/InvestmentLeasingService.cs
+ D PensionMS.Infrastructure/Services/InvestmentDocumentValidationService.cs
+ D PensionMS.Infrastructure/Services/LocalFileStorageService.cs
+ D PensionMS.Infrastructure/Services/LoginHistoryService.cs
+ D PensionMS.Infrastructure/Services/LookupService.cs
+ D PensionMS.Infrastructure/Services/MinistryApprovalService.cs
+ D PensionMS.Infrastructure/Services/MissingDocumentService.cs
+ D PensionMS.Infrastructure/Services/NotificationHub.cs
+ D PensionMS.Infrastructure/Services/NotificationOutboxProcessor.cs
+ D PensionMS.Infrastructure/Services/NotificationService.cs
+ D PensionMS.Infrastructure/Services/NotificationService.cs.backup
+ D PensionMS.Infrastructure/Services/PaymentBookService.cs
+ D PensionMS.Infrastructure/Services/PayrollGenerationService.cs
+ D PensionMS.Infrastructure/Services/PensionSuspensionService.cs
+ D PensionMS.Infrastructure/Services/PermissionService.cs
+ D PensionMS.Infrastructure/Services/PledgeExpiryCheckerService.cs
+ D PensionMS.Infrastructure/Services/RankService.cs
+ D PensionMS.Infrastructure/Services/ReportService.Admin.cs
+ D PensionMS.Infrastructure/Services/ReportService.Documents.cs
+ D PensionMS.Infrastructure/Services/ReportService.Financial.cs
+ D PensionMS.Infrastructure/Services/ReportService.Investment.cs
+ D PensionMS.Infrastructure/Services/ReportService.Retirement.cs
+ D PensionMS.Infrastructure/Services/ReportService.cs
+ D PensionMS.Infrastructure/Services/RetireeService.cs
+ D PensionMS.Infrastructure/Services/RetirementFileService.cs
+ D PensionMS.Infrastructure/Services/RiskScoringService.cs
+ D PensionMS.Infrastructure/Services/SalaryPaymentBatchService.cs
+ D PensionMS.Infrastructure/Services/SalaryRecipientService.cs
+ D PensionMS.Infrastructure/Services/ScopedPermissionResolver.cs
+ D PensionMS.Infrastructure/Services/SettlementService.cs
+ D PensionMS.Infrastructure/Services/SnapshotService.cs
+ D PensionMS.Infrastructure/Services/SoDGuardService.cs
+ D PensionMS.Infrastructure/Services/SoDRules/SoDRules.cs
+ D PensionMS.Infrastructure/Services/UserService.cs
+ D PensionMS.Infrastructure/Services/WorkflowEngine.cs
+ M PensionMS.Tests/Diagnostics/DocumentUploadWaitDiagnostics.cs
+ M PensionMS.Tests/Services/ComplianceEngineTests.cs
+ M PensionMS.Tests/Services/DocumentBatchUploadTests.cs
+ M PensionMS.Tests/Services/DocumentServiceTests.cs
+ M PensionMS.Tests/Services/FileReviewIncrementalTests.cs
+ M PensionMS.Tests/Services/FileReviewServiceTests.cs
+ M PensionMS.Tests/Services/LocalFileStorageServiceTests.cs
+ M PensionMS.Tests/Services/RetireeLifeStatusTests.cs
+ M PensionMS.Tests/Services/RetirementFileServiceTests.cs
+ M docs/Architecture.md
+ D plan/m0-baseline-lint.txt
+ D plan/m1-lint.txt
+ M scripts/debug/UploadProfile/Program.cs
+ M ui/package-lock.json
+ M ui/package.json
+ M ui/src/App.tsx
+ M ui/src/api/ministry.ts
+ M ui/src/api/reports.ts
+ M ui/src/api/retirees.ts
+ M ui/src/api/salary-recipients.ts
+ M ui/src/components/common/ReportFilters.tsx
+ M ui/src/components/common/UploaderStatsView.tsx
+ M ui/src/components/domain/admin/BranchDialog.tsx
+ M ui/src/components/domain/admin/RankFormDialog.tsx
+ M ui/src/components/domain/force/AddReferralItemDialog.tsx
+ M ui/src/components/domain/investment/TenantDialog.tsx
+ M ui/src/components/domain/retirement/BulkUploadDialog.tsx
+ M ui/src/components/domain/retirement/CreateFileWizard.tsx
+ M ui/src/components/domain/retirement/EntitledPersonFormDialog.tsx
+ M ui/src/components/domain/retirement/FileReviewSidebar.tsx
+ M ui/src/components/domain/retirement/GuardianDialog.tsx
+ M ui/src/components/domain/retirement/PaymentBookDialog.tsx
+ M ui/src/components/domain/retirement/RecipientsDialog.tsx
+ M ui/src/components/domain/retirement/RetirementFileSidebar.tsx
+ M ui/src/components/domain/retirement/sections/FinancialSection.tsx
+ M ui/src/components/domain/salaries/RecipientsTab.tsx
+ M ui/src/components/domain/salaries/SalaryRecipientFormDialog.tsx
+ M ui/src/components/domain/salaries/SalaryRecipientViewerDialog.tsx
+ M ui/src/components/domain/settlements/LinkRetireeDialog.tsx
+ M ui/src/components/layout/DetailLayout.tsx
+ M ui/src/components/layout/TopNav.tsx
+ M ui/src/components/layout/navigationData.tsx
+ M ui/src/components/ui/AlertBanner.tsx
+ M ui/src/components/ui/AlertDialog.tsx
+ M ui/src/components/ui/BaseFormDialog.tsx
+ M ui/src/components/ui/Dialog.tsx
+ M ui/src/components/ui/FileUploader.tsx
+ M ui/src/components/ui/FormDialogFooter.tsx
+ M ui/src/components/ui/Input.tsx
+ M ui/src/components/ui/NativeSelect.tsx
+ M ui/src/components/ui/Stepper.tsx
+ M ui/src/components/ui/index.ts
+ M ui/src/index.css
+ M ui/src/lib/enterFocus.ts
+ M ui/src/lib/retirementFileForm.ts
+ M ui/src/lib/validation/common.ts
+ M ui/src/lib/validation/index.ts
+ M ui/src/pages/pension/EntitledPersonsPage.tsx
+ M ui/src/pages/pension/MinistryReferralsPage.tsx
+ M ui/src/pages/pension/MinistrySearchPage.tsx
+ M ui/src/pages/pension/SocialResearchPage.tsx
+ M ui/src/pages/retirement-files/FileWorkflowManager.tsx
+ M ui/src/pages/retirement-files/RetirementFileDetailsPage.tsx
+ M ui/src/pages/retirement-files/tabs/AgentsTab.tsx
+ M ui/src/pages/retirement-files/tabs/DocumentsTab.tsx
+ M ui/src/pages/retirement-files/tabs/EntitledPersonsTab.tsx
+ M ui/src/pages/retirement-files/tabs/FinancialEntitlementsTab.tsx
+ M ui/src/pages/retirement-files/tabs/GuardiansTab.tsx
+ M ui/src/pages/retirement-files/tabs/NotesTab.tsx
+ M ui/src/pages/retirement-files/tabs/PaymentBooksTab.tsx
+ M ui/src/pages/retirement-files/tabs/PledgesAndExemptionsTab.tsx
+ M ui/src/pages/retirement-files/tabs/RecipientsTab.tsx
+ M ui/src/pages/retirement-files/tabs/SalaryPaymentsTab.tsx
+ M ui/src/pages/retirement-files/tabs/SettlementsTab.tsx
+ M ui/src/pages/retirement-files/tabs/StatusTransitionsTab.tsx
+ M ui/src/pages/retirement-files/tabs/SuspensionsTab.tsx
+ M ui/src/pages/settlements/SettlementBatchDetailsPage.tsx
+ M ui/src/types/retirement.ts
+ M ui/src/types/salary-recipients.ts
+ M ui/tailwind.config.js
+ M ui/tests/retirementFileForm.test.ts
+?? .agent/
+?? .agents/skills/impeccable/
+?? .claude/
+?? .codex/
+?? .gemini/
+?? .opencode/
+?? .playwright-mcp/
+?? PensionMS.API/Security/ActiveUserValidation.cs
+?? PensionMS.Core/Exceptions/BranchScopeAccessException.cs
+?? PensionMS.Core/Interfaces/Accounting/IBankTransactionService.cs
+?? PensionMS.Core/Interfaces/IImmutableAuditService.cs
+?? PensionMS.Core/Interfaces/ISnapshotService.cs
+?? PensionMS.Core/Interfaces/Notifications/
+?? PensionMS.Core/Interfaces/Reporting/
+?? PensionMS.Infrastructure/Data/UnitOfWorkTransaction.cs
+?? PensionMS.Infrastructure/DependencyInjection/
+?? PensionMS.Infrastructure/Jobs/NotificationOutboxProcessor.cs
+?? PensionMS.Infrastructure/Jobs/PledgeExpiryCheckerService.cs
+?? PensionMS.Infrastructure/Properties/
+?? PensionMS.Infrastructure/Reporting/Exporters/
+?? PensionMS.Infrastructure/Repositories/SettlementMilitaryNumber.cs
+?? PensionMS.Infrastructure/Services/Accounting/BankService.cs
+?? PensionMS.Infrastructure/Services/Administration/
+?? PensionMS.Infrastructure/Services/Audit/
+?? PensionMS.Infrastructure/Services/Documents/
+?? PensionMS.Infrastructure/Services/Investment/InvestmentDocumentValidationService.cs
+?? PensionMS.Infrastructure/Services/Notifications/
+?? PensionMS.Infrastructure/Services/Payroll/
+?? PensionMS.Infrastructure/Services/Pension/
+?? PensionMS.Infrastructure/Services/Reporting/
+?? PensionMS.Infrastructure/Services/Security/
+?? PensionMS.Infrastructure/Services/Settlements/
+?? PensionMS.IntegrationTests/
+?? PensionMS.Tests/DependencyInjectionTests.cs
+?? PensionMS.Tests/RepositoryContractTests.cs
+?? PensionMS.Tests/Services/ExcelReportExporterTests.cs
+?? PensionMS.Tests/Services/FileQueryServiceTests.cs
+?? PensionMS.Tests/Services/FileStatusServiceTests.cs
+?? PensionMS.Tests/Services/LookupServiceTests.cs
+?? PensionMS.Tests/Services/MinistryApprovalServiceTests.cs
+?? PensionMS.Tests/Services/ReportExportGuardTests.cs
+?? PensionMS.Tests/Services/ReportingBranchScopeTests.cs
+?? PensionMS.Tests/Services/RetirementFileReportExporterTests.cs
+?? PensionMS.Tests/Services/SettlementBatchFinancialSafetyTests.cs
+?? PensionMS.Tests/Services/SettlementFinancialEligibilityTests.cs
+?? PensionMS.Tests/Services/SettlementServiceFactory.cs
+?? PensionMS.Tests/Services/SettlementsReportTests.cs
+?? PensionMS.Tests/Services/SharedExcelReportTemplateTests.cs
+?? docs/audits/database-access-remediation-results.md
+?? docs/audits/notification-mechanism-audit.md
+?? plan/architecture-camera-batch-scan.md
+?? plan/database-access-remediation-plan.md
+?? plan/database-remediation-api-build.txt
+?? plan/database-remediation-domain-test-output.txt
+?? plan/database-remediation-eligibility-tests.txt
+?? plan/database-remediation-http-finance-tests.txt
+?? plan/database-remediation-integration-build.txt
+?? plan/database-remediation-sql-test-output.txt
+?? plan/database-remediation-test-output.txt
+?? plan/feature-context-camera-batch-scan.md
+?? plan/feature-context-notification-remediation.md
+?? plan/nf0-git-snapshot.txt
+?? plan/notification-audit-backend-tests.txt
+?? plan/notification-audit-browser-results.json
+?? plan/notification-audit-isolated-tests.txt
+?? plan/notification-audit-ui-tests.txt
+?? plan/notification-remediation-plan.md
+?? plan/services-reorganization-map.json
+?? plan/services-reorganization-plan.md
+?? scripts/db-access-indexes-apply.sql
+?? scripts/db-access-indexes-precheck.sql
+?? scripts/db-access-indexes-rollback.sql
+?? scripts/debug/NotificationAudit/
+?? ui/.debug-capture/
+?? ui/src/components/domain/retirement/CameraScanDialog.tsx
+?? ui/src/components/domain/retirement/EntitlementAmountField.tsx
+?? ui/src/components/domain/retirement/bulkUploadDuplicate.ts
+?? ui/src/components/ui/TabHeader.tsx
+?? ui/src/hooks/useCameraScanSession.ts
+?? ui/src/lib/document-scanner/
+?? ui/tests/bulkUploadDialog.test.ts
+?? ui/tests/helpers/
+6605d64 feat(tokens): M3 - pages (F-30..F-41,F-44,F-55) + hero/overlay tokens
+9d3da4f feat(tokens): M2 - components (F-07,F-09,F-10,F-43,F-54) + execution log
+3da9240 feat(tokens): M1' - ready ┬د5 non-print (F-05,F-06,F-08,F-20,F-23,F-24,F-56)
+14e3157 docs(plan): M0 complete - baseline lint/build/test recorded
+6b25409 chore: baseline before design-token remediation (M0)

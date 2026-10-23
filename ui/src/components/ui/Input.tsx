@@ -1,4 +1,4 @@
-import { Calendar, Clock } from "lucide-react";
+import { Calendar, Clock, Search } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -68,20 +68,26 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         const inputId = id || generatedId;
         const hasError = !!error;
 
-        const EffectiveIcon = Icon || (type === "time" ? Clock : undefined);
+        const EffectiveIcon = Icon || (type === "search" ? Search : type === "time" ? Clock : undefined);
+        const isSearchIcon = EffectiveIcon === Search;
 
         return (
             <FormFieldWrapper id={inputId} label={label} error={error} hint={hint}>
                 <div className="relative w-full group">
                     {EffectiveIcon && (
                         <div
+                            aria-hidden="true"
                             className={cn(
-                                "absolute end-[1px] top-[1px] bottom-[1px] px-4 flex items-center justify-center border-s transition-colors pointer-events-none rounded-e-md",
-                                "text-muted-foreground/60 group-focus-within:text-primary group-focus-within:border-primary/30",
+                                "absolute flex items-center justify-center pointer-events-none transition-colors motion-reduce:transition-none",
+                                isSearchIcon
+                                    ? "start-3.5 inset-y-0 text-muted-foreground group-focus-within:text-primary"
+                                    : "end-[1px] top-[1px] bottom-[1px] px-4 border-s rounded-e-md text-muted-foreground group-focus-within:text-primary group-focus-within:border-primary",
+                                isSearchIcon && hasError && "text-destructive group-focus-within:text-destructive",
+                                isSearchIcon && props.disabled && "opacity-50",
                                 type === "time" && "bg-muted/30 group-hover:bg-muted/50"
                             )}
                         >
-                            <EffectiveIcon className="h-4 w-4" />
+                            <EffectiveIcon className={isSearchIcon ? "h-[18px] w-[18px] shrink-0" : "h-4 w-4"} />
                         </div>
                     )}
                     <input
@@ -90,14 +96,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                         ref={ref}
                         aria-label={!label && props.placeholder ? props.placeholder : undefined}
                         className={cn(
-                            "block h-11 sm:h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-sans transition-all",
+                            "block h-11 sm:h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base font-sans transition-all",
                             "placeholder:text-muted-foreground",
                             "focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-primary focus:ring-offset-0",
                             "disabled:cursor-not-allowed disabled:opacity-50",
                             "file:border-0 file:bg-transparent file:text-sm file:font-medium",
-                            EffectiveIcon && "pe-12",
+                            EffectiveIcon && (isSearchIcon ? "ps-10" : "pe-12"),
+                            isSearchIcon && "border-2 border-primary enabled:hover:border-primary motion-reduce:transition-none",
                             type === "time" && "font-mono text-start cursor-pointer hover:bg-muted/5",
                             hasError && "border-destructive focus:ring-destructive/20",
+                            isSearchIcon && hasError && "enabled:hover:border-destructive focus:border-destructive",
                             className
                         )}
                         aria-invalid={hasError}
@@ -399,8 +407,8 @@ const DateInput = React.forwardRef<HTMLInputElement, DateInputProps>(
                         onKeyDown={onKeyDown}
                         onClick={onClick}
                         className={cn(
-                            "block h-11 sm:h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition-all",
-                            "placeholder:text-muted-foreground/40 font-mono text-left",
+                            "block h-11 sm:h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base transition-all",
+                            "placeholder:text-muted-foreground font-mono text-left",
                             "focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-primary",
                             "disabled:cursor-not-allowed disabled:opacity-50",
                             "pl-14",
@@ -426,7 +434,7 @@ const DateInput = React.forwardRef<HTMLInputElement, DateInputProps>(
                         disabled={disabled}
                         className={cn(
                             "absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center transition-colors min-h-[44px] min-w-[44px]",
-                            "text-muted-foreground/60 hover:text-primary",
+                            "text-muted-foreground hover:text-primary",
                             disabled && "opacity-50 cursor-not-allowed"
                         )}
                     >

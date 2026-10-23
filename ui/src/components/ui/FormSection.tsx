@@ -36,7 +36,7 @@ export function FormSection({
     <section
       className={cn(
         "group/section",
-        separator && "pt-4 border-t border-border/30 first:border-t-0 first:pt-0",
+        separator && "pt-4 border-t border-border first:border-t-0 first:pt-0",
         className
       )}
     >
@@ -44,7 +44,7 @@ export function FormSection({
       {(title || Icon) && (
         <div
           className={cn(
-            "flex items-center gap-2 mb-3 pb-2 border-b border-border/30",
+            "flex items-center gap-2 mb-3 pb-2 border-b border-border",
             collapsible && "cursor-pointer select-none"
           )}
           onClick={() => collapsible && setIsOpen((p) => !p)}
@@ -80,7 +80,7 @@ export function FormSection({
             <Button
               variant="ghost"
               size="icon"
-              className="p-1 min-h-[32px] min-w-[32px] text-muted-foreground/50 hover:text-foreground"
+              className="p-1 min-h-[32px] min-w-[32px] text-muted-foreground hover:text-foreground"
               aria-label={isOpen ? "طي القسم" : "توسيع القسم"}
               onClick={(e) => {
                 e.stopPropagation();
@@ -106,7 +106,7 @@ export function FormSection({
 
       {/* ─── Description ─── */}
       {description && (
-        <p className="text-xs text-muted-foreground/70 mb-3 leading-relaxed">
+        <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
           {description}
         </p>
       )}

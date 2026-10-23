@@ -51,8 +51,8 @@ export function WorkOrderDialog({ open, isOpen, onOpenChange, onClose, request }
                                 {[1, 2, 3].map(i => <Skeleton key={i} className="h-24 w-full rounded-2xl" />)}
                             </div>
                         ) : workOrders.length === 0 ? (
-                            <div className="text-center py-16 text-muted-foreground bg-muted/10 rounded-2xl border-2 border-dashed border-border/40">
-                                <Wrench className="w-12 h-12 mx-auto mb-4 opacity-20" />
+                            <div className="text-center py-16 text-muted-foreground bg-muted/10 rounded-2xl border-2 border-dashed border-border">
+                                <Wrench className="w-12 h-12 mx-auto mb-4 opacity-100" />
                                 <Text variant="label">لا توجد أوامر عمل مسجلة لهذا البلاغ حالياً.</Text>
                             </div>
                         ) : (
@@ -60,7 +60,7 @@ export function WorkOrderDialog({ open, isOpen, onOpenChange, onClose, request }
                                 {workOrders.map((wo: WorkOrderDto) => (
                                     <div 
                                         key={wo.workOrderID} 
-                                        className="group bg-background border border-border/60 rounded-2xl p-5  transition-all"
+                                        className="group bg-background border border-border rounded-2xl p-5  transition-all"
                                     >
                                         <div className="flex justify-between items-start gap-4">
                                             <div className="space-y-3 flex-1">
@@ -74,7 +74,7 @@ export function WorkOrderDialog({ open, isOpen, onOpenChange, onClose, request }
                                                 <div className="flex items-center gap-4 pt-1">
                                                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/30 px-2.5 py-1 rounded-full">
                                                         <User className="w-3 h-3" />
-                                                        <span>المسؤول: <span className="font-bold text-foreground/80">{wo.assignedContractor || "غير معين"}</span></span>
+                                                        <span>المسؤول: <span className="font-bold text-foreground">{wo.assignedContractor || "غير معين"}</span></span>
                                                     </div>
                                                     
                                                     {wo.completionDate && (

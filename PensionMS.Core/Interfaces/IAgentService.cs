@@ -9,6 +9,7 @@ public interface IAgentService
     Task<ApiResponse<AgentDto>> GetByIdAsync(int id);
     Task<ApiResponse<AgentDto>> CreateAsync(CreateAgentDto dto, int userId);
     Task<ApiResponse<AgentDto>> UpdateAsync(int id, UpdateAgentDto dto, int userId);
+    Task<ApiResponse<string>> UpdatePhotoAsync(int id, IRemoteFile photo, int userId);
     Task<ApiResponse<bool>> DeactivateAsync(int id, int userId);
     Task<ApiResponse<bool>> DeleteAsync(int id, int userId);
     Task<ApiResponse<List<AgentSearchResultDto>>> SearchAsync(string query, int limit = 10);

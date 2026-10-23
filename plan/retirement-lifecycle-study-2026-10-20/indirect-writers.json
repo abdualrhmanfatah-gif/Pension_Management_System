@@ -1,0 +1,1787 @@
+[
+  {
+    "path": "PensionMS.Infrastructure/Repositories/SettlementRepository.cs",
+    "line": 328,
+    "name": "ApplyRetireeRankUpdatesAsync",
+    "access": "public",
+    "end": 364,
+    "repositories": [
+      "Set",
+      "SaveChangesAsync"
+    ],
+    "calls": [],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Administration/BranchService.cs",
+    "line": 118,
+    "name": "DeleteAsync",
+    "access": "public",
+    "end": 147,
+    "repositories": [
+      "PensionFundBranches",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "DeleteAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": true
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Administration/RankService.cs",
+    "line": 74,
+    "name": "DeleteAsync",
+    "access": "public",
+    "end": 97,
+    "repositories": [
+      "Ranks",
+      "MinistryApprovalItems",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "DeleteAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": true
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Audit/SnapshotService.cs",
+    "line": 24,
+    "name": "CaptureAsync",
+    "access": "public",
+    "end": 95,
+    "repositories": [
+      "RetirementFiles",
+      "FileSnapshots",
+      "SaveChangesAsync"
+    ],
+    "calls": [],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentExemptionService.cs",
+    "line": 46,
+    "name": "CreateAsync",
+    "access": "public",
+    "end": 104,
+    "repositories": [
+      "MissingDocuments",
+      "DocumentExemptions",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "CreateAsync",
+      "AddAsync",
+      "RefreshComplianceCacheAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentExemptionService.cs",
+    "line": 105,
+    "name": "UpdateAsync",
+    "access": "public",
+    "end": 123,
+    "repositories": [
+      "DocumentExemptions",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "UpdateAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentExemptionService.cs",
+    "line": 124,
+    "name": "DeleteAsync",
+    "access": "public",
+    "end": 149,
+    "repositories": [
+      "DocumentExemptions",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "DeleteAsync",
+      "RefreshComplianceCacheAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": true,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentPledgeService.cs",
+    "line": 54,
+    "name": "CreateAsync",
+    "access": "public",
+    "end": 111,
+    "repositories": [
+      "MissingDocuments",
+      "DocumentPledges",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "CreateAsync",
+      "AddAsync",
+      "RefreshComplianceCacheAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentPledgeService.cs",
+    "line": 112,
+    "name": "RegisterPledgeDirectiveMissingDoc",
+    "access": "private",
+    "end": 124,
+    "repositories": [
+      "MissingDocuments",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "AddAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentPledgeService.cs",
+    "line": 125,
+    "name": "MarkFulfilledAsync",
+    "access": "public",
+    "end": 167,
+    "repositories": [
+      "DocumentPledges",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "MarkFulfilledAsync",
+      "RefreshComplianceCacheAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentPledgeService.cs",
+    "line": 168,
+    "name": "UpdateAsync",
+    "access": "public",
+    "end": 195,
+    "repositories": [
+      "DocumentPledges",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "UpdateAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentPledgeService.cs",
+    "line": 196,
+    "name": "DeleteAsync",
+    "access": "public",
+    "end": 224,
+    "repositories": [
+      "DocumentPledges",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "DeleteAsync",
+      "RefreshComplianceCacheAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": true,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentService.cs",
+    "line": 264,
+    "name": "UploadAsync",
+    "access": "public",
+    "end": 584,
+    "repositories": [
+      "DocumentTypes",
+      "Documents",
+      "SaveChangesAsync",
+      "OperationalExpenses"
+    ],
+    "calls": [
+      "UploadAsync",
+      "DeleteFileAsync",
+      "AddAsync",
+      "ProcessFileLevelPostUploadAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentService.cs",
+    "line": 585,
+    "name": "RefreshAfterUploadAsync",
+    "access": "public",
+    "end": 637,
+    "repositories": [
+      "RetirementFiles",
+      "Documents",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "RefreshAfterUploadAsync",
+      "ProcessFileLevelPostUploadAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentService.cs",
+    "line": 638,
+    "name": "ProcessFileLevelPostUploadAsync",
+    "access": "private",
+    "end": 730,
+    "repositories": [
+      "MissingDocuments",
+      "SaveChangesAsync",
+      "DocumentPledges"
+    ],
+    "calls": [
+      "ProcessFileLevelPostUploadAsync",
+      "RefreshComplianceCacheAsync",
+      "ReEvaluateEntitlementStatusAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentService.cs",
+    "line": 956,
+    "name": "UpdateAsync",
+    "access": "public",
+    "end": 1172,
+    "repositories": [
+      "Documents",
+      "DocumentTypes",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "UpdateAsync",
+      "DeleteFileAsync",
+      "RefreshComplianceCacheAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+    "line": 107,
+    "name": "CreateAsync",
+    "access": "public",
+    "end": 167,
+    "repositories": [
+      "RetirementFiles",
+      "DocumentTypes",
+      "MissingDocuments",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "CreateAsync",
+      "AddAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+    "line": 168,
+    "name": "MarkFulfilledAsync",
+    "access": "public",
+    "end": 192,
+    "repositories": [
+      "MissingDocuments",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "MarkFulfilledAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+    "line": 193,
+    "name": "DeleteAsync",
+    "access": "public",
+    "end": 216,
+    "repositories": [
+      "MissingDocuments",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "DeleteAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": true,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/PaymentBookService.cs",
+    "line": 196,
+    "name": "CreateCoreAsync",
+    "access": "private",
+    "end": 361,
+    "repositories": [
+      "RetirementFiles",
+      "PaymentBooks",
+      "SaveChangesAsync",
+      "Documents",
+      "MissingDocuments"
+    ],
+    "calls": [
+      "CreateCoreAsync",
+      "GenerateNextBookNumberAsync",
+      "AddAsync",
+      "CreateAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/PaymentBookService.cs",
+    "line": 362,
+    "name": "UpdateAsync",
+    "access": "public",
+    "end": 388,
+    "repositories": [
+      "PaymentBooks",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "UpdateAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/PaymentBookService.cs",
+    "line": 389,
+    "name": "DeleteAsync",
+    "access": "public",
+    "end": 409,
+    "repositories": [
+      "PaymentBooks",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "DeleteAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/SalaryPaymentBatchService.cs",
+    "line": 521,
+    "name": "ImportTransactionResultsAsync",
+    "access": "public",
+    "end": 688,
+    "repositories": [
+      "SalaryPaymentBatches",
+      "SalaryPaymentItems",
+      "TransactionStatuses",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "ImportTransactionResultsAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/SalaryRecipientService.cs",
+    "line": 85,
+    "name": "CreateCoreAsync",
+    "access": "private",
+    "end": 347,
+    "repositories": [
+      "RetirementFiles",
+      "Guardians",
+      "GuardianEntitledPersons",
+      "Agents",
+      "SalaryRecipients",
+      "FinancialEntitlements",
+      "Retirees",
+      "EntitledPersons",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "CreateCoreAsync",
+      "UploadAsync",
+      "ReEvaluateEntitlementStatusAsync",
+      "AddAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/SalaryRecipientService.cs",
+    "line": 364,
+    "name": "EndCoreAsync",
+    "access": "private",
+    "end": 404,
+    "repositories": [
+      "SalaryRecipients",
+      "SaveChangesAsync",
+      "RetirementFiles"
+    ],
+    "calls": [
+      "EndCoreAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/SalaryRecipientService.cs",
+    "line": 405,
+    "name": "UpdatePhotoAsync",
+    "access": "public",
+    "end": 459,
+    "repositories": [
+      "Retirees",
+      "Agents",
+      "EntitledPersons",
+      "Guardians",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "UpdatePhotoAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/AgentService.cs",
+    "line": 97,
+    "name": "CreateCoreAsync",
+    "access": "private",
+    "end": 303,
+    "repositories": [
+      "RetirementFiles",
+      "EntitledPersons",
+      "GuardianEntitledPersons",
+      "Agents",
+      "SaveChangesAsync",
+      "MissingDocuments"
+    ],
+    "calls": [
+      "CreateCoreAsync",
+      "AddAsync",
+      "UploadAsync",
+      "RefreshComplianceCacheAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/AgentService.cs",
+    "line": 304,
+    "name": "UpdateCoreAsync",
+    "access": "private",
+    "end": 447,
+    "repositories": [
+      "Agents",
+      "SalaryRecipients",
+      "EntitledPersons",
+      "GuardianEntitledPersons",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "UpdateCoreAsync",
+      "UploadAsync",
+      "RefreshComplianceCacheAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/AgentService.cs",
+    "line": 448,
+    "name": "DeactivateCoreAsync",
+    "access": "private",
+    "end": 471,
+    "repositories": [
+      "Agents",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "EndRecipientsAsync",
+      "RefreshComplianceCacheAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/AgentService.cs",
+    "line": 472,
+    "name": "DeleteCoreAsync",
+    "access": "private",
+    "end": 496,
+    "repositories": [
+      "Agents",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "DeleteCoreAsync",
+      "EndRecipientsAsync",
+      "RefreshComplianceCacheAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": true,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/AgentService.cs",
+    "line": 591,
+    "name": "UpdatePhotoAsync",
+    "access": "public",
+    "end": 611,
+    "repositories": [
+      "Agents",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "UpdatePhotoAsync",
+      "RequestReviewAsync",
+      "DeleteFileAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+    "line": 84,
+    "name": "CreateAsync",
+    "access": "public",
+    "end": 229,
+    "repositories": [
+      "EntitledPersons",
+      "RetirementFiles",
+      "FinancialEntitlements",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "CreateAsync",
+      "AddAsync",
+      "UploadAsync",
+      "ReEvaluateEntitlementStatusAsync",
+      "RefreshComplianceCacheAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+    "line": 230,
+    "name": "UpdateAsync",
+    "access": "public",
+    "end": 371,
+    "repositories": [
+      "EntitledPersons",
+      "RetirementFiles",
+      "FinancialEntitlements",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "UpdateAsync",
+      "DeleteFileAsync",
+      "UploadAsync",
+      "ReEvaluateEntitlementStatusAsync",
+      "RefreshComplianceCacheAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+    "line": 381,
+    "name": "DeleteAsync",
+    "access": "public",
+    "end": 406,
+    "repositories": [
+      "EntitledPersons",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "DeleteAsync",
+      "RefreshComplianceCacheAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": true,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+    "line": 407,
+    "name": "StopAsync",
+    "access": "public",
+    "end": 516,
+    "repositories": [
+      "EntitledPersons",
+      "SaveChangesAsync",
+      "MissingDocuments"
+    ],
+    "calls": [
+      "StopAsync",
+      "UploadAsync",
+      "AddAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+    "line": 517,
+    "name": "ReactivateAsync",
+    "access": "public",
+    "end": 656,
+    "repositories": [
+      "EntitledPersons",
+      "SaveChangesAsync",
+      "MissingDocuments"
+    ],
+    "calls": [
+      "ReactivateAsync",
+      "UploadAsync",
+      "AddAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+    "line": 657,
+    "name": "RecordDeathAsync",
+    "access": "public",
+    "end": 704,
+    "repositories": [
+      "EntitledPersons",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "RecordDeathAsync",
+      "UploadAsync",
+      "RefreshComplianceCacheAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+    "line": 705,
+    "name": "ManualActivateAsync",
+    "access": "public",
+    "end": 808,
+    "repositories": [
+      "EntitledPersons",
+      "MissingDocuments",
+      "DocumentPledges",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "ManualActivateAsync",
+      "AddAsync",
+      "RefreshComplianceCacheAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/GuardianService.cs",
+    "line": 85,
+    "name": "AssignCoreAsync",
+    "access": "private",
+    "end": 217,
+    "repositories": [
+      "RetirementFiles",
+      "EntitledPersons",
+      "Agents",
+      "Guardians",
+      "SaveChangesAsync",
+      "GuardianEntitledPersons",
+      "MissingDocuments"
+    ],
+    "calls": [
+      "AssignCoreAsync",
+      "AddAsync",
+      "UploadAsync",
+      "RefreshComplianceCacheAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/GuardianService.cs",
+    "line": 223,
+    "name": "EndGuardianshipAsync",
+    "access": "public",
+    "end": 260,
+    "repositories": [
+      "Guardians",
+      "GuardianEntitledPersons",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "EndGuardianshipAsync",
+      "RefreshComplianceCacheAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/GuardianService.cs",
+    "line": 261,
+    "name": "UpdateAsync",
+    "access": "public",
+    "end": 295,
+    "repositories": [
+      "Guardians",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "UpdateAsync",
+      "DeleteFileAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/GuardianService.cs",
+    "line": 306,
+    "name": "AddMinorCoreAsync",
+    "access": "private",
+    "end": 335,
+    "repositories": [
+      "Guardians",
+      "EntitledPersons",
+      "Agents",
+      "GuardianEntitledPersons",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "AddMinorCoreAsync",
+      "AddAsync",
+      "RequestReviewAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/RetireeService.cs",
+    "line": 195,
+    "name": "UpdateAsync",
+    "access": "public",
+    "end": 273,
+    "repositories": [
+      "Retirees",
+      "SaveChangesAsync",
+      "RetirementFiles"
+    ],
+    "calls": [
+      "UpdateAsync",
+      "DeleteFileAsync",
+      "UploadAsync",
+      "RefreshComplianceCacheAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/RetireeService.cs",
+    "line": 274,
+    "name": "DeleteAsync",
+    "access": "public",
+    "end": 305,
+    "repositories": [
+      "BeginTransactionAsync",
+      "Retirees",
+      "RollbackAsync",
+      "SaveChangesAsync",
+      "CommitAsync"
+    ],
+    "calls": [
+      "DeleteAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": true,
+    "softDelete": true,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/RetireeService.cs",
+    "line": 465,
+    "name": "UploadPhotoAsync",
+    "access": "public",
+    "end": 512,
+    "repositories": [
+      "Retirees",
+      "SaveChangesAsync",
+      "RetirementFiles"
+    ],
+    "calls": [
+      "UploadPhotoAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/EntitlementEngine.cs",
+    "line": 66,
+    "name": "ReEvaluateEntitlementStatusAsync",
+    "access": "public",
+    "end": 199,
+    "repositories": [
+      "EntitledPersons",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "ReEvaluateEntitlementStatusAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/FinancialEntitlementService.cs",
+    "line": 127,
+    "name": "CreateAsync",
+    "access": "public",
+    "end": 237,
+    "repositories": [
+      "Retirees",
+      "HasActiveTransaction",
+      "BeginTransactionAsync",
+      "FinancialEntitlements",
+      "SaveChangesAsync",
+      "RetirementFiles",
+      "CommitAsync",
+      "RollbackAsync"
+    ],
+    "calls": [
+      "CreateAsync",
+      "AddAsync",
+      "RefreshComplianceCacheAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": true,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/FinancialEntitlementService.cs",
+    "line": 238,
+    "name": "EndAsync",
+    "access": "public",
+    "end": 282,
+    "repositories": [
+      "FinancialEntitlements",
+      "SaveChangesAsync",
+      "RetirementFiles"
+    ],
+    "calls": [
+      "EndAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/PensionSuspensionService.cs",
+    "line": 29,
+    "name": "CreateWithPledgeAsync",
+    "access": "public",
+    "end": 143,
+    "repositories": [
+      "RetirementFiles",
+      "PensionSuspensions",
+      "SaveChangesAsync",
+      "DocumentPledges",
+      "MissingDocuments",
+      "StatusTransitionLogs"
+    ],
+    "calls": [
+      "CreateWithPledgeAsync",
+      "AddAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/PensionSuspensionService.cs",
+    "line": 144,
+    "name": "EndSuspensionAsync",
+    "access": "public",
+    "end": 199,
+    "repositories": [
+      "PensionSuspensions",
+      "RetirementFiles",
+      "StatusTransitionLogs",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "EndSuspensionAsync",
+      "AddAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/PensionSuspensionService.cs",
+    "line": 332,
+    "name": "CreateExemptionAsync",
+    "access": "public",
+    "end": 387,
+    "repositories": [
+      "RetirementFiles",
+      "DocumentExemptions",
+      "SaveChangesAsync",
+      "MissingDocuments"
+    ],
+    "calls": [
+      "CreateExemptionAsync",
+      "AddAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/ComplianceEngine.cs",
+    "line": 132,
+    "name": "RefreshComplianceCacheAsync",
+    "access": "public",
+    "end": 147,
+    "repositories": [
+      "RetirementFiles",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "RefreshComplianceCacheAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 167,
+    "name": "RequestReviewCoreAsync",
+    "access": "private",
+    "end": 416,
+    "repositories": [
+      "RetirementFiles",
+      "FileReviewItems",
+      "AuditLogs",
+      "SaveChangesAsync",
+      "EntitledPersons",
+      "Agents",
+      "Guardians",
+      "PaymentBooks",
+      "SalaryRecipients",
+      "Documents"
+    ],
+    "calls": [
+      "RequestReviewCoreAsync",
+      "AddAsync",
+      "MarkAffectedEntitiesAsPendingAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": true
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 420,
+    "name": "ApproveReviewCoreAsync",
+    "access": "private",
+    "end": 450,
+    "repositories": [
+      "RetirementFiles",
+      "FileReviewItems",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "ApproveReviewCoreAsync",
+      "SetEntityReviewStatusForFileAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 454,
+    "name": "RejectReviewCoreAsync",
+    "access": "private",
+    "end": 484,
+    "repositories": [
+      "RetirementFiles",
+      "FileReviewItems",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "RejectReviewCoreAsync",
+      "SetEntityReviewStatusForFileAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 497,
+    "name": "ApproveItemCoreAsync",
+    "access": "private",
+    "end": 527,
+    "repositories": [
+      "FileReviewItems",
+      "RetirementFiles",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "ApproveItemCoreAsync",
+      "UpdateEntityPendingStatusForItemAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 531,
+    "name": "RejectItemCoreAsync",
+    "access": "private",
+    "end": 561,
+    "repositories": [
+      "FileReviewItems",
+      "RetirementFiles",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "RejectItemCoreAsync",
+      "UpdateEntityPendingStatusForItemAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 571,
+    "name": "AutoResolveFileReviewCoreAsync",
+    "access": "private",
+    "end": 622,
+    "repositories": [
+      "RetirementFiles",
+      "FileReviewItems",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "SetEntityReviewStatusForFileAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 623,
+    "name": "MarkAffectedEntitiesAsPendingAsync",
+    "access": "private",
+    "end": 680,
+    "repositories": [
+      "EntitledPersons",
+      "Agents",
+      "Guardians",
+      "PaymentBooks",
+      "SalaryRecipients",
+      "Documents",
+      "Retirees",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "MarkAffectedEntitiesAsPendingAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 681,
+    "name": "SetEntityReviewStatusForFileAsync",
+    "access": "private",
+    "end": 728,
+    "repositories": [
+      "EntitledPersons",
+      "Agents",
+      "Guardians",
+      "PaymentBooks",
+      "SalaryRecipients",
+      "Documents",
+      "RetirementFiles",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "SetEntityReviewStatusForFileAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 729,
+    "name": "AcknowledgeEntityRejectionAsync",
+    "access": "public",
+    "end": 810,
+    "repositories": [
+      "EntitledPersons",
+      "Documents",
+      "Agents",
+      "Guardians",
+      "PaymentBooks",
+      "SalaryRecipients",
+      "Retirees",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "AcknowledgeEntityRejectionAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 811,
+    "name": "UpdateEntityPendingStatusForItemAsync",
+    "access": "private",
+    "end": 851,
+    "repositories": [
+      "EntitledPersons",
+      "Agents",
+      "Guardians",
+      "PaymentBooks",
+      "SalaryRecipients",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "UpdateEntityPendingStatusForItemAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 43,
+    "name": "ChangeStatusAsync",
+    "access": "public",
+    "end": 206,
+    "repositories": [
+      "RetirementFiles",
+      "FinancialEntitlements",
+      "PaymentBooks",
+      "SalaryRecipients",
+      "StatusTransitionLogs",
+      "SaveChangesAsync",
+      "AuditLogs"
+    ],
+    "calls": [
+      "AddAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 277,
+    "name": "ProcessExpiredPledgesAsync",
+    "access": "public",
+    "end": 378,
+    "repositories": [
+      "DocumentPledges",
+      "PensionSuspensions",
+      "RetirementFiles",
+      "StatusTransitionLogs",
+      "SaveChangesAsync",
+      "AuditLogs"
+    ],
+    "calls": [
+      "ProcessExpiredPledgesAsync",
+      "AddAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/MinistryApprovalService.cs",
+    "line": 559,
+    "name": "ProcessItemAsync",
+    "access": "public",
+    "end": 618,
+    "repositories": [
+      "MinistryApprovalItems",
+      "BeginTransactionAsync",
+      "Retirees",
+      "SaveChangesAsync",
+      "SettlementItems",
+      "MinistryApprovalBatches",
+      "CommitAsync",
+      "RollbackAsync"
+    ],
+    "calls": [
+      "ProcessItemAsync",
+      "AddAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": true,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/MinistryApprovalService.cs",
+    "line": 755,
+    "name": "ProcessBulkApprovalsAsync",
+    "access": "public",
+    "end": 825,
+    "repositories": [
+      "BeginTransactionAsync",
+      "MinistryApprovalItems",
+      "Retirees",
+      "SettlementItems",
+      "SaveChangesAsync",
+      "MinistryApprovalBatches",
+      "CommitAsync",
+      "RollbackAsync"
+    ],
+    "calls": [
+      "ProcessBulkApprovalsAsync",
+      "AddAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": true,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 63,
+    "name": "CreateAsync",
+    "access": "public",
+    "end": 411,
+    "repositories": [
+      "RetirementFiles",
+      "Users",
+      "PensionFundBranches",
+      "Retirees",
+      "BeginTransactionAsync",
+      "SettlementItems",
+      "SaveChangesAsync",
+      "Documents",
+      "MissingDocuments",
+      "FinancialEntitlements",
+      "CommitAsync",
+      "RollbackAsync"
+    ],
+    "calls": [
+      "CreateAsync",
+      "GenerateNextFileNumberAsync",
+      "AddAsync",
+      "UploadAsync",
+      "CalculateMissingDataAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": true,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 412,
+    "name": "HandleRetireeDeathAsync",
+    "access": "public",
+    "end": 608,
+    "repositories": [
+      "RetirementFiles",
+      "BeginTransactionAsync",
+      "Retirees",
+      "StatusTransitionLogs",
+      "SalaryRecipients",
+      "PaymentBooks",
+      "EntitledPersons",
+      "Documents",
+      "MissingDocuments",
+      "SaveChangesAsync",
+      "CommitAsync",
+      "RollbackAsync",
+      "AuditLogs"
+    ],
+    "calls": [
+      "HandleRetireeDeathAsync",
+      "AddAsync",
+      "ReEvaluateEntitlementStatusAsync",
+      "RefreshComplianceCacheAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": true,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 609,
+    "name": "CorrectRetireeLifeStatusAsync",
+    "access": "public",
+    "end": 771,
+    "repositories": [
+      "RetirementFiles",
+      "BeginTransactionAsync",
+      "Retirees",
+      "StatusTransitionLogs",
+      "EntitledPersons",
+      "SalaryRecipients",
+      "Agents",
+      "PaymentBooks",
+      "MissingDocuments",
+      "SaveChangesAsync",
+      "CommitAsync",
+      "RollbackAsync"
+    ],
+    "calls": [
+      "CorrectRetireeLifeStatusAsync",
+      "AddAsync",
+      "RequestReviewAsync",
+      "RefreshComplianceCacheAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": true,
+    "softDelete": true,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 797,
+    "name": "UpdateAsync",
+    "access": "public",
+    "end": 1010,
+    "repositories": [
+      "RetirementFiles",
+      "Retirees",
+      "SaveChangesAsync",
+      "EntitledPersons",
+      "Agents",
+      "Guardians",
+      "PaymentBooks",
+      "AuditLogs"
+    ],
+    "calls": [
+      "UpdateAsync",
+      "DeleteFileAsync",
+      "UploadAsync",
+      "RequestReviewAsync",
+      "CalculateMissingDataAsync"
+    ],
+    "review": true,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 1011,
+    "name": "AssignEmployeeAsync",
+    "access": "public",
+    "end": 1045,
+    "repositories": [
+      "RetirementFiles",
+      "Users",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "AssignEmployeeAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 1046,
+    "name": "DeleteAsync",
+    "access": "public",
+    "end": 1069,
+    "repositories": [
+      "RetirementFiles",
+      "SaveChangesAsync"
+    ],
+    "calls": [
+      "DeleteAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": true,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/WorkflowEngine.cs",
+    "line": 21,
+    "name": "RouteFileAsync",
+    "access": "public",
+    "end": 78,
+    "repositories": [
+      "RetirementFiles",
+      "PendingTasks",
+      "SaveChangesAsync"
+    ],
+    "calls": [],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Settlements/SettlementService.cs",
+    "line": 154,
+    "name": "ImportExcelCoreAsync",
+    "access": "private",
+    "end": 554,
+    "repositories": [
+      "SettlementsBatches",
+      "SettlementDecisions",
+      "SaveChangesAsync",
+      "Ranks",
+      "MinistryApprovalItems",
+      "Retirees",
+      "SettlementItems"
+    ],
+    "calls": [
+      "ImportExcelCoreAsync",
+      "AddAsync",
+      "CreateAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": false,
+    "softDelete": false,
+    "hardDelete": false
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Settlements/SettlementService.cs",
+    "line": 860,
+    "name": "LinkItemToRetireeAsync",
+    "access": "public",
+    "end": 1014,
+    "repositories": [
+      "SettlementItems",
+      "Retirees",
+      "FinancialEntitlements",
+      "HasActiveTransaction",
+      "BeginTransactionAsync",
+      "RollbackAsync",
+      "SettlementsBatches",
+      "SaveChangesAsync",
+      "CommitAsync",
+      "RetirementFiles",
+      "AuditLogs"
+    ],
+    "calls": [
+      "CreateAsync",
+      "RefreshComplianceCacheAsync"
+    ],
+    "review": false,
+    "save": true,
+    "lock": false,
+    "transaction": true,
+    "softDelete": false,
+    "hardDelete": false
+  }
+]

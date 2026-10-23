@@ -13,6 +13,8 @@ export interface RetirementFileListItem {
     fileStatusName: string | null;
     fileOpenDate: string | null;
     missingDocumentsCount?: number;
+    hasDocuments?: boolean;
+    lastUploadedByUserName?: string | null;
     missingDataCount?: number;
     reviewStatus?: number;
 }
@@ -27,6 +29,8 @@ export interface RetirementFilesPagedResult {
 }
 
 export interface RetirementFileDetail {
+    salaryStatus?: string;
+    previousStatusID?: number | null;
     missingDataList?: string[];
     fileID: number;
     fileNumber: string;
@@ -172,6 +176,7 @@ export interface EntitledPersonSummary {
     hasPersonalPhoto?: boolean;
     isDeceased?: boolean;
     pendingReviewStatus?: number;
+    sharePercent?: number | null;
 }
 
 export interface EntitledPersonSearchResult {
@@ -190,6 +195,9 @@ export interface EntitledPersonSearchResult {
 }
 
 export interface AgentSummary {
+    agencyScope?: import("@/lib/agentScope").AgencyScope | null;
+    entitledID?: number | null;
+    entitledPersonName?: string | null;
     agentID: number;
     fullName: string;
     nationalID?: string;
@@ -203,6 +211,9 @@ export interface AgentSummary {
 }
 
 export interface AgentDto {
+    agencyScope?: import("@/lib/agentScope").AgencyScope | null;
+    entitledID?: number | null;
+    entitledPersonName?: string | null;
     agentID: number;
     fullName: string;
     nationalID: string;
@@ -219,6 +230,10 @@ export interface AgentDto {
 }
 
 export interface AgentSearchResult {
+    agencyScope?: import("@/lib/agentScope").AgencyScope | null;
+    entitledID?: number | null;
+    entitledPersonName?: string | null;
+    isActive: boolean;
     agentID: number;
     fullName: string;
     nationalID: string;
@@ -405,6 +420,10 @@ export interface SuspensionItem {
 }
 
 export interface RecipientItem {
+    recipientName?: string;
+    recipientType?: string;
+    effectiveEntitledID?: number | null;
+    entitledPersonName?: string | null;
     recipientID: number;
     fileID: number;
     retireeID?: number;
@@ -420,6 +439,7 @@ export interface RecipientItem {
     isActive: boolean;
     notes?: string;
     pendingReviewStatus?: number;
+    sharePercent?: number | null;
 }
 
 export interface NoteItem {

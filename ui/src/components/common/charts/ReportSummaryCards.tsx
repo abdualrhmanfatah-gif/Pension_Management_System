@@ -13,6 +13,8 @@ interface ReportSummaryCardsProps {
     cards: SummaryCardConfig[];
     data: Record<string, any>[];
     summaryData?: Record<string, any>;
+    loading?: boolean;
+    error?: boolean;
 }
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -32,7 +34,7 @@ function getNestedValue(obj: Record<string, any>, key: string): any {
     return key.split('.').reduce((acc, k) => acc?.[k], obj);
 }
 
-export function ReportSummaryCards({ cards, data, summaryData }: ReportSummaryCardsProps) {
+export function ReportSummaryCards({ cards, data, summaryData, loading, error }: ReportSummaryCardsProps) {
     const values = useMemo(() => {
         const result: Record<string, number> = {};
         const source = summaryData || {};
@@ -75,7 +77,8 @@ export function ReportSummaryCards({ cards, data, summaryData }: ReportSummaryCa
                     <StatCard
                         key={index}
                         title={card.title}
-                        value={formatted}
+                        value={error ? '—' : formatted}
+                        loading={loading}
                         icon={<Icon className="h-4 w-4" />}
                         description={card.description}
                         variant={variant}

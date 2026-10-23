@@ -30,7 +30,7 @@ type PersonDocCardProps = PersonDocCardUploadedProps | PersonDocCardMissingProps
 export function PersonDocCard(props: PersonDocCardProps) {
     if (props.type === "uploaded") {
         return (
-            <div className="flex items-center gap-3 p-3 rounded-lg border border-border bg-card hover:border-muted-foreground/30 transition-colors">
+            <div className="flex items-center gap-3 p-3 rounded-lg border border-border bg-card hover:border-muted-foreground transition-colors">
                 <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
                 <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium truncate">{props.document.documentTypeName}</p>

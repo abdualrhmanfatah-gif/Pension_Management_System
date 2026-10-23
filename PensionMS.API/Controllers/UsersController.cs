@@ -20,6 +20,11 @@ public class UsersController : ControllerBase
         _userService = userService;
     }
 
+    [HttpPut("{id:int}/role-assignments")]
+    [Authorize(Policy = "System.ManageUsers")]
+    public async Task<IActionResult> SetRoleAssignments(int id, [FromBody] SetUserRoleAssignmentsDto dto)
+        => (await _userService.SetRoleAssignmentsAsync(id, dto, this.GetUserId())).ToActionResult();
+
     [HttpGet("debug-perms/{userId:int}")]
     [Authorize(Policy = "System.Admin")]
     public async Task<IActionResult> DebugPerms(int userId)

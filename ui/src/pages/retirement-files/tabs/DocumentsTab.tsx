@@ -29,16 +29,15 @@ import { UploadDocumentDialog } from "@/components/domain/retirement/UploadDocum
 import {
     Badge,
     Button,
-    Card,
     type CustomColumnDef,
     DataTable,
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
-    Heading,
     LoadingIndicator,
     Text,
+    TabHeader,
     useConfirm,
 } from "@/components/ui";
 import { PENDING_REVIEW_STATUS } from "@/constants";
@@ -414,7 +413,7 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
                 className: "max-w-[100px]",
                 render: (row) => {
                     if (!row.notes) {
-                        return <span className="text-xs text-muted-foreground/40">—</span>;
+                        return <span className="text-xs text-muted-foreground">—</span>;
                     }
                     const long = isLongNote(row.notes);
                     return (
@@ -475,7 +474,7 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
                             <Button
                                 size="icon"
                                 variant="ghost"
-                                className="h-8 w-8 text-destructive hover:text-destructive/90 hover:bg-destructive/10"
+                                className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
                                 onClick={() => handleDelete(row)}
                                 title="حذف"
                             >
@@ -515,77 +514,69 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
     return (
         <div className="space-y-4 md:space-y-6 animate-in fade-in duration-500">
             {/* ═══ Header ═══ */}
-            <Card className="flex flex-col gap-3 bg-muted/30 p-4 md:p-5">
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex items-center gap-2">
-                        <FileText className="w-4 h-4 md:w-5 md:h-5 text-primary shrink-0" />
-                        <Heading level="h3" className="font-bold text-sm md:text-base whitespace-nowrap">
-                            وثائق الملف المرفوعة
-                        </Heading>
-                        <Text variant="caption" className="md:text-sm font-medium text-muted-foreground hidden sm:inline">
-                            — كافة المستندات المؤرشفة والمرفقة مع هذا الملف التقاعدي
-                        </Text>
-                    </div>
-                    <div className="flex items-center gap-1.5 md:gap-2">
-                    {canUpload && (
-                        <>
-                            <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => setBulkUploadOpen(true)}
-                                className="gap-1 h-7 px-2 text-[11px] md:h-9 md:text-sm md:px-3 shrink-0"
-                            >
-                                <Upload className="w-3.5 h-3.5" />
-                                <span className="hidden sm:inline">رفع جماعي</span>
-                                <span className="sm:hidden">جماعي</span>
-                            </Button>
-                            <Button
-                                size="sm"
-                                onClick={() => {
-                                    setUploadDefaultTypeId(undefined);
-                                    setUploadEntityIds(undefined);
-                                    setUploadOpen(true);
-                                }}
-                                className="gap-1 h-7 px-2 text-[11px] md:h-9 md:text-sm md:px-3 shrink-0"
-                            >
-                                <Plus className="w-3.5 h-3.5" />
-                                <span className="hidden sm:inline">رفع وثيقة</span>
-                                <span className="sm:hidden">وثيقة</span>
-                            </Button>
-                        </>
-                    )}
-                    {canManageMissing && (
+            {/* ═══ Header ═══ */}
+            <TabHeader
+                title="وثائق الملف المرفوعة"
+                description="كافة المستندات المؤرشفة والمرفقة مع هذا الملف التقاعدي"
+                icon={FileText}
+            >
+                {canUpload && (
+                    <>
                         <Button
+                            size="sm"
                             variant="outline"
-                            size="sm"
-                            onClick={() => setAddMissingOpen(true)}
-                            className="gap-1 h-7 px-2 text-[11px] md:h-9 md:text-sm md:px-3 shrink-0"
+                            onClick={() => setBulkUploadOpen(true)}
+                            className="gap-1 rounded-xl font-bold h-8 md:h-10 px-4 md:px-6 transition-all text-xs md:text-sm shrink-0"
                         >
-                            <ListChecks className="w-3.5 h-3.5" />
-                            <span className="hidden sm:inline">تسجيل نقص</span>
-                            <span className="sm:hidden">نقص</span>
+                            <Upload className="w-3.5 h-3.5 md:w-4 md:h-4 ms-1" />
+                            <span className="hidden sm:inline">رفع جماعي</span>
+                            <span className="sm:hidden">جماعي</span>
                         </Button>
-                    )}
-                    {documents.length > 0 && (
                         <Button
-                            variant="ghost"
                             size="sm"
-                            onClick={handlePrintAll}
-                            className="h-7 px-2 md:h-9 md:px-3 shrink-0"
-                            title="طباعة الكل"
+                            onClick={() => {
+                                setUploadDefaultTypeId(undefined);
+                                setUploadEntityIds(undefined);
+                                setUploadOpen(true);
+                            }}
+                            className="gap-1 rounded-xl font-bold h-8 md:h-10 px-4 md:px-6 transition-all text-xs md:text-sm shrink-0"
                         >
-                            <Printer className="w-4 h-4" />
+                            <Plus className="w-3.5 h-3.5 md:w-4 md:h-4 ms-1" />
+                            <span className="hidden sm:inline">رفع وثيقة</span>
+                            <span className="sm:hidden">وثيقة</span>
                         </Button>
-                    )}
-                </div>
-                </div>
-            </Card>
+                    </>
+                )}
+                {canManageMissing && (
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setAddMissingOpen(true)}
+                        className="gap-1 rounded-xl font-bold h-8 md:h-10 px-4 md:px-6 transition-all text-xs md:text-sm shrink-0"
+                    >
+                        <ListChecks className="w-3.5 h-3.5 md:w-4 md:h-4 ms-1" />
+                        <span className="hidden sm:inline">تسجيل نقص</span>
+                        <span className="sm:hidden">نقص</span>
+                    </Button>
+                )}
+                {documents.length > 0 && (
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handlePrintAll}
+                        className="h-8 md:h-10 px-2 md:px-3 shrink-0 rounded-xl"
+                        title="طباعة الكل"
+                    >
+                        <Printer className="w-4 h-4" />
+                    </Button>
+                )}
+            </TabHeader>
 
             {/* ═══ Missing Documents ═══ */}
             {missingDocs.length > 0 && (
-                <div className="bg-destructive/[0.03] border border-destructive/20 rounded-xl overflow-hidden">
+                <div className="bg-destructive/[0.03] border border-destructive rounded-xl overflow-hidden">
                     {/* Header */}
-                    <div className="bg-destructive/10 px-4 py-3 md:px-5 md:py-3.5 flex items-center justify-between border-b border-destructive/15">
+                    <div className="bg-destructive/10 px-4 py-3 md:px-5 md:py-3.5 flex items-center justify-between border-b border-destructive">
                         <div className="flex items-center gap-2 text-destructive font-bold">
                             <FileWarning className="w-5 h-5" />
                             <span className="text-sm md:text-base">
@@ -596,7 +587,7 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
                     </div>
 
                     {/* List */}
-                    <div className="divide-y divide-destructive/10">
+                    <div className="divide-y divide-destructive">
                         {missingDocs.map((md, idx) => (
                             <div
                                 key={`${md.documentTypeID}-${md.entityType || idx}`}
@@ -617,7 +608,7 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
                                             </span>
                                             <Badge
                                                 variant="outline"
-                                                className="text-[10px] h-5 px-1.5 border-destructive/20 text-destructive bg-destructive/[0.05]"
+                                                className="text-[10px] h-5 px-1.5 border-destructive text-destructive bg-destructive/[0.05]"
                                             >
                                                 {md.status}
                                             </Badge>
@@ -635,7 +626,7 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
                                         <Button
                                             size="sm"
                                             variant="outline"
-                                            className="h-8 px-3 text-xs font-semibold border-primary/30 text-primary hover:bg-primary/5 gap-1.5 rounded-lg"
+                                            className="h-8 px-3 text-xs font-semibold border-primary text-primary hover:bg-primary/5 gap-1.5 rounded-lg"
                                             onClick={() => {
                                                 setUploadDefaultTypeId(md.documentTypeID);
                                                 setUploadEntityIds({
@@ -657,7 +648,7 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
                                         <Button
                                             size="sm"
                                             variant="outline"
-                                            className="h-8 px-3 text-xs font-semibold border-emerald-500/30 text-emerald-600 hover:bg-emerald-500/10 gap-1.5 rounded-lg"
+                                            className="h-8 px-3 text-xs font-semibold border-emerald-500 text-emerald-600 hover:bg-emerald-500/10 gap-1.5 rounded-lg"
                                             onClick={() => handleFulfill(md)}
                                             disabled={fulfillMutation.isPending}
                                         >
@@ -669,7 +660,7 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
                                         <Button
                                             size="sm"
                                             variant="outline"
-                                            className="h-8 px-3 text-xs font-semibold border-destructive/30 text-destructive hover:bg-destructive/5 rounded-lg"
+                                            className="h-8 px-3 text-xs font-semibold border-destructive text-destructive hover:bg-destructive/5 rounded-lg"
                                             onClick={() => {
                                                 setActiveMissing(md);
                                                 setActionOpen(true);

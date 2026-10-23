@@ -1,3 +1,4 @@
+using PensionMS.Core.Interfaces.Accounting;
 using Microsoft.EntityFrameworkCore;
 using PensionMS.Core.DTOs.Accounting;
 using PensionMS.Core.DTOs.Common;
@@ -6,13 +7,6 @@ using PensionMS.Core.Entities.Accounting;
 using PensionMS.Core.Interfaces;
 
 namespace PensionMS.Infrastructure.Services.Accounting;
-
-public interface IBankTransactionService
-{
-    Task<ApiResponse<List<BankTransactionDto>>> GetByBankAsync(int bankId, DateTime? fromDate, DateTime? toDate);
-    Task<ApiResponse<List<BankTransactionDto>>> GetByAccountAsync(int accountId, DateTime? fromDate, DateTime? toDate);
-    Task<ApiResponse<BankTransactionDto>> CreateAsync(CreateBankTransactionDto dto);
-}
 
 public class BankTransactionService : IBankTransactionService
 {

@@ -1,0 +1,130 @@
+{
+  "errors": 275,
+  "warnings": 82,
+  "added": [
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\.debug-harness\\build.mjs|warning|",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\accounting\\AccountFormDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\accounting\\BudgetFormDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\accounting\\FiscalYearFormDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\admin\\BankFormDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\admin\\DocumentTypeDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\admin\\SendNotificationDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\assets\\AssetCategoryFormDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\assets\\DepreciationRunDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\assets\\FixedAssetFormDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\hr\\SectionDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\hr\\ServiceHistoryDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\inventory\\InventoryBulkTransactionFormDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\inventory\\InventoryCustodyFormDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\inventory\\InventoryCustodyReturnDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\inventory\\InventoryItemFormDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\inventory\\InventoryTransactionFormDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\investment\\MaintenanceRequestDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\retirement\\AgentDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\retirement\\DocumentReviewPanel.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\retirement\\EntitledPersonFormDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\retirement\\EntitledPersonFormDialog.tsx|warning|react-hooks/exhaustive-deps",
+      "added": 2
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\retirement\\EntitledPersonFormDialog.tsx|error|@typescript-eslint/no-explicit-any",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\retirement\\FileReviewSidebar.tsx|warning|simple-import-sort/imports",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\retirement\\GuardianDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\retirement\\GuardianDialog.tsx|error|@typescript-eslint/no-explicit-any",
+      "added": 5
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\domain\\retirement\\PledgeDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\components\\ui\\DataTable.tsx|warning|react-hooks/incompatible-library",
+      "added": 2
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\pages\\achievements\\AchievementObstacleDialog.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\pages\\archive\\DocumentReviewArchivePage.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    },
+    {
+      "key": "F:\\Projects\\Pension_Management_System\\ui\\src\\pages\\pension\\EntitledPersonsPage.tsx|warning|react-hooks/incompatible-library",
+      "added": 1
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "environment": "Actual React 19 components and Zustand store; HTTP/SignalR mocked",
+  "scenarios": 14,
+  "defectsConfirmed": 13,
+  "results": [
+    {
+      "id": "N01_timer_after_9_seconds",
+      "expected": 0,
+      "actual": 1,
+      "defectConfirmed": true
+    },
+    {
+      "id": "N01_progress_after_9_seconds",
+      "expected": false,
+      "actual": true,
+      "defectConfirmed": true
+    },
+    {
+      "id": "N01_exiting_card_removed",
+      "expected": 0,
+      "actual": 1,
+      "defectConfirmed": true
+    },
+    {
+      "id": "N02_loaded_read_history_should_not_pop_up",
+      "expected": 0,
+      "actual": 1,
+      "defectConfirmed": true
+    },
+    {
+      "id": "N03_logout_reset_clears_floating_card",
+      "expected": 0,
+      "actual": 1,
+      "defectConfirmed": true
+    },
+    {
+      "id": "N04_three_batched_incoming_notifications",
+      "expected": 3,
+      "actual": 1,
+      "defectConfirmed": true
+    },
+    {
+      "id": "N16_read_ack_does_not_decrement_server_count_twice",
+      "expected": 2,
+      "actual": 1,
+      "defectConfirmed": true
+    },
+    {
+      "id": "N05_refresh_loads_list_and_unread_count",
+      "expected": 2,
+      "actual": 0,
+      "defectConfirmed": true
+    },
+    {
+      "id": "N06_login_preserves_server_unread_count",
+      "expected": 25,
+      "actual": 10,
+      "defectConfirmed": true
+    },
+    {
+      "id": "N06_login_preserves_server_total_count",
+      "expected": 25,
+      "actual": 10,
+      "defectConfirmed": true
+    },
+    {
+      "id": "N07_strict_mode_initial_data_retained",
+      "expected": 10,
+      "actual": 0,
+      "defectConfirmed": true
+    },
+    {
+      "id": "N08_duplicate_event_shows_one_toast",
+      "expected": 1,
+      "actual": 2,
+      "defectConfirmed": true
+    },
+    {
+      "id": "CONTROL_duplicate_store_not_added_twice",
+      "expected": 1,
+      "actual": 1,
+      "defectConfirmed": false
+    },
+    {
+      "id": "N09_reconnect_reloads_history_and_count",
+      "expected": 2,
+      "actual": 0,
+      "defectConfirmed": true
+    }
+  ]
+}

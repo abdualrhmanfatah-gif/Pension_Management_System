@@ -65,14 +65,14 @@ export function ReviewFilePreview({ path, label }: ReviewFilePreviewProps) {
                         </div>
                     ) : (
                         <div 
-                            className="w-12 h-12 rounded-lg bg-primary/5 border border-primary/10 flex items-center justify-center shrink-0 cursor-pointer" 
+                            className="w-12 h-12 rounded-lg bg-primary/5 border border-primary flex items-center justify-center shrink-0 cursor-pointer" 
                             onClick={() => setIsOpen(true)}
                         >
-                            <FileIcon className="w-5 h-5 text-primary/40" />
+                            <FileIcon className="w-5 h-5 text-primary" />
                         </div>
                     )}
                     <div className="min-w-0 flex-1 text-start">
-                        <p className="text-[10px] sm:text-xs text-muted-foreground truncate font-mono opacity-60" dir="ltr">
+                        <p className="text-[10px] sm:text-xs text-muted-foreground truncate font-mono opacity-100" dir="ltr">
                             {path.split(/[/\\]/).pop()}
                         </p>
                         <Button 
@@ -135,7 +135,7 @@ export function ReviewFilePreview({ path, label }: ReviewFilePreviewProps) {
                     <div className="p-3 border-t bg-muted/20 flex flex-wrap items-center justify-between gap-3">
                         <div className="flex flex-col">
                             <span className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase">المسار الفني</span>
-                            <code className="text-[10px] sm:text-xs bg-background/50 px-2 py-0.5 rounded border border-border/50 max-w-[300px] sm:max-w-none truncate">{path}</code>
+                            <code className="text-[10px] sm:text-xs bg-background/50 px-2 py-0.5 rounded border border-border max-w-[300px] sm:max-w-none truncate">{path}</code>
                         </div>
                         <div className="flex items-center gap-2">
                             <Button variant="outline" size="sm" className="rounded-lg h-11 font-bold" onClick={() => window.open(fullUrl, '_blank')}>

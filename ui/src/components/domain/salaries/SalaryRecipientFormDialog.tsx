@@ -7,6 +7,7 @@ import * as z from "zod";
 
 import { retirementApi } from "@/api/retirement";
 import { type CreateSalaryRecipientDto,salaryRecipientApi } from "@/api/salary-recipients";
+import { EntitlementAmountField } from "@/components/domain/retirement/EntitlementAmountField";
 import {
     BaseFormDialog,
     DateInput,
@@ -17,6 +18,7 @@ import {
 import { queryKeys } from "@/constants/queryKeys";
 import { useApiMutation } from "@/hooks";
 import { useAgentsQuery, useEntitledPersonsQuery, useGuardiansQuery } from "@/hooks/queries";
+import { todayYemen } from "@/lib/date";
 import type { LookupDto } from "@/types/retirement";
 import type { AgentSummary, EntitledPersonSummary, GuardianSummary } from "@/types/retirement";
 import { type CreateSalaryRecipientForm,createSalaryRecipientSchema } from "@/types/salary-recipients";
@@ -46,7 +48,7 @@ export function SalaryRecipientFormDialog({
         defaultValues: {
             recipientType: "متقاعد",
             retireeID: retireeId,
-            startDate: new Date().toISOString().split("T")[0],
+            startDate: todayYemen(),
         }
     });
 
@@ -113,7 +115,7 @@ export function SalaryRecipientFormDialog({
             notes: values.notes,
             retireeID: values.recipientType === "متقاعد" ? retireeId : undefined,
             agentID: values.recipientType === "وكيل" ? values.agentID : undefined,
-            entitledID: values.recipientType === "مستحق" ? values.entitledID : undefined,
+            entitledID: values.recipientType === "مستحق" || values.recipientType === "وصي" ? values.entitledID : undefined,
             guardianID: values.recipientType === "وصي" ? values.guardianID : undefined,
             personalPhoto: values.personalPhoto,
             nationalIdImage: values.nationalIdImage,
@@ -122,6 +124,7 @@ export function SalaryRecipientFormDialog({
             birthDate: values.birthDate,
             socialStatusID: values.socialStatusID,
             healthStatusID: values.healthStatusID,
+            entitledAmount: values.recipientType === "مستحق" && values.entitledAmount ? Number(values.entitledAmount) : undefined,
         };
         createMutation.mutate(dto);
     };
@@ -164,6 +167,7 @@ export function SalaryRecipientFormDialog({
                                     setValue("birthDate", undefined);
                                     setValue("socialStatusID", undefined);
                                     setValue("healthStatusID", undefined);
+                                    setValue("entitledAmount", undefined);
                                 }}
                                 options={[
                                     { value: "متقاعد", label: "متقاعد" },
@@ -209,6 +213,7 @@ export function SalaryRecipientFormDialog({
                                     value={field.value?.toString() || ""}
                                     onChange={(val) => {
                                         field.onChange(parseInt(val));
+                                        setValue("entitledAmount", undefined);
                                         // Reset file and data fields when changing entitled person
                                         setValue("personalPhoto", undefined);
                                         setValue("nationalIdImage", undefined);
@@ -245,6 +250,15 @@ export function SalaryRecipientFormDialog({
                     </FormField>
                 )}
 
+                {recipientType === "وصي" && (
+                    <FormField label="المستحق الذي ينوب عنه الوصي" required error={errors.entitledID?.message}>
+                        <Controller name="entitledID" control={control} render={({ field }) => (
+                            <NativeSelect value={field.value ?? ""} onChange={value => field.onChange(Number(value))}
+                                options={entitleds.map(person => ({ value: String(person.entitledID), label: person.fullName }))}
+                                placeholder="اختر المستحق" />
+                        )} />
+                    </FormField>
+                )}
                 <FormField label="تاريخ البدء" required error={errors.startDate?.message as string}>
                     <Controller
                         name="startDate"
@@ -259,6 +273,15 @@ export function SalaryRecipientFormDialog({
                     />
                 </FormField>
 
+                {recipientType === "مستحق" && (
+                    <div className="md:col-span-2 space-y-3">
+                        <Controller name="entitledAmount" control={control} render={({ field, fieldState }) => (
+                            <EntitlementAmountField retireeId={retireeId} value={field.value} onChange={field.onChange}
+                                onBlur={field.onBlur} inputRef={field.ref} savedSharePercent={selectedEntitled?.sharePercent} error={fieldState.error?.message} />
+                        )} />
+                    </div>
+                )}
+
                 {/* استكمال البيانات والوثائق للمستحقين الموقوفين */}
                 {recipientType === "مستحق" && selectedEntitled && (needsDataCompletion || needsPersonalPhoto || needsNationalId) && (
                     <div className="md:col-span-2 space-y-4 border border-rose-200 bg-rose-50/30 dark:border-rose-800 dark:bg-rose-950/10 rounded-2xl p-5 mt-2">
@@ -266,7 +289,7 @@ export function SalaryRecipientFormDialog({
                             <AlertTriangle className="w-5 h-5 flex-shrink-0" />
                             <div>
                                 <p className="text-sm font-black">تشديد متطلبات الصرف</p>
-                                <p className="text-[10px] sm:text-xs font-bold opacity-80">المستحق المختار موقوف الصرف حالياً. يجب استكمال بياناته ووثائقه الإلزامية أدناه لإتمام التعيين.</p>
+                                <p className="text-[10px] sm:text-xs font-bold opacity-100">المستحق المختار موقوف الصرف حالياً. يجب استكمال بياناته ووثائقه الإلزامية أدناه لإتمام التعيين.</p>
                             </div>
                         </div>
 

@@ -7,6 +7,7 @@ namespace PensionMS.Core.Interfaces;
 
 public interface IUserService
 {
+    Task<bool> IsActiveAsync(int userId);
     Task<ApiResponse<PagedResult<UserDto>>> GetAllUsersAsync(int page = 1, int pageSize = 20);
     Task<UserDto?> GetUserByIdAsync(int id);
     Task<ApiResponse<UserDto>> CreateUserAsync(CreateUserDto dto, int createdByUserId);
@@ -19,4 +20,5 @@ public interface IUserService
     Task<ApiResponse<object>> GetDebugPermsAsync(int userId);
     Task<ApiResponse<object>> GetUserPermissionsAsync(int id);
     Task<ApiResponse<object>> SetUserPermissionsAsync(int id, SetUserPermissionsDto dto, int currentUserId);
+    Task<ApiResponse<object>> SetRoleAssignmentsAsync(int id, SetUserRoleAssignmentsDto dto, int currentUserId);
 }

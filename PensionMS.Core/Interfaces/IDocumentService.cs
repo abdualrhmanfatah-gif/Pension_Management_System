@@ -5,6 +5,7 @@ namespace PensionMS.Core.Interfaces;
 
 public interface IDocumentService
 {
+    Task<bool> CanDownloadAsync(string relativePath);
     Task<ApiResponse<PagedResult<DocumentDto>>> GetAllAsync(
         int? ownerType,
         int? documentTypeId,
@@ -21,6 +22,8 @@ public interface IDocumentService
 
     Task<ApiResponse<DocumentDto>> GetByIdAsync(int id);
     Task<ApiResponse<List<DocumentDto>>> GetByFileIdAsync(int fileId);
+    /// <summary>مسار أحدث هوية سارية وغير مرفوضة تخص متقاعد الملف ضمن نطاق الصلاحية.</summary>
+    Task<ApiResponse<string?>> GetRetireeIdentityPathAsync(int fileId);
     Task<ApiResponse<List<DocumentDto>>> GetByRetireeIdAsync(int retireeId);
     
     // Investment Module

@@ -7,10 +7,10 @@ namespace PensionMS.Core.Interfaces;
 
 public interface IReportService
 {
-    Task<byte[]> ExportRetireesAsync(string? search = null, string format = "excel");
-    Task<byte[]> ExportRetirementFilesAsync(int? statusId = null, string format = "excel");
-    Task<byte[]> ExportEntitledPersonsAsync(int? fileId = null, string format = "excel");
-    Task<byte[]> ExportUsersAsync(string format = "excel");
+    Task<byte[]> ExportRetireesAsync(string? search = null, string format = "excel", int? branchId = null);
+    Task<byte[]> ExportRetirementFilesAsync(int? statusId = null, string format = "excel", int? branchId = null);
+    Task<byte[]> ExportEntitledPersonsAsync(int? fileId = null, string format = "excel", int? branchId = null);
+    Task<byte[]> ExportUsersAsync(string format = "excel", int? branchId = null);
 
     // ── Investment (INV-01..07) ──
     Task<ApiResponse<PagedResult<PortfolioPerformanceRow>>> GetPortfolioPerformanceAsync(ReportFilter filter);
@@ -32,6 +32,7 @@ public interface IReportService
     Task<ApiResponse<PagedResult<FileStatusRow>>> GetFileStatusReportAsync(ReportFilter filter);
     Task<byte[]> ExportFileStatusReportAsync(ReportFilter filter, string format = "excel");
     Task<ApiResponse<PagedResult<ActiveRetireeRow>>> GetActiveRetireesAsync(ReportFilter filter);
+    Task<ApiResponse<ActiveRetireesSummaryDto>> GetActiveRetireesSummaryAsync(ReportFilter filter);
     Task<byte[]> ExportActiveRetireesAsync(ReportFilter filter, string format = "excel");
     Task<ApiResponse<PagedResult<SuspensionRow>>> GetSuspensionsReportAsync(ReportFilter filter);
     Task<byte[]> ExportSuspensionsReportAsync(ReportFilter filter, string format = "excel");
@@ -40,6 +41,7 @@ public interface IReportService
     Task<ApiResponse<PagedResult<SalaryBatchRow>>> GetSalaryBatchesAsync(ReportFilter filter);
     Task<byte[]> ExportSalaryBatchesAsync(ReportFilter filter, string format = "excel");
     Task<ApiResponse<PagedResult<SettlementRow>>> GetSettlementsReportAsync(ReportFilter filter);
+    Task<ApiResponse<SettlementSummaryDto>> GetSettlementsSummaryAsync(ReportFilter filter);
     Task<byte[]> ExportSettlementsReportAsync(ReportFilter filter, string format = "excel");
     Task<ApiResponse<PagedResult<FiscalPeriodRow>>> GetFiscalPeriodReportAsync(ReportFilter filter);
     Task<byte[]> ExportFiscalPeriodReportAsync(ReportFilter filter, string format = "excel");

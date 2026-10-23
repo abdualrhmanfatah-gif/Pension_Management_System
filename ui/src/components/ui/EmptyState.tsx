@@ -36,7 +36,7 @@ export function EmptyState({
         )}>
             <div className="flex items-center justify-center w-16 h-16 rounded-full bg-primary/5 mb-4 group hover:bg-primary/10 transition-colors">
                 {typeof Icon === 'function' ? (
-                    <Icon className="w-8 h-8 text-primary/30 group-hover:text-primary/50 transition-colors" aria-hidden="true" />
+                    <Icon className="w-8 h-8 text-primary group-hover:text-primary transition-colors" aria-hidden="true" />
                 ) : React.isValidElement(Icon) ? (
                     Icon
                 ) : (

@@ -506,7 +506,7 @@ export function InitialOpeningBalancesPage() {
       </div>
 
       {/* Reset All Button */}
-      <Card className="p-4 border-destructive/30 bg-destructive/5">
+      <Card className="p-4 border-destructive bg-destructive/5">
         <div className="flex items-center justify-between">
           <div>
             <Heading level="h3" className="text-sm font-semibold text-destructive">تصفير جميع البيانات</Heading>
@@ -519,7 +519,7 @@ export function InitialOpeningBalancesPage() {
       </Card>
 
       {/* Seed Initial Defaults Button */}
-      <Card className="p-4 border-primary/30 bg-primary/5">
+      <Card className="p-4 border-primary bg-primary/5">
         <div className="flex items-center justify-between">
           <div>
             <Heading level="h3" className="text-sm font-semibold text-primary">إدراج بيانات أولية افتراضية</Heading>
@@ -569,7 +569,7 @@ export function InitialOpeningBalancesPage() {
             ) : (
               <div className="space-y-3">
                 {assets.map((asset, index) => (
-                  <div key={asset.assetID} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-primary/20">
+                  <div key={asset.assetID} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-primary">
                     <div className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                         <Wrench className="w-5 h-5 text-primary" />
@@ -637,7 +637,7 @@ export function InitialOpeningBalancesPage() {
             ) : (
               <div className="space-y-3">
                 {inventoryItems.map((item, index) => (
-                  <div key={item.id} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-primary/20">
+                  <div key={item.id} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-primary">
                     <div className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                         <Package className="w-5 h-5 text-primary" />
@@ -705,7 +705,7 @@ export function InitialOpeningBalancesPage() {
             ) : (
               <div className="space-y-3">
                 {lines.filter(l => l.accountID > 0 && (l.balance ?? 0) !== 0 && !assets.some(a => a.accountID === l.accountID) && !inventoryItems.some(i => i.accountID === l.accountID)).map((line) => (
-                  <div key={line.accountID} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-primary/20">
+                  <div key={line.accountID} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-primary">
                     <div className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                         <BookOpen className="w-5 h-5 text-primary" />
@@ -844,7 +844,7 @@ export function InitialOpeningBalancesPage() {
                 })()}
 
                 {/* Totals */}
-                <div className="grid grid-cols-[1fr_100px_120px_120px] gap-4 px-4 py-3 bg-primary/5 rounded-lg items-center border-t-2 border-primary/20 mt-2">
+                <div className="grid grid-cols-[1fr_100px_120px_120px] gap-4 px-4 py-3 bg-primary/5 rounded-lg items-center border-t-2 border-primary mt-2">
                   <div className="font-bold text-sm">الإجمالي</div>
                   <span></span>
                   <div className="font-mono text-sm font-bold" dir="ltr">{totalDebit.toLocaleString()}</div>

@@ -369,7 +369,7 @@ export function PeopleSection({ fileId, fileNumber }: PeopleSectionProps) {
                                     "rounded-lg border bg-card transition-all",
                                     isSelected
                                         ? "border-primary ring-2 ring-primary/10 bg-primary/5"
-                                        : "border-border hover:border-muted-foreground/30"
+                                        : "border-border hover:border-muted-foreground"
                                 )}
                             >
                                 <div
@@ -443,7 +443,7 @@ export function PeopleSection({ fileId, fileNumber }: PeopleSectionProps) {
 
                                 {/* المعلومات الأساسية - تظهر عند التحديد */}
                                 {isSelected && (
-                                    <div className="px-3 pb-3 pt-0 border-t border-border/50 mt-0">
+                                    <div className="px-3 pb-3 pt-0 border-t border-border mt-0">
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-2">
                                             <div className="flex flex-col">
                                                 <span className="text-muted-foreground">العمر</span>
@@ -476,14 +476,14 @@ export function PeopleSection({ fileId, fileNumber }: PeopleSectionProps) {
                 <div className="overflow-y-auto pl-2 border-r border-border">
                     {!selectedPerson ? (
                         <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
-                            <Users className="w-12 h-12 mb-3 opacity-30" />
+                            <Users className="w-12 h-12 mb-3 opacity-100" />
                             <p className="font-bold text-sm">اختر شخصاً من القائمة</p>
                             <p className="text-xs">سيتم عرض بياناته ووثائقه المرتبطة هنا</p>
                         </div>
                     ) : (
                         <div className="space-y-4">
                             {/* بطاقة الملف الشخصي */}
-                            <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl p-4 border border-primary/20">
+                            <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl p-4 border border-primary">
                                 <div className="flex items-start gap-4">
                                     <EditableImage
                                         src={getPhotoUrl(resolvePersonalPhotoPath(selectedPerson))}

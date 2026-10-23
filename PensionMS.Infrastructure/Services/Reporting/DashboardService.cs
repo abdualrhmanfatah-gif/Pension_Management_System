@@ -1,0 +1,116 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using PensionMS.Core.Entities;
+using Microsoft.Extensions.Caching.Memory;
+using PensionMS.Core.Constants;
+using PensionMS.Core.DTOs;
+using PensionMS.Core.DTOs.Common;
+using PensionMS.Core.Interfaces;
+
+namespace PensionMS.Infrastructure.Services.Reporting;
+
+public partial class DashboardService : IDashboardService
+{
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IAccessiblePensionRepository _access;
+    private readonly IMemoryCache _cache;
+    private const string CacheKey = "DashboardStats";
+    private static readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(5);
+
+    public DashboardService(IUnitOfWork unitOfWork, IMemoryCache cache, IAccessiblePensionRepository access)
+    {
+        _unitOfWork = unitOfWork;
+        _access = access;
+        _cache = cache;
+    }
+
+    public async Task<ApiResponse<DashboardStatsDto>> GetStatsAsync()
+    {
+        var queries = await _access.ForPermissionAsync("Dashboard.View");
+        
+        var cacheKey = CacheKey + ":" + queries.Scope.CacheKey;
+        if (_cache.TryGetValue<DashboardStatsDto>(cacheKey, out var cached))
+            return ApiResponse<DashboardStatsDto>.Success(cached);
+
+        var now = DateTime.UtcNow;
+        var monthStart = new DateTime(now.Year, now.Month, 1);
+        var yearStart = new DateTime(now.Year, 1, 1);
+
+        var totalRetirees = await queries.Query(_unitOfWork.Retirees)
+            .AsNoTracking().Where(r => !r.IsDeleted).CountAsync();
+
+        var activeFilesCount = await queries.Query(_unitOfWork.RetirementFiles)
+            .AsNoTracking().Where(f => !f.IsDeleted && f.StatusID == FileStatusConstants.Active).CountAsync();
+
+        var closedFilesCount = await queries.Query(_unitOfWork.RetirementFiles)
+            .AsNoTracking().Where(f => !f.IsDeleted && f.StatusID == FileStatusConstants.EntitlementEnded).CountAsync();
+
+        var rejectedFilesCount = await queries.Query(_unitOfWork.RetirementFiles)
+            .AsNoTracking().Where(f => !f.IsDeleted && f.ReviewStatus == FileReviewStatus.Rejected).CountAsync();
+
+        var totalEntitled = await queries.Query(_unitOfWork.EntitledPersons)
+            .AsNoTracking().Where(e => !e.IsDeleted).CountAsync();
+
+        var monthlySalaryPayments = await queries.Query(_unitOfWork.SalaryPaymentItems)
+            .AsNoTracking().Where(p => !p.IsDeleted && p.CreatedAt >= monthStart).SumAsync(p => (decimal?)p.Amount);
+
+        var monthlyOpExpenses = await queries.Query(_unitOfWork.OperationalExpenses)
+            .AsNoTracking().Where(e => !e.IsDeleted && e.ExpenseDate >= monthStart).SumAsync(e => (decimal?)e.Amount);
+
+        var activeUsers = await queries.Query(_unitOfWork.Users)
+            .AsNoTracking().Where(u => u.IsActive).CountAsync();
+
+        var activeBranches = await queries.Query(_unitOfWork.PensionFundBranches)
+            .AsNoTracking().Where(b => b.IsActive).CountAsync();
+
+        var draftBatchesCount = await queries.Query(_unitOfWork.SalaryPaymentBatches)
+            .AsNoTracking().Where(b => !b.IsDeleted && b.Status == BatchStatusConstants.Draft).CountAsync();
+
+        var approvedBatchesCount = await queries.Query(_unitOfWork.SalaryPaymentBatches)
+            .AsNoTracking().Where(b => !b.IsDeleted && b.Status == BatchStatusConstants.Approved).CountAsync();
+
+        var totalSalaryPaidThisYear = await queries.Query(_unitOfWork.SalaryPaymentItems)
+            .AsNoTracking().Where(p => !p.IsDeleted && p.CreatedAt >= yearStart).SumAsync(p => (decimal?)p.Amount);
+
+        var totalOpExpensesThisYear = await queries.Query(_unitOfWork.OperationalExpenses)
+            .AsNoTracking().Where(e => !e.IsDeleted && e.ExpenseDate >= yearStart).SumAsync(e => (decimal?)e.Amount);
+
+        var activeEntitlements = await queries.Query(_unitOfWork.FinancialEntitlements)
+            .AsNoTracking().Where(e => !e.IsDeleted && e.EffectiveDate <= now && (e.EndDate == null || e.EndDate > now)).CountAsync();
+
+        var pendingSettlementsCount = await queries.Query(_unitOfWork.SettlementsBatches)
+            .AsNoTracking().Where(b => !b.IsDeleted && b.Status != BatchStatusConstants.Approved && b.Status != BatchStatusConstants.LegacyApproved).CountAsync();
+
+        var approvedSettlementsCount = await queries.Query(_unitOfWork.SettlementsBatches)
+            .AsNoTracking().Where(b => !b.IsDeleted && (b.Status == BatchStatusConstants.Approved || b.Status == BatchStatusConstants.LegacyApproved) && b.CreatedAt >= monthStart).CountAsync();
+
+        var monthlyPayments = (monthlySalaryPayments ?? 0m) + (monthlyOpExpenses ?? 0m);
+        var totalPaidThisYear = (totalSalaryPaidThisYear ?? 0m) + (totalOpExpensesThisYear ?? 0m);
+
+        var stats = new DashboardStatsDto
+        {
+            TotalRetirees = totalRetirees,
+            ActiveFilesCount = activeFilesCount,
+            ClosedFilesCount = closedFilesCount,
+            RejectedFilesCount = rejectedFilesCount,
+            TotalEntitledPersons = totalEntitled,
+            TotalMonthlyPayments = monthlyPayments,
+            ActiveUsersCount = activeUsers,
+            ActiveBranchesCount = activeBranches,
+            DraftBatchesCount = draftBatchesCount,
+            ApprovedBatchesCount = approvedBatchesCount,
+            TotalPaidThisYear = totalPaidThisYear,
+            ActiveEntitlementsCount = activeEntitlements,
+            PendingSettlementsCount = pendingSettlementsCount,
+            ApprovedSettlementsCount = approvedSettlementsCount,
+            TotalBudgetAmount = 0m,
+            UsedBudgetAmount = 0m,
+        };
+
+        _cache.Set(cacheKey, stats, CacheDuration);
+
+        return ApiResponse<DashboardStatsDto>.Success(stats);
+    }
+}

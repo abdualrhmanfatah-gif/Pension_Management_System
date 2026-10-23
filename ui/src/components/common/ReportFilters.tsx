@@ -49,10 +49,10 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({ filters, values, o
         switch (key) {
             case 'fromDate':
                 return (
-                    <div key={key} className="w-full sm:w-48">
-                        <label className="label-filter">من تاريخ</label>
+                    <div key={key} className="w-full sm:w-40">
+                        <label className="label-filter mb-1">من تاريخ</label>
                         <DateInput
-                            className="h-10"
+                            className="h-11 sm:h-9 [&>input[type=text]]:h-full [&>input[type=text]]:py-1.5 [&>input[type=text]]:text-sm sm:[&>button]:min-h-9 sm:[&>button]:min-w-9"
                             value={values.fromDate || ''}
                             onChange={(val) => onChange('fromDate', val)}
                         />
@@ -60,10 +60,10 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({ filters, values, o
                 );
             case 'toDate':
                 return (
-                    <div key={key} className="w-full sm:w-48">
-                        <label className="label-filter">إلى تاريخ</label>
+                    <div key={key} className="w-full sm:w-40">
+                        <label className="label-filter mb-1">إلى تاريخ</label>
                         <DateInput
-                            className="h-10"
+                            className="h-11 sm:h-9 [&>input[type=text]]:h-full [&>input[type=text]]:py-1.5 [&>input[type=text]]:text-sm sm:[&>button]:min-h-9 sm:[&>button]:min-w-9"
                             value={values.toDate || ''}
                             onChange={(val) => onChange('toDate', val)}
                         />
@@ -71,9 +71,10 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({ filters, values, o
                 );
             case 'statusId':
                 return (
-                    <div key={key} className="w-full sm:w-48">
-                        <label className="label-filter">الحالة</label>
+                    <div key={key} className="w-full sm:w-40">
+                        <label className="label-filter mb-1">الحالة</label>
                         <NativeSelect
+                            className="h-11 py-1.5 text-sm sm:h-9"
                             options={[
                                 { value: '', label: 'الكل' },
                                 { value: '1', label: 'نشط / معتمد' },
@@ -87,11 +88,11 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({ filters, values, o
             case 'fiscalYear':
                 return (
                     <div key={key} className="w-full sm:w-32">
-                        <label className="label-filter">السنة المالية</label>
+                        <label className="label-filter mb-1">السنة المالية</label>
                         <Input
                             type="number"
                             placeholder="2024"
-                            className="h-10"
+                            className="h-11 py-1.5 text-sm sm:h-9"
                             value={values.fiscalYear || ''}
                             onChange={(e) => onChange('fiscalYear', e.target.value)}
                         />
@@ -99,11 +100,11 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({ filters, values, o
                 );
             case 'portfolioId':
                 return (
-                    <div key={key} className="w-full sm:w-48">
-                        <label className="label-filter">رقم المحفظة</label>
+                    <div key={key} className="w-full sm:w-40">
+                        <label className="label-filter mb-1">رقم المحفظة</label>
                         <Input
                             type="number"
-                            className="h-10"
+                            className="h-11 py-1.5 text-sm sm:h-9"
                             value={values.portfolioId || ''}
                             onChange={(e) => onChange('portfolioId', e.target.value)}
                         />
@@ -111,11 +112,11 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({ filters, values, o
                 );
             case 'projectId':
                 return (
-                    <div key={key} className="w-full sm:w-48">
-                        <label className="label-filter">رقم المشروع</label>
+                    <div key={key} className="w-full sm:w-40">
+                        <label className="label-filter mb-1">رقم المشروع</label>
                         <Input
                             type="number"
-                            className="h-10"
+                            className="h-11 py-1.5 text-sm sm:h-9"
                             value={values.projectId || ''}
                             onChange={(e) => onChange('projectId', e.target.value)}
                         />
@@ -123,11 +124,11 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({ filters, values, o
                 );
             case 'propertyId':
                 return (
-                    <div key={key} className="w-full sm:w-48">
-                        <label className="label-filter">رقم العقار</label>
+                    <div key={key} className="w-full sm:w-40">
+                        <label className="label-filter mb-1">رقم العقار</label>
                         <Input
                             type="number"
-                            className="h-10"
+                            className="h-11 py-1.5 text-sm sm:h-9"
                             value={values.propertyId || ''}
                             onChange={(e) => onChange('propertyId', e.target.value)}
                         />
@@ -136,12 +137,12 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({ filters, values, o
             case 'accountLevel':
                 return (
                     <div key={key} className="w-full sm:w-52">
-                        <label className="label-filter">المستوى</label>
+                        <label className="label-filter mb-1">المستوى</label>
                         <Select
                             value={values.accountLevel || 'all'}
                             onValueChange={(val) => onChange('accountLevel', val)}
                         >
-                            <SelectTrigger className="h-10">
+                            <SelectTrigger className="h-11 py-1.5 text-sm sm:h-9">
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
@@ -155,12 +156,12 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({ filters, values, o
             case 'quarter':
                 return (
                     <div key={key} className="w-full sm:w-40">
-                        <label className="label-filter">الفصل المالي</label>
+                        <label className="label-filter mb-1">الفصل المالي</label>
                         <Select
                             value={values.quarter || ''}
                             onValueChange={(val) => onChange('quarter', val)}
                         >
-                            <SelectTrigger className="h-10">
+                            <SelectTrigger className="h-11 py-1.5 text-sm sm:h-9">
                                 <SelectValue placeholder="الكل" />
                             </SelectTrigger>
                             <SelectContent>
@@ -173,9 +174,10 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({ filters, values, o
                 );
             case 'assetType':
                 return (
-                    <div key={key} className="w-full sm:w-48">
-                        <label className="label-filter">نوع الأصل</label>
+                    <div key={key} className="w-full sm:w-40">
+                        <label className="label-filter mb-1">نوع الأصل</label>
                         <NativeSelect
+                            className="h-11 py-1.5 text-sm sm:h-9"
                             options={ASSET_TYPE_OPTIONS}
                             value={values.assetType || ''}
                             onChange={(val) => onChange('assetType', val)}
@@ -185,11 +187,11 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({ filters, values, o
             case 'comparisonYear':
                 return (
                     <div key={key} className="w-full sm:w-40">
-                        <label className="label-filter">السنة السابقة</label>
+                        <label className="label-filter mb-1">السنة السابقة</label>
                         <Input
                             type="number"
                             placeholder="2023"
-                            className="h-10"
+                            className="h-11 py-1.5 text-sm sm:h-9"
                             value={values.comparisonYear || ''}
                             onChange={(e) => onChange('comparisonYear', e.target.value)}
                         />
@@ -197,12 +199,12 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({ filters, values, o
                 );
             case 'accountCode':
                 return (
-                    <div key={key} className="w-full sm:w-48">
-                        <label className="label-filter">رقم الحساب</label>
+                    <div key={key} className="w-full sm:w-40">
+                        <label className="label-filter mb-1">رقم الحساب</label>
                         <Input
                             type="text"
                             placeholder="مثال: 1101"
-                            className="h-10"
+                            className="h-11 py-1.5 text-sm sm:h-9"
                             value={values.accountCode || ''}
                             onChange={(e) => onChange('accountCode', e.target.value)}
                         />
@@ -210,11 +212,11 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({ filters, values, o
                 );
             case 'entityId':
                 return (
-                    <div key={key} className="w-full sm:w-48">
-                        <label className="label-filter">الكيان</label>
+                    <div key={key} className="w-full sm:w-40">
+                        <label className="label-filter mb-1">الكيان</label>
                         <Input
                             type="number"
-                            className="h-10"
+                            className="h-11 py-1.5 text-sm sm:h-9"
                             value={values.entityId || ''}
                             onChange={(e) => onChange('entityId', e.target.value)}
                         />
@@ -222,14 +224,27 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({ filters, values, o
                 );
             case 'search':
                 return (
-                    <div key={key} className="w-full sm:w-56">
-                        <label className="label-filter">بحث</label>
+                    <div key={key} className="w-full sm:w-48">
+                        <label className="label-filter mb-1">بحث</label>
                         <Input
                             type="text"
                             placeholder="بحث بالاسم، الرقم،..."
-                            className="h-10"
+                            className="h-11 py-1.5 text-sm sm:h-9"
                             value={values.search || ''}
                             onChange={(e) => onChange('search', e.target.value)}
+                        />
+                    </div>
+                );
+            case 'decisionType':
+                return (
+                    <div key={key} className="w-full sm:w-40">
+                        <label className="label-filter mb-1">نوع القرار</label>
+                        <Input
+                            type="text"
+                            placeholder="مثال: تسوية رتب"
+                            className="h-11 py-1.5 text-sm sm:h-9"
+                            value={values.decisionType || ''}
+                            onChange={(e) => onChange('decisionType', e.target.value)}
                         />
                     </div>
                 );
@@ -239,9 +254,9 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({ filters, values, o
     };
 
     return (
-        <Card className={`flex flex-wrap gap-4 items-end mb-6 text-start ${compact ? 'p-3' : 'p-5'}`}>
-            <div className="flex items-center gap-2 mb-auto self-start pt-2 me-2">
-                <div className="p-2 rounded-lg bg-primary/10 text-primary">
+        <Card className={`flex flex-wrap items-end gap-x-3 gap-y-2 mb-4 text-start ${compact ? 'p-2' : 'p-3'}`}>
+            <div className="flex w-full shrink-0 items-center gap-2 sm:w-auto sm:self-center">
+                <div className="p-1.5 rounded-md bg-primary/10 text-primary">
                     <Filter className="w-4 h-4" />
                 </div>
                 <span className="font-bold text-sm">تصفية التقرير</span>
@@ -252,9 +267,9 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({ filters, values, o
             {showApplyButton && onApply && (
                 <Button
                     onClick={onApply}
-                    className="h-10 px-6"
+                    className="h-11 w-full px-4 text-sm sm:h-9 sm:min-h-9 sm:w-auto"
                 >
-                    <RefreshCw className="w-4 h-4 ms-2" />
+                    <RefreshCw className="w-4 h-4" />
                     تحديث التقرير
                 </Button>
             )}

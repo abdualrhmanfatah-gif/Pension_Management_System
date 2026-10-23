@@ -256,9 +256,9 @@ export function CorrespondenceDetailsPage() {
             </div>
 
             {correspondence.notes && (
-              <div className="mt-8 pt-6 border-t border-dashed border-border/60">
+              <div className="mt-8 pt-6 border-t border-dashed border-border">
                 <p className="text-[10px] sm:text-xs text-muted-foreground uppercase font-black mb-2">ملاحظات إضافية</p>
-                <Text variant="body" className="leading-relaxed text-foreground/80 bg-muted/20 p-4 rounded-xl border italic">
+                <Text variant="body" className="leading-relaxed text-foreground bg-muted/20 p-4 rounded-xl border italic">
                   {correspondence.notes}
                 </Text>
               </div>

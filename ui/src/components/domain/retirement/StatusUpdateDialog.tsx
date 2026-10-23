@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowDown, Flag,RefreshCw, ShieldAlert, ShieldBan, ShieldCheck, ShieldX } from "lucide-react";
+import { ArrowDown, Flag,RefreshCw, ShieldBan, ShieldCheck } from "lucide-react";
 import { Controller, type SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
@@ -22,7 +22,7 @@ const statusUpdateSchema = z.object({
 }).refine((data) => {
     // Business Rule: Mandatory reason for sensitive statuses
     // Suspended (3), Closed (4), Rejected (8) are sensitive
-    const sensitiveStatusIDs = [3, 4, 8]; 
+    const sensitiveStatusIDs = [4]; 
     if (sensitiveStatusIDs.includes(data.newStatusID)) {
         return data.reason && data.reason.length >= 10;
     }
@@ -50,25 +50,15 @@ interface Props extends BaseOverlayProps {
 }
 
 const statusWarnings: Record<number, { title: string; message: string; icon: React.ReactNode }> = {
-    3: { 
-        title: "⚠️ تعليق الملف",
-        message: "سيتم إيقاف جميع المدفوعات والاستحقاقات المالية المرتبطة بهذا الملف. يمكن إلغاء التعليق لاحقاً بإجراء إداري.",
-        icon: <ShieldAlert className="w-5 h-5" />,
-    },
     4: {
-        title: "🚫 إغلاق الملف",
-        message: "هذا الإجراء نهائي. سيتم إغلاق الملف ولن يمكن تعديل أي بيانات أو إضافة مستحقات. لا يمكن فتح الملف مجدداً إلا بإجراء إداري استثنائي.",
+        title: "انتهى استحقاقه",
+        message: "انتهت جميع الاستحقاقات المرتبطة بهذا الملف، مع الاحتفاظ ببياناته وسجله. إعادة الاستحقاق تتم على الملف نفسه عبر المراجعة والاعتماد.",
         icon: <ShieldBan className="w-5 h-5" />,
     },
     6: {
-        title: "📄 إحالة إلى جهة الاختصاص",
-        message: "سيتم إحالة الملفات إلى جهة الاختصاص للمراجعة النهائية والاعتماد.",
+        title: "إرسال للمراجعة",
+        message: "يصبح الملف معلقًا ويتوقف صرف المعاش حتى اعتماد المراجعة، مع استمرار تسجيل المبالغ المستحقة.",
         icon: <ShieldCheck className="w-5 h-5" />,
-    },
-    8: {
-        title: "❌ رفض الملف",
-        message: "رفض الملف يلغي جميع الاستحقاقات المالية والالتزامات المرتبطة به. يتطلب هذا الإجراء توجيه رسمي ومبرر خطي.",
-        icon: <ShieldX className="w-5 h-5" />,
     },
 };
 
@@ -98,7 +88,7 @@ export function StatusUpdateDialog({
     const selectedStatusID = useWatch({ control, name: "newStatusID" });
     const selectedStatus = allowedStatuses.find(s => s.statusID === selectedStatusID);
 
-    const isSensitiveStatus = [3, 4, 8].includes(selectedStatusID);
+    const isSensitiveStatus = [4].includes(selectedStatusID);
     const statusWarning = selectedStatusID ? statusWarnings[selectedStatusID] : null;
 
     return (
@@ -126,14 +116,14 @@ export function StatusUpdateDialog({
                             {currentStatusName || "غير معروفة"}
                         </Badge>
                     </div>
-                    <ArrowDown className="w-5 h-5 text-muted-foreground/30 shrink-0" />
+                    <ArrowDown className="w-5 h-5 text-muted-foreground shrink-0" />
                     <div className="text-center">
                         <p className="text-xs text-muted-foreground mb-2 font-medium">الحالة الجديدة</p>
                         <Badge 
                             variant={isSensitiveStatus ? "destructive" : "success"} 
                             className={cn(
                                 "text-sm px-4 py-1.5 transition-all",
-                                !selectedStatusID && "opacity-40"
+                                !selectedStatusID && "opacity-100"
                             )}
                         >
                             {selectedStatus?.statusName || "— اختر حالة —"}

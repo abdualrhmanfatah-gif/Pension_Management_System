@@ -45,7 +45,7 @@ function FormField({ label, required, error, hint, children, className, htmlFor,
                     htmlFor={fieldId}
                     className="label-field flex items-center gap-1.5"
                 >
-                    {Icon && <Icon className="w-4 h-4 text-muted-foreground/60" />}
+                    {Icon && <Icon className="w-4 h-4 text-muted-foreground" />}
                     {label}
                     {required && <span className="text-destructive">*</span>}
                 </label>

@@ -65,7 +65,7 @@ export function AssetDetailPage() {
                         <Heading level="h1" className="font-black">{asset.assetName}</Heading>
                         <Text variant="description" className="flex items-center gap-2 font-medium">
                             <span className="font-mono text-xs">{asset.assetNumber}</span>
-                            <span className="opacity-30 mx-1">|</span>
+                            <span className="opacity-100 mx-1">|</span>
                             {asset.categoryName || "بدون تصنيف"}
                         </Text>
                     </div>
@@ -123,7 +123,7 @@ export function AssetDetailPage() {
 
                 <TabsContent value="documents" className="mt-0 outline-none">
                     <div className="text-center py-12 text-muted-foreground">
-                        <FileText className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                        <FileText className="w-12 h-12 mx-auto mb-4 opacity-100" />
                         <Text variant="body">إدارة الوثائق قادمة قريباً</Text>
                     </div>
                 </TabsContent>

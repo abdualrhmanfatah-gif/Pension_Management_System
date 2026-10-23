@@ -17,6 +17,7 @@ import {
     type CustomColumnDef,
     DataTable,
     LoadingIndicator,
+    TabHeader,
     useConfirm} from "@/components/ui";
 import { useApiMutation, useCreateShortcut } from "@/hooks";
 import { useAgentsQuery, useEntitledPersonsQuery, useGuardiansQuery, useMissingDocumentsQuery } from "@/hooks/queries";
@@ -280,7 +281,7 @@ export function PledgesAndExemptionsTab({ fileId, retireeName }: PledgesAndExemp
                     <Badge 
                         key={idx} 
                         variant={isFulfilled ? "success" : "outline"} 
-                        className={`text-[10px] sm:text-xs font-bold ${isFulfilled ? "opacity-70 line-through" : ""}`}
+                        className={`text-[10px] sm:text-xs font-bold ${isFulfilled ? "opacity-100 line-through" : ""}`}
                         title={isFulfilled ? "مستلمة" : "غير مستلمة"}
                     >
                         {doc.documentTypeName}
@@ -368,46 +369,45 @@ export function PledgesAndExemptionsTab({ fileId, retireeName }: PledgesAndExemp
 
     return (
         <div className="space-y-3 md:space-y-6 animate-in fade-in duration-500 text-start" dir="rtl">
-            {/* Tabs Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/60 pb-4">
-                <div className="flex p-1 bg-muted/50 rounded-xl border border-border/40 w-fit ">
+            {/* Card Header */}
+            <TabHeader
+                title="التعهدات والإعفاءات"
+                description="متابعة وثائق التعهدات المستندية وتوجيهات الإعفاء الخاصة بالملف"
+                icon={FileSignature}
+                action={{
+                    label: activeTab === "pledges" ? "إضافة تعهد" : "إضافة إعفاء",
+                    icon: Plus,
+                    onClick: () => activeTab === "pledges" ? setDialogState(s => ({ ...s, pledge: { open: true, mode: "create", data: null, shouldPrint: false } })) : setDialogState(s => ({ ...s, exemption: { open: true, mode: "create", data: null } })),
+                    show: activeTab === "pledges" ? canCreatePledge : canCreateExemption
+                }}
+            >
+                <div className="flex p-1 bg-background/80 rounded-xl border border-border w-fit ms-0 sm:ms-4">
                     <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => setActiveTab("pledges")}
-                        className={`flex items-center gap-2 px-5 py-2 text-sm font-black ${activeTab === "pledges"
-                            ? "bg-background text-primary "
+                        className={`flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg ${activeTab === "pledges"
+                            ? "bg-primary text-primary-foreground shadow-sm"
                             : "text-muted-foreground"
                             }`}
                     >
-                        <FileSignature className="w-4 h-4" />
-                        التعهدات <span className="ms-1 px-1.5 py-0.5 rounded-full bg-primary/10 text-[10px] sm:text-xs font-mono font-bold">{pledges.length}</span>
+                        <FileSignature className="w-3.5 h-3.5" />
+                        التعهدات <span className="ms-1 px-1.5 py-0.5 rounded-full bg-primary/20 text-[10px] font-mono font-bold">{pledges.length}</span>
                     </Button>
                     <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => setActiveTab("exemptions")}
-                        className={`flex items-center gap-2 px-5 py-2 text-sm font-black ${activeTab === "exemptions"
-                            ? "bg-background text-primary "
+                        className={`flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg ${activeTab === "exemptions"
+                            ? "bg-primary text-primary-foreground shadow-sm"
                             : "text-muted-foreground"
                             }`}
                     >
-                        <ShieldCheck className="w-4 h-4" />
-                        الإعفاءات <span className="ms-1 px-1.5 py-0.5 rounded-full bg-primary/10 text-[10px] sm:text-xs font-mono font-bold">{exemptions.length}</span>
+                        <ShieldCheck className="w-3.5 h-3.5" />
+                        الإعفاءات <span className="ms-1 px-1.5 py-0.5 rounded-full bg-primary/20 text-[10px] font-mono font-bold">{exemptions.length}</span>
                     </Button>
                 </div>
-
-                {activeTab === "pledges" && canCreatePledge && (
-                    <Button size="sm" onClick={() => setDialogState(s => ({ ...s, pledge: { open: true, mode: "create", data: null, shouldPrint: false } }))} className="gap-1.5 font-bold">
-                        <Plus className="w-4 h-4" /> إضافة تعهد
-                    </Button>
-                )}
-                {activeTab === "exemptions" && canCreateExemption && (
-                    <Button size="sm" onClick={() => setDialogState(s => ({ ...s, exemption: { open: true, mode: "create", data: null } }))} className="gap-1.5 font-bold">
-                        <Plus className="w-4 h-4" /> إضافة إعفاء
-                    </Button>
-                )}
-            </div>
+            </TabHeader>
 
             {/* Content */}
             <DataTable
@@ -433,7 +433,7 @@ export function PledgesAndExemptionsTab({ fileId, retireeName }: PledgesAndExemp
                             {(item as PledgeItem).missingDocuments?.map((doc, idx) => {
                                 const isFulfilled = doc.status === "Fulfilled";
                                 return (
-                                    <Badge key={idx} variant={isFulfilled ? "success" : "outline"} className={`text-[9px] h-3.5 font-bold ${isFulfilled ? "opacity-70 line-through" : ""}`}>
+                                    <Badge key={idx} variant={isFulfilled ? "success" : "outline"} className={`text-[9px] h-3.5 font-bold ${isFulfilled ? "opacity-100 line-through" : ""}`}>
                                         {doc.documentTypeName}
                                     </Badge>
                                 );
@@ -475,7 +475,7 @@ export function PledgesAndExemptionsTab({ fileId, retireeName }: PledgesAndExemp
                             {(item as ExemptionItem).missingDocuments?.map((doc, idx) => {
                                 const isFulfilled = doc.status === "Fulfilled";
                                 return (
-                                    <Badge key={idx} variant={isFulfilled ? "success" : "outline"} className={`text-[9px] h-3.5 font-bold ${isFulfilled ? "opacity-70 line-through" : ""}`}>
+                                    <Badge key={idx} variant={isFulfilled ? "success" : "outline"} className={`text-[9px] h-3.5 font-bold ${isFulfilled ? "opacity-100 line-through" : ""}`}>
                                         {doc.documentTypeName}
                                     </Badge>
                                 );

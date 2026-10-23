@@ -456,6 +456,37 @@ public class UnitOfWork : IUnitOfWork
             $"SELECT [FileID] FROM [RetirementFiles] WITH (UPDLOCK, HOLDLOCK) WHERE [FileID] = {fileId}");
     }
 
+    public async Task LockSalaryBatchAsync(int batchId)
+    {
+        if (!HasActiveTransaction)
+            throw new InvalidOperationException("يتطلب قفل كشف الصرف معاملة نشطة");
+
+        await _context.Database.ExecuteSqlInterpolatedAsync(
+            $"SELECT [BatchID] FROM [SalaryPaymentBatches] WITH (UPDLOCK, HOLDLOCK) WHERE [BatchID] = {batchId}");
+    }
+
+    public async Task LockPayrollPeriodAsync(DateTime month)
+    {
+        if (!HasActiveTransaction) throw new InvalidOperationException("يتطلب قفل شهر المعاشات معاملة نشطة");
+        var resource = $"PensionMS:Payroll:{month:yyyyMM}";
+        await _context.Database.ExecuteSqlInterpolatedAsync($@"
+            DECLARE @result int;
+            EXEC @result = sys.sp_getapplock @Resource={resource}, @LockMode='Exclusive',
+                @LockOwner='Transaction', @LockTimeout=30000;
+            IF @result < 0 THROW 51000, N'تعذر حجز شهر المعاشات؛ أعد المحاولة', 1;");
+    }
+
+    public async Task LockRetireeEntitlementsAsync(int retireeId)
+    {
+        if (!HasActiveTransaction) throw new InvalidOperationException("يتطلب قفل الاستحقاقات معاملة نشطة");
+        var resource = $"PensionMS:Entitlements:{retireeId}";
+        await _context.Database.ExecuteSqlInterpolatedAsync($@"
+            DECLARE @result int;
+            EXEC @result = sys.sp_getapplock @Resource={resource}, @LockMode='Exclusive',
+                @LockOwner='Transaction', @LockTimeout=30000;
+            IF @result < 0 THROW 51000, N'تعذر حجز استحقاقات المتقاعد؛ أعد المحاولة', 1;");
+    }
+
     public async Task BeginTransactionAsync()
         => _transaction = await _context.Database.BeginTransactionAsync();
 

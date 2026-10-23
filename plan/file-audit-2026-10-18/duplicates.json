@@ -1,0 +1,172 @@
+{
+  "exact": [
+    {
+      "sha256": "1431ec6e48e69d0be46b272cb32b81be59b831bfff9b5cd8af342a94089ff1ee",
+      "bytes": 76904,
+      "files": [
+        "PensionMS.API/wwwroot/notification-sound.mp3",
+        "ui/public/notification-sound.mp3"
+      ]
+    },
+    {
+      "sha256": "4c4b6a3be1314ab86138bef4314dde022e600960d8689a2c8f8631802d20dab6",
+      "bytes": 8,
+      "files": [
+        "PensionMS.API/wwwroot/uploads/documents/0cb20eaa-bf09-4c0b-a6dd-df6af398a96c_t_doc_probe.png",
+        "PensionMS.API/wwwroot/uploads/documents/6ebbf9fb-c00e-4e8f-af68-371f4fba0af8_t_doc_probe.png",
+        "PensionMS.API/wwwroot/uploads/documents/b351b7d0-0f40-45bd-b6b3-05c8147e5a8a_t_doc_probe.png",
+        "PensionMS.API/wwwroot/uploads/documents/b85aa5a0-a405-4f42-bef4-8d818cf56d10_t_doc_probe.png"
+      ]
+    },
+    {
+      "sha256": "4b4b9d6a8c8ef199918b41b2eeeffd925024ead92c4ae07b96064e4b7a2c82bd",
+      "bytes": 340954,
+      "files": [
+        "PensionMS.API/wwwroot/uploads/documents/a41a8f15-fe88-4844-a441-d8df6f407edf_BalanceSheet-2026-09-18.pdf",
+        "PensionMS.API/wwwroot/uploads/documents/ffb85fbd-c590-4483-b5ef-cdaefea4cc3a_BalanceSheet-2026-09-18.pdf"
+      ]
+    },
+    {
+      "sha256": "595d10078d27e6a30a35c1ef4e0381906aed13fabcbe8d3c566731654dd85cd7",
+      "bytes": 1966535,
+      "files": [
+        "PensionMS.API/wwwroot/uploads/photos/488397ba280240fc9951418ce2addee2.jpg",
+        "PensionMS.API/wwwroot/uploads/photos/90d95eed9f8f44df97897bb4a328d91a.jpg"
+      ]
+    },
+    {
+      "sha256": "f08d583d0cc6e36e6be075a2228c97db34d9f891d11f23398c0427a2f9970a17",
+      "bytes": 202950,
+      "files": [
+        "ui/src/pages/retirees/image/RetireeStatementPrint/1777575773099.png",
+        "ui/src/pages/retirees/image/RetireeStatementPrint/1777575776437.png",
+        "ui/src/pages/retirees/image/RetireeStatementPrint/1777575781404.png",
+        "ui/src/pages/retirees/image/RetireeStatementPrint/1777575784350.png",
+        "ui/src/pages/retirees/image/RetireeStatementPrint/1777575788871.png",
+        "ui/src/pages/retirees/image/RetireeStatementPrint/1777575791419.png",
+        "ui/src/pages/retirees/image/RetireeStatementPrint/1777575807944.png"
+      ]
+    }
+  ],
+  "normalized": [],
+  "similar": [
+    {
+      "files": [
+        "ui/src/pages/correspondence/IncomingRegisterPage.tsx",
+        "ui/src/pages/correspondence/OutgoingRegisterPage.tsx"
+      ],
+      "common": 112,
+      "blocks": [
+        132,
+        132
+      ],
+      "dice": 84.85,
+      "contained": 84.85
+    },
+    {
+      "files": [
+        "ui/src/components/domain/retirement/DocumentProcessDialog.tsx",
+        "ui/src/pages/retirement-files/DocumentProcessPage.tsx"
+      ],
+      "common": 310,
+      "blocks": [
+        461,
+        456
+      ],
+      "dice": 67.61,
+      "contained": 67.98
+    }
+  ],
+  "exactFunctionClones": [
+    [
+      {
+        "file": "ui/src/components/domain/retirement/DocumentProcessDialog.tsx",
+        "name": "rotateImage",
+        "line": 101,
+        "signature": "d6500e85db0dcc36135eeca4fa69edc7b415392ecc68f7f9a8d5e8ac51030ab1"
+      },
+      {
+        "file": "ui/src/pages/retirement-files/DocumentProcessPage.tsx",
+        "name": "rotateImage",
+        "line": 103,
+        "signature": "d6500e85db0dcc36135eeca4fa69edc7b415392ecc68f7f9a8d5e8ac51030ab1"
+      }
+    ],
+    [
+      {
+        "file": "ui/src/components/domain/retirement/DocumentProcessDialog.tsx",
+        "name": "rotateCorners",
+        "line": 119,
+        "signature": "ab6e5d3ddc7922b8a9db086d0c102ba0a9deb0bb7d1b1a9b007b4d25eea37fe6"
+      },
+      {
+        "file": "ui/src/pages/retirement-files/DocumentProcessPage.tsx",
+        "name": "rotateCorners",
+        "line": 121,
+        "signature": "ab6e5d3ddc7922b8a9db086d0c102ba0a9deb0bb7d1b1a9b007b4d25eea37fe6"
+      }
+    ],
+    [
+      {
+        "file": "ui/src/components/domain/retirement/DocumentProcessDialog.tsx",
+        "name": "canvasToFile",
+        "line": 133,
+        "signature": "c227d8f0a763b42059bb6b01a5ff91e6a9a508cdfc4461e6a0bc1937bd501a0d"
+      },
+      {
+        "file": "ui/src/components/ui/ImageCropperDialog.tsx",
+        "name": "canvasToFile",
+        "line": 23,
+        "signature": "c227d8f0a763b42059bb6b01a5ff91e6a9a508cdfc4461e6a0bc1937bd501a0d"
+      },
+      {
+        "file": "ui/src/pages/retirement-files/DocumentProcessPage.tsx",
+        "name": "canvasToFile",
+        "line": 135,
+        "signature": "c227d8f0a763b42059bb6b01a5ff91e6a9a508cdfc4461e6a0bc1937bd501a0d"
+      }
+    ],
+    [
+      {
+        "file": "ui/src/components/domain/retirement/DocumentProcessDialog.tsx",
+        "name": "applySharpen",
+        "line": 153,
+        "signature": "d8b9910bc9ee9faef801412ebc06f7297caaa987554f5cd848544f405ffe9dd3"
+      },
+      {
+        "file": "ui/src/pages/retirement-files/DocumentProcessPage.tsx",
+        "name": "applySharpen",
+        "line": 151,
+        "signature": "d8b9910bc9ee9faef801412ebc06f7297caaa987554f5cd848544f405ffe9dd3"
+      }
+    ],
+    [
+      {
+        "file": "ui/src/components/domain/retirement/DocumentProcessDialog.tsx",
+        "name": "renderSettingsImage",
+        "line": 188,
+        "signature": "e852bf51c3d6aee581cc77166fb4a532b3fc8e000d477a092642ff57b0340037"
+      },
+      {
+        "file": "ui/src/pages/retirement-files/DocumentProcessPage.tsx",
+        "name": "renderSettingsImage",
+        "line": 186,
+        "signature": "e852bf51c3d6aee581cc77166fb4a532b3fc8e000d477a092642ff57b0340037"
+      }
+    ],
+    [
+      {
+        "file": "ui/src/components/domain/retirement/DocumentProcessDialog.tsx",
+        "name": "renderExportCanvas",
+        "line": 215,
+        "signature": "e350fcdd3a7d0240ca8e5cf11d302f48ec4edf21dda7b9d61fa4e0b3e9b1ed75"
+      },
+      {
+        "file": "ui/src/pages/retirement-files/DocumentProcessPage.tsx",
+        "name": "renderExportCanvas",
+        "line": 213,
+        "signature": "e350fcdd3a7d0240ca8e5cf11d302f48ec4edf21dda7b9d61fa4e0b3e9b1ed75"
+      }
+    ]
+  ]
+}

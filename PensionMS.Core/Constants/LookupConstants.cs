@@ -27,6 +27,7 @@ public static class TransactionStatusConstants
 {
     public const int PendingSend = 1;
     public const int Sent = 2;
-    public const int Failed = 3;
-    public const int Cancelled = 4;
+    public const int Received = 3;
+    public const int Failed = 4;
+    public const int Cancelled = 5;
 }

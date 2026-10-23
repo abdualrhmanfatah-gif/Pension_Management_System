@@ -6,15 +6,6 @@ import { reportsApi } from "@/api/accounting";
 import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
 import { ReportBarChart } from "@/components/common/charts";
 import { ReportFilters } from "@/components/common/ReportFilters";
-import {
-  altRowFill,
-  autoFitColumns,
-  buildReportFooter,
-  buildReportHeader,
-  createWorkbook,
-  exportWorkbook,
-  styleDataCell,
-} from "@/components/domain/print/excel.utils";
 import { Button } from "@/components/ui";
 import { chartColors } from "@/lib/chartColors";
 import { formatCurrency } from "@/lib/utils";
@@ -35,7 +26,7 @@ function SectionRow({ section, depth }: { section: BalanceSheetSectionDto; depth
   return (
     <div>
       <div className={cn(
-        "flex items-center justify-between px-3 py-1.5 border-t border-border/30 text-sm hover:bg-muted/20",
+        "flex items-center justify-between px-3 py-1.5 border-t border-border text-sm hover:bg-muted/20",
         depth === 0 && "font-medium bg-muted/20",
         depth === 1 && "pr-8",
         depth >= 2 && "pr-12 text-xs"
@@ -78,44 +69,6 @@ export function BalanceSheetReport({ fiscalYearId, asOfDate, externalFilters, hi
     setInternalFilters(prev => ({ ...prev, [key]: value }));
   }, []);
 
-  const handleExportExcel = useCallback(async () => {
-    if (!data) return;
-    const { ws } = createWorkbook("الميزانية العمومية");
-    autoFitColumns(ws, { 1: 15, 2: 35, 3: 20 });
-    const dataStartRow = await buildReportHeader(ws, "الميزانية العمومية", 3, [
-      { label: "حتى تاريخ", value: filters.toDate! },
-    ]);
-    ws.getRow(dataStartRow).getCell(1).value = "القسم";
-    ws.getRow(dataStartRow).getCell(2).value = "الوصف";
-    ws.getRow(dataStartRow).getCell(3).value = "المبلغ";
-    styleDataCell(ws.getRow(dataStartRow).getCell(1), { bold: true });
-    styleDataCell(ws.getRow(dataStartRow).getCell(2), { bold: true });
-    styleDataCell(ws.getRow(dataStartRow).getCell(3), { bold: true });
-
-    let row = dataStartRow + 1;
-    const writeSection = (label: string, sections: BalanceSheetSectionDto[], total: number) => {
-      ws.getRow(row).getCell(1).value = label;
-      ws.getRow(row).getCell(3).value = total;
-      styleDataCell(ws.getRow(row).getCell(1), { bold: true });
-      styleDataCell(ws.getRow(row).getCell(3), { numFmt: "#,##0", bold: true });
-      row++;
-      sections.forEach(s => {
-        ws.getRow(row).getCell(2).value = s.accountName;
-        ws.getRow(row).getCell(3).value = s.balance;
-        styleDataCell(ws.getRow(row).getCell(3), { numFmt: "#,##0" });
-        altRowFill(ws.getRow(row).getCell(1), row - dataStartRow);
-        altRowFill(ws.getRow(row).getCell(2), row - dataStartRow);
-        altRowFill(ws.getRow(row).getCell(3), row - dataStartRow);
-        row++;
-      });
-    };
-
-    writeSection("الأصول", data.assets, data.totalAssets);
-    writeSection("الخصوم", data.liabilities, data.totalLiabilities);
-    writeSection("حقوق الملكية", data.equity, data.totalEquity);
-    buildReportFooter(ws, 3);
-    await exportWorkbook(ws.workbook, `الميزانية_العمومية_${filters.toDate}`);
-  }, [data, filters.toDate]);
 
   const handlePrint = useCallback(() => {
     const params = new URLSearchParams();
@@ -162,9 +115,7 @@ export function BalanceSheetReport({ fiscalYearId, asOfDate, externalFilters, hi
       isLoading={isLoading}
       customKPIs={customKPIs}
       filterBar={filterBar}
-      chartContent={chartContent}
-      onExport={hideInternalControls ? undefined : (data ? handleExportExcel : undefined)}
-      onPrint={hideInternalControls ? undefined : (data ? handlePrint : undefined)}
+      chartContent={chartContent}      onPrint={hideInternalControls ? undefined : (data ? handlePrint : undefined)}
     >
       {error ? (
         <div className="text-destructive text-sm">فشل في تحميل التقرير</div>

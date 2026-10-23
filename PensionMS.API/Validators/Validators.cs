@@ -8,6 +8,29 @@ using PensionMS.Core.DTOs.Documents;
 
 namespace PensionMS.API.Validators;
 
+public class CreateAgentValidator : AbstractValidator<PensionMS.Core.DTOs.Agents.CreateAgentDto>
+{
+    public CreateAgentValidator()
+    {
+        RuleFor(x => x.FileID).GreaterThan(0).WithMessage("معرف الملف غير صالح");
+        RuleFor(x => x.FullName).NotEmpty().MinimumLength(3).MaximumLength(200).WithMessage("اسم الوكيل مطلوب ويجب أن يتراوح بين 3 و200 حرف");
+        RuleFor(x => x.NationalID).NotEmpty().MaximumLength(20).WithMessage("رقم هوية الوكيل مطلوب ولا يتجاوز 20 حرفًا");
+        RuleFor(x => x.Phone).MaximumLength(20).WithMessage("رقم الهاتف لا يتجاوز 20 حرفًا");
+        RuleFor(x => x.AgencyNumber).MaximumLength(100).WithMessage("رقم الوكالة لا يتجاوز 100 حرف");
+    }
+}
+
+public class UpdateAgentValidator : AbstractValidator<PensionMS.Core.DTOs.Agents.UpdateAgentDto>
+{
+    public UpdateAgentValidator()
+    {
+        RuleFor(x => x.FullName).NotEmpty().MinimumLength(3).MaximumLength(200).WithMessage("اسم الوكيل مطلوب ويجب أن يتراوح بين 3 و200 حرف");
+        RuleFor(x => x.NationalID).NotEmpty().MaximumLength(20).WithMessage("رقم هوية الوكيل مطلوب ولا يتجاوز 20 حرفًا");
+        RuleFor(x => x.Phone).MaximumLength(20).WithMessage("رقم الهاتف لا يتجاوز 20 حرفًا");
+        RuleFor(x => x.AgencyNumber).MaximumLength(100).WithMessage("رقم الوكالة لا يتجاوز 100 حرف");
+    }
+}
+
 // ═══════════════════════════════════════
 // AUTH
 // ═══════════════════════════════════════
@@ -49,9 +72,9 @@ public class CreateRetirementFileValidator : AbstractValidator<CreateRetirementF
             .Matches(@"^\d{12}$").WithMessage("الرقم الوطني يجب أن يحتوي على أرقام فقط")
             .When(x => !string.IsNullOrEmpty(x.NationalID));
 
-        // Phase 2.1: التحقق من رقم الهاتف — 9 أرقام ولا يبدأ بـ 07
+        // التحقق من رقم الهاتف — موبايل 7XXXXXXXX أو أرضي 0XXXXXXX
         RuleFor(x => x.Phone)
-            .Matches(@"^(?!07)\d{9}$").WithMessage("رقم الهاتف يجب أن يتكون من 9 أرقام ولا يبدأ بـ 07")
+            .Matches(@"^(7\d{8}|0\d{7})$").WithMessage("رقم الهاتف غير صحيح (موبايل: 7XXXXXXXX / أرضي: 0XXXXXXX)")
             .When(x => !string.IsNullOrEmpty(x.Phone));
 
         // Phase 2.1: تاريخ الوفاة مطلوب عند حالة متوفي
@@ -81,7 +104,7 @@ public class UpdateRetirementFileValidator : AbstractValidator<UpdateRetirementF
             .When(x => !string.IsNullOrEmpty(x.FullName));
 
         RuleFor(x => x.Phone)
-            .Matches(@"^(?!07)\d{9}$").WithMessage("رقم الهاتف يجب أن يتكون من 9 أرقام ")
+            .Matches(@"^(7\d{8}|0\d{7})$").WithMessage("رقم الهاتف غير صحيح (موبايل: 7XXXXXXXX / أرضي: 0XXXXXXX)")
             .When(x => !string.IsNullOrEmpty(x.Phone));
 
         RuleFor(x => x.ServiceEndDate)
@@ -109,6 +132,10 @@ public class CreateEntitledPersonValidator : AbstractValidator<CreateEntitledPer
             .Length(12).WithMessage("رقم الهوية يجب أن يكون 12 أرقام")
             .Matches(@"^\d{12}$").WithMessage("رقم الهوية يجب أن يحتوي على أرقام فقط")
             .When(x => !string.IsNullOrEmpty(x.NationalID));
+
+        RuleFor(x => x.Phone)
+            .Matches(@"^(7\d{8}|0\d{7})$").WithMessage("رقم الهاتف غير صحيح (موبايل: 7XXXXXXXX / أرضي: 0XXXXXXX)")
+            .When(x => !string.IsNullOrEmpty(x.Phone));
     }
 
     private static int CalculateAge(DateTime dateOfBirth)

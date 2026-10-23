@@ -1,6 +1,0 @@
-﻿export * from "./CreateSalaryBatchDialog"
-export * from "./EntitlementFormDialog"
-export * from "./EntitlementsTab"
-export * from "./RecipientsTab"
-export * from "./SalaryRecipientFormDialog"
-export * from "./SalaryRecipientViewerDialog"

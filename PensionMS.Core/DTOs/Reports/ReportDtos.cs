@@ -131,11 +131,20 @@ public class FileStatusRow
 // ═══════════════════════════════════════
 // RET-02: Active Retirees
 // ═══════════════════════════════════════
+public class ActiveRetireesSummaryDto
+{
+    public int TotalCount { get; set; }
+    public decimal TotalPension { get; set; }
+    public decimal AvgPension { get; set; }
+    public int GovernorateCount { get; set; }
+}
+
 public class ActiveRetireeRow
 {
     public int RetireeID { get; set; }
     public string FullName { get; set; } = "";
     public string NationalID { get; set; } = "";
+    public string MilitaryNumber { get; set; } = "";
     public string RankName { get; set; } = "";
     public string Category { get; set; } = "";
     public decimal MonthlyPension { get; set; }
@@ -178,11 +187,22 @@ public class SalaryBatchRow
 public class SettlementRow
 {
     public int SettlementID { get; set; }
+    public int DecisionID { get; set; }
     public string DecisionNumber { get; set; } = "";
     public string RetireeName { get; set; } = "";
-    public decimal Amount { get; set; }
+    public string MilitaryNumber { get; set; } = "";
+    public string PreviousRank { get; set; } = "";
+    public string ProcessedRank { get; set; } = "";
     public string Status { get; set; } = "";
-    public DateTime CreatedAt { get; set; }
+    public DateTime DecisionDate { get; set; }
+}
+
+public class SettlementSummaryDto
+{
+    public int TotalItems { get; set; }
+    public decimal TotalAmount { get; set; }
+    public int DecisionCount { get; set; }
+    public decimal AverageAmount { get; set; }
 }
 
 // ═══════════════════════════════════════

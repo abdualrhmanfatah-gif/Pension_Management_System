@@ -7,6 +7,16 @@ function parseDisplayDate(value: string | Date | number): Date {
     return new Date(/(?:Z|[+-]\d{2}:?\d{2})$/i.test(value) ? value : `${value}+03:00`);
 }
 
+/** Notification/audit instants share the same explicit-offset and legacy Yemen contract. */
+export function formatYemenRelativeTime(value: string, now = Date.now()): string {
+    const elapsed = parseDisplayDate(value).getTime() - now;
+    if (!Number.isFinite(elapsed)) return "";
+    const magnitude = Math.abs(elapsed);
+    const unit = magnitude < 60_000 ? 'second' : magnitude < 3_600_000 ? 'minute' : magnitude < 86_400_000 ? 'hour' : 'day';
+    const duration = unit === 'second' ? 1000 : unit === 'minute' ? 60_000 : unit === 'hour' ? 3_600_000 : 86_400_000;
+    return new Intl.RelativeTimeFormat('ar', { numeric: 'auto' }).format(Math.round(elapsed / duration), unit);
+}
+
 export function formatYemenDate(value: string | Date | number | null | undefined, options: Intl.DateTimeFormatOptions = {}): string {
     if (value == null || value === "") return "";
     const date = parseDisplayDate(value);

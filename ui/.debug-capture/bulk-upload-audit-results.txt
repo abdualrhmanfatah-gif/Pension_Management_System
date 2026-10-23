@@ -1,0 +1,24 @@
+PASS control: normal upload refreshes actual document IDs once and reports success
+PASS control: failed finalization can be retried without uploading successful documents again
+PASS control: a scope-matching duplicate response recovers its ID and finalizes it
+FAIL distinct content with the same filename and size must be accepted: Expected values to be strictly equal:
+
+1 !== 2
+
+FAIL adding another file must prevent automatic close and loss of pending files: auto-close fired with a new pending file
+
+1 !== 0
+
+FAIL cancel followed by removing remaining files must still allow finalization of successful uploads: finalization is required but submit remains disabled
+
+true !== false
+
+FAIL closing a pending batch must ask for confirmation only once: ["لديك تغييرات غير محفوظة، هل أنت متأكد من الإغلاق؟","لديك ملفات لم تُرفع بعد. هل تريد الإغلاق؟"]
+
+2 !== 1
+
+FAIL owner lookup must not silently succeed when all three owner endpoints fail: Missing expected rejection.
+FAIL finalization must not report complete success when the server skipped the uploaded document: auto-close is scheduled although finalization skipped the only uploaded document
+
+true !== false
+

@@ -82,7 +82,7 @@ export function TabbedFormSection({
   return (
     <Tabs value={activeTab} onValueChange={handleTabChange} className={cn("w-full", className)} dir="rtl">
       <TabsList className={cn(
-        "glass border border-border/50 p-1.5 w-full justify-start overflow-x-auto mb-6 rounded-xl bg-muted/30",
+        "glass border border-border p-1.5 w-full justify-start overflow-x-auto mb-6 rounded-xl bg-muted/30",
         tabListClassName
       )}>
         {tabs.map(tab => {
@@ -93,7 +93,7 @@ export function TabbedFormSection({
               value={tab.id} 
               className="gap-2.5 min-w-[120px] rounded-lg transition-all duration-300 data-[state=active]:bg-background data-[state=active]:text-primary"
             >
-              {tab.icon && <span className="opacity-80 data-[state=active]:opacity-100">{tab.icon}</span>}
+              {tab.icon && <span className="opacity-100 data-[state=active]:opacity-100">{tab.icon}</span>}
               <span className="font-medium">{tab.label}</span>
               {errorCount > 0 && (
                 <span className="inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 rounded-full bg-destructive text-destructive-foreground text-caption-md font-bold leading-none">

@@ -68,7 +68,7 @@ export function BudgetReport({ data, isLoading, showQuarters, showMonthly, selec
                 {month.items?.map((item: any) => (
                   <tr
                     key={item.budgetItemID}
-                    className="border-t border-border/50 hover:bg-muted/20"
+                    className="border-t border-border hover:bg-muted/20"
                   >
                     <td className="p-3 font-mono text-xs">{item.accountCode}</td>
                     <td className="p-3 font-medium">{item.accountName}</td>
@@ -149,7 +149,7 @@ export function BudgetReport({ data, isLoading, showQuarters, showMonthly, selec
             {data.items?.map((item: any) => (
               <tr
                 key={item.budgetItemID}
-                className="border-t border-border/50 hover:bg-muted/20"
+                className="border-t border-border hover:bg-muted/20"
               >
                 <td className="p-3 font-mono text-xs">{item.accountCode}</td>
                 <td className="p-3 font-medium">{item.accountName}</td>
@@ -260,7 +260,7 @@ export function BudgetReport({ data, isLoading, showQuarters, showMonthly, selec
               {quarter.items?.map((item: any) => (
                 <tr
                   key={item.budgetItemID}
-                  className="border-t border-border/50 hover:bg-muted/20"
+                  className="border-t border-border hover:bg-muted/20"
                 >
                   <td className="p-3 font-mono text-xs">{item.accountCode}</td>
                   <td className="p-3 font-medium">{item.accountName}</td>

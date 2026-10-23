@@ -8,7 +8,7 @@ UserCheck, Users, Wallet} from "lucide-react";
 import { useCallback, useDeferredValue,useMemo, useState } from "react";
 
 import { retirementApi } from "@/api/retirement";
-import { Button, Card, Heading, Input, LoadingIndicator, Text } from "@/components/ui";
+import { Button, Card, Input, LoadingIndicator, TabHeader } from "@/components/ui";
 import { AuditTimeline } from "@/components/ui/AuditTimeline";
 import { translateFieldName } from "@/lib/fieldTranslations";
 import type { ChangeLogItem } from "@/types/retirement";
@@ -159,8 +159,8 @@ export function StatusTransitionsTab({ fileId }: StatusTransitionsTabProps) {
     // ─── Error State ─────────────────────────────────────
     if (error) {
         return (
-            <div className="border-2 border-destructive/20 rounded-2xl py-16 text-center text-destructive bg-destructive/5">
-                <FileWarning className="w-12 h-12 mx-auto mb-4 opacity-50" />
+            <div className="border-2 border-destructive rounded-2xl py-16 text-center text-destructive bg-destructive/5">
+                <FileWarning className="w-12 h-12 mx-auto mb-4 opacity-100" />
                 <p className="font-medium mb-2">حدث خطأ أثناء تحميل السجل</p>
                 <Button variant="outline" size="sm" onClick={() => refetch()} className="gap-1.5">
                     <RefreshCw className="w-4 h-4" /> إعادة المحاولة
@@ -173,7 +173,7 @@ export function StatusTransitionsTab({ fileId }: StatusTransitionsTabProps) {
     if (changes.length === 0) {
         return (
             <div className="border-2 border-dashed rounded-2xl py-16 text-center text-muted-foreground bg-muted/10 animate-in fade-in duration-500">
-                <History className="w-12 h-12 mx-auto mb-4 opacity-20" />
+                <History className="w-12 h-12 mx-auto mb-4 opacity-100" />
                 <p className="font-medium">لا توجد تغييرات مسجلة لهذا الملف حتى الآن</p>
             </div>
         );
@@ -182,43 +182,38 @@ export function StatusTransitionsTab({ fileId }: StatusTransitionsTabProps) {
     return (
         <div className="space-y-3 md:space-y-6 animate-in fade-in duration-500 text-start">
             {/* Header */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-muted/30 p-4 rounded-xl border border-border/50">
-                <div className="space-y-1">
-                    <Heading level="h3" className="text-lg font-bold flex items-center gap-2">
-                        <History className="w-5 h-5 text-primary" /> 
-                        سجل العمليات
-                    </Heading>
-                    <Text variant="caption" className="font-medium">
-                        تتبع الأنشطة والتعديلات التي تمت على الملف
-                    </Text>
-                </div>
-                <div className="flex items-center gap-2 flex-wrap lg:flex-nowrap">
+            <TabHeader
+                title="سجل العمليات"
+                description="تتبع الأنشطة والتعديلات التي تمت على الملف"
+                icon={History}
+            >
+                <div className="flex items-center gap-2 flex-wrap md:flex-nowrap">
                     <Input
                         value={search}
                         onChange={handleSearchChange}
                         placeholder="بحث في الوصف أو المستخدم..."
-                        className="h-9 w-full sm:w-64 text-xs bg-background "
+                        className="h-9 w-full sm:w-64 text-xs bg-background"
                         aria-label="البحث في سجل التغييرات"
                     />
-                    <Button 
-                        variant="outline" 
-                        size="sm" 
-                        onClick={() => refetch()} 
-                        className="h-11 gap-1.5 "
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => refetch()}
+                        className="gap-1.5 h-8 md:h-10 text-xs md:text-sm"
                         disabled={isFetching}
                         aria-label="تحديث السجل"
                     >
-                        <RefreshCw className={`w-4 h-4 ${isFetching ? "animate-spin" : ""}`} /> 
+                        <RefreshCw className={`w-3.5 h-3.5 md:w-4 md:h-4 ${isFetching ? "animate-spin" : ""}`} />
                         تحديث
                     </Button>
                 </div>
-            </div>
+            </TabHeader>
 
             {/* Filters */}
             <div className="space-y-3">
                 {/* نوع التغيير */}
                 <div 
-                    className="flex gap-2 flex-wrap p-1 bg-muted/50 rounded-lg border border-border/40 w-fit"
+                    className="flex gap-2 flex-wrap p-1 bg-muted/50 rounded-lg border border-border w-fit"
                     role="group"
                     aria-label="فلترة حسب نوع التغيير"
                 >
@@ -248,7 +243,7 @@ export function StatusTransitionsTab({ fileId }: StatusTransitionsTabProps) {
                 {/* فلترة الكيانات */}
                 {uniqueEntities.length > 1 && (
                     <div 
-                        className="flex gap-2 flex-wrap p-1 bg-muted/50 rounded-lg border border-border/40 w-fit"
+                        className="flex gap-2 flex-wrap p-1 bg-muted/50 rounded-lg border border-border w-fit"
                         role="group"
                         aria-label="فلترة حسب الكيان"
                     >

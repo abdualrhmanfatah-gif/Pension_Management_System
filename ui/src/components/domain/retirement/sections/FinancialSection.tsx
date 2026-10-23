@@ -5,6 +5,7 @@ import { useState } from "react";
 import api from "@/api/axios";
 import { documentsApi } from "@/api/documents";
 import { retirementApi } from "@/api/retirement";
+import { salaryRecipientApi } from "@/api/salary-recipients";
 import { Heading, useConfirm } from "@/components/ui";
 import { Badge } from "@/components/ui";
 import { Button } from "@/components/ui";
@@ -12,9 +13,11 @@ import { Tabs, TabsContent,TabsList, TabsTrigger } from "@/components/ui";
 import { EmptyState } from "@/components/ui";
 import { useApiMutation } from "@/hooks/useApiMutation";
 import { useDocumentBlob } from "@/hooks/useDocumentBlob";
+import { todayYemen } from "@/lib/date";
 import { formatCurrency, formatDate, getDocumentUrl } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
+import type { ApiResponse } from "@/types/api";
 import type { PaymentBookItem } from "@/types/retirement";
 
 import { DocumentProcessDialog } from "../DocumentProcessDialog";
@@ -56,7 +59,7 @@ function BookPreview({ book, docs, fileId }: { book: PaymentBookItem; docs: any[
 
         return (
             <div className="flex flex-col items-center justify-center h-full gap-4 p-6">
-                <CreditCard className="w-16 h-16 text-muted-foreground/40" />
+                <CreditCard className="w-16 h-16 text-muted-foreground" />
                 <div className="text-center">
                     <p className="font-medium">{book.bookNumber}</p>
                     <p className="text-sm text-muted-foreground mt-1">
@@ -233,20 +236,22 @@ export function FinancialSection({ fileId, retireeId }: FinancialSectionProps) {
     });
 
     const saveMutation = useApiMutation(
-        async (values: BookFormValues) => {
-            if (editingBook) {
+        async ({ values, paymentBookID }: { values: BookFormValues; paymentBookID?: number }) => {
+            const targetId = paymentBookID ?? editingBook?.paymentBookID;
+            if (!targetId) throw new Error("لم يتم تحديد دفتر الصرف المراد تعديله");
                 const updateDto = {
                     bookNumber: values.bookNumber,
-                    issueDate: values.issueDate ? new Date(values.issueDate).toISOString() : undefined,
-                    expiryDate: values.expiryDate ? new Date(values.expiryDate).toISOString() : undefined,
+                    issueDate: values.issueDate || undefined,
+                    expiryDate: values.expiryDate || undefined,
                     status: values.status,
                     legacyColor: values.legacyColor,
                     changeReason: values.changeReason,
+                    recipientName: values.recipientName,
+                    recipientType: values.recipientType,
                     notes: values.notes,
                     issuingBranchID: values.issuingBranchID,
                 };
-                return retirementApi.updatePaymentBook(editingBook.paymentBookID, updateDto);
-            }
+                return retirementApi.updatePaymentBook(targetId, updateDto);
         },
         {
             successMessage: "تم تحديث الدفتر بنجاح",
@@ -255,6 +260,61 @@ export function FinancialSection({ fileId, retireeId }: FinancialSectionProps) {
                 setEditDialogOpen(false);
                 setEditingBook(null);
             }
+        }
+    );
+
+    const createBookMutation = useApiMutation(
+        ({ values, paymentBookID }: { values: BookFormValues; paymentBookID?: number }): Promise<ApiResponse<number | boolean>> => {
+            // التنقل (Alt+↑/↓) قد يحوّل الحوار الفارغ إلى سجل موجود — عندها الحفظ تعديل لا إنشاء
+            if (paymentBookID) {
+                const updateDto = {
+                    bookNumber: values.bookNumber,
+                    issueDate: values.issueDate || undefined,
+                    expiryDate: values.expiryDate || undefined,
+                    status: values.status,
+                    legacyColor: values.legacyColor,
+                    changeReason: values.changeReason,
+                    recipientName: values.recipientName,
+                    recipientType: values.recipientType,
+                    notes: values.notes,
+                    issuingBranchID: values.issuingBranchID,
+                };
+                return retirementApi.updatePaymentBook(paymentBookID, updateDto);
+            }
+            const formData = new FormData();
+            formData.append("FileID", String(fileId));
+            formData.append("IssueDate", values.issueDate || todayYemen());
+            formData.append("BookType", values.bookType);
+            if (values.bookType === "يدوي") {
+                if (values.bookNumber) formData.append("BookNumber", values.bookNumber);
+                if (values.legacyColor) formData.append("LegacyColor", values.legacyColor);
+            } else {
+                if (values.expiryDate) formData.append("ExpiryDate", values.expiryDate);
+                if (values.changeReason) formData.append("ChangeReason", values.changeReason);
+            }
+            if (values.recipientName) formData.append("RecipientName", values.recipientName);
+            if (values.recipientType) formData.append("RecipientType", values.recipientType);
+            if (values.notes) formData.append("Notes", values.notes);
+            if (values.issuingBranchID) formData.append("IssuingBranchID", String(values.issuingBranchID));
+            formData.append("AutoCreateSalaryRecipient", String(values.autoCreateSalaryRecipient));
+            if (values.autoCreateSalaryRecipient && values.salaryRecipientID && values.salaryRecipientType) {
+                const recipientId = String(values.salaryRecipientID);
+                if (values.salaryRecipientType === "المتقاعد") formData.append("RetireeID", recipientId);
+                else if (values.salaryRecipientType === "الوكيل") formData.append("AgentID", recipientId);
+                else if (values.salaryRecipientType === "المستحق") formData.append("EntitledID", recipientId);
+                else if (values.salaryRecipientType === "الوصي") formData.append("GuardianID", recipientId);
+            }
+            if (values.bookImage instanceof File) formData.append("BookImage", values.bookImage);
+            return retirementApi.createPaymentBook(formData);
+        },
+        {
+            successMessage: "تم إضافة دفتر الصرف بنجاح",
+            invalidateKeys: [["payment-books", fileId], ["retirement-file", fileId], ["salary-recipients", fileId], ["documents", fileId]],
+            onSuccess: () => {
+                sessionStorage.removeItem("payment_book_draft");
+                setCreateBookOpen(false);
+                setActiveTab("books");
+            },
         }
     );
 
@@ -310,13 +370,23 @@ export function FinancialSection({ fileId, retireeId }: FinancialSectionProps) {
 
     const createRecipientMutation = useApiMutation(
         async (values: RecipientFormValues) => {
-            const formData = new FormData();
-            formData.append("fileID", fileId.toString());
-            formData.append("recipientType", values.recipientType);
-            formData.append("targetID", values.targetID);
-            formData.append("startDate", values.startDate + "T00:00:00");
-            if (values.notes) formData.append("notes", values.notes);
-            return retirementApi.createRecipient(formData as any);
+            return salaryRecipientApi.create({
+                fileID: fileId,
+                startDate: values.startDate,
+                notes: values.notes,
+                retireeID: values.recipientType === "retiree" ? Number(values.targetID) : undefined,
+                agentID: values.recipientType === "agent" ? Number(values.targetID) : undefined,
+                entitledID: values.recipientType === "entitled" ? Number(values.targetID) : values.recipientType === "guardian" ? Number(values.coveredEntitledID) : undefined,
+                guardianID: values.recipientType === "guardian" ? Number(values.targetID) : undefined,
+                nationalID: values.nationalID,
+                birthDate: values.birthDate,
+                socialStatusID: values.socialStatusID,
+                healthStatusID: values.healthStatusID,
+                personalPhoto: values.personalPhoto,
+                nationalIdImage: values.nationalIdImage,
+                sharePercent: values.recipientType === "entitled" && values.sharePercent ? Number(values.sharePercent) : undefined,
+                entitledAmount: values.recipientType === "entitled" && values.entitledAmount ? Number(values.entitledAmount) : undefined,
+            });
         },
         {
             successMessage: "تم إضافة مستلم المعاش بنجاح",
@@ -410,7 +480,7 @@ export function FinancialSection({ fileId, retireeId }: FinancialSectionProps) {
                                                 "flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors",
                                                 selectedBook?.paymentBookID === book.paymentBookID
                                                     ? "border-primary bg-primary/5"
-                                                    : "border-border bg-card hover:border-muted-foreground/30"
+                                                    : "border-border bg-card hover:border-muted-foreground"
                                             )}
                                         >
                                             <div className="flex items-center gap-3">
@@ -567,8 +637,10 @@ export function FinancialSection({ fileId, retireeId }: FinancialSectionProps) {
             <PaymentBookDialog
                 open={editDialogOpen}
                 onOpenChange={setEditDialogOpen}
+                fileId={fileId}
                 mode="edit"
-                onSubmit={(v) => saveMutation.mutate(v)}
+                editRecordId={editingBook?.paymentBookID}
+                onSubmit={(v, ctx) => saveMutation.mutateAsync({ values: v, paymentBookID: ctx.paymentBookID })}
                 isLoading={saveMutation.isPending}
                 existingImages={documents
                     .filter((d: any) => d.documentTypeName?.includes("دفتر الصرف") || d.documentTypeName?.includes("صورة دفتر"))
@@ -606,9 +678,10 @@ export function FinancialSection({ fileId, retireeId }: FinancialSectionProps) {
             <PaymentBookDialog
                 open={createBookOpen}
                 onOpenChange={setCreateBookOpen}
+                fileId={fileId}
                 mode="create"
-                onSubmit={(v) => saveMutation.mutate(v)}
-                isLoading={saveMutation.isPending}
+                onSubmit={(v, ctx) => createBookMutation.mutateAsync({ values: v, paymentBookID: ctx.paymentBookID })}
+                isLoading={createBookMutation.isPending}
                 lookups={{
                     changeReasons: CHANGE_REASONS,
                     recipientTypes: RECIPIENT_TYPES,

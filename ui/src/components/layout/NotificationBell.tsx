@@ -2,7 +2,6 @@ import { Bell, CheckCheck, Clock, ExternalLink, Inbox } from "lucide-react";
 import { useCallback,useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { notificationsApi } from "@/api/notifications";
 import {
   Badge,
   Button,
@@ -13,19 +12,29 @@ import {
   ScrollArea,
   Separator,
 } from "@/components/ui";
+import { useMarkAllAsRead, useNotificationsList, useUnreadCount } from "@/hooks/useNotifications";
+import { useOpenNotification } from "@/hooks/useOpenNotification";
 import { formatDate } from "@/lib/utils";
 import { cn } from "@/lib/utils";
-import { useNotificationStore } from "@/stores/useNotificationStore";
 import type { NotificationDto } from "@/types/notifications";
 import { CATEGORY_COLORS, CATEGORY_LABELS } from "@/types/notifications";
 
 export function NotificationBell() {
-  const notifications = useNotificationStore((s) => s.notifications);
-  const unreadCount = useNotificationStore((s) => s.unreadCount);
-  const markAsRead = useNotificationStore((s) => s.markAsRead);
-  const setUnreadCount = useNotificationStore((s) => s.setUnreadCount);
-  const setNotifications = useNotificationStore((s) => s.setNotifications);
   const navigate = useNavigate();
+  // NF2: القائمة والعدّاد من الاستعلامات المشتركة — لا ملكية موازية في Zustand
+  const { data } = useNotificationsList(1, 20);
+  const { data: unreadData } = useUnreadCount();
+
+  const markAllAsReadMutation = useMarkAllAsRead();
+  const handleNotificationClick = useOpenNotification();
+
+  const notifications = useMemo(() => {
+    if (!data?.isSuccess) return [];
+    const d = data.data;
+    return Array.isArray(d) ? d : (d.items ?? []);
+  }, [data]);
+
+  const unreadCount = unreadData?.isSuccess ? unreadData.data : 0;
 
   // تحسين الأداء: تجميع الإشعارات المقروءة وغير المقروءة
   const { unreadNotifications, readNotifications } = useMemo(() => {
@@ -35,55 +44,9 @@ export function NotificationBell() {
     };
   }, [notifications]);
 
-  const handleMarkAsRead = useCallback(
-    async (id: number) => {
-      const res = await notificationsApi.markAsRead(id);
-      if (res.isSuccess) {
-        markAsRead(id);
-      }
-    },
-    [markAsRead]
-  );
-
-  const handleMarkAllAsRead = useCallback(async () => {
-    const res = await notificationsApi.markAllAsRead();
-    if (res.isSuccess) {
-      setUnreadCount(0);
-      setNotifications(notifications.map((n) => ({ ...n, isRead: true })));
-    }
-  }, [notifications, setNotifications, setUnreadCount]);
-
-  const handleNotificationClick = useCallback(
-    (n: NotificationDto) => {
-      if (!n.isRead) {
-        handleMarkAsRead(n.notificationID);
-      }
-
-      switch (n.category) {
-        case "WORKFLOW":
-          if (n.relatedRecordID) navigate(`/files/${n.relatedRecordID}`);
-          break;
-        case "FINANCIAL":
-          if (n.relatedRecordID) {
-            if (n.title.includes("تسوية")) {
-              navigate(`/settlements/${n.relatedRecordID}`);
-            } else if (n.title.includes("رواتب")) {
-              navigate(`/salaries/${n.relatedRecordID}`);
-            } else {
-              navigate("/salaries");
-            }
-          }
-          break;
-        case "HR":
-          navigate(`/hr/leaves`);
-          break;
-        case "SECURITY":
-          navigate(`/admin/audit-logs`);
-          break;
-      }
-    },
-    [navigate, handleMarkAsRead]
-  );
+  const handleMarkAllAsRead = useCallback(() => {
+    markAllAsReadMutation.mutate(undefined);
+  }, [markAllAsReadMutation]);
 
   const NotificationItem = useCallback(
     ({ n }: { n: NotificationDto }) => (
@@ -94,7 +57,7 @@ export function NotificationBell() {
         role="button"
         tabIndex={0}
         className={cn(
-          "group relative flex flex-col gap-2 border-b border-border/50 p-4 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset",
+          "group relative flex flex-col gap-2 border-b border-border p-4 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset",
           "hover:bg-accent/50 cursor-pointer text-start",
           !n.isRead && "bg-primary/[0.03] hover:bg-primary/[0.06]"
         )}
@@ -131,7 +94,7 @@ export function NotificationBell() {
         </p>
 
         <div className="flex items-center justify-between mt-1">
-          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/80">
+          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
             <Clock className="h-3 w-3" />
             <span>{formatDate(n.createdAt.endsWith('Z') ? n.createdAt : `${n.createdAt}Z`, true)}</span>
           </div>
@@ -175,11 +138,11 @@ export function NotificationBell() {
 
       <PopoverContent
         align="end"
-        className="w-full sm:w-96 max-w-sm p-0 overflow-hidden border-border/50"
+        className="w-full sm:w-96 max-w-sm p-0 overflow-hidden border-border"
         dir="rtl"
       >
         {/* الهيدر */}
-        <div className="flex items-center justify-between border-b border-border/50 p-4 bg-muted/40 backdrop-blur-sm">
+        <div className="flex items-center justify-between border-b border-border p-4 bg-muted/40 backdrop-blur-sm">
           <div className="flex items-center gap-2">
             <h3 className="text-sm font-semibold">الإشعارات</h3>
             {unreadCount > 0 && (
@@ -216,7 +179,7 @@ export function NotificationBell() {
               {/* الإشعارات غير المقروءة أولاً */}
               {unreadNotifications.length > 0 && (
                 <>
-                  <div className="px-4 py-2 text-[10px] sm:text-xs font-semibold text-muted-foreground/70 uppercase tracking-wider bg-muted/30">
+                  <div className="px-4 py-2 text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider bg-muted/30">
                     جديد
                   </div>
                   {unreadNotifications.map((n) => (
@@ -229,7 +192,7 @@ export function NotificationBell() {
               {readNotifications.length > 0 && (
                 <>
                   {unreadNotifications.length > 0 && (
-                    <div className="px-4 py-2 text-[10px] sm:text-xs font-semibold text-muted-foreground/70 uppercase tracking-wider bg-muted/30">
+                    <div className="px-4 py-2 text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider bg-muted/30">
                       سابق
                     </div>
                   )}

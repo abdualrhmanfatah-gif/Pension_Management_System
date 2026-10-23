@@ -177,7 +177,7 @@ export default {
       fontSize: {
         xs: "var(--font-xs)",
         sm: "var(--font-sm)",
-        base: "var(--font-base)",
+        base: ["var(--font-base)", { fontWeight: "var(--font-weight-base)" }],
         md: "var(--font-md)",
         lg: "var(--font-lg)",
         xl: "var(--font-xl)",

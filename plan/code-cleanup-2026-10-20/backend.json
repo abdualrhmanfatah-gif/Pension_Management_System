@@ -1,0 +1,3706 @@
+{
+  "fileCount": 702,
+  "noExternalSymbols": [
+    {
+      "file": "PensionMS.API/Controllers/AccountingController.cs",
+      "symbol": "AccountingController",
+      "line": 17,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/AchievementObstaclesController.cs",
+      "symbol": "AchievementObstaclesController",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/AchievementObstaclesController.cs",
+      "symbol": "AddCommentDto",
+      "line": 107,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/AdminAuditLogsController.cs",
+      "symbol": "AdminAuditLogsController",
+      "line": 14,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/AdminLoginHistoryController.cs",
+      "symbol": "AdminLoginHistoryController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/AdminNotificationsController.cs",
+      "symbol": "AdminNotificationsController",
+      "line": 15,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/AdminSettingsController.cs",
+      "symbol": "AdminSettingsController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/AuthController.cs",
+      "symbol": "AuthController",
+      "line": 19,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/BankTransactionsController.cs",
+      "symbol": "BankTransactionsController",
+      "line": 14,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/BanksController.cs",
+      "symbol": "BanksController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/BranchesController.cs",
+      "symbol": "BranchesController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/BudgetController.cs",
+      "symbol": "BudgetController",
+      "line": 15,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/ComplianceController.cs",
+      "symbol": "ComplianceController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/CorrespondenceController.cs",
+      "symbol": "CorrespondenceController",
+      "line": 17,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/DiscrepancyController.cs",
+      "symbol": "DiscrepancyController",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/DocumentExemptionsController.cs",
+      "symbol": "DocumentExemptionsController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/DocumentPledgesController.cs",
+      "symbol": "DocumentPledgesController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/DocumentTypesController.cs",
+      "symbol": "DocumentTypesController",
+      "line": 15,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/DocumentsController.cs",
+      "symbol": "DocumentsController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/EntitledPersonsController.cs",
+      "symbol": "EntitledPersonsController",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/FileNotesController.cs",
+      "symbol": "FileNotesController",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/FileReviewController.cs",
+      "symbol": "FileReviewController",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/FileStatusesController.cs",
+      "symbol": "FileStatusesController",
+      "line": 11,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/FinancialEntitlementsController.cs",
+      "symbol": "FinancialEntitlementsController",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/FixedAssetsController.cs",
+      "symbol": "FixedAssetsController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/GuardiansController.cs",
+      "symbol": "GuardiansController",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/HrAdministrativeOrdersController.cs",
+      "symbol": "HrAdministrativeOrdersController",
+      "line": 14,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/HrAttendanceController.cs",
+      "symbol": "HrAttendanceController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/HrDocumentsController.cs",
+      "symbol": "HrDocumentsController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/HrEmployeesController.cs",
+      "symbol": "HrEmployeesController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/HrLeaveRequestsController.cs",
+      "symbol": "HrLeaveRequestsController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/HrReferenceDataController.cs",
+      "symbol": "HrReferenceDataController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/HrServiceHistoryController.cs",
+      "symbol": "HrServiceHistoryController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/InventoryCustodyController.cs",
+      "symbol": "InventoryCustodyController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/InventoryItemsController.cs",
+      "symbol": "InventoryItemsController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/InventoryTransactionsController.cs",
+      "symbol": "InventoryTransactionsController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/InvestmentDocumentValidationController.cs",
+      "symbol": "InvestmentDocumentValidationController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/InvestmentGovernanceController.cs",
+      "symbol": "InvestmentGovernanceController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/InvestmentLeasingController.cs",
+      "symbol": "InvestmentLeasingController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/InvestmentLookupsController.cs",
+      "symbol": "InvestmentLookupsController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/InvestmentMaintenanceController.cs",
+      "symbol": "InvestmentMaintenanceController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/InvestmentPortfoliosController.cs",
+      "symbol": "InvestmentPortfoliosController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/InvestmentProjectsController.cs",
+      "symbol": "InvestmentProjectsController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/InvestmentPropertiesController.cs",
+      "symbol": "InvestmentPropertiesController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/JournalEntryTypeController.cs",
+      "symbol": "JournalEntryTypeController",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/LookupsController.cs",
+      "symbol": "LookupsController",
+      "line": 11,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/MinistryApprovalsController.cs",
+      "symbol": "MinistryApprovalsController",
+      "line": 17,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/MissingDocumentsController.cs",
+      "symbol": "MissingDocumentsController",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/NotificationsController.cs",
+      "symbol": "NotificationsController",
+      "line": 15,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/PaymentBooksController.cs",
+      "symbol": "PaymentBooksController",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/PensionSuspensionsController.cs",
+      "symbol": "PensionSuspensionsController",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/RanksController.cs",
+      "symbol": "RanksController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/ReportsController.cs",
+      "symbol": "ReportsController",
+      "line": 20,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/RetireesController.cs",
+      "symbol": "RetireesController",
+      "line": 14,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/RetirementFilesController.cs",
+      "symbol": "RetirementFilesController",
+      "line": 18,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/RolesController.cs",
+      "symbol": "RolesController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/SalaryPaymentBatchesController.cs",
+      "symbol": "SalaryPaymentBatchesController",
+      "line": 14,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/SalaryRecipientsController.cs",
+      "symbol": "SalaryRecipientsController",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/SettlementsController.cs",
+      "symbol": "SettlementsController",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/StocktakeController.cs",
+      "symbol": "StocktakeController",
+      "line": 16,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/UsersController.cs",
+      "symbol": "UsersController",
+      "line": 14,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Controllers/VoucherController.cs",
+      "symbol": "VoucherController",
+      "line": 14,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Data/PensionDbContextFactory.cs",
+      "symbol": "PensionDbContextFactory",
+      "line": 8,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Extensions/ControllerExtensions.cs",
+      "symbol": "ControllerExtensions",
+      "line": 10,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Helpers/RemoteFileModelBinder.cs",
+      "symbol": "RemoteFileModelBinder",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Helpers/RemoteFileWrapper.cs",
+      "symbol": "RemoteFileExtensions",
+      "line": 22,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Validators/Validators.cs",
+      "symbol": "CreateAgentValidator",
+      "line": 11,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Validators/Validators.cs",
+      "symbol": "UpdateAgentValidator",
+      "line": 23,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Validators/Validators.cs",
+      "symbol": "LoginRequestValidator",
+      "line": 37,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Validators/Validators.cs",
+      "symbol": "RefreshTokenRequestValidator",
+      "line": 49,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Validators/Validators.cs",
+      "symbol": "CreateRetirementFileValidator",
+      "line": 58,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Validators/Validators.cs",
+      "symbol": "UpdateRetirementFileValidator",
+      "line": 93,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Validators/Validators.cs",
+      "symbol": "CreateEntitledPersonValidator",
+      "line": 120,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Validators/Validators.cs",
+      "symbol": "StopEntitledPersonValidator",
+      "line": 150,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Validators/Validators.cs",
+      "symbol": "ReactivateEntitledPersonValidator",
+      "line": 171,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Validators/Validators.cs",
+      "symbol": "CreateUserValidator",
+      "line": 193,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Validators/Validators.cs",
+      "symbol": "ChangePasswordValidator",
+      "line": 220,
+      "external": []
+    },
+    {
+      "file": "PensionMS.API/Validators/Validators.cs",
+      "symbol": "UploadDocumentValidator",
+      "line": 240,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/Constants/AccountingConstants.cs",
+      "symbol": "BookNumbers",
+      "line": 30,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/Constants/PledgeStatus.cs",
+      "symbol": "PledgeStatus",
+      "line": 6,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/Constants/RiskConstants.cs",
+      "symbol": "RiskConstants",
+      "line": 6,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Accounting/AccountingDtos.cs",
+      "symbol": "JournalEntryStatus",
+      "line": 6,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Accounting/AccountingDtos.cs",
+      "symbol": "CreateFiscalPeriodDto",
+      "line": 118,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Accounting/AccountingDtos.cs",
+      "symbol": "MonthlyFinancialSummaryDto",
+      "line": 549,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Accounting/AccountingDtos.cs",
+      "symbol": "CostCenterSummaryDto",
+      "line": 569,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Accounting/AccountingDtos.cs",
+      "symbol": "OpeningBalanceAssetDto",
+      "line": 808,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Accounting/AccountingDtos.cs",
+      "symbol": "BankTransactionFilterDto",
+      "line": 934,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/AchievementObstacles/AchievementObstacleDtos.cs",
+      "symbol": "CreateTrackingLinkDto",
+      "line": 30,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/AchievementObstacles/AchievementObstacleDtos.cs",
+      "symbol": "TrackingLinkDto",
+      "line": 63,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Guardians/GuardianDtos.cs",
+      "symbol": "UpdateGuardianPhotoDto",
+      "line": 20,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/HR/ReferenceDtos.cs",
+      "symbol": "AdministrativeOrderTypeDto",
+      "line": 94,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Inventory/SimpleStocktakeDtos.cs",
+      "symbol": "CreateSimpleStocktakeDto",
+      "line": 34,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Inventory/TransactionDtos.cs",
+      "symbol": "BulkTransactionItemDto",
+      "line": 39,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Investment/InvestmentDtos.cs",
+      "symbol": "CreateAccountDto",
+      "line": 507,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Investment/InvestmentDtos.cs",
+      "symbol": "UpdateAccountDto",
+      "line": 521,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Investment/InvestmentDtos.cs",
+      "symbol": "AccountDto",
+      "line": 523,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Reports/ReportDtos.cs",
+      "symbol": "MissingDocRow",
+      "line": 258,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Settlements/SettlementDtos.cs",
+      "symbol": "FailureItem",
+      "line": 55,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Users/UserDtos.cs",
+      "symbol": "RoleDetailDto",
+      "line": 69,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/DTOs/Users/UserPermissionDtos.cs",
+      "symbol": "UserPermissionItemDto",
+      "line": 11,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/Entities/Accounting/AccountingEnums.cs",
+      "symbol": "SubledgerType",
+      "line": 3,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/Entities/Accounting/AccountingEnums.cs",
+      "symbol": "BankTransactionType",
+      "line": 17,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/Entities/CommonEnums.cs",
+      "symbol": "PriorityLevel",
+      "line": 33,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Core/Reporting/ReportDefinition.cs",
+      "symbol": "ReportDataResult",
+      "line": 17,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Accounting/AccountBalanceConfiguration.cs",
+      "symbol": "AccountBalanceConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Accounting/ChartOfAccountConfiguration.cs",
+      "symbol": "ChartOfAccountConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Accounting/CostCenterConfiguration.cs",
+      "symbol": "CostCenterConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Accounting/FiscalPeriodConfiguration.cs",
+      "symbol": "FiscalPeriodConfiguration",
+      "line": 8,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Accounting/JournalEntryConfiguration.cs",
+      "symbol": "JournalEntryConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Accounting/JournalEntryLineConfiguration.cs",
+      "symbol": "JournalEntryLineConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Accounting/JournalEntryTypeConfiguration.cs",
+      "symbol": "JournalEntryTypeConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Accounting/VoucherConfiguration.cs",
+      "symbol": "VoucherConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Assets/AssetBuildingDetailConfiguration.cs",
+      "symbol": "AssetBuildingDetailConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Assets/AssetFurnitureDetailConfiguration.cs",
+      "symbol": "AssetFurnitureDetailConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Assets/AssetITDetailConfiguration.cs",
+      "symbol": "AssetITDetailConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Assets/AssetLandDetailConfiguration.cs",
+      "symbol": "AssetLandDetailConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Assets/AssetVehicleDetailConfiguration.cs",
+      "symbol": "AssetVehicleDetailConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Assets/DepreciationScheduleConfiguration.cs",
+      "symbol": "DepreciationScheduleConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Assets/FixedAssetCategoryConfiguration.cs",
+      "symbol": "FixedAssetCategoryConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Assets/FixedAssetConfiguration.cs",
+      "symbol": "FixedAssetConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Assets/FixedAssetTypeConfiguration.cs",
+      "symbol": "FixedAssetTypeConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Budget/BudgetCoreConfiguration.cs",
+      "symbol": "OperationalExpenseConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Budget/FiscalYearConfiguration.cs",
+      "symbol": "FiscalYearConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/CitizenPortalConfiguration.cs",
+      "symbol": "CitizenAccountConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/CitizenPortalConfiguration.cs",
+      "symbol": "OtpVerificationConfiguration",
+      "line": 29,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/CitizenPortalConfiguration.cs",
+      "symbol": "ServiceRequestConfiguration",
+      "line": 46,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/CitizenPortalConfiguration.cs",
+      "symbol": "SupportTicketConfiguration",
+      "line": 72,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/CitizenPortalConfiguration.cs",
+      "symbol": "TicketMessageConfiguration",
+      "line": 100,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/CitizenPortalConfiguration.cs",
+      "symbol": "CitizenNotificationConfiguration",
+      "line": 118,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/CoreConfiguration.cs",
+      "symbol": "RetireeConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/CoreConfiguration.cs",
+      "symbol": "RetirementFileConfiguration",
+      "line": 40,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/CoreRelationsConfiguration.cs",
+      "symbol": "FileNoteConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/CoreRelationsConfiguration.cs",
+      "symbol": "PensionSuspensionConfiguration",
+      "line": 18,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/CoreRelationsConfiguration.cs",
+      "symbol": "EntitledPersonConfiguration",
+      "line": 30,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/CoreRelationsConfiguration.cs",
+      "symbol": "GuardianConfiguration",
+      "line": 57,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/CoreRelationsConfiguration.cs",
+      "symbol": "GuardianEntitledPersonConfiguration",
+      "line": 79,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/CoreRelationsConfiguration.cs",
+      "symbol": "MissingDocumentConfiguration",
+      "line": 97,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/CoreRelationsConfiguration.cs",
+      "symbol": "AgentConfiguration",
+      "line": 111,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/DocumentEntitiesConfiguration.cs",
+      "symbol": "DocumentConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/DocumentEntitiesConfiguration.cs",
+      "symbol": "DocumentPledgeConfiguration",
+      "line": 99,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/DocumentEntitiesConfiguration.cs",
+      "symbol": "DocumentExemptionConfiguration",
+      "line": 110,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/FinalLookupsConfiguration.cs",
+      "symbol": "PaymentBookConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/FinalLookupsConfiguration.cs",
+      "symbol": "StatusTransitionLogConfiguration",
+      "line": 34,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/FinalLookupsConfiguration.cs",
+      "symbol": "UserRoleAssignmentConfiguration",
+      "line": 43,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/FinalLookupsConfiguration.cs",
+      "symbol": "ReportConfiguration",
+      "line": 57,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/FinalLookupsConfiguration.cs",
+      "symbol": "SavedReportConfiguration",
+      "line": 65,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/FinalLookupsConfiguration.cs",
+      "symbol": "RetireeCategoryConfiguration",
+      "line": 77,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/FinalLookupsConfiguration.cs",
+      "symbol": "ReportConfiguration_Extra",
+      "line": 88,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/HR/AdministrativeOrderConfiguration.cs",
+      "symbol": "AdministrativeOrderConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/HR/AdministrativeOrderTypeConfiguration.cs",
+      "symbol": "AdministrativeOrderTypeConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/HR/AttendanceEventConfiguration.cs",
+      "symbol": "AttendanceEventConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/HR/CorrespondenceConfiguration.cs",
+      "symbol": "CorrespondenceConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/HR/CorrespondenceTypeConfiguration.cs",
+      "symbol": "CorrespondenceTypeConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/HR/DepartmentConfiguration.cs",
+      "symbol": "DepartmentConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/HR/EmployeeConfiguration.cs",
+      "symbol": "EmployeeConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/HR/EmploymentStatusConfiguration.cs",
+      "symbol": "EmploymentStatusConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/HR/ExternalPartyConfiguration.cs",
+      "symbol": "ExternalPartyConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/HR/JobTitleConfiguration.cs",
+      "symbol": "JobTitleConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/HR/LeaveRequestConfiguration.cs",
+      "symbol": "LeaveRequestConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/HR/LeaveTypeConfiguration.cs",
+      "symbol": "LeaveTypeConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/HR/SectionConfiguration.cs",
+      "symbol": "SectionConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/HR/ServiceHistoryEventConfiguration.cs",
+      "symbol": "ServiceHistoryEventConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Inventory/InventoryCustodyConfiguration.cs",
+      "symbol": "InventoryCustodyConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Inventory/InventoryItemConfiguration.cs",
+      "symbol": "InventoryItemConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Inventory/InventoryTransactionConfiguration.cs",
+      "symbol": "InventoryTransactionConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/InvestmentCoreConfiguration.cs",
+      "symbol": "InvestmentPortfolioConfiguration",
+      "line": 8,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/InvestmentCoreConfiguration.cs",
+      "symbol": "InvestmentProjectConfiguration",
+      "line": 20,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/InvestmentCoreConfiguration.cs",
+      "symbol": "InvestmentPlanConfiguration",
+      "line": 38,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/InvestmentCoreConfiguration.cs",
+      "symbol": "InvestmentPropertyConfiguration",
+      "line": 52,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/InvestmentSecondaryConfiguration.cs",
+      "symbol": "PropertyUnitConfiguration",
+      "line": 8,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/InvestmentSecondaryConfiguration.cs",
+      "symbol": "AssetValuationConfiguration",
+      "line": 21,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/InvestmentSecondaryConfiguration.cs",
+      "symbol": "DepreciationRecordConfiguration",
+      "line": 32,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/InvestmentSecondaryConfiguration.cs",
+      "symbol": "TenantConfiguration",
+      "line": 47,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/InvestmentSecondaryConfiguration.cs",
+      "symbol": "LeaseContractConfiguration",
+      "line": 58,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/InvestmentSecondaryConfiguration.cs",
+      "symbol": "PaymentScheduleConfiguration",
+      "line": 75,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/InvestmentTertiaryConfiguration.cs",
+      "symbol": "MaintenanceRequestConfiguration",
+      "line": 8,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/InvestmentTertiaryConfiguration.cs",
+      "symbol": "WorkOrderConfiguration",
+      "line": 20,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/InvestmentTertiaryConfiguration.cs",
+      "symbol": "InvestmentRiskAssessmentConfiguration",
+      "line": 32,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/InvestmentTertiaryConfiguration.cs",
+      "symbol": "InvestmentApprovalRequestConfiguration",
+      "line": 42,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/InvestmentTypeConfiguration.cs",
+      "symbol": "InvestmentTypeConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/PropertyTypeConfiguration.cs",
+      "symbol": "PropertyTypeConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Investment/UnitTypeConfiguration.cs",
+      "symbol": "UnitTypeConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Lookups/BankConfiguration.cs",
+      "symbol": "BankConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Lookups/DocumentRequirementRuleConfiguration.cs",
+      "symbol": "DocumentRequirementRuleConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Lookups/FileStatusConfiguration.cs",
+      "symbol": "FileStatusConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Lookups/HealthStatusConfiguration.cs",
+      "symbol": "HealthStatusConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Lookups/PensionFundBranchConfiguration.cs",
+      "symbol": "PensionFundBranchConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Lookups/RelationshipConfiguration.cs",
+      "symbol": "RelationshipConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Lookups/SocialStatusConfiguration.cs",
+      "symbol": "SocialStatusConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Lookups/SystemSettingConfiguration.cs",
+      "symbol": "SystemSettingConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Lookups/TransactionStatusConfiguration.cs",
+      "symbol": "TransactionStatusConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/MinistrySettlementConfiguration.cs",
+      "symbol": "MinistryApprovalBatchConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/MinistrySettlementConfiguration.cs",
+      "symbol": "MinistryApprovalItemConfiguration",
+      "line": 15,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/MinistrySettlementConfiguration.cs",
+      "symbol": "SettlementDecisionConfiguration",
+      "line": 24,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/MinistrySettlementConfiguration.cs",
+      "symbol": "SettlementsBatchConfiguration",
+      "line": 32,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/MinistrySettlementConfiguration.cs",
+      "symbol": "SettlementItemConfiguration",
+      "line": 41,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/PayrollConfiguration.cs",
+      "symbol": "SalaryRecipientConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/PayrollConfiguration.cs",
+      "symbol": "FinancialEntitlementConfiguration",
+      "line": 45,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/PayrollConfiguration.cs",
+      "symbol": "SalaryPaymentBatchConfiguration",
+      "line": 56,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/PayrollConfiguration.cs",
+      "symbol": "SalaryPaymentItemConfiguration",
+      "line": 67,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/RankConfiguration.cs",
+      "symbol": "RankConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Security/PermissionConfiguration.cs",
+      "symbol": "PermissionConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Security/RoleConfiguration.cs",
+      "symbol": "RoleConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Security/RolePermissionConfiguration.cs",
+      "symbol": "RolePermissionConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Security/SecurityExtraConfiguration.cs",
+      "symbol": "UserConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Security/SecurityExtraConfiguration.cs",
+      "symbol": "LoginHistoryConfiguration",
+      "line": 25,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Security/TablePermissionConfiguration.cs",
+      "symbol": "TablePermissionConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/Security/UserPermissionConfiguration.cs",
+      "symbol": "UserPermissionConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/System/DocumentTypeConfiguration.cs",
+      "symbol": "DocumentTypeConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/System/NotificationOutboxConfiguration.cs",
+      "symbol": "NotificationOutboxConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/System/SystemCoreConfiguration.cs",
+      "symbol": "AuditLogConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/System/SystemCoreConfiguration.cs",
+      "symbol": "ImmutableAuditLogConfiguration",
+      "line": 23,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/System/SystemCoreConfiguration.cs",
+      "symbol": "NotificationConfiguration",
+      "line": 34,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/System/SystemCoreConfiguration.cs",
+      "symbol": "SyncQueueConfiguration",
+      "line": 59,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/System/SystemCoreConfiguration.cs",
+      "symbol": "SystemExtraConfiguration",
+      "line": 80,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/System/SystemCoreConfiguration.cs",
+      "symbol": "FileSnapshotConfiguration",
+      "line": 88,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/System/SystemTableConfiguration.cs",
+      "symbol": "SystemTableConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/WorkflowConfiguration.cs",
+      "symbol": "PendingTaskConfiguration",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Data/Configurations/WorkflowConfiguration.cs",
+      "symbol": "RiskEventConfiguration",
+      "line": 38,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs",
+      "symbol": "AccountingServiceCollectionExtensions",
+      "line": 8,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/AdministrationServiceCollectionExtensions.cs",
+      "symbol": "AdministrationServiceCollectionExtensions",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/AssetsServiceCollectionExtensions.cs",
+      "symbol": "AssetsServiceCollectionExtensions",
+      "line": 8,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/AuditServiceCollectionExtensions.cs",
+      "symbol": "AuditServiceCollectionExtensions",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/BackgroundJobsServiceCollectionExtensions.cs",
+      "symbol": "BackgroundJobsServiceCollectionExtensions",
+      "line": 6,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/CitizenServiceCollectionExtensions.cs",
+      "symbol": "CitizenServiceCollectionExtensions",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/DocumentsServiceCollectionExtensions.cs",
+      "symbol": "DocumentsServiceCollectionExtensions",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs",
+      "symbol": "HRServiceCollectionExtensions",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/InventoryServiceCollectionExtensions.cs",
+      "symbol": "InventoryServiceCollectionExtensions",
+      "line": 8,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs",
+      "symbol": "InvestmentServiceCollectionExtensions",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/NotificationsServiceCollectionExtensions.cs",
+      "symbol": "NotificationsServiceCollectionExtensions",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/PayrollServiceCollectionExtensions.cs",
+      "symbol": "PayrollServiceCollectionExtensions",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+      "symbol": "PensionServiceCollectionExtensions",
+      "line": 9,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/PersistenceServiceCollectionExtensions.cs",
+      "symbol": "PersistenceServiceCollectionExtensions",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/ReportingServiceCollectionExtensions.cs",
+      "symbol": "ReportingServiceCollectionExtensions",
+      "line": 11,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs",
+      "symbol": "SecurityServiceCollectionExtensions",
+      "line": 8,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/DependencyInjection/SettlementsServiceCollectionExtensions.cs",
+      "symbol": "SettlementsServiceCollectionExtensions",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Helpers/ImageMergeHelper.cs",
+      "symbol": "StreamRemoteFile",
+      "line": 73,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Repositories/SettlementMilitaryNumber.cs",
+      "symbol": "ReplaceParameter",
+      "line": 54,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Accounting/ClosingService.cs",
+      "symbol": "IncomeStatementResult",
+      "line": 854,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Accounting/JournalEntryService.cs",
+      "symbol": "OperationMapping",
+      "line": 693,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Assets/AssetStocktakeService.cs",
+      "symbol": "StocktakeStatus",
+      "line": 16,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Assets/AssetStocktakeService.cs",
+      "symbol": "AssetCondition",
+      "line": 22,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+      "symbol": "UploadedDocLink",
+      "line": 470,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+      "symbol": "ManualMissingLink",
+      "line": 472,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Settlements/SettlementService.cs",
+      "symbol": "FailureReportItem",
+      "line": 56,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/AccountingTransactionSqlTests.cs",
+      "symbol": "AccountingTransactionSqlTests",
+      "line": 11,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/AccountingTransactionSqlTests.cs",
+      "symbol": "FailAfterSecondSave",
+      "line": 70,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/AgentFeatureHttpTests.cs",
+      "symbol": "AgentFeatureHttpTests",
+      "line": 22,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/AgentFeatureHttpTests.cs",
+      "symbol": "TestAuthenticationHandler",
+      "line": 99,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/AuditIndexSqlTests.cs",
+      "symbol": "AuditIndexSqlTests",
+      "line": 8,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/AuditIndexSqlTests.cs",
+      "symbol": "logical",
+      "line": 35,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/AuthorizationHttpSqlTests.cs",
+      "symbol": "AuthorizationHttpSqlTests",
+      "line": 33,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/BranchScopeMiddlewareTests.cs",
+      "symbol": "BranchScopeMiddlewareTests",
+      "line": 9,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/DomainIntegritySqlTests.cs",
+      "symbol": "DomainIntegritySqlTests",
+      "line": 26,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/DomainIntegritySqlTests.cs",
+      "symbol": "FailOnSave",
+      "line": 169,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/EligibilityAndPermissionSqlTests.cs",
+      "symbol": "EligibilityAndPermissionSqlTests",
+      "line": 15,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/ImmutableAuditSqlTests.cs",
+      "symbol": "ImmutableAuditSqlTests",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/NotificationFileHttpTests.cs",
+      "symbol": "NotificationFileHttpTests",
+      "line": 19,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/NotificationFileHttpTests.cs",
+      "symbol": "FixtureAuthentication",
+      "line": 103,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/NotificationOutboxSqlTests.cs",
+      "symbol": "NotificationOutboxSqlTests",
+      "line": 16,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/PayrollTransactionSqlTests.cs",
+      "symbol": "PayrollTransactionSqlTests",
+      "line": 20,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/PayrollTransactionSqlTests.cs",
+      "symbol": "FailAfterSave",
+      "line": 126,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/PayrollTransactionSqlTests.cs",
+      "symbol": "BlockingGenerator",
+      "line": 132,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/ReportingScopeSqlTests.cs",
+      "symbol": "ReportingScopeSqlTests",
+      "line": 18,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/SettlementQuerySqlTests.cs",
+      "symbol": "SettlementQuerySqlTests",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/SettlementTransactionSqlTests.cs",
+      "symbol": "SettlementTransactionSqlTests",
+      "line": 16,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/SettlementTransactionSqlTests.cs",
+      "symbol": "FailSecondSave",
+      "line": 79,
+      "external": []
+    },
+    {
+      "file": "PensionMS.IntegrationTests/StocktakeSqlTests.cs",
+      "symbol": "StocktakeSqlTests",
+      "line": 16,
+      "external": []
+    },
+    {
+      "file": "PensionMS.ScannerAgent/Program.cs",
+      "symbol": "WiaConstants",
+      "line": 10,
+      "external": []
+    },
+    {
+      "file": "PensionMS.ScannerAgent/Program.cs",
+      "symbol": "ScannerInfo",
+      "line": 28,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/DateTimeContractTests.cs",
+      "symbol": "DateTimeContractTests",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/DependencyInjectionTests.cs",
+      "symbol": "DependencyInjectionTests",
+      "line": 21,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Diagnostics/DocumentUploadWaitDiagnostics.cs",
+      "symbol": "DocumentUploadWaitDiagnostics",
+      "line": 15,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Diagnostics/DocumentUploadWaitDiagnostics.cs",
+      "symbol": "DiagnosticFile",
+      "line": 92,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/HrSchemaBoundaryTests.cs",
+      "symbol": "HrSchemaBoundaryTests",
+      "line": 7,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/RepositoryContractTests.cs",
+      "symbol": "RepositoryContractTests",
+      "line": 8,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/ActiveRetireesSummaryTests.cs",
+      "symbol": "ActiveRetireesSummaryTests",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/AdminNotificationServiceTests.cs",
+      "symbol": "AdminNotificationServiceTests",
+      "line": 15,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/AgentFeatureTests.cs",
+      "symbol": "AgentFeatureTests",
+      "line": 16,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/ComplianceEngineTests.cs",
+      "symbol": "ComplianceEngineTests",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/DocumentBatchUploadTests.cs",
+      "symbol": "DocumentBatchUploadTests",
+      "line": 16,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/DocumentServiceTests.cs",
+      "symbol": "DocumentServiceTests",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/ExcelReportExporterTests.cs",
+      "symbol": "ExcelReportExporterTests",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/FileQueryServiceTests.cs",
+      "symbol": "FileQueryServiceTests",
+      "line": 11,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/FileReviewIncrementalTests.cs",
+      "symbol": "FileReviewIncrementalTests",
+      "line": 9,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/FileReviewServiceTests.cs",
+      "symbol": "FileReviewServiceTests",
+      "line": 11,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/FileStatusServiceTests.cs",
+      "symbol": "FileStatusServiceTests",
+      "line": 11,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/LocalFileStorageServiceTests.cs",
+      "symbol": "LocalFileStorageServiceTests",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/LookupServiceTests.cs",
+      "symbol": "LookupServiceTests",
+      "line": 10,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/LookupServiceTests.cs",
+      "symbol": "TestClock",
+      "line": 131,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/MinistryApprovalManualItemTests.cs",
+      "symbol": "MinistryApprovalManualItemTests",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/MinistryApprovalServiceTests.cs",
+      "symbol": "MinistryApprovalServiceTests",
+      "line": 10,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/NotificationOutboxProcessorTests.cs",
+      "symbol": "NotificationOutboxProcessorTests",
+      "line": 17,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/NotificationServiceTests.cs",
+      "symbol": "NotificationServiceTests",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/ReportExportGuardTests.cs",
+      "symbol": "ReportExportGuardTests",
+      "line": 6,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/ReportingBranchScopeTests.cs",
+      "symbol": "ReportingBranchScopeTests",
+      "line": 14,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/RetireeLifeStatusTests.cs",
+      "symbol": "RetireeLifeStatusTests",
+      "line": 12,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/RetirementFileReportExporterTests.cs",
+      "symbol": "RetirementFileReportExporterTests",
+      "line": 10,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/RetirementFileServiceTests.cs",
+      "symbol": "RetirementFileServiceTests",
+      "line": 14,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/RetirementFileServiceTests.cs",
+      "symbol": "TestAsyncEnumerator",
+      "line": 190,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/RetirementFileServiceTests.cs",
+      "symbol": "TestAsyncQueryProvider",
+      "line": 213,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/SalaryImportIdentityTests.cs",
+      "symbol": "SalaryImportIdentityTests",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/SettlementBatchFinancialSafetyTests.cs",
+      "symbol": "SettlementBatchFinancialSafetyTests",
+      "line": 18,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/SettlementBatchFinancialSafetyTests.cs",
+      "symbol": "MemoryRemoteFile",
+      "line": 274,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/SettlementFinancialEligibilityTests.cs",
+      "symbol": "SettlementFinancialEligibilityTests",
+      "line": 15,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/SettlementServiceFactory.cs",
+      "symbol": "Dependencies",
+      "line": 16,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/SettlementsReportTests.cs",
+      "symbol": "SettlementsReportTests",
+      "line": 10,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/SharedExcelReportTemplateTests.cs",
+      "symbol": "SharedExcelReportTemplateTests",
+      "line": 13,
+      "external": []
+    },
+    {
+      "file": "PensionMS.Tests/Services/SupplementalReportExportTests.cs",
+      "symbol": "SupplementalReportExportTests",
+      "line": 9,
+      "external": []
+    }
+  ],
+  "inactiveServices": [],
+  "services": [
+    {
+      "file": "PensionMS.Infrastructure/Jobs/ExpiredPledgesJob.cs",
+      "symbol": "ExpiredPledgesJob",
+      "line": 12,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/BackgroundJobsServiceCollectionExtensions.cs",
+        "PensionMS.Tests/DependencyInjectionTests.cs"
+      ],
+      "interfaces": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Jobs/NotificationOutboxProcessor.cs",
+      "symbol": "NotificationOutboxProcessor",
+      "line": 14,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/BackgroundJobsServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/NotificationOutboxSqlTests.cs",
+        "PensionMS.Tests/DependencyInjectionTests.cs",
+        "PensionMS.Tests/Services/NotificationOutboxProcessorTests.cs"
+      ],
+      "interfaces": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Accounting/BankService.cs",
+      "symbol": "BankService",
+      "line": 10,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IBankService",
+          "external": [
+            "PensionMS.API/Controllers/BanksController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Accounting/BankTransactionService.cs",
+      "symbol": "BankTransactionService",
+      "line": 11,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IBankTransactionService",
+          "external": [
+            "PensionMS.API/Controllers/BankTransactionsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Accounting/BudgetService.cs",
+      "symbol": "BudgetService",
+      "line": 13,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IBudgetService",
+          "external": [
+            "PensionMS.API/Controllers/AccountingController.cs",
+            "PensionMS.API/Controllers/BudgetController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Accounting/ChartOfAccountService.cs",
+      "symbol": "ChartOfAccountService",
+      "line": 11,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IChartOfAccountService",
+          "external": [
+            "PensionMS.API/Controllers/AccountingController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Accounting/ClosingService.cs",
+      "symbol": "ClosingService",
+      "line": 14,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IClosingService",
+          "external": [
+            "PensionMS.API/Controllers/AccountingController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Accounting/CostCenterService.cs",
+      "symbol": "CostCenterService",
+      "line": 10,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "ICostCenterService",
+          "external": [
+            "PensionMS.API/Controllers/AccountingController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Accounting/FiscalPeriodService.cs",
+      "symbol": "FiscalPeriodService",
+      "line": 12,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IFiscalPeriodService",
+          "external": [
+            "PensionMS.API/Controllers/AccountingController.cs",
+            "PensionMS.API/Controllers/StocktakeController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Accounting/JournalEntryService.cs",
+      "symbol": "JournalEntryService",
+      "line": 13,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/AccountingTransactionSqlTests.cs",
+        "PensionMS.IntegrationTests/StocktakeSqlTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IJournalEntryService",
+          "external": [
+            "PensionMS.API/Controllers/AccountingController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Accounting/ClosingService.cs",
+            "PensionMS.Infrastructure/Services/Accounting/VoucherService.cs",
+            "PensionMS.Infrastructure/Services/Assets/FixedAssetService.cs",
+            "PensionMS.Infrastructure/Services/Inventory/SimpleStocktakeService.cs",
+            "PensionMS.Infrastructure/Services/Payroll/SalaryPaymentBatchService.cs",
+            "PensionMS.Infrastructure/Services/Settlements/SettlementService.cs",
+            "PensionMS.IntegrationTests/DomainIntegritySqlTests.cs",
+            "PensionMS.IntegrationTests/PayrollTransactionSqlTests.cs",
+            "PensionMS.IntegrationTests/SettlementTransactionSqlTests.cs",
+            "PensionMS.Tests/Services/SalaryImportIdentityTests.cs",
+            "PensionMS.Tests/Services/SettlementBatchFinancialSafetyTests.cs",
+            "PensionMS.Tests/Services/SettlementServiceFactory.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Accounting/JournalEntryTypeService.cs",
+      "symbol": "JournalEntryTypeService",
+      "line": 10,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IJournalEntryTypeService",
+          "external": [
+            "PensionMS.API/Controllers/JournalEntryTypeController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Accounting/ReportingService.cs",
+      "symbol": "ReportingService",
+      "line": 12,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IReportingService",
+          "external": [
+            "PensionMS.API/Controllers/AccountingController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Accounting/VoucherService.cs",
+      "symbol": "VoucherService",
+      "line": 12,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/AccountingTransactionSqlTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IVoucherService",
+          "external": [
+            "PensionMS.API/Controllers/VoucherController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AccountingServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Administration/AdminSettingsService.cs",
+      "symbol": "AdminSettingsService",
+      "line": 13,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AdministrationServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IAdminSettingsService",
+          "external": [
+            "PensionMS.API/Controllers/AdminSettingsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AdministrationServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Administration/BranchService.cs",
+      "symbol": "BranchService",
+      "line": 9,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AdministrationServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IBranchService",
+          "external": [
+            "PensionMS.API/Controllers/BranchesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AdministrationServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Administration/LookupService.cs",
+      "symbol": "LookupService",
+      "line": 8,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AdministrationServiceCollectionExtensions.cs",
+        "PensionMS.Tests/Services/LookupServiceTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "ILookupService",
+          "external": [
+            "PensionMS.API/Controllers/LookupsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AdministrationServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Administration/RankService.cs",
+      "symbol": "RankService",
+      "line": 9,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AdministrationServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IRankService",
+          "external": [
+            "PensionMS.API/Controllers/RanksController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AdministrationServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Assets/AssetStocktakeService.cs",
+      "symbol": "AssetStocktakeService",
+      "line": 11,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AssetsServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IAssetStocktakeService",
+          "external": [
+            "PensionMS.API/Controllers/StocktakeController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AssetsServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Assets/FixedAssetService.cs",
+      "symbol": "FixedAssetService",
+      "line": 14,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AssetsServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/DomainIntegritySqlTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IFixedAssetService",
+          "external": [
+            "PensionMS.API/Controllers/FixedAssetsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AssetsServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Audit/AuditLogService.cs",
+      "symbol": "AuditLogService",
+      "line": 12,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AuditServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IAuditLogService",
+          "external": [
+            "PensionMS.API/Controllers/AdminAuditLogsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AuditServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Audit/ImmutableAuditService.cs",
+      "symbol": "ImmutableAuditService",
+      "line": 14,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AuditServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/DomainIntegritySqlTests.cs",
+        "PensionMS.IntegrationTests/ImmutableAuditSqlTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IImmutableAuditService",
+          "external": [
+            "PensionMS.API/Controllers/ComplianceController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AuditServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Accounting/BankService.cs",
+            "PensionMS.Infrastructure/Services/Administration/BranchService.cs",
+            "PensionMS.Infrastructure/Services/Administration/RankService.cs",
+            "PensionMS.Infrastructure/Services/Assets/AssetStocktakeService.cs",
+            "PensionMS.Infrastructure/Services/Assets/FixedAssetService.cs",
+            "PensionMS.Infrastructure/Services/Documents/DocumentService.cs",
+            "PensionMS.Infrastructure/Services/Documents/DocumentTypeService.cs",
+            "PensionMS.Infrastructure/Services/HR/HrAdministrativeOrderService.cs",
+            "PensionMS.Infrastructure/Services/HR/HrEmployeeService.cs",
+            "PensionMS.Infrastructure/Services/Inventory/InventoryCustodyService.cs",
+            "PensionMS.Infrastructure/Services/Inventory/InventoryItemService.cs",
+            "PensionMS.Infrastructure/Services/Inventory/InventoryTransactionService.cs",
+            "PensionMS.Infrastructure/Services/Inventory/SimpleStocktakeService.cs",
+            "PensionMS.Infrastructure/Services/Notifications/AdminNotificationService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Entitlements/FinancialEntitlementService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+            "PensionMS.Infrastructure/Services/Settlements/SettlementService.cs",
+            "PensionMS.IntegrationTests/SettlementTransactionSqlTests.cs",
+            "PensionMS.IntegrationTests/StocktakeSqlTests.cs",
+            "PensionMS.Tests/Diagnostics/DocumentUploadWaitDiagnostics.cs",
+            "PensionMS.Tests/Services/AdminNotificationServiceTests.cs",
+            "PensionMS.Tests/Services/DocumentBatchUploadTests.cs",
+            "PensionMS.Tests/Services/DocumentServiceTests.cs",
+            "PensionMS.Tests/Services/FileStatusServiceTests.cs",
+            "PensionMS.Tests/Services/RetirementFileServiceTests.cs",
+            "PensionMS.Tests/Services/SettlementBatchFinancialSafetyTests.cs",
+            "PensionMS.Tests/Services/SettlementFinancialEligibilityTests.cs",
+            "PensionMS.Tests/Services/SettlementServiceFactory.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Audit/LoginHistoryService.cs",
+      "symbol": "LoginHistoryService",
+      "line": 10,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AuditServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "ILoginHistoryService",
+          "external": [
+            "PensionMS.API/Controllers/AdminLoginHistoryController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/AuditServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Audit/SnapshotService.cs",
+      "symbol": "SnapshotService",
+      "line": 13,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/AuditServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "ISnapshotService",
+          "external": [
+            "PensionMS.Infrastructure/DependencyInjection/AuditServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+            "PensionMS.Tests/Services/FileStatusServiceTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Citizen/OtpService.cs",
+      "symbol": "OtpService",
+      "line": 7,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/CitizenServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IOtpService",
+          "external": [
+            "PensionMS.Infrastructure/DependencyInjection/CitizenServiceCollectionExtensions.cs",
+            "PensionMS.Tests/DependencyInjectionTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Citizen/SmsService.cs",
+      "symbol": "SmsService",
+      "line": 6,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/CitizenServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "ISmsService",
+          "external": [
+            "PensionMS.Infrastructure/DependencyInjection/CitizenServiceCollectionExtensions.cs",
+            "PensionMS.Tests/DependencyInjectionTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Documents/DocumentExemptionService.cs",
+      "symbol": "DocumentExemptionService",
+      "line": 10,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/DocumentsServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IDocumentExemptionService",
+          "external": [
+            "PensionMS.API/Controllers/DocumentExemptionsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/DocumentsServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Documents/DocumentPledgeService.cs",
+      "symbol": "DocumentPledgeService",
+      "line": 10,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/DocumentsServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IDocumentPledgeService",
+          "external": [
+            "PensionMS.API/Controllers/DocumentPledgesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/DocumentsServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Documents/DocumentService.cs",
+      "symbol": "DocumentService",
+      "line": 13,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/DocumentsServiceCollectionExtensions.cs",
+        "PensionMS.Infrastructure/Services/Pension/Beneficiaries/AgentService.cs",
+        "PensionMS.Tests/Diagnostics/DocumentUploadWaitDiagnostics.cs",
+        "PensionMS.Tests/Services/DocumentBatchUploadTests.cs",
+        "PensionMS.Tests/Services/DocumentServiceTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IDocumentService",
+          "external": [
+            "PensionMS.API/Controllers/DocumentsController.cs",
+            "PensionMS.API/Controllers/RetirementFilesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/DocumentsServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/HR/HrDocumentService.cs",
+            "PensionMS.Infrastructure/Services/Payroll/SalaryRecipientService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/AgentService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/GuardianService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/RetireeService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+            "PensionMS.Tests/Services/AgentFeatureTests.cs",
+            "PensionMS.Tests/Services/RetireeLifeStatusTests.cs",
+            "PensionMS.Tests/Services/RetirementFileServiceTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Documents/DocumentTypeService.cs",
+      "symbol": "DocumentTypeService",
+      "line": 13,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/DocumentsServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IDocumentTypeService",
+          "external": [
+            "PensionMS.API/Controllers/DocumentTypesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/DocumentsServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Documents/LocalFileStorageService.cs",
+      "symbol": "LocalFileStorageService",
+      "line": 7,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/DocumentsServiceCollectionExtensions.cs",
+        "PensionMS.Tests/Services/LocalFileStorageServiceTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IFileStorageService",
+          "external": [
+            "PensionMS.API/Controllers/InvestmentLeasingController.cs",
+            "PensionMS.API/Controllers/InvestmentPropertiesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/DocumentsServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Documents/DocumentService.cs",
+            "PensionMS.Infrastructure/Services/HR/CorrespondenceService.cs",
+            "PensionMS.Infrastructure/Services/HR/HrEmployeeService.cs",
+            "PensionMS.Infrastructure/Services/Notifications/AdminNotificationService.cs",
+            "PensionMS.Infrastructure/Services/Notifications/NotificationService.cs",
+            "PensionMS.Infrastructure/Services/Payroll/PaymentBookService.cs",
+            "PensionMS.Infrastructure/Services/Payroll/SalaryRecipientService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/AgentService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/GuardianService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/RetireeService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+            "PensionMS.IntegrationTests/NotificationOutboxSqlTests.cs",
+            "PensionMS.IntegrationTests/PayrollTransactionSqlTests.cs",
+            "PensionMS.Tests/Diagnostics/DocumentUploadWaitDiagnostics.cs",
+            "PensionMS.Tests/Services/AdminNotificationServiceTests.cs",
+            "PensionMS.Tests/Services/AgentFeatureTests.cs",
+            "PensionMS.Tests/Services/DocumentBatchUploadTests.cs",
+            "PensionMS.Tests/Services/DocumentServiceTests.cs",
+            "PensionMS.Tests/Services/NotificationServiceTests.cs",
+            "PensionMS.Tests/Services/RetireeLifeStatusTests.cs",
+            "PensionMS.Tests/Services/RetirementFileServiceTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+      "symbol": "MissingDocumentService",
+      "line": 12,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/DocumentsServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IMissingDocumentService",
+          "external": [
+            "PensionMS.API/Controllers/MissingDocumentsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/DocumentsServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/ComplianceEngine.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileCompleteness.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+            "PensionMS.Infrastructure/Services/Reporting/ReportService.cs",
+            "PensionMS.IntegrationTests/AuthorizationHttpSqlTests.cs",
+            "PensionMS.IntegrationTests/ReportingScopeSqlTests.cs",
+            "PensionMS.Tests/Services/ActiveRetireesSummaryTests.cs",
+            "PensionMS.Tests/Services/ComplianceEngineTests.cs",
+            "PensionMS.Tests/Services/FileQueryServiceTests.cs",
+            "PensionMS.Tests/Services/RetirementFileServiceTests.cs",
+            "PensionMS.Tests/Services/SettlementsReportTests.cs",
+            "PensionMS.Tests/Services/SharedExcelReportTemplateTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/HR/CorrespondenceService.cs",
+      "symbol": "CorrespondenceService",
+      "line": 17,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "ICorrespondenceService",
+          "external": [
+            "PensionMS.API/Controllers/CorrespondenceController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/HR/HrAdministrativeOrderService.cs",
+      "symbol": "HrAdministrativeOrderService",
+      "line": 9,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IHrAdministrativeOrderService",
+          "external": [
+            "PensionMS.API/Controllers/HrAdministrativeOrdersController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/HR/HrAttendanceService.cs",
+      "symbol": "HrAttendanceService",
+      "line": 11,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/DomainIntegritySqlTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IHrAttendanceService",
+          "external": [
+            "PensionMS.API/Controllers/HrAttendanceController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/HR/HrDocumentService.cs",
+      "symbol": "HrDocumentService",
+      "line": 7,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IHrDocumentService",
+          "external": [
+            "PensionMS.API/Controllers/HrDocumentsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/HR/HrEmployeeService.cs",
+      "symbol": "HrEmployeeService",
+      "line": 10,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IHrEmployeeService",
+          "external": [
+            "PensionMS.API/Controllers/HrEmployeesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/HR/HrLeaveRequestService.cs",
+      "symbol": "HrLeaveRequestService",
+      "line": 10,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IHrLeaveRequestService",
+          "external": [
+            "PensionMS.API/Controllers/HrLeaveRequestsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/HR/HrReferenceDataService.cs",
+      "symbol": "HrReferenceDataService",
+      "line": 13,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IHrReferenceDataService",
+          "external": [
+            "PensionMS.API/Controllers/HrReferenceDataController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/HR/HrServiceHistoryService.cs",
+      "symbol": "HrServiceHistoryService",
+      "line": 9,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IHrServiceHistoryService",
+          "external": [
+            "PensionMS.API/Controllers/HrServiceHistoryController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/HRServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Inventory/InventoryCustodyService.cs",
+      "symbol": "InventoryCustodyService",
+      "line": 10,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/InventoryServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IInventoryCustodyService",
+          "external": [
+            "PensionMS.API/Controllers/InventoryCustodyController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/InventoryServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Inventory/InventoryItemService.cs",
+      "symbol": "InventoryItemService",
+      "line": 9,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/InventoryServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IInventoryItemService",
+          "external": [
+            "PensionMS.API/Controllers/InventoryItemsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/InventoryServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Inventory/InventoryTransactionService.cs",
+      "symbol": "InventoryTransactionService",
+      "line": 9,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/InventoryServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IInventoryTransactionService",
+          "external": [
+            "PensionMS.API/Controllers/InventoryTransactionsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/InventoryServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Inventory/SimpleStocktakeService.cs",
+      "symbol": "SimpleStocktakeService",
+      "line": 14,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/InventoryServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/StocktakeSqlTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "ISimpleStocktakeService",
+          "external": [
+            "PensionMS.API/Controllers/StocktakeController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/InventoryServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Investment/InvestmentDocumentValidationService.cs",
+      "symbol": "InvestmentDocumentValidationService",
+      "line": 9,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IInvestmentDocumentValidationService",
+          "external": [
+            "PensionMS.API/Controllers/InvestmentDocumentValidationController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Investment/InvestmentGovernanceService.cs",
+      "symbol": "InvestmentGovernanceService",
+      "line": 10,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IInvestmentGovernanceService",
+          "external": [
+            "PensionMS.API/Controllers/InvestmentGovernanceController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Investment/InvestmentLeasingService.cs",
+      "symbol": "InvestmentLeasingService",
+      "line": 11,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/DomainIntegritySqlTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IInvestmentLeasingService",
+          "external": [
+            "PensionMS.API/Controllers/InvestmentLeasingController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Investment/InvestmentLookupService.cs",
+      "symbol": "InvestmentLookupService",
+      "line": 13,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IInvestmentLookupService",
+          "external": [
+            "PensionMS.API/Controllers/InvestmentLookupsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Investment/InvestmentMaintenanceService.cs",
+      "symbol": "InvestmentMaintenanceService",
+      "line": 10,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IInvestmentMaintenanceService",
+          "external": [
+            "PensionMS.API/Controllers/InvestmentMaintenanceController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Investment/InvestmentPortfolioService.cs",
+      "symbol": "InvestmentPortfolioService",
+      "line": 10,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IInvestmentPortfolioService",
+          "external": [
+            "PensionMS.API/Controllers/InvestmentPortfoliosController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Investment/InvestmentProjectService.cs",
+      "symbol": "InvestmentProjectService",
+      "line": 9,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IInvestmentProjectService",
+          "external": [
+            "PensionMS.API/Controllers/InvestmentProjectsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Investment/InvestmentPropertyService.cs",
+      "symbol": "InvestmentPropertyService",
+      "line": 11,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IInvestmentPropertyService",
+          "external": [
+            "PensionMS.API/Controllers/InvestmentPropertiesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/InvestmentServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Notifications/AdminNotificationService.cs",
+      "symbol": "AdminNotificationService",
+      "line": 11,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/NotificationsServiceCollectionExtensions.cs",
+        "PensionMS.Tests/Services/AdminNotificationServiceTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IAdminNotificationService",
+          "external": [
+            "PensionMS.API/Controllers/AdminNotificationsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/NotificationsServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Notifications/NotificationHub.cs",
+      "symbol": "NotificationHub",
+      "line": 9,
+      "external": [
+        "PensionMS.API/Program.cs",
+        "PensionMS.Infrastructure/Jobs/NotificationOutboxProcessor.cs",
+        "PensionMS.Infrastructure/Services/Notifications/AdminNotificationService.cs",
+        "PensionMS.Infrastructure/Services/Notifications/NotificationService.cs",
+        "PensionMS.IntegrationTests/NotificationOutboxSqlTests.cs",
+        "PensionMS.IntegrationTests/PayrollTransactionSqlTests.cs",
+        "PensionMS.Tests/Services/AdminNotificationServiceTests.cs",
+        "PensionMS.Tests/Services/NotificationOutboxProcessorTests.cs",
+        "PensionMS.Tests/Services/NotificationServiceTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "INotificationClient",
+          "external": [
+            "PensionMS.Infrastructure/Jobs/NotificationOutboxProcessor.cs",
+            "PensionMS.Infrastructure/Services/Notifications/AdminNotificationService.cs",
+            "PensionMS.Infrastructure/Services/Notifications/NotificationService.cs",
+            "PensionMS.IntegrationTests/NotificationOutboxSqlTests.cs",
+            "PensionMS.IntegrationTests/PayrollTransactionSqlTests.cs",
+            "PensionMS.Tests/Services/AdminNotificationServiceTests.cs",
+            "PensionMS.Tests/Services/NotificationOutboxProcessorTests.cs",
+            "PensionMS.Tests/Services/NotificationServiceTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Notifications/NotificationService.cs",
+      "symbol": "NotificationService",
+      "line": 12,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/NotificationsServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/NotificationOutboxSqlTests.cs",
+        "PensionMS.IntegrationTests/PayrollTransactionSqlTests.cs",
+        "PensionMS.Tests/Services/NotificationServiceTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "INotificationService",
+          "external": [
+            "PensionMS.API/Controllers/NotificationsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/NotificationsServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Notifications/AdminNotificationService.cs",
+            "PensionMS.Infrastructure/Services/Payroll/SalaryPaymentBatchService.cs",
+            "PensionMS.Infrastructure/Services/Payroll/SalaryRecipientService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Entitlements/FinancialEntitlementService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Entitlements/PensionSuspensionService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/MinistryApprovalService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+            "PensionMS.Infrastructure/Services/Security/UserService.cs",
+            "PensionMS.Infrastructure/Services/Settlements/SettlementService.cs",
+            "PensionMS.IntegrationTests/AuthorizationHttpSqlTests.cs",
+            "PensionMS.IntegrationTests/DomainIntegritySqlTests.cs",
+            "PensionMS.IntegrationTests/SettlementTransactionSqlTests.cs",
+            "PensionMS.Tests/Services/AdminNotificationServiceTests.cs",
+            "PensionMS.Tests/Services/FileStatusServiceTests.cs",
+            "PensionMS.Tests/Services/MinistryApprovalManualItemTests.cs",
+            "PensionMS.Tests/Services/MinistryApprovalServiceTests.cs",
+            "PensionMS.Tests/Services/RetirementFileServiceTests.cs",
+            "PensionMS.Tests/Services/SalaryImportIdentityTests.cs",
+            "PensionMS.Tests/Services/SettlementFinancialEligibilityTests.cs",
+            "PensionMS.Tests/Services/SettlementServiceFactory.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Payroll/PaymentBookService.cs",
+      "symbol": "PaymentBookService",
+      "line": 13,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PayrollServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IPaymentBookService",
+          "external": [
+            "PensionMS.API/Controllers/PaymentBooksController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PayrollServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Payroll/PayrollGenerationService.cs",
+      "symbol": "PayrollGenerationService",
+      "line": 16,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PayrollServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/PayrollTransactionSqlTests.cs",
+        "PensionMS.Tests/Services/AgentFeatureTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IPayrollGenerationService",
+          "external": [
+            "PensionMS.Core/DTOs/Salary/SalaryDtos.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PayrollServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Payroll/SalaryPaymentBatchService.cs",
+            "PensionMS.IntegrationTests/PayrollTransactionSqlTests.cs",
+            "PensionMS.Tests/Services/SalaryImportIdentityTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Payroll/SalaryPaymentBatchService.cs",
+      "symbol": "SalaryPaymentBatchService",
+      "line": 17,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PayrollServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/PayrollTransactionSqlTests.cs",
+        "PensionMS.Tests/Services/SalaryImportIdentityTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "ISalaryPaymentBatchService",
+          "external": [
+            "PensionMS.API/Controllers/SalaryPaymentBatchesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PayrollServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Payroll/SalaryRecipientService.cs",
+      "symbol": "SalaryRecipientService",
+      "line": 15,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PayrollServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "ISalaryRecipientService",
+          "external": [
+            "PensionMS.API/Controllers/SalaryRecipientsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PayrollServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Payroll/PaymentBookService.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/AgentService.cs",
+      "symbol": "AgentService",
+      "line": 15,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+        "PensionMS.Tests/Services/AgentFeatureTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IAgentService",
+          "external": [
+            "PensionMS.API/Controllers/AgentsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+            "PensionMS.IntegrationTests/AgentFeatureHttpTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+      "symbol": "EntitledPersonService",
+      "line": 13,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IEntitledPersonService",
+          "external": [
+            "PensionMS.API/Controllers/EntitledPersonsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+            "PensionMS.Tests/Services/RetirementFileServiceTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/GuardianService.cs",
+      "symbol": "GuardianService",
+      "line": 14,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IGuardianService",
+          "external": [
+            "PensionMS.API/Controllers/GuardiansController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/RetireeService.cs",
+      "symbol": "RetireeService",
+      "line": 14,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+        "PensionMS.Tests/Services/RetireeLifeStatusTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IRetireeService",
+          "external": [
+            "PensionMS.API/Controllers/RetireesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Entitlements/EntitlementEngine.cs",
+      "symbol": "EntitlementEngine",
+      "line": 10,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/EligibilityAndPermissionSqlTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IEntitlementEngine",
+          "external": [
+            "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Documents/DocumentService.cs",
+            "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+            "PensionMS.Infrastructure/Services/Payroll/SalaryRecipientService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+            "PensionMS.Tests/Diagnostics/DocumentUploadWaitDiagnostics.cs",
+            "PensionMS.Tests/Services/DocumentBatchUploadTests.cs",
+            "PensionMS.Tests/Services/DocumentServiceTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Entitlements/FinancialEntitlementService.cs",
+      "symbol": "FinancialEntitlementService",
+      "line": 12,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+        "PensionMS.Tests/Services/SettlementFinancialEligibilityTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IFinancialEntitlementService",
+          "external": [
+            "PensionMS.API/Controllers/FinancialEntitlementsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Settlements/SettlementService.cs",
+            "PensionMS.IntegrationTests/SettlementTransactionSqlTests.cs",
+            "PensionMS.Tests/Services/SettlementFinancialEligibilityTests.cs",
+            "PensionMS.Tests/Services/SettlementServiceFactory.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Entitlements/PensionSuspensionService.cs",
+      "symbol": "PensionSuspensionService",
+      "line": 14,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IPensionSuspensionService",
+          "external": [
+            "PensionMS.API/Controllers/PensionSuspensionsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Files/AchievementObstacleService.cs",
+      "symbol": "AchievementObstacleService",
+      "line": 9,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IAchievementObstacleService",
+          "external": [
+            "PensionMS.API/Controllers/AchievementObstaclesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Files/ComplianceEngine.cs",
+      "symbol": "ComplianceEngine",
+      "line": 8,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+        "PensionMS.Tests/Services/ComplianceEngineTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IComplianceEngine",
+          "external": [
+            "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Documents/DocumentExemptionService.cs",
+            "PensionMS.Infrastructure/Services/Documents/DocumentPledgeService.cs",
+            "PensionMS.Infrastructure/Services/Documents/DocumentService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/AgentService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/GuardianService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/RetireeService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Entitlements/FinancialEntitlementService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+            "PensionMS.Infrastructure/Services/Settlements/SettlementService.cs",
+            "PensionMS.IntegrationTests/SettlementTransactionSqlTests.cs",
+            "PensionMS.Tests/Diagnostics/DocumentUploadWaitDiagnostics.cs",
+            "PensionMS.Tests/Services/AgentFeatureTests.cs",
+            "PensionMS.Tests/Services/DocumentBatchUploadTests.cs",
+            "PensionMS.Tests/Services/DocumentServiceTests.cs",
+            "PensionMS.Tests/Services/FileQueryServiceTests.cs",
+            "PensionMS.Tests/Services/RetireeLifeStatusTests.cs",
+            "PensionMS.Tests/Services/RetirementFileServiceTests.cs",
+            "PensionMS.Tests/Services/SettlementFinancialEligibilityTests.cs",
+            "PensionMS.Tests/Services/SettlementServiceFactory.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Files/FileNoteService.cs",
+      "symbol": "FileNoteService",
+      "line": 9,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IFileNoteService",
+          "external": [
+            "PensionMS.API/Controllers/FileNotesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+      "symbol": "FileQueryService",
+      "line": 16,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+        "PensionMS.Tests/DependencyInjectionTests.cs",
+        "PensionMS.Tests/Services/FileQueryServiceTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IFileQueryService",
+          "external": [
+            "PensionMS.API/Controllers/RetirementFilesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+            "PensionMS.Tests/DependencyInjectionTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+      "symbol": "FileReviewService",
+      "line": 11,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+        "PensionMS.Tests/Services/FileReviewIncrementalTests.cs",
+        "PensionMS.Tests/Services/FileReviewServiceTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IFileReviewService",
+          "external": [
+            "PensionMS.API/Controllers/FileReviewController.cs",
+            "PensionMS.API/Controllers/RetirementFilesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Documents/DocumentService.cs",
+            "PensionMS.Infrastructure/Services/Payroll/PaymentBookService.cs",
+            "PensionMS.Infrastructure/Services/Payroll/SalaryRecipientService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/AgentService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/GuardianService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+            "PensionMS.Tests/Diagnostics/DocumentUploadWaitDiagnostics.cs",
+            "PensionMS.Tests/Services/AgentFeatureTests.cs",
+            "PensionMS.Tests/Services/DocumentBatchUploadTests.cs",
+            "PensionMS.Tests/Services/DocumentServiceTests.cs",
+            "PensionMS.Tests/Services/RetirementFileServiceTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+      "symbol": "FileStatusService",
+      "line": 15,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+        "PensionMS.Tests/Services/FileStatusServiceTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IFileStatusService",
+          "external": [
+            "PensionMS.API/Controllers/FileStatusesController.cs",
+            "PensionMS.API/Controllers/RetirementFilesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Jobs/ExpiredPledgesJob.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Files/MinistryApprovalService.cs",
+      "symbol": "MinistryApprovalService",
+      "line": 21,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+        "PensionMS.Tests/Services/MinistryApprovalManualItemTests.cs",
+        "PensionMS.Tests/Services/MinistryApprovalServiceTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IMinistryApprovalService",
+          "external": [
+            "PensionMS.API/Controllers/MinistryApprovalsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileCompleteness.cs",
+      "symbol": "RetirementFileCompleteness",
+      "line": 8,
+      "external": [
+        "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+        "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs"
+      ],
+      "interfaces": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileDtoMapper.cs",
+      "symbol": "RetirementFileDtoMapper",
+      "line": 7,
+      "external": [
+        "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+        "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs"
+      ],
+      "interfaces": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+      "symbol": "RetirementFileService",
+      "line": 19,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+        "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+        "PensionMS.Tests/DependencyInjectionTests.cs",
+        "PensionMS.Tests/Services/RetirementFileServiceTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IRetirementFileService",
+          "external": [
+            "PensionMS.API/Controllers/RetirementFilesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+            "PensionMS.Tests/DependencyInjectionTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Pension/Files/WorkflowEngine.cs",
+      "symbol": "WorkflowEngine",
+      "line": 12,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IWorkflowEngine",
+          "external": [
+            "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Payroll/SalaryPaymentBatchService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+            "PensionMS.IntegrationTests/PayrollTransactionSqlTests.cs",
+            "PensionMS.Tests/Services/FileStatusServiceTests.cs",
+            "PensionMS.Tests/Services/SalaryImportIdentityTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Reporting/DashboardService.cs",
+      "symbol": "DashboardService",
+      "line": 13,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/ReportingServiceCollectionExtensions.cs",
+        "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+        "PensionMS.IntegrationTests/AuthorizationHttpSqlTests.cs",
+        "PensionMS.Tests/Services/ReportingBranchScopeTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IDashboardService",
+          "external": [
+            "PensionMS.API/Controllers/DashboardController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/ReportingServiceCollectionExtensions.cs",
+            "PensionMS.IntegrationTests/AuthorizationHttpSqlTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Reporting/DiscrepancyService.cs",
+      "symbol": "DiscrepancyService",
+      "line": 17,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/ReportingServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/EligibilityAndPermissionSqlTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IDiscrepancyService",
+          "external": [
+            "PensionMS.API/Controllers/DiscrepancyController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/ReportingServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Reporting/ReportDataService.cs",
+      "symbol": "ReportDataService",
+      "line": 11,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/ReportingServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/AuthorizationHttpSqlTests.cs",
+        "PensionMS.IntegrationTests/ReportingScopeSqlTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IReportDataService",
+          "external": [
+            "PensionMS.API/Controllers/ReportsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/ReportingServiceCollectionExtensions.cs",
+            "PensionMS.IntegrationTests/AuthorizationHttpSqlTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Reporting/ReportExportGuard.cs",
+      "symbol": "ReportExportGuard",
+      "line": 5,
+      "external": [
+        "PensionMS.Infrastructure/Services/Reporting/ReportDataService.cs",
+        "PensionMS.Infrastructure/Services/Reporting/ReportService.Admin.cs",
+        "PensionMS.Infrastructure/Services/Reporting/ReportService.Documents.cs",
+        "PensionMS.Infrastructure/Services/Reporting/ReportService.Financial.cs",
+        "PensionMS.Infrastructure/Services/Reporting/ReportService.Investment.cs",
+        "PensionMS.Infrastructure/Services/Reporting/ReportService.Retirement.cs",
+        "PensionMS.Tests/Services/ReportExportGuardTests.cs"
+      ],
+      "interfaces": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Reporting/ReportService.cs",
+      "symbol": "ReportService",
+      "line": 11,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/ReportingServiceCollectionExtensions.cs",
+        "PensionMS.Infrastructure/Services/Reporting/ReportDataService.cs",
+        "PensionMS.Infrastructure/Services/Reporting/ReportService.Admin.cs",
+        "PensionMS.Infrastructure/Services/Reporting/ReportService.Documents.cs",
+        "PensionMS.Infrastructure/Services/Reporting/ReportService.Financial.cs",
+        "PensionMS.Infrastructure/Services/Reporting/ReportService.Investment.cs",
+        "PensionMS.Infrastructure/Services/Reporting/ReportService.Retirement.cs",
+        "PensionMS.IntegrationTests/AuthorizationHttpSqlTests.cs",
+        "PensionMS.IntegrationTests/ReportingScopeSqlTests.cs",
+        "PensionMS.Tests/Services/ActiveRetireesSummaryTests.cs",
+        "PensionMS.Tests/Services/SettlementsReportTests.cs",
+        "PensionMS.Tests/Services/SharedExcelReportTemplateTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IReportService",
+          "external": [
+            "PensionMS.API/Controllers/ReportsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/ReportingServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Reporting/ReportDataService.cs",
+            "PensionMS.IntegrationTests/AuthorizationHttpSqlTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Reporting/ReportingQueries.cs",
+      "symbol": "ReportingQueries",
+      "line": 11,
+      "external": [
+        "PensionMS.Infrastructure/Services/Reporting/DashboardService.cs",
+        "PensionMS.Infrastructure/Services/Reporting/DiscrepancyService.cs",
+        "PensionMS.Infrastructure/Services/Reporting/ReportDataService.cs",
+        "PensionMS.Infrastructure/Services/Reporting/ReportService.cs",
+        "PensionMS.Infrastructure/Services/Reporting/RetirementFileReportService.cs",
+        "PensionMS.IntegrationTests/ReportingScopeSqlTests.cs",
+        "PensionMS.Tests/Services/ReportingBranchScopeTests.cs"
+      ],
+      "interfaces": []
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Reporting/RetirementFileReportService.cs",
+      "symbol": "RetirementFileReportService",
+      "line": 12,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/ReportingServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IRetirementFileReportService",
+          "external": [
+            "PensionMS.API/Controllers/RetirementFilesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/ReportingServiceCollectionExtensions.cs",
+            "PensionMS.Tests/DependencyInjectionTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Security/Aes256EncryptionService.cs",
+      "symbol": "Aes256EncryptionService",
+      "line": 12,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IEncryptionService",
+          "external": [
+            "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Security/AuthService.cs",
+      "symbol": "AuthService",
+      "line": 18,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IAuthService",
+          "external": [
+            "PensionMS.API/Controllers/AuthController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Security/BranchScopeProvider.cs",
+      "symbol": "BranchScopeProvider",
+      "line": 10,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/AuthorizationHttpSqlTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IBranchScopeProvider",
+          "external": [
+            "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Helpers/PensionFileAccess.cs",
+            "PensionMS.Infrastructure/Services/Administration/LookupService.cs",
+            "PensionMS.Infrastructure/Services/Documents/DocumentService.cs",
+            "PensionMS.Infrastructure/Services/Payroll/SalaryRecipientService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/AgentService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Beneficiaries/GuardianService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+            "PensionMS.Infrastructure/Services/Reporting/DashboardService.cs",
+            "PensionMS.Infrastructure/Services/Reporting/DiscrepancyService.cs",
+            "PensionMS.Infrastructure/Services/Reporting/ReportDataService.cs",
+            "PensionMS.Infrastructure/Services/Reporting/ReportService.cs",
+            "PensionMS.Infrastructure/Services/Reporting/ReportingQueries.cs",
+            "PensionMS.Infrastructure/Services/Reporting/RetirementFileReportService.cs",
+            "PensionMS.IntegrationTests/AuthorizationHttpSqlTests.cs",
+            "PensionMS.IntegrationTests/EligibilityAndPermissionSqlTests.cs",
+            "PensionMS.IntegrationTests/ReportingScopeSqlTests.cs",
+            "PensionMS.Tests/Diagnostics/DocumentUploadWaitDiagnostics.cs",
+            "PensionMS.Tests/Services/ActiveRetireesSummaryTests.cs",
+            "PensionMS.Tests/Services/AgentFeatureTests.cs",
+            "PensionMS.Tests/Services/DocumentBatchUploadTests.cs",
+            "PensionMS.Tests/Services/DocumentServiceTests.cs",
+            "PensionMS.Tests/Services/FileQueryServiceTests.cs",
+            "PensionMS.Tests/Services/LookupServiceTests.cs",
+            "PensionMS.Tests/Services/ReportingBranchScopeTests.cs",
+            "PensionMS.Tests/Services/RetirementFileServiceTests.cs",
+            "PensionMS.Tests/Services/SettlementsReportTests.cs",
+            "PensionMS.Tests/Services/SharedExcelReportTemplateTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Security/ComplianceService.cs",
+      "symbol": "ComplianceService",
+      "line": 13,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IComplianceService",
+          "external": [
+            "PensionMS.API/Controllers/ComplianceController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Security/PermissionService.cs",
+      "symbol": "PermissionService",
+      "line": 8,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IPermissionService",
+          "external": [
+            "PensionMS.API/Controllers/RolesController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Security/RiskScoringService.cs",
+      "symbol": "RiskScoringService",
+      "line": 15,
+      "external": [
+        "PensionMS.Core/Entities/RiskEvent.cs",
+        "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IRiskScoringService",
+          "external": [
+            "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+            "PensionMS.Tests/Services/FileStatusServiceTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Security/ScopedPermissionResolver.cs",
+      "symbol": "ScopedPermissionResolver",
+      "line": 10,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/AuthorizationHttpSqlTests.cs",
+        "PensionMS.IntegrationTests/EligibilityAndPermissionSqlTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IScopedPermissionResolver",
+          "external": [
+            "PensionMS.API/Controllers/AuthController.cs",
+            "PensionMS.API/Security/PermissionHandler.cs",
+            "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs",
+            "PensionMS.IntegrationTests/AuthorizationHttpSqlTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Security/SoD/SoDGuardService.cs",
+      "symbol": "SoDGuardService",
+      "line": 10,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "ISoDGuard",
+          "external": [
+            "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs",
+            "PensionMS.Infrastructure/Services/Payroll/SalaryPaymentBatchService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+            "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+            "PensionMS.IntegrationTests/PayrollTransactionSqlTests.cs",
+            "PensionMS.Tests/Services/FileStatusServiceTests.cs",
+            "PensionMS.Tests/Services/RetirementFileServiceTests.cs",
+            "PensionMS.Tests/Services/SalaryImportIdentityTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Security/UserService.cs",
+      "symbol": "UserService",
+      "line": 15,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/AuthorizationHttpSqlTests.cs",
+        "PensionMS.IntegrationTests/DomainIntegritySqlTests.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "IUserService",
+          "external": [
+            "PensionMS.API/Controllers/UsersController.cs",
+            "PensionMS.API/Security/ActiveUserValidation.cs",
+            "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs",
+            "PensionMS.IntegrationTests/AuthorizationHttpSqlTests.cs"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "PensionMS.Infrastructure/Services/Settlements/SettlementService.cs",
+      "symbol": "SettlementService",
+      "line": 19,
+      "external": [
+        "PensionMS.Infrastructure/DependencyInjection/SettlementsServiceCollectionExtensions.cs",
+        "PensionMS.IntegrationTests/SettlementTransactionSqlTests.cs",
+        "PensionMS.Tests/Services/SettlementBatchFinancialSafetyTests.cs",
+        "PensionMS.Tests/Services/SettlementFinancialEligibilityTests.cs",
+        "PensionMS.Tests/Services/SettlementServiceFactory.cs"
+      ],
+      "interfaces": [
+        {
+          "symbol": "ISettlementService",
+          "external": [
+            "PensionMS.API/Controllers/SettlementsController.cs",
+            "PensionMS.Infrastructure/DependencyInjection/SettlementsServiceCollectionExtensions.cs"
+          ]
+        }
+      ]
+    }
+  ]
+}

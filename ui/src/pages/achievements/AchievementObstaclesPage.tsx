@@ -179,7 +179,7 @@ const { data: stats } = useQuery({
             <Card className="p-5">
                 {items.length === 0 ? (
                     <div className="border-2 border-dashed rounded-xl py-16 text-center text-muted-foreground bg-muted/10">
-                        <Target className="w-12 h-12 mx-auto mb-3 opacity-20" />
+                        <Target className="w-12 h-12 mx-auto mb-3 opacity-100" />
                         لا توجد سجلات إنجازات أو معوقات
                     </div>
                 ) : (

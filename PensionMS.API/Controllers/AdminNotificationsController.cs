@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using PensionMS.Core.DTOs.Common;
 using PensionMS.Core.DTOs.Notifications;
 using PensionMS.Core.Interfaces;
+using PensionMS.API.Extensions;
 using System.Security.Claims;
 
 namespace PensionMS.API.Controllers;
@@ -100,8 +101,8 @@ public class AdminNotificationsController : ControllerBase
     [HttpDelete("bulk")]
     public async Task<IActionResult> BulkDelete([FromBody] BulkDeleteDto dto)
     {
-        var result = await _adminNotificationService.BulkDeleteAsync(dto);
-        return Ok(result);
+        var result = await _adminNotificationService.BulkDeleteAsync(dto, GetUserId());
+        return result.ToActionResult();
     }
 
     private int GetUserId()

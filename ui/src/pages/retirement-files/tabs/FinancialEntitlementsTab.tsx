@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { retirementApi } from "@/api/retirement";
 import { AddFinancialEntitlementDialog } from "@/components/domain/retirement/AddFinancialEntitlementDialog";
 import { EndFinancialEntitlementDialog } from "@/components/domain/retirement/EndFinancialEntitlementDialog";
-import { Badge, Button, Card, type CustomColumnDef, DataTable, Heading, LoadingIndicator } from "@/components/ui";
+import { Badge, Button, type CustomColumnDef, DataTable, LoadingIndicator, TabHeader } from "@/components/ui";
 import { useCreateShortcut } from "@/hooks";
 import { cn, formatDate } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
@@ -120,20 +120,17 @@ export function FinancialEntitlementsTab({ retireeId }: FinancialEntitlementsTab
 
     return (
         <div className="space-y-2 md:space-y-4 animate-in fade-in duration-500 text-start">
-            <Card className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 bg-muted/30 p-3 sm:p-5">
-                <div className="space-y-0.5 sm:space-y-1">
-                    <Heading level="h3" className="font-bold flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base">
-                        <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" /> الاستحقاقات المالية
-                    </Heading>
-                    <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">سجل الاستحقاقات والمبالغ المضافة للمعاش</p>
-                </div>
-                
-                {canCreate && (
-                    <Button size="sm" onClick={() => setShowCreate(true)} className="gap-1.5  h-8 sm:h-auto text-xs sm:text-sm px-3 sm:px-4">
-                        <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> إضافة استحقاق
-                    </Button>
-                )}
-            </Card>
+            <TabHeader
+                title="الاستحقاقات المالية"
+                description="سجل الاستحقاقات والمبالغ المضافة للمعاش"
+                icon={DollarSign}
+                action={{
+                    label: "إضافة استحقاق",
+                    icon: Plus,
+                    onClick: () => setShowCreate(true),
+                    show: canCreate
+                }}
+            />
 
             <DataTable
                 columns={columns}

@@ -92,3 +92,4 @@ export { Slider } from "./Slider";
 export { StatusBadge, type StatusBadgeProps, type StatusConfig } from "./StatusBadge";
 export { TabbedFormSection } from "./TabbedFormSection";
 export { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./Table";
+export { TabHeader, type TabHeaderProps } from "./TabHeader";

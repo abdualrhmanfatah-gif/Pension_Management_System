@@ -196,7 +196,9 @@ public class InventoryCustodyService : IInventoryCustodyService
         var custody = await _unitOfWork.InventoryCustodies.GetByIdAsync(id);
         if (custody == null) return ApiResponse<bool>.Fail("العهدة غير موجودة");
 
-        _unitOfWork.InventoryCustodies.Delete(custody);
+        custody.IsDeleted = true;
+        custody.DeletedAt = DateTime.UtcNow;
+        custody.DeletedByUserID = userId;
         await _auditService.LogAsync(userId, "", "Delete", "InventoryCustody", id, null, null);
         await _unitOfWork.SaveChangesAsync();
         return ApiResponse<bool>.Success(true, "تم حذف العهدة بنجاح");

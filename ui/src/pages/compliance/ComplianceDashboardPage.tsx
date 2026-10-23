@@ -128,8 +128,8 @@ export function ComplianceDashboardPage() {
                 <div className={cn(
                     "flex items-center gap-3 p-4 rounded-xl border",
                     chainResult.isIntact
-                        ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-400"
-                        : "bg-red-500/5 border-red-500/20 text-red-400"
+                        ? "bg-emerald-500/5 border-emerald-500 text-emerald-400"
+                        : "bg-red-500/5 border-red-500 text-red-400"
                 )}>
                     {chainResult.isIntact ? <CheckCircle className="h-5 w-5" /> : <XCircle className="h-5 w-5" />}
                     <span className="text-sm font-medium">{chainResult.message}</span>
@@ -191,7 +191,7 @@ export function ComplianceDashboardPage() {
                     <Heading level="h2" className="text-lg font-bold text-foreground mb-4">ملخص مخاطر الفروع</Heading>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                         {dashboard.branchRiskSummary.map((branch) => (
-                            <div key={branch.branchId} className="flex items-center justify-between p-4 rounded-xl bg-muted/30 border border-border/50">
+                            <div key={branch.branchId} className="flex items-center justify-between p-4 rounded-xl bg-muted/30 border border-border">
                                 <div>
                                     <p className="font-medium text-foreground">{branch.branchName}</p>
                                     <Text variant="caption" className="mt-1">{branch.totalPendingTasks} مهمة معلقة</Text>

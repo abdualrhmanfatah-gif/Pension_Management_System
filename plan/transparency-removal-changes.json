@@ -1,0 +1,5090 @@
+{
+  "summary": {
+    "files": 181,
+    "occurrences": 635,
+    "categories": {
+      "text-alpha": 130,
+      "element-opacity": 116,
+      "border-alpha": 389
+    }
+  },
+  "files": [
+    {
+      "file": "ui/src/components/common/FilterBar.tsx",
+      "beforeHash": "3005aab9f27e4320b8c2c060cec9771f27a74d9c06fd5a1f1218cda42064165b",
+      "afterHash": "146ca50a59135a3fc09765e39dde227e987d846334acefc0346bba669c0c9e8f",
+      "edits": [
+        {
+          "line": 115,
+          "category": "border-alpha",
+          "before": "border-primary/30",
+          "after": "border-primary"
+        },
+        {
+          "line": 106,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 75,
+          "category": "text-alpha",
+          "before": "hover:text-primary/70",
+          "after": "hover:text-primary"
+        },
+        {
+          "line": 40,
+          "category": "text-alpha",
+          "before": "text-foreground/70",
+          "after": "text-foreground"
+        },
+        {
+          "line": 33,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/common/ReportCard.tsx",
+      "beforeHash": "5a15838779f12dfd76f004b3d8e1b366b5729507db03b125ffd286badd1722d8",
+      "afterHash": "17aaef0b15cc75a60fe15a412fa7e173ca96737e384021b84eedf756abe0b084",
+      "edits": [
+        {
+          "line": 47,
+          "category": "border-alpha",
+          "before": "hover:border-primary/50",
+          "after": "hover:border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/common/ReviewFilePreview.tsx",
+      "beforeHash": "5e01e54a422eaf9a612d9225311aeff4dd0d974cbbe9817ca8b815ee72e8fa34",
+      "afterHash": "80171183340f52a0efdde3a9d07fb2ff240a5badc8042b35a585121782887062",
+      "edits": [
+        {
+          "line": 138,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 75,
+          "category": "element-opacity",
+          "before": "opacity-60",
+          "after": "opacity-100"
+        },
+        {
+          "line": 71,
+          "category": "text-alpha",
+          "before": "text-primary/40",
+          "after": "text-primary"
+        },
+        {
+          "line": 68,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/common/SearchDialog.tsx",
+      "beforeHash": "944d31e9db2f3b8677f296de909655811e9ec0acd0a8a96e656a31a04b52af73",
+      "afterHash": "87b105d427210fb52fc3ea9e62ab883cc4f0623b212fdb3796dfb55e10ad0353",
+      "edits": [
+        {
+          "line": 142,
+          "category": "border-alpha",
+          "before": "divide-border/40",
+          "after": "divide-border"
+        },
+        {
+          "line": 136,
+          "category": "border-alpha",
+          "before": "focus-visible:border-primary/40",
+          "after": "focus-visible:border-primary"
+        },
+        {
+          "line": 136,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 123,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/common/UnifiedRetireeStatement.tsx",
+      "beforeHash": "802d392dcd447545b8f15e795c3e474bfb7f425bef1fba46fc29c28f959a950a",
+      "afterHash": "8bdd7cb0b8fee5f93e6602919b4a0f343c9bc779702d448f7996911bb43f2cee",
+      "edits": [
+        {
+          "line": 84,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 76,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/common/charts/ReportBarChart.tsx",
+      "beforeHash": "c7ff51e979da0c3fb0486a099f8e67bc12aeeee29ada645276a3b6761b5ff247",
+      "afterHash": "d395c8cc0681e6f4dc84dca353273cea024a2a1c2eca8a766466541101c98d06",
+      "edits": [
+        {
+          "line": 330,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 328,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 315,
+          "category": "element-opacity",
+          "before": "opacity-50",
+          "after": "opacity-100"
+        },
+        {
+          "line": 313,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 273,
+          "category": "element-opacity",
+          "before": "hover:opacity-80",
+          "after": "hover:opacity-100"
+        },
+        {
+          "line": 153,
+          "category": "text-alpha",
+          "before": "text-foreground/90",
+          "after": "text-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/common/charts/ReportLineChart.tsx",
+      "beforeHash": "3565ae5decb28f6a7cacf888da3270c1fcbfd1ff3d3bc3175335f1bb7166ce36",
+      "afterHash": "c37cebbe63892fd6999af7bd68e1addb378eeabc3b6d5c403371187e8be3626f",
+      "edits": [
+        {
+          "line": 69,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/common/charts/ReportPieChart.tsx",
+      "beforeHash": "c89b756eb8350a90ee53211800095426a464cec8b120f444c0b525cffffe3059",
+      "afterHash": "87eb359078f690e4c1b8c0b75b2be7c5dbb86bb607538e4bbcb31d2e0edcbc4c",
+      "edits": [
+        {
+          "line": 263,
+          "category": "text-alpha",
+          "before": "text-foreground/90",
+          "after": "text-foreground"
+        },
+        {
+          "line": 210,
+          "category": "element-opacity",
+          "before": "hover:opacity-85",
+          "after": "hover:opacity-100"
+        },
+        {
+          "line": 168,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/common/dashboards/DashboardHeader.tsx",
+      "beforeHash": "dd5909fdf74bd44d811b58acd32222c87387d7fd58047dd574c224c2c4db76a8",
+      "afterHash": "08bf3f7599acbea4b3c4024f11c5a9eccb96a8ae8f8ce57080f6f91d2731d469",
+      "edits": [
+        {
+          "line": 40,
+          "category": "text-alpha",
+          "before": "text-primary/70",
+          "after": "text-primary"
+        },
+        {
+          "line": 29,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 23,
+          "category": "element-opacity",
+          "before": "dark:opacity-[0.07]",
+          "after": "dark:opacity-100"
+        },
+        {
+          "line": 23,
+          "category": "element-opacity",
+          "before": "opacity-[0.04]",
+          "after": "opacity-100"
+        },
+        {
+          "line": 20,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/AccountStatementReport.tsx",
+      "beforeHash": "26409ec4bf3d8176693b69b3417a80d1f0b942e67c2ef4a5a131a96153381871",
+      "afterHash": "cb300296257a1289408b735f10d491e5b9698c18364664d237d468593cab5308",
+      "edits": [
+        {
+          "line": 151,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/BalanceSheetReport.tsx",
+      "beforeHash": "7a01dceb155332800d9a1509b0b543fdb9accd2f76870f4435b41d4992d77122",
+      "afterHash": "b09e56d6696a6f168437a7a1210b1412f2d399e77976a5c78285c38ce3e4b20f",
+      "edits": [
+        {
+          "line": 29,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/BudgetReport.tsx",
+      "beforeHash": "5232b8427d085eeb6df2acafbc32499091026b4cf7e5cb3d188fe4b3fa498a12",
+      "afterHash": "59370a506df71bf778d6d5b8a05c2724a8670ff566aa62d40db2dd05483a1dc1",
+      "edits": [
+        {
+          "line": 263,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 152,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 71,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/BudgetReportView.tsx",
+      "beforeHash": "189629fd9940e28bfa0587f54f0a567aa70c031668d383b697cd1ba94b2d61aa",
+      "afterHash": "728dda01a79ea7fb1045c9c3a1bb94c6272cc598d3ad7b8c2ee21ea00ba5b5d5",
+      "edits": [
+        {
+          "line": 86,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/CashFlowReport.tsx",
+      "beforeHash": "1d02e054bb534d007460255c00898cdbfcb721f0ae0fbd8adad52436643c853f",
+      "afterHash": "f786699410f5694d44623ee264eb73a0b233109822638f24ac57499f5c83a268",
+      "edits": [
+        {
+          "line": 176,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 143,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 110,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/CostCenterReport.tsx",
+      "beforeHash": "322327ecd3d3609aa47665c9db21020d9157f4d3dc94f627a319d82d93b3dd42",
+      "afterHash": "5c009febd9099ceedcae8c00fbb49a151c3ee7494e472202d376d0a2b5445c38",
+      "edits": [
+        {
+          "line": 172,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 149,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/CumulativePnLReport.tsx",
+      "beforeHash": "be0174f938842b5095c96458e0e92707fc421aebab4ba5d98e3d67c41b45e461",
+      "afterHash": "185ee39f5ab240ab4fdf7fc9a14eaed9e6de1e9c647fd37a225c49b573358258",
+      "edits": [
+        {
+          "line": 166,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/CurrentOperationsReport.tsx",
+      "beforeHash": "9656c8a4762a5b9ffd55a2f5ef21aca9d27766f0a1839004f2c7d2ba4d49edaf",
+      "afterHash": "f870ab27ac15ffae75ab2eae0673f825662961d764452bdce9e9d95dcf8b9ed1",
+      "edits": [
+        {
+          "line": 241,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 231,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 208,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 185,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 162,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/DepreciationReport.tsx",
+      "beforeHash": "4b5315d98c4aaffb7d75de9692590c10d721bd1c51f7168d7f12cb9db399cb2b",
+      "afterHash": "76763bfaae7846571443bc2acf399bc2c358593faaa9cf13dc7e1a3e5c8783ad",
+      "edits": [
+        {
+          "line": 161,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/FixedAssetsReport.tsx",
+      "beforeHash": "6c7354ce407aeb0feeeb11b741defa9f3bdaf631f48eb520a7ea38b622a7ccb7",
+      "afterHash": "4ff55ed2ac73427902adc5cd64822c74cb0e7490831d863e31129486cfd88506",
+      "edits": [
+        {
+          "line": 154,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/GeneralLedgerReport.tsx",
+      "beforeHash": "cf39966e09a04aa4f7ad476d591d60a5f6f87daab12846f57a19ce07a5111f93",
+      "afterHash": "b4706995202b655b65048b3412d1f19c004d9747f5b55185ebfcd06802353a87",
+      "edits": [
+        {
+          "line": 167,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/IncomeStatementReport.tsx",
+      "beforeHash": "257a28fec5b903c27aff83fcb3c24c3cf8d3451352ebb6d2ba39f2359a6adfe1",
+      "afterHash": "3f86382ae9d51d29f97531b8b987eb412c4ca20fd1f9b6d116451cebadc0af69",
+      "edits": [
+        {
+          "line": 51,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/JournalEntryFormDialog.tsx",
+      "beforeHash": "4324245f359eab63f473155bc85c6844a8d5987612d571b32168845f0b674583",
+      "afterHash": "9bd5b62aeaad0280bc913f99e44318c7f50e166ded76c73486e65ad9ab5306a3",
+      "edits": [
+        {
+          "line": 304,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/JournalEntryViewDialog.tsx",
+      "beforeHash": "717686e7ad2da3d23fb3405828081581e143ec49d192d9cf78a6822f2dc32117",
+      "afterHash": "b5b4d81fc4c2b3c0555b8bdb566b354a517db2e37eb819cc1d1dace2c75a3b7c",
+      "edits": [
+        {
+          "line": 112,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/JournalRegisterReport.tsx",
+      "beforeHash": "ebaddfb661ba5a2bb04d146fbb72a720aec78fdb6b04ef14d043dcd5343d5cd2",
+      "afterHash": "ab6dc961dcfcc33aba26074eee63619045678f01abddf2456d3efad2c1fd90de",
+      "edits": [
+        {
+          "line": 119,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/LiabilitiesReport.tsx",
+      "beforeHash": "7b970fd215ec60c207f1fba59ff4a4483e8bbf7718cc75fc32b983ed218b8d12",
+      "afterHash": "0d8aec7f43925312e0afe49210bdf4eaed182ac105cb7b79df1fc4e0c4c7c9ee",
+      "edits": [
+        {
+          "line": 190,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 168,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 144,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/ProvisionsReport.tsx",
+      "beforeHash": "6450fae10ce54c3cee47460caa596bd8a355136e9bfe21617d4c0359c52f74ce",
+      "afterHash": "03d0dcc3f99bc9fbed3845ff6e4f3a4086c98d05b8b8cc2e6866fdb46d10a342",
+      "edits": [
+        {
+          "line": 161,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 137,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/QuarterlyReport.tsx",
+      "beforeHash": "096040f57e12fa7751e3798a6c027fb47c683056bfd3c0a8d60f7324eed683e4",
+      "afterHash": "66790cd3834dfcb5d8dab275ea2c3440f79e34b77e8d916846f88ad4daec07a1",
+      "edits": [
+        {
+          "line": 151,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/SubledgerReport.tsx",
+      "beforeHash": "809b11a37a458e74ccf82a531f25ded6c979ce5561d30baa933d74e9bd7d5484",
+      "afterHash": "bfc03606b8d17353bbf66a678066635d708948f739921ddca41957c5c746c68d",
+      "edits": [
+        {
+          "line": 160,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/TrialBalanceReport.tsx",
+      "beforeHash": "ae45a606ed4308dfe3ba47f04862b0a53cd8fb2465350970512f0a2150b7a2f1",
+      "afterHash": "c339ecbcd7ca83f153076f079005de4f205c9820523818d279ca41ff09e62dd5",
+      "edits": [
+        {
+          "line": 277,
+          "category": "border-alpha",
+          "before": "border-danger/30",
+          "after": "border-danger"
+        },
+        {
+          "line": 277,
+          "category": "border-alpha",
+          "before": "border-success/30",
+          "after": "border-success"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/VoucherPrintDialog.tsx",
+      "beforeHash": "082d1b2540aa7a7e9c519d3a9cdecd8562ad9d8024bbb5051588b2304aaf9d8a",
+      "afterHash": "01232a04ef2978fb1401603f3440f8f958b26cfdfb1a0b8baa5a1c49c6cdfff5",
+      "edits": [
+        {
+          "line": 56,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/VoucherViewDialog.tsx",
+      "beforeHash": "a60d8933bdd4a02e83b5ed42db3990763b8f6352b603df45afae67c99c1ba5a2",
+      "afterHash": "a49b03b78088f9d124ca58cd579515beb608680ed2660834e4c769eef9b5db07",
+      "edits": [
+        {
+          "line": 116,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/accounting/YearOverYearReport.tsx",
+      "beforeHash": "35e023d6e4622c1aff1efda58106e281a9cee57d5792427f848b850bbaa96593",
+      "afterHash": "bfb4c7909fe819ec012f0624c2cda2024a6b0e4a3e6d01611708ccb997bc25b6",
+      "edits": [
+        {
+          "line": 192,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 181,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 170,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/admin/BankFormDialog.tsx",
+      "beforeHash": "3916e5c1df30b4f584b650ef9cf4e5890efa29de8ae9535124598abb56808d66",
+      "afterHash": "9d0176f939ea459d62cfabf04e5922f293081f4ffa2f723039c24c56ba03af94",
+      "edits": [
+        {
+          "line": 150,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/admin/DocumentTypeDialog.tsx",
+      "beforeHash": "6a20a17f80f5cff4c1ecb47e56b1044a954cdb28a0b2b4939054ba5a3c82840e",
+      "afterHash": "a7e5dea2ff568ca91dc2905ebb3104aed163d75a4c5498cb49dd1a8ae1304fa0",
+      "edits": [
+        {
+          "line": 236,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 224,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 213,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/admin/ExcelImportDialog.tsx",
+      "beforeHash": "6e0c0daa8544ef01585a28dded11273355a46f767c963a580d5f5d52ee80f7aa",
+      "afterHash": "c84533edad35e187efbf2eb73bab9873fd48ae3b75889463208c2134b51fa60c",
+      "edits": [
+        {
+          "line": 172,
+          "category": "border-alpha",
+          "before": "border-destructive/20",
+          "after": "border-destructive"
+        },
+        {
+          "line": 100,
+          "category": "border-alpha",
+          "before": "hover:border-primary/50",
+          "after": "hover:border-primary"
+        },
+        {
+          "line": 100,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/admin/RolePermissionsDialog.tsx",
+      "beforeHash": "9c93408134399765e42c7dab805c0d76cb1b96df01be0f4484e8ec9f6e86acf7",
+      "afterHash": "7913b643aa1863fb9903c9eb9b98d417cd0359100b14b196c8f9126ac5311a09",
+      "edits": [
+        {
+          "line": 184,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/70",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/admin/SendNotificationDialog.tsx",
+      "beforeHash": "f257df4b1bbf53700ec5bf07fe5a8511c2d4fd7aafa0efa3f2e65d99ed46c549",
+      "afterHash": "8b60dbb7821cd3936365bdd5a1280896e45a40b2a45f13c6e14ca33a157758c7",
+      "edits": [
+        {
+          "line": 430,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 408,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 403,
+          "category": "border-alpha",
+          "before": "hover:border-primary/50",
+          "after": "hover:border-primary"
+        },
+        {
+          "line": 403,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 365,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/admin/UserPermissionsDialog.tsx",
+      "beforeHash": "ebce3164b382955a5af58f6e643fabb2732a6c7be471ab552934d6966c75be59",
+      "afterHash": "ddf7ca8f95d1c1d808d02fd35315bca50175ead1220dca65711df289b340f1e6",
+      "edits": [
+        {
+          "line": 250,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/70",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/assets/AssetCategoryFormDialog.tsx",
+      "beforeHash": "e810d6797579477ea0024641ef226b7d6493a9af654d37d730479e1efc5c1abb",
+      "afterHash": "5b83eb67ff9d0e27d534be8a9039fee56d25d74793e17e92da4eed20425e2903",
+      "edits": [
+        {
+          "line": 221,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/hr/DepartmentDialog.tsx",
+      "beforeHash": "1effedba105aa2ba6592be9f66639e1b332cc84226ada8ccda6403e23e04c355",
+      "afterHash": "df48f3fde0c37be81c3ca2a113adc596c09b41a7392b10ffdb31ef6034cb1b88",
+      "edits": [
+        {
+          "line": 134,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/hr/JobTitleDialog.tsx",
+      "beforeHash": "a64fd203e39e7018370448d4691ea0a53ecbf539d1ef0a992bbac1810741bafb",
+      "afterHash": "efe63a37b1dc92ea8a9d1c7d8d93b5982b1128e5cdbc7e4359f57824d3f196c1",
+      "edits": [
+        {
+          "line": 133,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/hr/SectionDialog.tsx",
+      "beforeHash": "5a47bac1129750da438dab108c42e50ca47177be91c583ce8b7ff6f11b6e5e5e",
+      "afterHash": "7bbb6202d416dcaa08ff1372530d5feebf838e9c6fe79fc0ca8c13b654999d92",
+      "edits": [
+        {
+          "line": 169,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/inventory/InventoryBulkTransactionFormDialog.tsx",
+      "beforeHash": "820ab01b589970df7c9b9d8c9553bdb74e0d404a4081bf6617386f1cdcb490f5",
+      "afterHash": "f52a89b5c173c123d9bc70cb09ad7bef8b95492e5b7d2db3d2d0d25168afd13a",
+      "edits": [
+        {
+          "line": 197,
+          "category": "text-alpha",
+          "before": "hover:text-destructive/80",
+          "after": "hover:text-destructive"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/investment/WorkOrderDialog.tsx",
+      "beforeHash": "cd5faa7039527e3a25ec42dcbe416b87f0ee72fd9cf20a65c636fe67d2ec887c",
+      "afterHash": "493dce09f66a6998128b3524e9c83f97219896fe3c95081d628437d976f4c2ca",
+      "edits": [
+        {
+          "line": 63,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 55,
+          "category": "element-opacity",
+          "before": "opacity-20",
+          "after": "opacity-100"
+        },
+        {
+          "line": 54,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/AddMissingDocumentDialog.tsx",
+      "beforeHash": "274382e33b2226322eb21df0013410dfd24b0ab6492d97e83b7c717bed21215c",
+      "afterHash": "fe5f6f54fa1785e79079f9e5e7653c3bffcdcdfccd7987f59fd4916546b9b0d8",
+      "edits": [
+        {
+          "line": 155,
+          "category": "text-alpha",
+          "before": "text-foreground/70",
+          "after": "text-foreground"
+        },
+        {
+          "line": 149,
+          "category": "border-alpha",
+          "before": "border-muted-foreground/30",
+          "after": "border-muted-foreground"
+        },
+        {
+          "line": 143,
+          "category": "border-alpha",
+          "before": "hover:border-border/60",
+          "after": "hover:border-border"
+        },
+        {
+          "line": 127,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/40",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 125,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 117,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/AgentDialog.tsx",
+      "beforeHash": "f21d028ee18538f6f96e3f9380360056823fe71b00e39f5125ca2bacb4d8dd93",
+      "afterHash": "cbe8d1e4a98c576e57d12d371f4c16330aeabae9e6ff89897c467280b6c829fc",
+      "edits": [
+        {
+          "line": 672,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 653,
+          "category": "border-alpha",
+          "before": "border-primary/30",
+          "after": "border-primary"
+        },
+        {
+          "line": 627,
+          "category": "border-alpha",
+          "before": "border-primary/50",
+          "after": "border-primary"
+        },
+        {
+          "line": 449,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 432,
+          "category": "border-alpha",
+          "before": "border-primary/30",
+          "after": "border-primary"
+        },
+        {
+          "line": 427,
+          "category": "element-opacity",
+          "before": "opacity-40",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/BulkUploadDialog.tsx",
+      "beforeHash": "ac0d33aea4c320fb8282db1651e4d1eb21ff246a68c5939b8cbd6f16f0f74f8b",
+      "afterHash": "8f94584133e792e7ddda3cb08950c536293bef72d79431c2023a84f2144e0cf6",
+      "edits": [
+        {
+          "line": 1521,
+          "category": "element-opacity",
+          "before": "opacity-40",
+          "after": "opacity-100"
+        },
+        {
+          "line": 1424,
+          "category": "border-alpha",
+          "before": "border-emerald-500/25",
+          "after": "border-emerald-500"
+        },
+        {
+          "line": 1423,
+          "category": "border-alpha",
+          "before": "border-destructive/30",
+          "after": "border-destructive"
+        },
+        {
+          "line": 1316,
+          "category": "border-alpha",
+          "before": "border-destructive/30",
+          "after": "border-destructive"
+        },
+        {
+          "line": 1310,
+          "category": "border-alpha",
+          "before": "border-destructive/30",
+          "after": "border-destructive"
+        },
+        {
+          "line": 347,
+          "category": "border-alpha",
+          "before": "border-destructive/20",
+          "after": "border-destructive"
+        },
+        {
+          "line": 320,
+          "category": "border-alpha",
+          "before": "border-amber-500/30",
+          "after": "border-amber-500"
+        },
+        {
+          "line": 200,
+          "category": "text-alpha",
+          "before": "text-primary/60",
+          "after": "text-primary"
+        },
+        {
+          "line": 181,
+          "category": "border-alpha",
+          "before": "border-border/70",
+          "after": "border-border"
+        },
+        {
+          "line": 181,
+          "category": "border-alpha",
+          "before": "border-destructive/40",
+          "after": "border-destructive"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/CameraScanDialog.tsx",
+      "beforeHash": "b4a5de4c39e4380894c68b9bd310749079e34322b9e94743107c8fb566a930f9",
+      "afterHash": "c527b5fb561c04de054daa72cae13b1aee9a51c92cf9c8da395f9c10695f99aa",
+      "edits": [
+        {
+          "line": 56,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/CreateFileWizard.tsx",
+      "beforeHash": "b7b3a1148771605de17f72bc26464fecd726c90ffdd7a8b763d23672494aa952",
+      "afterHash": "73c06c1798bca0db7a31debb19e9f5edb6798bb9cdb2ba451bf65c08544b860b",
+      "edits": [
+        {
+          "line": 1437,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 1318,
+          "category": "border-alpha",
+          "before": "border-destructive/40",
+          "after": "border-destructive"
+        },
+        {
+          "line": 1258,
+          "category": "text-alpha",
+          "before": "text-destructive/70",
+          "after": "text-destructive"
+        },
+        {
+          "line": 1256,
+          "category": "border-alpha",
+          "before": "border-destructive/20",
+          "after": "border-destructive"
+        },
+        {
+          "line": 1220,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 1132,
+          "category": "border-alpha",
+          "before": "border-destructive/30",
+          "after": "border-destructive"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/DocumentChecklistField.tsx",
+      "beforeHash": "25214d3c0bba23c6a819206c2b24aaab1d674e7f2dbd7bfad6245687fc61ce22",
+      "afterHash": "7e974fcbf433a34c272501b75cbfcc395c5af9175cf9888fc10e565f065c0553",
+      "edits": [
+        {
+          "line": 76,
+          "category": "element-opacity",
+          "before": "opacity-80",
+          "after": "opacity-100"
+        },
+        {
+          "line": 59,
+          "category": "border-alpha",
+          "before": "border-primary/30",
+          "after": "border-primary"
+        },
+        {
+          "line": 44,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/DocumentReviewPanel.tsx",
+      "beforeHash": "6ddb2049f29d8601829179aa18c6df8ea8067ec8c56d756bdd7127c989e235fc",
+      "afterHash": "85e7fb7d2277cb3afa41f8c30a20041efa998c915977aedf3a999d22f48ad2c0",
+      "edits": [
+        {
+          "line": 213,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        },
+        {
+          "line": 205,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        },
+        {
+          "line": 120,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/DocumentViewerDialog.tsx",
+      "beforeHash": "0f00c19f617323b9a82f3ad7cc752ddd8758b0808943dccdab512b9e1f5348f2",
+      "afterHash": "a59f9f9e30abcfc956d46f134ed9b2a5387aae6fd73c548c0b070d3b7c796d37",
+      "edits": [
+        {
+          "line": 188,
+          "category": "text-alpha",
+          "before": "text-destructive/70",
+          "after": "text-destructive"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/EditDocumentDialog.tsx",
+      "beforeHash": "efc6ee8d6ba265513e673776cb7728a484a1b15f898b0c397c4097aa024bb5d5",
+      "afterHash": "9316dcd9ac88677acd14e46dd58c0294426e781971b7e19c7ba0df72cbcefc68",
+      "edits": [
+        {
+          "line": 364,
+          "category": "element-opacity",
+          "before": "opacity-40",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/EntitledPersonDetails.tsx",
+      "beforeHash": "844431fc5d9b5327a8b1e4d3c8df738169cd89d4d0974f3ad48606da299b9ce3",
+      "afterHash": "71876d44b6552a8cd5037295413ac01a28583d303c613df041d3e4984a57fc39",
+      "edits": [
+        {
+          "line": 134,
+          "category": "border-alpha",
+          "before": "border-muted/30",
+          "after": "border-muted"
+        },
+        {
+          "line": 40,
+          "category": "element-opacity",
+          "before": "opacity-[0.03]",
+          "after": "opacity-100"
+        },
+        {
+          "line": 39,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/EntitledPersonFormDialog.tsx",
+      "beforeHash": "61336708197dc36552716c0a235249a3c67f56e85f369a4e84e6364135e3a115",
+      "afterHash": "b9f62f66e701dd412fda9142d3d1380cd8937554812c28c61079ee0814495539",
+      "edits": [
+        {
+          "line": 497,
+          "category": "text-alpha",
+          "before": "text-primary/90",
+          "after": "text-primary"
+        },
+        {
+          "line": 488,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/EntitlementAmountField.tsx",
+      "beforeHash": "d76f77e31ecba375d0becb7c8081caf3acc44e61ce6bbabacfbbb57778e9542e",
+      "afterHash": "ac45d5c64fc0c0484ccff361b4db96ce4c6e0a5d6653f04d8a653957d76062ba",
+      "edits": [
+        {
+          "line": 49,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 49,
+          "category": "border-alpha",
+          "before": "border-destructive/30",
+          "after": "border-destructive"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/FileReviewSidebar.tsx",
+      "beforeHash": "51e5e92dbb2ba1b01cad9b774d38bb307135910715e94765609521186cf80751",
+      "afterHash": "c3dd375d74d3870ddb6d4675b4a7599de8b4edf5768ee63b55edf7c6ca67e3ad",
+      "edits": [
+        {
+          "line": 155,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 72,
+          "category": "element-opacity",
+          "before": "opacity-40",
+          "after": "opacity-100"
+        },
+        {
+          "line": 63,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 54,
+          "category": "element-opacity",
+          "before": "group-hover:opacity-75",
+          "after": "group-hover:opacity-100"
+        },
+        {
+          "line": 54,
+          "category": "element-opacity",
+          "before": "opacity-50",
+          "after": "opacity-100"
+        },
+        {
+          "line": 45,
+          "category": "element-opacity",
+          "before": "opacity-[0.07]",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/FulfillPledgeDialog.tsx",
+      "beforeHash": "85e2044eb49deb45faff8c2d89fd2fc61bd37d371b35fae7ececa4fe39127e78",
+      "afterHash": "de3e72db5ffa84f214443d4e5c4cb0f4259c6cf112d4a8efa2bc27566313d7fa",
+      "edits": [
+        {
+          "line": 128,
+          "category": "border-alpha",
+          "before": "border-success/30",
+          "after": "border-success"
+        },
+        {
+          "line": 108,
+          "category": "element-opacity",
+          "before": "opacity-70",
+          "after": "opacity-100"
+        },
+        {
+          "line": 103,
+          "category": "border-alpha",
+          "before": "border-success/30",
+          "after": "border-success"
+        },
+        {
+          "line": 103,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/GuardianDialog.tsx",
+      "beforeHash": "e2b8a303a905271f4855a643577517b360d553d468f525b65270030c99f4f629",
+      "afterHash": "fbb3329defe98f22583d15fe735aa6d3d7ec1d5fdbf41db0b10c544223b58aa8",
+      "edits": [
+        {
+          "line": 237,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/40",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 233,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/MissingDocActionDialog.tsx",
+      "beforeHash": "dc2dbc419110e5fcbc26e0f302f565e5514a09532b3495bc23d12f8d21fca474",
+      "afterHash": "c2d619d77e9460e85a6b07ab2b1a7cd715ba58eb2bf3be961ae572b9ac9ecabb",
+      "edits": [
+        {
+          "line": 184,
+          "category": "element-opacity",
+          "before": "opacity-70",
+          "after": "opacity-100"
+        },
+        {
+          "line": 172,
+          "category": "element-opacity",
+          "before": "opacity-70",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/PaymentBookDialog.tsx",
+      "beforeHash": "966d723b6e1b0af7cb1412ca454cef0f47131279fcc5fde897d30bc6bf68c0c2",
+      "afterHash": "5ddf3086b42c0940989d94dc6711124c8b6af8531b384cb844a8da756b0d9bab",
+      "edits": [
+        {
+          "line": 369,
+          "category": "border-alpha",
+          "before": "border-primary/30",
+          "after": "border-primary"
+        },
+        {
+          "line": 336,
+          "category": "border-alpha",
+          "before": "border-black/10",
+          "after": "border-black"
+        },
+        {
+          "line": 307,
+          "category": "border-alpha",
+          "before": "hover:border-border/60",
+          "after": "hover:border-border"
+        },
+        {
+          "line": 293,
+          "category": "border-alpha",
+          "before": "hover:border-border/60",
+          "after": "hover:border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/PersonDocCard.tsx",
+      "beforeHash": "a08b2a730dbff58fb6f0d4c07091fc6bfb04735b2c36cbd49b473c66e51e9650",
+      "afterHash": "57689d7963a5ee5dc84bc8b9e4d823de098b592990b57edd8ee9839703dab24a",
+      "edits": [
+        {
+          "line": 33,
+          "category": "border-alpha",
+          "before": "hover:border-muted-foreground/30",
+          "after": "hover:border-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/PledgeDialog.tsx",
+      "beforeHash": "bf51487fb36ea7d5c218cbdf33ae6c104ed1fd938f3c701938f48fc00db58262",
+      "afterHash": "846f7dccc7b1cb85875f7bcd77ebb94fdd909f1a98ec658da765d5fe2b010c13",
+      "edits": [
+        {
+          "line": 289,
+          "category": "border-alpha",
+          "before": "border-primary/30",
+          "after": "border-primary"
+        },
+        {
+          "line": 284,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/RecipientsDialog.tsx",
+      "beforeHash": "02369688b19fb1b2e289dc6b6a943a0d8c10c3c79c254d776edf4c89c04aaf50",
+      "afterHash": "bd09855bb59d2f38259fbf9f8eaf678b679899c616dc629f20eedfd2118538e3",
+      "edits": [
+        {
+          "line": 226,
+          "category": "element-opacity",
+          "before": "opacity-80",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/RetirementFileSidebar.tsx",
+      "beforeHash": "c78425d24131cada410bdca79eb69b85464bf748f1ded0e43e403eb457ee1717",
+      "afterHash": "25175766fcfec1e7dffc7da9393d399b8933004fe7aa08b343679de38194d72c",
+      "edits": [
+        {
+          "line": 230,
+          "category": "text-alpha",
+          "before": "group-hover:text-primary/70",
+          "after": "group-hover:text-primary"
+        },
+        {
+          "line": 230,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 214,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 182,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 100,
+          "category": "element-opacity",
+          "before": "opacity-40",
+          "after": "opacity-100"
+        },
+        {
+          "line": 85,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 80,
+          "category": "element-opacity",
+          "before": "group-hover:opacity-75",
+          "after": "group-hover:opacity-100"
+        },
+        {
+          "line": 80,
+          "category": "element-opacity",
+          "before": "opacity-50",
+          "after": "opacity-100"
+        },
+        {
+          "line": 70,
+          "category": "element-opacity",
+          "before": "opacity-[0.07]",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/ReviewItemCard.tsx",
+      "beforeHash": "7f4d90780aaaf43c13f4ffa9821acda3c8a08922d4766d845f497edfbc2a71e0",
+      "afterHash": "e65ba9972faf8b0bf73d7007ae558dcbf3451bc04cb38848f09ba17e8e11980d",
+      "edits": [
+        {
+          "line": 285,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 210,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 104,
+          "category": "border-alpha",
+          "before": "hover:border-primary/30",
+          "after": "hover:border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/StatusUpdateDialog.tsx",
+      "beforeHash": "f10a2ef73a2d568f87f482cc7b2b808f14173331d8f6649d7ae0a4227eb0c979",
+      "afterHash": "7ee8783a6848cccab3e39d79bb2e2196e0f7d7859eb7b0985e032d6e94904ebd",
+      "edits": [
+        {
+          "line": 136,
+          "category": "element-opacity",
+          "before": "opacity-40",
+          "after": "opacity-100"
+        },
+        {
+          "line": 129,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/30",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/ViewAgentDialog.tsx",
+      "beforeHash": "bded94efd377ee48e1200656c0d1728bcd0a9f492a47f74924df84962157fc60",
+      "afterHash": "30be20d25ab7e6bfccaaba41e6fcf9d98efd765d3bd60a252ec33d9d43c88937",
+      "edits": [
+        {
+          "line": 184,
+          "category": "element-opacity",
+          "before": "hover:opacity-90",
+          "after": "hover:opacity-100"
+        },
+        {
+          "line": 75,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/ViewEntitledPersonDialog.tsx",
+      "beforeHash": "d7b283a5a21e39b717c9a435cbc58b3d9f7a825f63971a692b08ca4e661512d7",
+      "afterHash": "8620e65794bc8dd1f8cb890a7346d36c140e911f0d40519681ff7ad6814cd2a4",
+      "edits": [
+        {
+          "line": 348,
+          "category": "text-alpha",
+          "before": "text-primary/40",
+          "after": "text-primary"
+        },
+        {
+          "line": 346,
+          "category": "border-alpha",
+          "before": "border-muted/50",
+          "after": "border-muted"
+        },
+        {
+          "line": 334,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        },
+        {
+          "line": 322,
+          "category": "text-alpha",
+          "before": "text-foreground/90",
+          "after": "text-foreground"
+        },
+        {
+          "line": 319,
+          "category": "border-alpha",
+          "before": "hover:border-primary/20",
+          "after": "hover:border-primary"
+        },
+        {
+          "line": 315,
+          "category": "text-alpha",
+          "before": "text-emerald-600/60",
+          "after": "text-emerald-600"
+        },
+        {
+          "line": 312,
+          "category": "element-opacity",
+          "before": "opacity-80",
+          "after": "opacity-100"
+        },
+        {
+          "line": 310,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        },
+        {
+          "line": 305,
+          "category": "element-opacity",
+          "before": "opacity-70",
+          "after": "opacity-100"
+        },
+        {
+          "line": 294,
+          "category": "border-alpha",
+          "before": "border-muted/30",
+          "after": "border-muted"
+        },
+        {
+          "line": 293,
+          "category": "border-alpha",
+          "before": "border-muted/30",
+          "after": "border-muted"
+        },
+        {
+          "line": 253,
+          "category": "text-alpha",
+          "before": "text-foreground/90",
+          "after": "text-foreground"
+        },
+        {
+          "line": 247,
+          "category": "border-alpha",
+          "before": "hover:border-primary/20",
+          "after": "hover:border-primary"
+        },
+        {
+          "line": 238,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/30",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 233,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        },
+        {
+          "line": 225,
+          "category": "border-alpha",
+          "before": "border-primary/5",
+          "after": "border-primary"
+        },
+        {
+          "line": 186,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        },
+        {
+          "line": 178,
+          "category": "border-alpha",
+          "before": "border-muted-foreground/20",
+          "after": "border-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/sections/BasicInfoSection.tsx",
+      "beforeHash": "622f37235db5fcb7ad242cf42635ba82f0f9290fa1e63a6e0c43f69a92c9caf6",
+      "afterHash": "878cf2caa689bb193fce54b16f228ca9012c09ff7132ca58baa93b9a2d7d4901",
+      "edits": [
+        {
+          "line": 170,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 165,
+          "category": "element-opacity",
+          "before": "group-hover:opacity-75",
+          "after": "group-hover:opacity-100"
+        },
+        {
+          "line": 165,
+          "category": "element-opacity",
+          "before": "opacity-50",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/sections/DocumentsSection.tsx",
+      "beforeHash": "faf8f1f19f74d07da2c6c32d27e630d5d3530b82400ecbf583490084e106dc96",
+      "afterHash": "56476e606d5f7e1e7a19bd17d7598ad2b121ab474af0f85ee0a527de23f22412",
+      "edits": [
+        {
+          "line": 189,
+          "category": "border-alpha",
+          "before": "hover:border-muted-foreground/30",
+          "after": "hover:border-muted-foreground"
+        },
+        {
+          "line": 71,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/40",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/sections/FinancialSection.tsx",
+      "beforeHash": "cf7c9237faad75a555a4e8ef3ae3ce93a247f8cfb388ef50bd27f072db64a34c",
+      "afterHash": "cb6726671ddd4d91eb24bcde3e74f85d12a651fb8a143f70c4b233deb83dbc80",
+      "edits": [
+        {
+          "line": 465,
+          "category": "border-alpha",
+          "before": "hover:border-muted-foreground/30",
+          "after": "hover:border-muted-foreground"
+        },
+        {
+          "line": 61,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/40",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/sections/HistorySection.tsx",
+      "beforeHash": "2f40266fb4e2cea2418f95be01a4c1c244226a29689e3db650232c59d51942fc",
+      "afterHash": "d45e6a2b315a4668ddf0defeb58468b7830dfff5477b7f18c86dcbe3796dd5f8",
+      "edits": [
+        {
+          "line": 126,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 125,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 114,
+          "category": "element-opacity",
+          "before": "opacity-50",
+          "after": "opacity-100"
+        },
+        {
+          "line": 111,
+          "category": "element-opacity",
+          "before": "opacity-60",
+          "after": "opacity-100"
+        },
+        {
+          "line": 101,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 87,
+          "category": "border-alpha",
+          "before": "hover:border-primary/20",
+          "after": "hover:border-primary"
+        },
+        {
+          "line": 87,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 49,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 35,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 24,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/retirement/sections/PeopleSection.tsx",
+      "beforeHash": "9632a57ff03618c9e5bfa3268aecbe81e23545abae9d24242af89d0c1a6ba2d1",
+      "afterHash": "d840442b3d52109bc137396d80da2c5c3c6d8fef0b3baac4fa1ebfcb78f6eb62",
+      "edits": [
+        {
+          "line": 486,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 479,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        },
+        {
+          "line": 446,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 372,
+          "category": "border-alpha",
+          "before": "hover:border-muted-foreground/30",
+          "after": "hover:border-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/salaries/SalaryRecipientFormDialog.tsx",
+      "beforeHash": "20e19e3ec313d04fa0e596cac4bded5b6f24db77a5c3ee530526b1aa8fb25cbc",
+      "afterHash": "bc8592dee3e73e952440c71658591391c42c566e01d938528ef036adaaab79fe",
+      "edits": [
+        {
+          "line": 292,
+          "category": "element-opacity",
+          "before": "opacity-80",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/salaries/SalaryRecipientViewerDialog.tsx",
+      "beforeHash": "f7a9a047068b31c0f183a9e6c0b55c23287d8f91a1d89b63179c7afd84b11e82",
+      "afterHash": "54854b70e86dac87b22100e68e3a25084cabb8594df550c29f2c2fc455a2029e",
+      "edits": [
+        {
+          "line": 106,
+          "category": "border-alpha",
+          "before": "border-slate-200/50",
+          "after": "border-slate-200"
+        },
+        {
+          "line": 88,
+          "category": "border-alpha",
+          "before": "border-slate-200/60",
+          "after": "border-slate-200"
+        },
+        {
+          "line": 42,
+          "category": "element-opacity",
+          "before": "opacity-10",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/settlements/CreateSettlementDecisionDialog.tsx",
+      "beforeHash": "7441304cb424f2bfe16db95017aed3a6261a2fa8f82977564982a613e7a83599",
+      "afterHash": "a97c3877ebdaa0e58a59318f46b07c2428d9ab81509a4cf7315a85513ed1b402",
+      "edits": [
+        {
+          "line": 158,
+          "category": "border-alpha",
+          "before": "border-destructive/30",
+          "after": "border-destructive"
+        },
+        {
+          "line": 147,
+          "category": "border-alpha",
+          "before": "border-destructive/20",
+          "after": "border-destructive"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/settlements/LinkRetireeDialog.tsx",
+      "beforeHash": "abca958ec06aa5a206f32acdb525f2b700390acc038fe9eec109f0a6c0b6a4d3",
+      "afterHash": "19a8531ea1afa92561ff65f5e32f4396de293003efabe814b69db3eeef250933",
+      "edits": [
+        {
+          "line": 107,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/domain/suspensions/CreateSuspensionDialog.tsx",
+      "beforeHash": "ca2ffd581f12617910ca1d8395c60741b1490f9f88ac1024f7cf680565f8d9ef",
+      "afterHash": "e499708c4afe53d659ccc13e1a1bced6e3312085dfa4162c60e32152407e3402",
+      "edits": [
+        {
+          "line": 133,
+          "category": "border-alpha",
+          "before": "border-destructive/20",
+          "after": "border-destructive"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/layout/NavDropdown.tsx",
+      "beforeHash": "06d8c2de45ae52f6b765738d32e1efd30f5977694ecff7a4c22a817e04caa653",
+      "afterHash": "e36717172e16c0ffb162951e863e3b09181519cf779c6bb4303a91cd0d4a2e2b",
+      "edits": [
+        {
+          "line": 177,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        },
+        {
+          "line": 173,
+          "category": "text-alpha",
+          "before": "text-primary/70",
+          "after": "text-primary"
+        },
+        {
+          "line": 157,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/70",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 136,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/layout/NotificationBell.tsx",
+      "beforeHash": "e29b6ca1a518b41d94fc5f5da9b7fc1c35a2f81f2de55746b337fc0623f5d0c9",
+      "afterHash": "3addbccaef43a7341c0bd6c9eceaad94b558b3e986f1cef8c24a9c57d7a9b357",
+      "edits": [
+        {
+          "line": 195,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/70",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 182,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/70",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 145,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 141,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 97,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/80",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 60,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/layout/SecondaryNav.tsx",
+      "beforeHash": "4940ab3f7b7d9047615724a77f2ba97376af84bdaedf45a81d7eafe2a514b671",
+      "afterHash": "2cb61c0a7aab65403819b809375256c1347c195206ed481b8a7f71afc199d1fe",
+      "edits": [
+        {
+          "line": 136,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/layout/Sidebar.tsx",
+      "beforeHash": "cb7c53b98e522d235f3a969bcd4a78c50826145b92f55349a625e9de6395dfa1",
+      "afterHash": "a229be7e3eea01a6195212f19bc0aecbd941efd7d5d5a44432fd3806772741b3",
+      "edits": [
+        {
+          "line": 410,
+          "category": "text-alpha",
+          "before": "text-white/40",
+          "after": "text-white"
+        },
+        {
+          "line": 402,
+          "category": "text-alpha",
+          "before": "text-white/60",
+          "after": "text-white"
+        },
+        {
+          "line": 399,
+          "category": "text-alpha",
+          "before": "text-white/90",
+          "after": "text-white"
+        },
+        {
+          "line": 396,
+          "category": "text-alpha",
+          "before": "text-white/60",
+          "after": "text-white"
+        },
+        {
+          "line": 393,
+          "category": "border-alpha",
+          "before": "border-white/[0.08]",
+          "after": "border-white"
+        },
+        {
+          "line": 350,
+          "category": "text-alpha",
+          "before": "group-data-[state=open]:text-amber-400/90",
+          "after": "group-data-[state=open]:text-amber-400"
+        },
+        {
+          "line": 350,
+          "category": "text-alpha",
+          "before": "group-hover:text-amber-400/80",
+          "after": "group-hover:text-amber-400"
+        },
+        {
+          "line": 296,
+          "category": "text-alpha",
+          "before": "text-white/60",
+          "after": "text-white"
+        },
+        {
+          "line": 288,
+          "category": "text-alpha",
+          "before": "text-white/70",
+          "after": "text-white"
+        },
+        {
+          "line": 274,
+          "category": "border-alpha",
+          "before": "border-white/[0.08]",
+          "after": "border-white"
+        },
+        {
+          "line": 261,
+          "category": "border-alpha",
+          "before": "border-white/[0.06]",
+          "after": "border-white"
+        },
+        {
+          "line": 119,
+          "category": "border-alpha",
+          "before": "border-amber-400/20",
+          "after": "border-amber-400"
+        },
+        {
+          "line": 116,
+          "category": "text-alpha",
+          "before": "text-amber-400/80",
+          "after": "text-amber-400"
+        },
+        {
+          "line": 110,
+          "category": "border-alpha",
+          "before": "border-white/[0.08]",
+          "after": "border-white"
+        },
+        {
+          "line": 103,
+          "category": "text-alpha",
+          "before": "text-white/70",
+          "after": "text-white"
+        },
+        {
+          "line": 93,
+          "category": "text-alpha",
+          "before": "text-white/70",
+          "after": "text-white"
+        },
+        {
+          "line": 57,
+          "category": "text-alpha",
+          "before": "group-hover:text-amber-400/80",
+          "after": "group-hover:text-amber-400"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/layout/TopNav.tsx",
+      "beforeHash": "d0dcdb113935e87247e9de60f24b2a20701801f91c6d5f0474171a887f729be8",
+      "afterHash": "0c152546be0e91d041f2e0177a3cb2b885d301ffd1be7bd24fb406b1c62cc6f3",
+      "edits": [
+        {
+          "line": 201,
+          "category": "element-opacity",
+          "before": "hover:opacity-80",
+          "after": "hover:opacity-100"
+        },
+        {
+          "line": 197,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 174,
+          "category": "element-opacity",
+          "before": "hover:opacity-80",
+          "after": "hover:opacity-100"
+        },
+        {
+          "line": 83,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/notifications/FloatingNotification.tsx",
+      "beforeHash": "4c67c18db95d33bef6366962981119f97413a2dd095c241ae8b00c61f1888b39",
+      "afterHash": "e40b003c0f3dc1780db78c255ec9c1e22eccf6044c0ce476f1f7a87b09c83a33",
+      "edits": [
+        {
+          "line": 93,
+          "category": "element-opacity",
+          "before": "opacity-50",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/Accordion.tsx",
+      "beforeHash": "71feb078cd7560d69c0bdfb8cca89e5304539de9d6c467a4a908ca7c5a5730a9",
+      "afterHash": "1fc270496b5f44986c50ab17802775132cc4d318995d0c6fc4dded31d71fdc22",
+      "edits": [
+        {
+          "line": 15,
+          "category": "border-alpha",
+          "before": "border-muted/50",
+          "after": "border-muted"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/AlertBanner.tsx",
+      "beforeHash": "a1dd19d1ff44da13b5719d1c0c4e21f22591e86764a7812702a31a970a3ff6a1",
+      "afterHash": "f0112e1e32ad09f0f6261d6253a550e3a33726865123b9cbf8c2408261e79287",
+      "edits": [
+        {
+          "line": 44,
+          "category": "border-alpha",
+          "before": "dark:border-red-800/50",
+          "after": "dark:border-red-800"
+        },
+        {
+          "line": 42,
+          "category": "border-alpha",
+          "before": "dark:border-emerald-800/50",
+          "after": "dark:border-emerald-800"
+        },
+        {
+          "line": 40,
+          "category": "border-alpha",
+          "before": "dark:border-red-800/50",
+          "after": "dark:border-red-800"
+        },
+        {
+          "line": 38,
+          "category": "border-alpha",
+          "before": "dark:border-blue-800/50",
+          "after": "dark:border-blue-800"
+        },
+        {
+          "line": 36,
+          "category": "border-alpha",
+          "before": "dark:border-amber-800/50",
+          "after": "dark:border-amber-800"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/AuditTimeline.tsx",
+      "beforeHash": "0246b7301ee363da8045d02bfcc55102709f930ddd51ba360645833248f8c688",
+      "afterHash": "79bbf259386034a15e7998ddac4af5fda04297fe4d8a3ea12611336daea6abe4",
+      "edits": [
+        {
+          "line": 271,
+          "category": "element-opacity",
+          "before": "opacity-50",
+          "after": "opacity-100"
+        },
+        {
+          "line": 253,
+          "category": "element-opacity",
+          "before": "opacity-60",
+          "after": "opacity-100"
+        },
+        {
+          "line": 240,
+          "category": "element-opacity",
+          "before": "opacity-50",
+          "after": "opacity-100"
+        },
+        {
+          "line": 233,
+          "category": "border-alpha",
+          "before": "divide-border/40",
+          "after": "divide-border"
+        },
+        {
+          "line": 227,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 224,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 209,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 207,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        },
+        {
+          "line": 201,
+          "category": "element-opacity",
+          "before": "opacity-40",
+          "after": "opacity-100"
+        },
+        {
+          "line": 200,
+          "category": "element-opacity",
+          "before": "opacity-60",
+          "after": "opacity-100"
+        },
+        {
+          "line": 193,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/30",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 186,
+          "category": "text-alpha",
+          "before": "text-primary/80",
+          "after": "text-primary"
+        },
+        {
+          "line": 185,
+          "category": "element-opacity",
+          "before": "opacity-40",
+          "after": "opacity-100"
+        },
+        {
+          "line": 172,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 151,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        },
+        {
+          "line": 148,
+          "category": "border-alpha",
+          "before": "border-primary/30",
+          "after": "border-primary"
+        },
+        {
+          "line": 116,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/40",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/BaseFormDialog.tsx",
+      "beforeHash": "f8635005e0cbbd0e0a02d7f73a1340d4dc67a85d3211a144ddd7366b1d03174a",
+      "afterHash": "a47df03cd0076639a867a496b91888c02c50a2d15e4cdaa460d6325766983b97",
+      "edits": [
+        {
+          "line": 270,
+          "category": "border-alpha",
+          "before": "border-destructive/20",
+          "after": "border-destructive"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/Breadcrumb.tsx",
+      "beforeHash": "4cdc413c0d431dab02cafb7c2e44252add27f5e926a9bda00bfda06119762bb4",
+      "afterHash": "61d1cc75e864cb4b5c0563f24c53659a6c1541599b2b8131c2966708e553ddee",
+      "edits": [
+        {
+          "line": 29,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/50",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/DataTable.tsx",
+      "beforeHash": "84a7da198bbc9b0e75f88497523e5ce6322cb9142dee5875e338ea0f5f923bde",
+      "afterHash": "b2c47d2f5defa0428eeb946a43c2f6fa861b1af057f1691dc240906c0730e65a",
+      "edits": [
+        {
+          "line": 663,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 629,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 618,
+          "category": "text-alpha",
+          "before": "text-primary/40",
+          "after": "text-primary"
+        },
+        {
+          "line": 618,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        },
+        {
+          "line": 567,
+          "category": "text-alpha",
+          "before": "text-primary/40",
+          "after": "text-primary"
+        },
+        {
+          "line": 567,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        },
+        {
+          "line": 540,
+          "category": "border-alpha",
+          "before": "divide-border/40",
+          "after": "divide-border"
+        },
+        {
+          "line": 500,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 472,
+          "category": "border-alpha",
+          "before": "divide-border/40",
+          "after": "divide-border"
+        },
+        {
+          "line": 450,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/40",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 430,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 420,
+          "category": "border-alpha",
+          "before": "border-border/80",
+          "after": "border-border"
+        },
+        {
+          "line": 410,
+          "category": "border-alpha",
+          "before": "sm:border-border/70",
+          "after": "sm:border-border"
+        },
+        {
+          "line": 405,
+          "category": "text-alpha",
+          "before": "text-primary/80",
+          "after": "text-primary"
+        },
+        {
+          "line": 360,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 200,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 189,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/Dialog.tsx",
+      "beforeHash": "09e7760879d3bb06a57d0cb3ec6d0e27f13d336cc859c974a5341cba24d90afd",
+      "afterHash": "ef19b4ed66fbf238bb514f5659c1e58546e7db151bb30ee685c995ddee2adc80",
+      "edits": [
+        {
+          "line": 411,
+          "category": "element-opacity",
+          "before": "opacity-60",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/EditableImage.tsx",
+      "beforeHash": "f9fb912bcc8d020175e23d08041a48e1fd7bc094a68fa158e8e54ccfd6916315",
+      "afterHash": "9202c0107a93328201d73dd406e2d4a5d98f0ba5cb373868e46d80760591e169",
+      "edits": [
+        {
+          "line": 162,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/40",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/EmptyState.tsx",
+      "beforeHash": "d1ee26a16497e9631bd27c9ee2d72c2ba087300ecb8a09c7099d0851e9326dcc",
+      "afterHash": "c7b36f3ab6aef158263c46a0b88fcd51900452994c12681aa199c46484928f1b",
+      "edits": [
+        {
+          "line": 39,
+          "category": "text-alpha",
+          "before": "group-hover:text-primary/50",
+          "after": "group-hover:text-primary"
+        },
+        {
+          "line": 39,
+          "category": "text-alpha",
+          "before": "text-primary/30",
+          "after": "text-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/ErrorAlert.tsx",
+      "beforeHash": "88c4731443979c8fca7b642f3be6344ae30b5fd57c452cd44dead12619d5a9d2",
+      "afterHash": "44a53878d78e45d29e9b66e42f2f5f43982cd23e8bce087b703b47b54fc886a0",
+      "edits": [
+        {
+          "line": 36,
+          "category": "text-alpha",
+          "before": "text-red-800/90",
+          "after": "text-red-800"
+        },
+        {
+          "line": 31,
+          "category": "border-alpha",
+          "before": "border-white/40",
+          "after": "border-white"
+        },
+        {
+          "line": 26,
+          "category": "border-alpha",
+          "before": "border-red-200/60",
+          "after": "border-red-200"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/ErrorState.tsx",
+      "beforeHash": "ede85670aa05d147553e3b90d828cc42881d5fe57eac81c50cd5b2656b1e0ab2",
+      "afterHash": "77662bd2d4d37849824e040739df52f5bda56690a6d6084a4f3ef0b40842104d",
+      "edits": [
+        {
+          "line": 34,
+          "category": "text-alpha",
+          "before": "text-destructive/50",
+          "after": "text-destructive"
+        },
+        {
+          "line": 28,
+          "category": "border-alpha",
+          "before": "border-destructive/20",
+          "after": "border-destructive"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/FileUploader.tsx",
+      "beforeHash": "23d46174c80907eb77e0e460d26ec1f0d3c185ec8e24f8c7d4df76eee6cdcd24",
+      "afterHash": "f5952234d1a0325a0ba54d3a75a05067fa2153d7831d4f0d7872709f87d2703b",
+      "edits": [
+        {
+          "line": 899,
+          "category": "element-opacity",
+          "before": "opacity-60",
+          "after": "opacity-100"
+        },
+        {
+          "line": 898,
+          "category": "border-alpha",
+          "before": "border-blue-500/50",
+          "after": "border-blue-500"
+        },
+        {
+          "line": 879,
+          "category": "element-opacity",
+          "before": "opacity-60",
+          "after": "opacity-100"
+        },
+        {
+          "line": 859,
+          "category": "element-opacity",
+          "before": "opacity-60",
+          "after": "opacity-100"
+        },
+        {
+          "line": 758,
+          "category": "element-opacity",
+          "before": "hover:opacity-80",
+          "after": "hover:opacity-100"
+        },
+        {
+          "line": 730,
+          "category": "border-alpha",
+          "before": "hover:border-primary/50",
+          "after": "hover:border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/FormDialogFooter.tsx",
+      "beforeHash": "822fd0462e751dfd4c8f4863bd1affa1334c08fc338dc9427129728c923b5380",
+      "afterHash": "8aead94fea8f50a8adef766a1ab023e377f556c4581e9f4e6c1295f6e08754d5",
+      "edits": [
+        {
+          "line": 97,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 82,
+          "category": "element-opacity",
+          "before": "opacity-70",
+          "after": "opacity-100"
+        },
+        {
+          "line": 61,
+          "category": "border-alpha",
+          "before": "border-muted-foreground/30",
+          "after": "border-muted-foreground"
+        },
+        {
+          "line": 60,
+          "category": "border-alpha",
+          "before": "border-white/40",
+          "after": "border-white"
+        },
+        {
+          "line": 58,
+          "category": "element-opacity",
+          "before": "opacity-80",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/FormField.tsx",
+      "beforeHash": "47006d55c3464d8a837d3af173469cdc7bd9c676188bbda7f297704b9d72c098",
+      "afterHash": "089e3d9839551ef2c301697ea40a24098d5e632e23e172aa2aeabe36f61ba879",
+      "edits": [
+        {
+          "line": 48,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/FormSection.tsx",
+      "beforeHash": "03661b9530062e9f9069899c785465aec826b77ad96f99471e284cb46efca75c",
+      "afterHash": "b8dc39759bf13b4dc45441af38ae287d97999cf062ac9e908c4074cf5a93d2a2",
+      "edits": [
+        {
+          "line": 109,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/70",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 83,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/50",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 47,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 39,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/ImageCropperDialog.tsx",
+      "beforeHash": "644d2e3310eba39f71444a9aebca1edac5ea6ae070b689d46577217133f84d01",
+      "afterHash": "882f1e73af149033a1f540dd876d40a3e09bd4ed2d8eaab84e2b1d6e33b23358",
+      "edits": [
+        {
+          "line": 245,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 230,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/InfoPair.tsx",
+      "beforeHash": "4293f9c36243bce8ee661a6d59945bc9b20d8ff2cea25c59d5d08a9ce9b28211",
+      "afterHash": "f23cd7278cfccd9b535260845127dbed4cb900b4a8077249129cbcf3962d1c31",
+      "edits": [
+        {
+          "line": 53,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 36,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 31,
+          "category": "border-alpha",
+          "before": "border-muted/50",
+          "after": "border-muted"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/Input.tsx",
+      "beforeHash": "2e41c8d91f24ff3128585493de0c723de8d6f03456fb507cc4b0178f72c1b354",
+      "afterHash": "65de49f464f41e4669371ab988cb8b73db1f8f74d38121f14de7d9c56f996e4e",
+      "edits": [
+        {
+          "line": 437,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 411,
+          "category": "text-alpha",
+          "before": "placeholder:text-muted-foreground/40",
+          "after": "placeholder:text-muted-foreground"
+        },
+        {
+          "line": 105,
+          "category": "border-alpha",
+          "before": "border-primary/70",
+          "after": "border-primary"
+        },
+        {
+          "line": 84,
+          "category": "border-alpha",
+          "before": "group-focus-within:border-primary/30",
+          "after": "group-focus-within:border-primary"
+        },
+        {
+          "line": 84,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 83,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/70",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/Loader.tsx",
+      "beforeHash": "d55df5e437231e46e7309f37150c23c17642006bd38385543b4ab0348b347050",
+      "afterHash": "db28e39927a1977a66364e362316c5b65a81de7b11fcedeef4457bc127d4c937",
+      "edits": [
+        {
+          "line": 126,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/80",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 122,
+          "category": "text-alpha",
+          "before": "text-foreground/90",
+          "after": "text-foreground"
+        },
+        {
+          "line": 68,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 39,
+          "category": "border-alpha",
+          "before": "border-b-primary/40",
+          "after": "border-b-primary"
+        },
+        {
+          "line": 35,
+          "category": "border-alpha",
+          "before": "border-r-primary/60",
+          "after": "border-r-primary"
+        },
+        {
+          "line": 35,
+          "category": "border-alpha",
+          "before": "border-t-primary/60",
+          "after": "border-t-primary"
+        },
+        {
+          "line": 31,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/LoadingIndicator.tsx",
+      "beforeHash": "c02c2f46dd7540d08d337aa7f3fa1f47a7a233b5b2aa2caf60e1386240244549",
+      "afterHash": "003c17233e3302d14d078b74148ead8eab7945c5d9f2105484beb6c0bf256426",
+      "edits": [
+        {
+          "line": 36,
+          "category": "text-alpha",
+          "before": "text-primary/40",
+          "after": "text-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/NoteBox.tsx",
+      "beforeHash": "e171656f0985446423b7a5152dd43950caa046ed33089d593a5a626d742702a7",
+      "afterHash": "1c6c9ab559ac444e314f88b10e81792a25752fd455d4bffb3ca14af8ce5a049f",
+      "edits": [
+        {
+          "line": 90,
+          "category": "element-opacity",
+          "before": "opacity-90",
+          "after": "opacity-100"
+        },
+        {
+          "line": 77,
+          "category": "border-alpha",
+          "before": "border-white/40",
+          "after": "border-white"
+        },
+        {
+          "line": 58,
+          "category": "border-alpha",
+          "before": "border-slate-200/60",
+          "after": "border-slate-200"
+        },
+        {
+          "line": 51,
+          "category": "border-alpha",
+          "before": "border-emerald-100/60",
+          "after": "border-emerald-100"
+        },
+        {
+          "line": 44,
+          "category": "border-alpha",
+          "before": "border-amber-100/60",
+          "after": "border-amber-100"
+        },
+        {
+          "line": 37,
+          "category": "border-alpha",
+          "before": "border-blue-100/60",
+          "after": "border-blue-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/Sheet.tsx",
+      "beforeHash": "7118b9e3d16efc0897c8afcd08cba4657ec4488811f37b50c9d276c1db71ccfb",
+      "afterHash": "c62ecbb119fa679553b03bba00a86bc02c1511614a75070fe9578a5e3163f6b2",
+      "edits": [
+        {
+          "line": 70,
+          "category": "element-opacity",
+          "before": "opacity-70",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/Slider.tsx",
+      "beforeHash": "13890b0a6f375cd5415c75a1c7cde4cd87a50cfef43dbd7f89e9dd53628a125e",
+      "afterHash": "e1aa86c9cc41c2f9632e565b575bee6fffaf7440adf6985db86d69318f63dd28",
+      "edits": [
+        {
+          "line": 21,
+          "category": "border-alpha",
+          "before": "border-primary/50",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/StatCard.tsx",
+      "beforeHash": "7e1690ff28295cf64e86f132cb5fe0d0302e7b4d7f3c74c74fc4cbbaded9c74c",
+      "afterHash": "2c88f73b588a7c21dacf3e6f55a88fa85b8c71b0b7e35f7e7f23d4f1e0ed2d1c",
+      "edits": [
+        {
+          "line": 88,
+          "category": "element-opacity",
+          "before": "group-hover:opacity-40",
+          "after": "group-hover:opacity-100"
+        },
+        {
+          "line": 88,
+          "category": "element-opacity",
+          "before": "opacity-20",
+          "after": "opacity-100"
+        },
+        {
+          "line": 80,
+          "category": "element-opacity",
+          "before": "opacity-80",
+          "after": "opacity-100"
+        },
+        {
+          "line": 40,
+          "category": "border-alpha",
+          "before": "border-blue-500/20",
+          "after": "border-blue-500"
+        },
+        {
+          "line": 39,
+          "category": "border-alpha",
+          "before": "border-rose-500/20",
+          "after": "border-rose-500"
+        },
+        {
+          "line": 38,
+          "category": "border-alpha",
+          "before": "border-blue-500/20",
+          "after": "border-blue-500"
+        },
+        {
+          "line": 36,
+          "category": "border-alpha",
+          "before": "border-rose-500/20",
+          "after": "border-rose-500"
+        },
+        {
+          "line": 35,
+          "category": "border-alpha",
+          "before": "border-amber-500/20",
+          "after": "border-amber-500"
+        },
+        {
+          "line": 34,
+          "category": "border-alpha",
+          "before": "border-emerald-500/20",
+          "after": "border-emerald-500"
+        },
+        {
+          "line": 33,
+          "category": "border-alpha",
+          "before": "border-lime-500/20",
+          "after": "border-lime-500"
+        },
+        {
+          "line": 32,
+          "category": "border-alpha",
+          "before": "border-teal-500/20",
+          "after": "border-teal-500"
+        },
+        {
+          "line": 31,
+          "category": "border-alpha",
+          "before": "border-indigo-500/20",
+          "after": "border-indigo-500"
+        },
+        {
+          "line": 30,
+          "category": "border-alpha",
+          "before": "border-cyan-500/20",
+          "after": "border-cyan-500"
+        },
+        {
+          "line": 29,
+          "category": "border-alpha",
+          "before": "border-amber-500/20",
+          "after": "border-amber-500"
+        },
+        {
+          "line": 28,
+          "category": "border-alpha",
+          "before": "border-rose-500/20",
+          "after": "border-rose-500"
+        },
+        {
+          "line": 27,
+          "category": "border-alpha",
+          "before": "border-purple-500/20",
+          "after": "border-purple-500"
+        },
+        {
+          "line": 26,
+          "category": "border-alpha",
+          "before": "border-emerald-500/20",
+          "after": "border-emerald-500"
+        },
+        {
+          "line": 25,
+          "category": "border-alpha",
+          "before": "border-orange-500/20",
+          "after": "border-orange-500"
+        },
+        {
+          "line": 24,
+          "category": "border-alpha",
+          "before": "border-blue-500/20",
+          "after": "border-blue-500"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/SummaryCard.tsx",
+      "beforeHash": "9ac370d5e0507028d40ae566187f281325bfd0cd5121fd01466e87238e94a0d0",
+      "afterHash": "3074934378c80d61b2e8ef6be23d90e5db7fefecdfa6207f24a1e5d0fe778c33",
+      "edits": [
+        {
+          "line": 49,
+          "category": "border-alpha",
+          "before": "border-muted/50",
+          "after": "border-muted"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/TabHeader.tsx",
+      "beforeHash": "6918088f872780fa59acb85e04a97bbce7030959ed006488a71e23c6f2da4c17",
+      "afterHash": "9ef102ad9b5975aa2406c1f9baacedc6a75f9ca57822594841f62c45f2995437",
+      "edits": [
+        {
+          "line": 37,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/90",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 31,
+          "category": "border-alpha",
+          "before": "border-primary/70",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/TabbedFormSection.tsx",
+      "beforeHash": "6bab1d849f9b7ea45c368b685191e38411a5cb5cb43266ba1dacb8ba056a7f94",
+      "afterHash": "6a7e0e37659a4d2c2d88c130deeaefd1695e06e78f3c012222c51ccab5d9d721",
+      "edits": [
+        {
+          "line": 96,
+          "category": "element-opacity",
+          "before": "opacity-80",
+          "after": "opacity-100"
+        },
+        {
+          "line": 85,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/buttonVariants.ts",
+      "beforeHash": "74782b11e7909c1d79796686401102510906bfb0891998dbfcbcc68b600afb8a",
+      "afterHash": "ed6c3dfec9d2e15e55d2d9ab731434ad1d5da833cbac15f2e10b508606422f39",
+      "edits": [
+        {
+          "line": 27,
+          "category": "border-alpha",
+          "before": "hover:border-primary/20",
+          "after": "hover:border-primary"
+        },
+        {
+          "line": 21,
+          "category": "element-opacity",
+          "before": "hover:opacity-90",
+          "after": "hover:opacity-100"
+        },
+        {
+          "line": 19,
+          "category": "element-opacity",
+          "before": "hover:opacity-90",
+          "after": "hover:opacity-100"
+        },
+        {
+          "line": 17,
+          "category": "element-opacity",
+          "before": "hover:opacity-90",
+          "after": "hover:opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/components/ui/chart.tsx",
+      "beforeHash": "a5bcf75d3c65b45c0f06182488388af8ff6f80be12a83b1ab6c9da525d65ddda",
+      "afterHash": "00bea7ab9353078ff860de4f716b0121eab4e7be1965ccd86a27dfbc2b315716",
+      "edits": [
+        {
+          "line": 107,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/DashboardPage.tsx",
+      "beforeHash": "16aae3e1467942ed15dd7c7ad6b7b3cac1d5a873c16a4b6025255ccf44aa4faa",
+      "afterHash": "b689604ccd6e6bd8f80d0f74488a6dd43377da21a5eaad58482f517c3945b595",
+      "edits": [
+        {
+          "line": 685,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 665,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 636,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 618,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 578,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 485,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 117,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/accounting/AccountingDashboardPage.tsx",
+      "beforeHash": "7d64b190e68f3e29e1852f2e56e1bad1dae08b0ca9745b7248b2af19ffd32aac",
+      "afterHash": "01670120fdaf5a57e9a17bcc9130855f0edf8508aba13365baeca55515859ccc",
+      "edits": [
+        {
+          "line": 150,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/accounting/CashFlowPage.tsx",
+      "beforeHash": "e7a49be1c2a70d0d2533df90ef97bb1635544902d4c8fa5f59e18a9ced1fc8d2",
+      "afterHash": "3d5fdf67541782806f3297a4bb75203b096a31883453ea01a5e8b5a1e5309629",
+      "edits": [
+        {
+          "line": 249,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 215,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 181,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/accounting/ChartOfAccountsPage.tsx",
+      "beforeHash": "ed2ddcd9be25a6e894441aafc8052729bff62e23861d7cbc59aaa9ed13cc17a2",
+      "afterHash": "93660857c6270fa33da3b135d092f24db7bff8e4d78d62aaa40f68fcfa77b2fb",
+      "edits": [
+        {
+          "line": 367,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        },
+        {
+          "line": 332,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 326,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 319,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 313,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 308,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 303,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 298,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 293,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 291,
+          "category": "border-alpha",
+          "before": "divide-muted/40",
+          "after": "divide-muted"
+        },
+        {
+          "line": 269,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/accounting/CostCentersPage.tsx",
+      "beforeHash": "c3c4f6ab544af2a8fd681580f961a4833d34037bec15348accac8b919b3120cb",
+      "afterHash": "6ed72b0c91d4afa18f4f70d33cc24a56e94d0e24d8e7a2d3814116f5785ea7ee",
+      "edits": [
+        {
+          "line": 73,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/accounting/FiscalPeriodsPage.tsx",
+      "beforeHash": "ad83f96aecec0b9cc35383abb7f9a59d44ccbc5bae1b5efca6c4bc9bb7a2fe6c",
+      "afterHash": "b5f81fd45a29dc43c79f11dabbfc6b9861f1028c0fcaef1b868a676fc5e3b214",
+      "edits": [
+        {
+          "line": 105,
+          "category": "border-alpha",
+          "before": "border-emerald-500/20",
+          "after": "border-emerald-500"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/accounting/InitialOpeningBalancesPage.tsx",
+      "beforeHash": "0b7bf6ec9fb8b8ec4230e369ac82f1db059ad69a258f7e4c26c151a3d100ed6e",
+      "afterHash": "68b085b76bd48c3d11b16cdb7e09f88f7811c255f743cff7e0ad881da1c41d1d",
+      "edits": [
+        {
+          "line": 847,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 708,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 640,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 572,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 522,
+          "category": "border-alpha",
+          "before": "border-primary/30",
+          "after": "border-primary"
+        },
+        {
+          "line": 509,
+          "category": "border-alpha",
+          "before": "border-destructive/30",
+          "after": "border-destructive"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/accounting/JournalEntryDetailsPage.tsx",
+      "beforeHash": "497162e0dc1279f06c4b580676865df35a219685fa8d105806e9bed6cdc53d19",
+      "afterHash": "3a9c11459109e0e7d39a684f9a7877c356e5c9ef13d739d77770980e9e94da02",
+      "edits": [
+        {
+          "line": 122,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/accounting/QuarterDetailsPage.tsx",
+      "beforeHash": "781a342bcb69c75b2e9eddbbacd01a64af59a04c053009398ce6fd2d4ae53894",
+      "afterHash": "bb32d1b5c0c47b70b3d3496cfa4c71c7ae7239e7aa2a048d565b98ff3827ae0e",
+      "edits": [
+        {
+          "line": 241,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 210,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 194,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/accounting/QuartersPage.tsx",
+      "beforeHash": "d3ea0993172912953cb2add9ae81ce9e776067b7ccf4f6cfb64e822744ffe825",
+      "afterHash": "ac5f7d4a347b550bc5c2ae98af47d658f02affe7ccbe7a31be4e2b4cfb5f8382",
+      "edits": [
+        {
+          "line": 240,
+          "category": "border-alpha",
+          "before": "border-emerald-500/20",
+          "after": "border-emerald-500"
+        },
+        {
+          "line": 214,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/achievements/AchievementObstacleDetailPage.tsx",
+      "beforeHash": "68c8389cb628f7165cdc82dbb526c397b3579b3a5256ef15ee3aa2d1c27fa6be",
+      "afterHash": "a04daf5dd08773b880a5428a52841c8a33ca8a2a66caed89b0e7ac612a21af3a",
+      "edits": [
+        {
+          "line": 231,
+          "category": "border-alpha",
+          "before": "border-muted/50",
+          "after": "border-muted"
+        },
+        {
+          "line": 172,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        },
+        {
+          "line": 170,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/achievements/AchievementObstaclesPage.tsx",
+      "beforeHash": "9e0040b2ec00729144586bff36505a650bb7f89a93d355eb63ca536570a8c16b",
+      "afterHash": "5fc6fa7776989bc02faaf2c76db45b66475e6394ca9f0100c8f8b9ab8d724a3c",
+      "edits": [
+        {
+          "line": 182,
+          "category": "element-opacity",
+          "before": "opacity-20",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/admin/AdminLandingPage.tsx",
+      "beforeHash": "fe82bd026aacbc091b50b0596ced28b4569bbfa0e0a18149a031830f8f0edfee",
+      "afterHash": "6b877fbc7509a727fa23ad7b7aa75a47150029363e392feb8a5d784fb06a1104",
+      "edits": [
+        {
+          "line": 100,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 98,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/80",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/admin/AuditLogsPage.tsx",
+      "beforeHash": "41ec346a8631b8ba021f219aa8d6a4552240a51957c91357e501b6a3bea2e504",
+      "afterHash": "d5a17083e6d57fd8e32fc6468966eb98481c06ef9b947bb99df13fabaf73e965",
+      "edits": [
+        {
+          "line": 331,
+          "category": "element-opacity",
+          "before": "opacity-80",
+          "after": "opacity-100"
+        },
+        {
+          "line": 321,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 234,
+          "category": "border-alpha",
+          "before": "border-destructive/20",
+          "after": "border-destructive"
+        },
+        {
+          "line": 90,
+          "category": "element-opacity",
+          "before": "opacity-50",
+          "after": "opacity-100"
+        },
+        {
+          "line": 89,
+          "category": "element-opacity",
+          "before": "opacity-50",
+          "after": "opacity-100"
+        },
+        {
+          "line": 88,
+          "category": "element-opacity",
+          "before": "opacity-60",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/admin/LoginHistoryPage.tsx",
+      "beforeHash": "4893cf19d44784f6076d920eea17cd2711ff32c24c12d166169af7f8197ea0f5",
+      "afterHash": "09305203cca4ddebef362efd1a6b2a856b084205d61d434c499ab8fd4bbdd37e",
+      "edits": [
+        {
+          "line": 138,
+          "category": "element-opacity",
+          "before": "opacity-20",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/admin/SystemSettingsPage.tsx",
+      "beforeHash": "a55d652cfed5a3df79dff24665e23ddb3f08cb8ceeafd76bca9847016f0e317b",
+      "afterHash": "a1acf49432e4225703c4d7d5d3674f773eba8b31a72fa2a62be1c41ad2e80db0",
+      "edits": [
+        {
+          "line": 170,
+          "category": "border-alpha",
+          "before": "border-destructive/20",
+          "after": "border-destructive"
+        },
+        {
+          "line": 134,
+          "category": "border-alpha",
+          "before": "border-primary/30",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/assets/AssetDetailPage.tsx",
+      "beforeHash": "bb113cd8db2c70acba978aa21982d6ce831df64b091d2ea7b9afae159047ac6a",
+      "afterHash": "5adaed569fcfaeec67f2dc15975ca3ef5d589d49c4e7ab25f63494a6555c9337",
+      "edits": [
+        {
+          "line": 126,
+          "category": "element-opacity",
+          "before": "opacity-50",
+          "after": "opacity-100"
+        },
+        {
+          "line": 68,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/auth/ChangePasswordPage.tsx",
+      "beforeHash": "092460dbf6aec4932fcb6c1517bc3cfb402610a13065718097c43be625ed449a",
+      "afterHash": "715c908e49fa43751a8f22ee2cfda10c268790fe34e51fdff8471330ec4bada9",
+      "edits": [
+        {
+          "line": 193,
+          "category": "text-alpha",
+          "before": "text-hero-accent/70",
+          "after": "text-hero-accent"
+        },
+        {
+          "line": 185,
+          "category": "text-alpha",
+          "before": "placeholder:text-hero-accent/50",
+          "after": "placeholder:text-hero-accent"
+        },
+        {
+          "line": 185,
+          "category": "border-alpha",
+          "before": "border-hero-fg/10",
+          "after": "border-hero-fg"
+        },
+        {
+          "line": 170,
+          "category": "text-alpha",
+          "before": "text-hero-accent/70",
+          "after": "text-hero-accent"
+        },
+        {
+          "line": 162,
+          "category": "text-alpha",
+          "before": "placeholder:text-hero-accent/50",
+          "after": "placeholder:text-hero-accent"
+        },
+        {
+          "line": 162,
+          "category": "border-alpha",
+          "before": "border-hero-fg/10",
+          "after": "border-hero-fg"
+        },
+        {
+          "line": 147,
+          "category": "text-alpha",
+          "before": "text-hero-accent/70",
+          "after": "text-hero-accent"
+        },
+        {
+          "line": 139,
+          "category": "text-alpha",
+          "before": "placeholder:text-hero-accent/50",
+          "after": "placeholder:text-hero-accent"
+        },
+        {
+          "line": 139,
+          "category": "border-alpha",
+          "before": "border-hero-fg/10",
+          "after": "border-hero-fg"
+        },
+        {
+          "line": 126,
+          "category": "border-alpha",
+          "before": "border-hero-accent/20",
+          "after": "border-hero-accent"
+        },
+        {
+          "line": 118,
+          "category": "border-alpha",
+          "before": "border-red-400/20",
+          "after": "border-red-400"
+        },
+        {
+          "line": 109,
+          "category": "text-alpha",
+          "before": "text-hero-accent/70",
+          "after": "text-hero-accent"
+        },
+        {
+          "line": 103,
+          "category": "border-alpha",
+          "before": "border-hero-fg/10",
+          "after": "border-hero-fg"
+        },
+        {
+          "line": 102,
+          "category": "border-alpha",
+          "before": "border-hero-fg/10",
+          "after": "border-hero-fg"
+        },
+        {
+          "line": 99,
+          "category": "text-alpha",
+          "before": "text-hero-accent/80",
+          "after": "text-hero-accent"
+        },
+        {
+          "line": 92,
+          "category": "border-alpha",
+          "before": "border-hero-fg/10",
+          "after": "border-hero-fg"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/auth/LoginPage.tsx",
+      "beforeHash": "244be773d7dfb24d70959b1ad7c5cb00f6872151077f97d6b90b0b5e550bddf4",
+      "afterHash": "fbf601868b8d8209e15d39ddc34d6c7356d52f152ac4c37e63f74c271e3e0bc5",
+      "edits": [
+        {
+          "line": 214,
+          "category": "text-alpha",
+          "before": "text-hero-accent/70",
+          "after": "text-hero-accent"
+        },
+        {
+          "line": 206,
+          "category": "border-alpha",
+          "before": "border-hero-fg/10",
+          "after": "border-hero-fg"
+        },
+        {
+          "line": 193,
+          "category": "border-alpha",
+          "before": "border-hero-fg/10",
+          "after": "border-hero-fg"
+        },
+        {
+          "line": 181,
+          "category": "border-alpha",
+          "before": "border-red-400/20",
+          "after": "border-red-400"
+        },
+        {
+          "line": 173,
+          "category": "border-alpha",
+          "before": "border-hero-fg/10",
+          "after": "border-hero-fg"
+        },
+        {
+          "line": 38,
+          "category": "border-alpha",
+          "before": "border-hero-fg/10",
+          "after": "border-hero-fg"
+        },
+        {
+          "line": 31,
+          "category": "border-alpha",
+          "before": "border-hero-fg/10",
+          "after": "border-hero-fg"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/compliance/ComplianceDashboardPage.tsx",
+      "beforeHash": "102d382f1da9cb2cab10deb047473275591546926a8fd33600e5a272644b366a",
+      "afterHash": "0341ed6c3724b089d596288f29c7e1241e9683408f4c752cef4b2ba7add69ce4",
+      "edits": [
+        {
+          "line": 194,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 132,
+          "category": "border-alpha",
+          "before": "border-red-500/20",
+          "after": "border-red-500"
+        },
+        {
+          "line": 131,
+          "category": "border-alpha",
+          "before": "border-emerald-500/20",
+          "after": "border-emerald-500"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/correspondence/CorrespondenceDetailsPage.tsx",
+      "beforeHash": "09792f8dc83152b87e5882cbf41db4b74396f4034dfeccd886e3d7825f4539b8",
+      "afterHash": "8491efd42c5f6a8e2a6b5f04c524aecebacba341743ff6dac2d6ed23c678dcf5",
+      "edits": [
+        {
+          "line": 259,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/director/DirectorOfficePage.tsx",
+      "beforeHash": "397b5ec3d1ac4383b999171ea17e10f86c331723666714a543535d40ee6fa2fe",
+      "afterHash": "d8e1ea21e83131e16e3529c3649bc0d080e7dca5695b4e03fb97e7f803435aed",
+      "edits": [
+        {
+          "line": 48,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/force/CodeBatchDetailsPage.tsx",
+      "beforeHash": "c31b44421bb47a7731bc6200befc461f8100a784b7e66d36f56cc1184f072369",
+      "afterHash": "fb8c42ba48a4657eaf13faef218a32a464c3aaeda20968b7fcd371e3257bf2bf",
+      "edits": [
+        {
+          "line": 371,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/hr/EmployeeDetailsPage.tsx",
+      "beforeHash": "d8a6ff33c16d7d9e18082dc04598a42eb01c08872d5d3a8524da726b484fb287",
+      "afterHash": "87234b2a4a8b0e409fe7545cb0c24edd3455e085166879b981e672585ed2714e",
+      "edits": [
+        {
+          "line": 405,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 160,
+          "category": "border-alpha",
+          "before": "border-muted/50",
+          "after": "border-muted"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/hr/EmployeesPage.tsx",
+      "beforeHash": "91295d69577724bb345ebde372c0be3c7a9d35e58bc886df822434c0b4b6add7",
+      "afterHash": "73b511f4f1da17400dd305e9979fa2dc14ac09d34ebda48dca674f9f73e1986d",
+      "edits": [
+        {
+          "line": 286,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 127,
+          "category": "element-opacity",
+          "before": "opacity-40",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/hr/HrDashboardPage.tsx",
+      "beforeHash": "171108ddc5718e9d10d6186642713beb42835090eed4d58ecdc3a1d43915e5ce",
+      "afterHash": "c3d142d26ac222e9f937398fd4937d7b409df3b133b8bbad4b0aa37bdd4d2775",
+      "edits": [
+        {
+          "line": 188,
+          "category": "border-alpha",
+          "before": "group-hover:border-primary/10",
+          "after": "group-hover:border-primary"
+        },
+        {
+          "line": 186,
+          "category": "border-alpha",
+          "before": "hover:border-primary/30",
+          "after": "hover:border-primary"
+        },
+        {
+          "line": 160,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        },
+        {
+          "line": 113,
+          "category": "border-alpha",
+          "before": "hover:border-primary/30",
+          "after": "hover:border-primary"
+        },
+        {
+          "line": 108,
+          "category": "element-opacity",
+          "before": "opacity-10",
+          "after": "opacity-100"
+        },
+        {
+          "line": 97,
+          "category": "text-alpha",
+          "before": "hover:text-primary/10",
+          "after": "hover:text-primary"
+        },
+        {
+          "line": 49,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/hr/HrDocumentsPage.tsx",
+      "beforeHash": "23b523401b04528d6784b5c4699f68c55b20335978acf0c978a18e487613c54a",
+      "afterHash": "ca7165f678eea17ab3e36d8a6bf8d8d1ca0481d5dd8528c611d8c94d7516f7ec",
+      "edits": [
+        {
+          "line": 70,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 62,
+          "category": "text-alpha",
+          "before": "text-foreground/90",
+          "after": "text-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/hr/HrReferenceDataPage.tsx",
+      "beforeHash": "7c248d0221f5b3c7c7fb9f165e2e5c944c3fa44be4d30d439f54c03755b343c1",
+      "afterHash": "44c7f5dd3cfc515e3659e6c61a8abbfe579630f135efe4a38d903ccb365b137a",
+      "edits": [
+        {
+          "line": 253,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        },
+        {
+          "line": 205,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        },
+        {
+          "line": 157,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/inventory/InventoryTransactionDetailsPage.tsx",
+      "beforeHash": "fd6cad0862c623655c1fdb3a558d9e1b0765bbd700b5cc51155de7a0f6ecea78",
+      "afterHash": "a410adf10cd5686c81c27220554ad2e937e8d36cc7f37d2930af58ff18ba447f",
+      "edits": [
+        {
+          "line": 226,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 220,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 203,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 177,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 164,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 160,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 159,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/40",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 138,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 137,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/40",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 123,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 92,
+          "category": "element-opacity",
+          "before": "opacity-20",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/inventory/InventoryTransactionsPage.tsx",
+      "beforeHash": "5bceaf88dd19e9243cc72c5c8aae5be0b00f5d02e90e96db08fe3bcde00784a5",
+      "afterHash": "8369a3faea998e5d0516453c3e7c609712c82fdb0d4b428a78de113f325a4d0e",
+      "edits": [
+        {
+          "line": 220,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        },
+        {
+          "line": 217,
+          "category": "border-alpha",
+          "before": "border-destructive/20",
+          "after": "border-destructive"
+        },
+        {
+          "line": 192,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 153,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 138,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 106,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/investment/InvestmentHub.tsx",
+      "beforeHash": "0152ca75473769cbca399347c1c28952b7a6fac5f622ea525ae6555efc4fc3f1",
+      "afterHash": "d3648c9f09e29133423dfe2e3f3343929b1bb085597db3e6a6129e68ddef1a33",
+      "edits": [
+        {
+          "line": 176,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 161,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        },
+        {
+          "line": 159,
+          "category": "border-alpha",
+          "before": "hover:border-primary/30",
+          "after": "hover:border-primary"
+        },
+        {
+          "line": 128,
+          "category": "border-alpha",
+          "before": "border-primary/5",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/investment/MaintenanceDetailsPage.tsx",
+      "beforeHash": "807bc59b678d974d0134b39415d42d9f680db71558d1ea4ea6c38f9bb2a1714a",
+      "afterHash": "dfcfc2a563134963f958eb35de4bc10d662db509c65ca43f39cc8b1b5e281bca",
+      "edits": [
+        {
+          "line": 174,
+          "category": "element-opacity",
+          "before": "opacity-70",
+          "after": "opacity-100"
+        },
+        {
+          "line": 172,
+          "category": "element-opacity",
+          "before": "opacity-20",
+          "after": "opacity-100"
+        },
+        {
+          "line": 166,
+          "category": "text-alpha",
+          "before": "text-foreground/90",
+          "after": "text-foreground"
+        },
+        {
+          "line": 162,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 103,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/investment/MaintenancePage.tsx",
+      "beforeHash": "f70e3eb6ee8f14e947e9de5fa0ff052f95e9ef50af8a4aaee837a791665cee84",
+      "afterHash": "f895d12a8f575e274fe32fadc360a2cb303c69ce143823a99c9f14619887c1c4",
+      "edits": [
+        {
+          "line": 110,
+          "category": "border-alpha",
+          "before": "border-success/30",
+          "after": "border-success"
+        },
+        {
+          "line": 44,
+          "category": "border-alpha",
+          "before": "border-danger/30",
+          "after": "border-danger"
+        },
+        {
+          "line": 40,
+          "category": "border-alpha",
+          "before": "border-info/30",
+          "after": "border-info"
+        },
+        {
+          "line": 36,
+          "category": "border-alpha",
+          "before": "border-success/30",
+          "after": "border-success"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/investment/PortfolioDetailPage.tsx",
+      "beforeHash": "cac122a6b21f4a2ae96e05bb5de5960f5b5111f82164890926e406a10be9be23",
+      "afterHash": "2519f3869cf5c3d29955b1eb61c682d91528aa0bd68723165b61bbd6eee1b12c",
+      "edits": [
+        {
+          "line": 122,
+          "category": "element-opacity",
+          "before": "opacity-70",
+          "after": "opacity-100"
+        },
+        {
+          "line": 120,
+          "category": "element-opacity",
+          "before": "opacity-20",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/investment/ProjectDetailPage.tsx",
+      "beforeHash": "b430055ecb3ade25bf4e0a83fa16750594e6ba705b4e4cdc0db89eba61ddbb2a",
+      "afterHash": "f43764fcb7361b464acf632a4ed455cfb0459a2a817c36a920d60b110bf47f06",
+      "edits": [
+        {
+          "line": 78,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/investment/PropertyDetailPage.tsx",
+      "beforeHash": "261d72a494aff11e5d9864cc6d147be03c7675a897620bfec6770d8f4110656d",
+      "afterHash": "fc12759de4027b1a3a74ebcd2e5515d79f6fe4741bf5b824e6f72591777d7657",
+      "edits": [
+        {
+          "line": 58,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/investment/tabs/PropertyActivityLogTab.tsx",
+      "beforeHash": "21eb50c282bfd9b00fd3bff6f0f3711066b269db0c6f8533311fba7501a1c0d7",
+      "afterHash": "99196215362ca9d72bef3bb80c79b81a049d428f9694db80e3af97f3e3be6e15",
+      "edits": [
+        {
+          "line": 136,
+          "category": "border-alpha",
+          "before": "border-info/10",
+          "after": "border-info"
+        },
+        {
+          "line": 127,
+          "category": "element-opacity",
+          "before": "opacity-70",
+          "after": "opacity-100"
+        },
+        {
+          "line": 123,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        },
+        {
+          "line": 112,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 97,
+          "category": "element-opacity",
+          "before": "opacity-70",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/investment/tabs/PropertyMaintenanceTab.tsx",
+      "beforeHash": "7c491894030fb9f64037b3d6c42db6abfeb9fbe0abfee27331a7e71b45dfcc75",
+      "afterHash": "4c7996eb04d6f3f959bfecf5270bb655ccf1baaf6919e7815d0ceb6d891763e7",
+      "edits": [
+        {
+          "line": 138,
+          "category": "border-alpha",
+          "before": "border-success/30",
+          "after": "border-success"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/ministry-approvals/ForceAuditTab.tsx",
+      "beforeHash": "2e908652b2143deee3a457bb7c66cc6e4cc332dbb73e952ce22d7c016953c4b3",
+      "afterHash": "f631e11446e66e1596ebbe02709ec1259d4a084961961f701397d0c1237ba42f",
+      "edits": [
+        {
+          "line": 34,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/50",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/ministry-approvals/ReconciliationTab.tsx",
+      "beforeHash": "230c0f5be54cafda147ce16a5a48a6283dfdb4ad75f26d8bfe2eaa7958b801fb",
+      "afterHash": "0d91df41ed5f475ade659fe39a2c84bd72b531f3ce6cdd2f12aeb1a777d54336",
+      "edits": [
+        {
+          "line": 103,
+          "category": "text-alpha",
+          "before": "text-warning/80",
+          "after": "text-warning"
+        },
+        {
+          "line": 99,
+          "category": "border-alpha",
+          "before": "border-warning/30",
+          "after": "border-warning"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/notifications/NotificationsPage.tsx",
+      "beforeHash": "f7ba6c3c8e73e2c83f70699a41510e2b50206df891e16368159e9c4c2eadfcb0",
+      "afterHash": "c0f58383b35cc6a945d0f901498f49583ecc28370f169f6a383e285dea213fa2",
+      "edits": [
+        {
+          "line": 182,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 172,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 151,
+          "category": "element-opacity",
+          "before": "opacity-70",
+          "after": "opacity-100"
+        },
+        {
+          "line": 131,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 105,
+          "category": "element-opacity",
+          "before": "opacity-20",
+          "after": "opacity-100"
+        },
+        {
+          "line": 102,
+          "category": "border-alpha",
+          "before": "divide-border/60",
+          "after": "divide-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/pension/AnnualBookReviewPage.tsx",
+      "beforeHash": "973fbac3fcc980501e600483178fee5b430d6fa6e5356b7459265c386c9b50e0",
+      "afterHash": "a36257c5d9cc6175afbdc5fa4a90dd20baec66faba4ce51602edb3c241979794",
+      "edits": [
+        {
+          "line": 432,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 399,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 383,
+          "category": "border-alpha",
+          "before": "hover:border-primary/60",
+          "after": "hover:border-primary"
+        },
+        {
+          "line": 383,
+          "category": "border-alpha",
+          "before": "border-border/70",
+          "after": "border-border"
+        },
+        {
+          "line": 367,
+          "category": "border-alpha",
+          "before": "border-amber-500/20",
+          "after": "border-amber-500"
+        },
+        {
+          "line": 364,
+          "category": "text-alpha",
+          "before": "text-primary/70",
+          "after": "text-primary"
+        },
+        {
+          "line": 358,
+          "category": "text-alpha",
+          "before": "text-primary/70",
+          "after": "text-primary"
+        },
+        {
+          "line": 348,
+          "category": "text-alpha",
+          "before": "text-primary/70",
+          "after": "text-primary"
+        },
+        {
+          "line": 347,
+          "category": "text-alpha",
+          "before": "text-primary/70",
+          "after": "text-primary"
+        },
+        {
+          "line": 346,
+          "category": "text-alpha",
+          "before": "text-primary/70",
+          "after": "text-primary"
+        },
+        {
+          "line": 345,
+          "category": "text-alpha",
+          "before": "text-primary/70",
+          "after": "text-primary"
+        },
+        {
+          "line": 338,
+          "category": "text-alpha",
+          "before": "text-primary/70",
+          "after": "text-primary"
+        },
+        {
+          "line": 337,
+          "category": "text-alpha",
+          "before": "text-primary/70",
+          "after": "text-primary"
+        },
+        {
+          "line": 336,
+          "category": "text-alpha",
+          "before": "text-primary/70",
+          "after": "text-primary"
+        },
+        {
+          "line": 335,
+          "category": "text-alpha",
+          "before": "text-primary/70",
+          "after": "text-primary"
+        },
+        {
+          "line": 316,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 314,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/pension/FinancialEntitlementsPage.tsx",
+      "beforeHash": "67ffa08387bb42dfd108750aad55335a2652f03977f84fb8ae80394a6a514bd2",
+      "afterHash": "21e06389b14dd1621677e217f30818d336b9d69b03d72b9aa621a80e95f5fbf3",
+      "edits": [
+        {
+          "line": 191,
+          "category": "element-opacity",
+          "before": "opacity-60",
+          "after": "opacity-100"
+        },
+        {
+          "line": 189,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/pension/MinistryReferralsPage.tsx",
+      "beforeHash": "804725bf27e2792087fc48f69b4f6db49552d0ab0f3abb3c5b70274efcb61cf3",
+      "afterHash": "e269210b6b1b361cd9f60bf40d3b618028000353b437b7e5e9442a42c0cc6b07",
+      "edits": [
+        {
+          "line": 653,
+          "category": "border-alpha",
+          "before": "border-border/70",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/pension/PensionSuspensionsPage.tsx",
+      "beforeHash": "88ad20231d2862a0dc96231ca1aee123bd13107f2152af9bc2b91d711d480bd5",
+      "afterHash": "b5522f451cb9c73404acf2ede562a5a4caaa9486749cb58395a816ada3cef485",
+      "edits": [
+        {
+          "line": 315,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/print/PaymentBookPrint.tsx",
+      "beforeHash": "20bf4d5f251cc901429449766bbab4b9fa0e17897c1ff2ddb5053261dacb907c",
+      "afterHash": "4a97aea8b018e6f1801b3647170288998ff9f8632d8a693977b69611451e2537",
+      "edits": [
+        {
+          "line": 629,
+          "category": "text-alpha",
+          "before": "text-foreground/70",
+          "after": "text-foreground"
+        },
+        {
+          "line": 548,
+          "category": "element-opacity",
+          "before": "opacity-40",
+          "after": "opacity-100"
+        },
+        {
+          "line": 444,
+          "category": "element-opacity",
+          "before": "opacity-[0.10]",
+          "after": "opacity-100"
+        },
+        {
+          "line": 241,
+          "category": "text-alpha",
+          "before": "text-foreground/70",
+          "after": "text-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/print/PrintableEmployeeReport.tsx",
+      "beforeHash": "3600f4c824d094653600f1303eff3c9e75f61e951ab1d2d4ea98ce41d1116c61",
+      "afterHash": "c7f4f5a81ba30cd6d99db7dfdf22467b3ee5c6134898b4ff91d6cab561d3ae1e",
+      "edits": [
+        {
+          "line": 211,
+          "category": "border-alpha",
+          "before": "border-black/10",
+          "after": "border-black"
+        },
+        {
+          "line": 50,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 25,
+          "category": "element-opacity",
+          "before": "opacity-30",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/print/PrintableRetirementFileReport.tsx",
+      "beforeHash": "8db0a789314c5629eb817e358c0e4c2265660cc443bd5ab31462dbf1973def92",
+      "afterHash": "3d070abed41fcd170b1707835d3554d4c8b65151240e91238b25f536748aae51",
+      "edits": [
+        {
+          "line": 106,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 98,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/print/SettlementDecisionPrint.tsx",
+      "beforeHash": "d26aeb6f5dee582e7672903f92c725508422bda3ba60e1cfb8f41c1d9a133b51",
+      "afterHash": "dfcc8e40e43039b47d63a607eb6939d5d7f3555b8f35f20e46a19a7bd87d9908",
+      "edits": [
+        {
+          "line": 136,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/60",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/reports/ReportViewerPage.tsx",
+      "beforeHash": "d1b80ddab3f9149bc60061a555f384115bf64fe92de52f24c01e532e4591f501",
+      "afterHash": "3afe90a76c583cd741f5a5465f6a877081bedc8579c7cc0feda809eb14f606cc",
+      "edits": [
+        {
+          "line": 410,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 219,
+          "category": "element-opacity",
+          "before": "opacity-20",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/reports/ReportsPage.tsx",
+      "beforeHash": "f0acfd7034c47abf18afc5dcb382040af3593cc442fdb84c86957bbb8376fc0a",
+      "afterHash": "b57aa787135b4fe85847173b2695b48e3649a178aa2027700b0854055994f0fd",
+      "edits": [
+        {
+          "line": 46,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/50",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/retirees/RetireeDetailsPage.tsx",
+      "beforeHash": "d12c0a02fd3c2ad3973dcdeeb30491386236425bbc51f5fd09dfb82bfcc802a4",
+      "afterHash": "953d871e7fa65888ede0792180862f345c6800781f5b921b7aec50948dbc8068",
+      "edits": [
+        {
+          "line": 450,
+          "category": "border-alpha",
+          "before": "divide-border/50",
+          "after": "divide-border"
+        },
+        {
+          "line": 441,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 418,
+          "category": "border-alpha",
+          "before": "divide-border/50",
+          "after": "divide-border"
+        },
+        {
+          "line": 407,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 396,
+          "category": "element-opacity",
+          "before": "opacity-50",
+          "after": "opacity-100"
+        },
+        {
+          "line": 351,
+          "category": "border-alpha",
+          "before": "divide-border/50",
+          "after": "divide-border"
+        },
+        {
+          "line": 342,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 313,
+          "category": "border-alpha",
+          "before": "divide-border/50",
+          "after": "divide-border"
+        },
+        {
+          "line": 300,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 223,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 161,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/30",
+          "after": "text-muted-foreground"
+        },
+        {
+          "line": 153,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/retirees/RetireesPage.tsx",
+      "beforeHash": "205970e2e7e803f3a594c9b71413e8223a3640b67e2b9b01c024a914552d49bf",
+      "afterHash": "b4c0baf3c64fe48500cebac41ec963af1ecaa147a0ce938f02fbb85dae12d13e",
+      "edits": [
+        {
+          "line": 355,
+          "category": "border-alpha",
+          "before": "border-border/70",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/retirement-files/RetirementFileDetailsPage.tsx",
+      "beforeHash": "7a38610bc8a97da892e4df9bae9fcbd64506603278685033dd22dec2ac717e6d",
+      "afterHash": "fac0a67d2a85db80def23a85d67885579d5ec8c92ce023a7226c86309a496334",
+      "edits": [
+        {
+          "line": 358,
+          "category": "border-alpha",
+          "before": "border-amber-900/10",
+          "after": "border-amber-900"
+        },
+        {
+          "line": 353,
+          "category": "border-alpha",
+          "before": "border-amber-900/10",
+          "after": "border-amber-900"
+        },
+        {
+          "line": 348,
+          "category": "element-opacity",
+          "before": "opacity-75",
+          "after": "opacity-100"
+        },
+        {
+          "line": 312,
+          "category": "border-alpha",
+          "before": "border-destructive/20",
+          "after": "border-destructive"
+        },
+        {
+          "line": 286,
+          "category": "border-alpha",
+          "before": "border-amber-500/20",
+          "after": "border-amber-500"
+        },
+        {
+          "line": 286,
+          "category": "border-alpha",
+          "before": "border-destructive/20",
+          "after": "border-destructive"
+        },
+        {
+          "line": 248,
+          "category": "border-alpha",
+          "before": "border-emerald-500/20",
+          "after": "border-emerald-500"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/retirement-files/RetirementFilesPage.tsx",
+      "beforeHash": "2440dbeea01cf1a6e3408163c7d2fbe522fb70a1c2e64c57c8231e241923a292",
+      "afterHash": "ef5df1d2d998469bd9f3d7af745dba5c44a044be69e6bf12039bc06ce48385f5",
+      "edits": [
+        {
+          "line": 370,
+          "category": "border-alpha",
+          "before": "border-border/70",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/retirement-files/tabs/AgentsTab.tsx",
+      "beforeHash": "21ab3a83ec0a177464a174aebc551328495cb1f273c3f1086d6afd7d7fb6c6bb",
+      "afterHash": "90656bfb25b627dc39cddaffe05f4ab782ec7e476fb70de25b1102700e8de592",
+      "edits": [
+        {
+          "line": 308,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/retirement-files/tabs/DocumentsTab.tsx",
+      "beforeHash": "04cbb55eede0962d387646bb6a11d40354f20530dbf656665e20d66bf40ed6fb",
+      "afterHash": "8da771c473674f75b60fc649eaab648c13a230c132f71f5fac212794a0df1ed2",
+      "edits": [
+        {
+          "line": 663,
+          "category": "border-alpha",
+          "before": "border-destructive/30",
+          "after": "border-destructive"
+        },
+        {
+          "line": 651,
+          "category": "border-alpha",
+          "before": "border-emerald-500/30",
+          "after": "border-emerald-500"
+        },
+        {
+          "line": 629,
+          "category": "border-alpha",
+          "before": "border-primary/30",
+          "after": "border-primary"
+        },
+        {
+          "line": 611,
+          "category": "border-alpha",
+          "before": "border-destructive/20",
+          "after": "border-destructive"
+        },
+        {
+          "line": 590,
+          "category": "border-alpha",
+          "before": "divide-destructive/10",
+          "after": "divide-destructive"
+        },
+        {
+          "line": 579,
+          "category": "border-alpha",
+          "before": "border-destructive/15",
+          "after": "border-destructive"
+        },
+        {
+          "line": 577,
+          "category": "border-alpha",
+          "before": "border-destructive/20",
+          "after": "border-destructive"
+        },
+        {
+          "line": 477,
+          "category": "text-alpha",
+          "before": "hover:text-destructive/90",
+          "after": "hover:text-destructive"
+        },
+        {
+          "line": 416,
+          "category": "text-alpha",
+          "before": "text-muted-foreground/40",
+          "after": "text-muted-foreground"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/retirement-files/tabs/GuardiansTab.tsx",
+      "beforeHash": "9448adfe4df7cf2b9bff35437110f2711cf9da1ee73bab30a6185cf30ae3f83a",
+      "afterHash": "15e9250782899bbfda64bc7de05e909ab6cc41afc02908cd80761ff5532a26b4",
+      "edits": [
+        {
+          "line": 223,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 217,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 216,
+          "category": "element-opacity",
+          "before": "opacity-50",
+          "after": "opacity-100"
+        },
+        {
+          "line": 215,
+          "category": "border-alpha",
+          "before": "border-border/30",
+          "after": "border-border"
+        },
+        {
+          "line": 207,
+          "category": "text-alpha",
+          "before": "text-primary/70",
+          "after": "text-primary"
+        },
+        {
+          "line": 206,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 176,
+          "category": "element-opacity",
+          "before": "opacity-40",
+          "after": "opacity-100"
+        },
+        {
+          "line": 170,
+          "category": "element-opacity",
+          "before": "opacity-75",
+          "after": "opacity-100"
+        },
+        {
+          "line": 170,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/retirement-files/tabs/NotesTab.tsx",
+      "beforeHash": "1cbf39532c5e39838a63d6624bf324f8b540dcfae7a3ccd1adf3618664e20a64",
+      "afterHash": "89867cee15596245a0a6f7d71cfc70d9bf38a861a00b9c92312d5d6fde1db0af",
+      "edits": [
+        {
+          "line": 119,
+          "category": "text-alpha",
+          "before": "text-foreground/70",
+          "after": "text-foreground"
+        },
+        {
+          "line": 103,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/retirement-files/tabs/PledgesAndExemptionsTab.tsx",
+      "beforeHash": "300b030abb3ccad9032771fa7962c3c16f8151eeee97e1a98582571e9b0f93ce",
+      "afterHash": "aa2d78725514f0d159ca7980dc2ea697a05e51b1ede7f155dcc717c27de2878d",
+      "edits": [
+        {
+          "line": 478,
+          "category": "element-opacity",
+          "before": "opacity-70",
+          "after": "opacity-100"
+        },
+        {
+          "line": 436,
+          "category": "element-opacity",
+          "before": "opacity-70",
+          "after": "opacity-100"
+        },
+        {
+          "line": 384,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 284,
+          "category": "element-opacity",
+          "before": "opacity-70",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/retirement-files/tabs/ReviewTab.tsx",
+      "beforeHash": "bb2848d433272f21e465bcd4b8b5d4134edcd8c074512da381bc9eeea16f1b37",
+      "afterHash": "e4c7aeb7e056648bdbb8dbc6f03f4c0cb43796b40fa28ff452895a0ce36b9a59",
+      "edits": [
+        {
+          "line": 455,
+          "category": "border-alpha",
+          "before": "border-border/50",
+          "after": "border-border"
+        },
+        {
+          "line": 429,
+          "category": "border-alpha",
+          "before": "border-danger/20",
+          "after": "border-danger"
+        },
+        {
+          "line": 429,
+          "category": "border-alpha",
+          "before": "border-warning/20",
+          "after": "border-warning"
+        },
+        {
+          "line": 429,
+          "category": "border-alpha",
+          "before": "border-success/20",
+          "after": "border-success"
+        },
+        {
+          "line": 371,
+          "category": "border-alpha",
+          "before": "divide-border/50",
+          "after": "divide-border"
+        },
+        {
+          "line": 309,
+          "category": "border-alpha",
+          "before": "border-primary/20",
+          "after": "border-primary"
+        },
+        {
+          "line": 294,
+          "category": "border-alpha",
+          "before": "border-warning/20",
+          "after": "border-warning"
+        },
+        {
+          "line": 275,
+          "category": "border-alpha",
+          "before": "border-warning/30",
+          "after": "border-warning"
+        },
+        {
+          "line": 258,
+          "category": "element-opacity",
+          "before": "opacity-5",
+          "after": "opacity-100"
+        },
+        {
+          "line": 245,
+          "category": "border-alpha",
+          "before": "border-danger/20",
+          "after": "border-danger"
+        },
+        {
+          "line": 204,
+          "category": "border-alpha",
+          "before": "divide-border/50",
+          "after": "divide-border"
+        },
+        {
+          "line": 198,
+          "category": "element-opacity",
+          "before": "opacity-75",
+          "after": "opacity-100"
+        },
+        {
+          "line": 163,
+          "category": "element-opacity",
+          "before": "opacity-5",
+          "after": "opacity-100"
+        },
+        {
+          "line": 162,
+          "category": "border-alpha",
+          "before": "border-warning/30",
+          "after": "border-warning"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/retirement-files/tabs/SettlementsTab.tsx",
+      "beforeHash": "fd93f343da18761a82528394272d5c127a125ed825aef8eb3a37dbcffebda277",
+      "afterHash": "b2a34d22b8793c19dfe8527134d36265c7cd06c38dcd2414092321a39b967525",
+      "edits": [
+        {
+          "line": 61,
+          "category": "element-opacity",
+          "before": "opacity-60",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/retirement-files/tabs/StatusTransitionsTab.tsx",
+      "beforeHash": "b7f691035e1c3eeaabe523d68fd1c3ac675ba166c538b52e46fc440df9f104d8",
+      "afterHash": "ab1bda8bcb199cafb05e0e5724b2f7f1bb64f6b293af39a7997e25a0a584b4d1",
+      "edits": [
+        {
+          "line": 246,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 216,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 176,
+          "category": "element-opacity",
+          "before": "opacity-20",
+          "after": "opacity-100"
+        },
+        {
+          "line": 163,
+          "category": "element-opacity",
+          "before": "opacity-50",
+          "after": "opacity-100"
+        },
+        {
+          "line": 162,
+          "category": "border-alpha",
+          "before": "border-destructive/20",
+          "after": "border-destructive"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/retirement-files/tabs/SuspensionsTab.tsx",
+      "beforeHash": "af3a73e2de01b29abeade6811b6ba98b49c70864b17829309c44ec6453d096bc",
+      "afterHash": "6eb27adff9a097d500fad00d3b43f60e9d73e3e5dc8b4c466e019661b4adf011",
+      "edits": [
+        {
+          "line": 160,
+          "category": "text-alpha",
+          "before": "text-rose-800/80",
+          "after": "text-rose-800"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/review/FileReviewDetailPage.tsx",
+      "beforeHash": "a8d4eaa0cd70186d1c6fdeb6b2cae42711221c3daf1da3fac2193c354c661b21",
+      "afterHash": "9cee2862b555bf0859403617021bfa7d6bdb243e4507bba9250d8152fea4f147",
+      "edits": [
+        {
+          "line": 554,
+          "category": "border-alpha",
+          "before": "border-primary/10",
+          "after": "border-primary"
+        },
+        {
+          "line": 263,
+          "category": "element-opacity",
+          "before": "opacity-50",
+          "after": "opacity-100"
+        },
+        {
+          "line": 262,
+          "category": "border-alpha",
+          "before": "border-[hsl(var(--gov-info)/.2)]",
+          "after": "border-[hsl(var(--gov-info))]"
+        },
+        {
+          "line": 240,
+          "category": "element-opacity",
+          "before": "opacity-60",
+          "after": "opacity-100"
+        },
+        {
+          "line": 233,
+          "category": "border-alpha",
+          "before": "border-border/40",
+          "after": "border-border"
+        },
+        {
+          "line": 223,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 220,
+          "category": "border-alpha",
+          "before": "border-border/60",
+          "after": "border-border"
+        },
+        {
+          "line": 212,
+          "category": "element-opacity",
+          "before": "opacity-80",
+          "after": "opacity-100"
+        },
+        {
+          "line": 208,
+          "category": "element-opacity",
+          "before": "opacity-60",
+          "after": "opacity-100"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/settlements/SettlementBatchDetailsPage.tsx",
+      "beforeHash": "628b81a5f88b8780ec2dbd46e07971e635d364536a66f9027805cf7da81cae27",
+      "afterHash": "1bc0d56cbe387aa079e7e9ac65f70cd2f876214194eeb723224c6c55ef57871b",
+      "edits": [
+        {
+          "line": 411,
+          "category": "border-alpha",
+          "before": "border-warning/30",
+          "after": "border-warning"
+        }
+      ]
+    },
+    {
+      "file": "ui/src/pages/suspensions/SuspensionsPage.tsx",
+      "beforeHash": "5f4a2a723227b68a1ea60348d58b9e927132e19af37090c9c5ab2ade1d4bd351",
+      "afterHash": "2a60f03cbe9ac547a4551d547c5ac47573b82d1a75b128934681e5fd9cb58697",
+      "edits": [
+        {
+          "line": 135,
+          "category": "text-alpha",
+          "before": "hover:text-primary/80",
+          "after": "hover:text-primary"
+        }
+      ]
+    }
+  ]
+}

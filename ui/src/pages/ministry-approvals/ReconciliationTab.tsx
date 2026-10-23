@@ -96,11 +96,11 @@ export function ReconciliationTab({ batchId }: ReconciliationTabProps) {
 
     return (
         <div className="space-y-4">
-            <div className="bg-warning/10  border border-warning/30  p-4 rounded-xl flex gap-3 items-start">
+            <div className="bg-warning/10  border border-warning  p-4 rounded-xl flex gap-3 items-start">
                 <AlertCircle className="w-5 h-5 text-warning shrink-0 mt-0.5" />
                 <div className="space-y-1">
                     <h4 className="text-sm font-semibold text-warning ">تحليل المطابقة الذكي</h4>
-                    <p className="text-xs text-warning/80  leading-relaxed">
+                    <p className="text-xs text-warning  leading-relaxed">
                         يقوم النظام بمقارنة بيانات هذه الإحالة مع قاعدة بيانات المتقاعدين الحالية. 
                         الإحالات التي تحمل حالة "غير موجود في النظام" تتطلب إنشاء ملفات تقاعد جديدة أو ربطها يدوياً.
                     </p>

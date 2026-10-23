@@ -63,6 +63,7 @@ public class SocialResearchQueryDto
     public int? RankId { get; set; }
     public byte? Gender { get; set; }
     public bool? HasFiles { get; set; }
+    public bool? IsProcessed { get; set; }
     public bool? HasSettlements { get; set; }
     public string? UnitName { get; set; }
     public DateOnly? RetirementDateFrom { get; set; }
@@ -79,6 +80,7 @@ public class UpdateRetireeDto
     public string? MilitaryNumber { get; set; }
     public string? LinkNumber { get; set; }
     public byte? Gender { get; set; }
+    public DateOnly? BirthDate { get; set; }
     public string? Phone { get; set; }
     public string? Address { get; set; }
     public string? City { get; set; }

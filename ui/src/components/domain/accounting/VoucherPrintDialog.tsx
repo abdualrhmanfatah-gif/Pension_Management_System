@@ -53,7 +53,7 @@ export function VoucherPrintDialog({ open, onOpenChange, voucherId }: Props) {
           <PrintablePaymentOrder ref={printRef} voucher={voucher} />
         )
       ) : (
-        <div className="text-lg text-muted-foreground/60">السند غير موجود</div>
+        <div className="text-lg text-muted-foreground">السند غير موجود</div>
       )}
     </div>
   );

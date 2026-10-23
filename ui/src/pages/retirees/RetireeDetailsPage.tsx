@@ -150,7 +150,7 @@ export function RetireeDetailsPage() {
     return (
         <PageLayout>
             {/* Header / Banner */}
-            <div className="relative overflow-hidden rounded-3xl bg-primary/5 border border-primary/10 p-8 ">
+            <div className="relative overflow-hidden rounded-3xl bg-primary/5 border border-primary p-8 ">
                 <div className="absolute top-0 end-0 -mt-10 -me-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl" />
                 <div className="relative flex flex-col md:flex-row items-center gap-8">
                     {/* Photo with Overlay */}
@@ -158,7 +158,7 @@ export function RetireeDetailsPage() {
                         <EditableImage
                             src={getPhotoUrl(resolvePersonalPhotoPath(retiree)) || (!retiree.isAlive ? getDefaultDeceasedAvatar(retiree.gender) : null)}
                             alt={retiree.fullName}
-                            fallbackIcon={<IdCard className="w-16 h-16 text-muted-foreground/30" />}
+                            fallbackIcon={<IdCard className="w-16 h-16 text-muted-foreground" />}
                             className="w-32 h-32 md:w-40 md:h-40 rounded-3xl border-4 border-white"
                             canEdit={canEdit}
                             onUpload={async (file) => {
@@ -220,7 +220,7 @@ export function RetireeDetailsPage() {
                         {canViewStatement && (
                             <Button
                                 variant="outline"
-                                className="rounded-xl h-11 px-6 gap-2 border-primary/20 bg-white hover:bg-primary/5 transition-all w-full justify-start"
+                                className="rounded-xl h-11 px-6 gap-2 border-primary bg-white hover:bg-primary/5 transition-all w-full justify-start"
                                 onClick={() => navigate(`/retirees/${id}/statement`)}
                             >
                                 <Printer className="w-4 h-4" />
@@ -297,7 +297,7 @@ export function RetireeDetailsPage() {
                             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 text-start">
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-sm" role="table" aria-label="عناصر الاعتماد">
-                                        <thead className="bg-muted/30 border-b border-border/50 sticky top-0 z-10 bg-background">
+                                        <thead className="bg-muted/30 border-b border-border sticky top-0 z-10 bg-background">
                                             <tr>
                                                 <th className="px-4 py-3 text-start font-bold text-muted-foreground text-xs">#</th>
                                                 <th className="px-4 py-3 text-start font-bold text-muted-foreground text-xs">رقم الكشف</th>
@@ -310,7 +310,7 @@ export function RetireeDetailsPage() {
                                                 <th className="px-4 py-3 text-start font-bold text-muted-foreground text-xs">ملاحظات</th>
                                             </tr>
                                         </thead>
-                                        <tbody className="divide-y divide-border/50">
+                                        <tbody className="divide-y divide-border">
                                             {statement.approvalItems?.map((item: ApprovalItem, idx: number) => (
                                                 <tr key={item.approvalItemID} className="hover:bg-muted/20 transition-colors text-start">
                                                     <td className="px-4 py-3 text-muted-foreground">{idx + 1}</td>
@@ -339,7 +339,7 @@ export function RetireeDetailsPage() {
                             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 text-start">
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-sm" role="table" aria-label="ملفات التقاعد">
-                                        <thead className="bg-muted/30 border-b border-border/50 sticky top-0 z-10 bg-background">
+                                        <thead className="bg-muted/30 border-b border-border sticky top-0 z-10 bg-background">
                                             <tr>
                                                 <th className="px-4 py-3 text-start font-bold text-muted-foreground text-xs">رقم الملف</th>
                                                 <th className="px-4 py-3 text-start font-bold text-muted-foreground text-xs">الرتبة</th>
@@ -348,7 +348,7 @@ export function RetireeDetailsPage() {
                                                 <th className="px-4 py-3 text-start font-bold text-muted-foreground text-xs">الحالة</th>
                                             </tr>
                                         </thead>
-                                        <tbody className="divide-y divide-border/50">
+                                        <tbody className="divide-y divide-border">
                                             {statement.retirementFiles?.map((f: RetirementFile) => (
                                                 <tr key={f.fileID} className="hover:bg-muted/20 transition-colors text-start">
                                                     <td className="px-4 py-3 text-start">
@@ -393,7 +393,7 @@ export function RetireeDetailsPage() {
                                     </div>
                                 ) : (
                                     <div className="text-center py-12 text-muted-foreground">
-                                        <FolderOpen className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                                        <FolderOpen className="w-12 h-12 mx-auto mb-4 opacity-100" />
                                         <p>لا توجد ملفات تقاعدية لعرض مستنداتها</p>
                                     </div>
                                 )}
@@ -404,7 +404,7 @@ export function RetireeDetailsPage() {
                             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 text-start">
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-sm" role="table" aria-label="التسويات">
-                                        <thead className="bg-muted/30 border-b border-border/50 sticky top-0 z-10 bg-background">
+                                        <thead className="bg-muted/30 border-b border-border sticky top-0 z-10 bg-background">
                                             <tr>
                                                 <th className="px-4 py-3 text-start font-bold text-muted-foreground text-xs">رقم الكشف</th>
                                                 <th className="px-4 py-3 text-start font-bold text-muted-foreground text-xs">رقم القرار</th>
@@ -415,7 +415,7 @@ export function RetireeDetailsPage() {
                                                 <th className="px-4 py-3 text-start font-bold text-muted-foreground text-xs">ملاحظات</th>
                                             </tr>
                                         </thead>
-                                        <tbody className="divide-y divide-border/50">
+                                        <tbody className="divide-y divide-border">
                                             {statement.settlements?.map((s: Settlement) => (
                                                 <tr key={s.settlementItemID} className="hover:bg-muted/20 transition-colors text-start">
                                                     <td className="px-4 py-3 font-mono font-bold">{s.batchNumber || "—"}</td>
@@ -438,7 +438,7 @@ export function RetireeDetailsPage() {
                             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 text-start">
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-sm" role="table" aria-label="الاستحقاقات">
-                                        <thead className="bg-muted/30 border-b border-border/50 sticky top-0 z-10 bg-background">
+                                        <thead className="bg-muted/30 border-b border-border sticky top-0 z-10 bg-background">
                                             <tr>
                                                 <th className="px-4 py-3 text-start font-bold text-muted-foreground text-xs">الرتبة</th>
                                                 <th className="px-4 py-3 text-start font-bold text-muted-foreground text-xs">المبلغ</th>
@@ -447,7 +447,7 @@ export function RetireeDetailsPage() {
                                                 <th className="px-4 py-3 text-start font-bold text-muted-foreground text-xs">الحالة</th>
                                             </tr>
                                         </thead>
-                                        <tbody className="divide-y divide-border/50">
+                                        <tbody className="divide-y divide-border">
                                             {statement.entitlements?.map((e: Entitlement) => (
                                                 <tr key={e.entitlementID} className="hover:bg-muted/20 transition-colors text-start">
                                                     <td className="px-4 py-3 font-bold">{e.rankName || "—"}</td>

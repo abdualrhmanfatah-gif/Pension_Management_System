@@ -1,0 +1,15 @@
+{
+  "files": 1768,
+  "curated_files": 138,
+  "curated_sites": 271,
+  "frontend_consumers": 100,
+  "dispositions": {
+    "HISTORICAL_OR_GENERATED": 291,
+    "OUT_OF_SCOPE": 1116,
+    "DOCUMENTATION": 18,
+    "CONTRACT": 256,
+    "CHANGE": 55,
+    "REGRESSION": 23,
+    "SQL_PREFLIGHT": 9
+  }
+}

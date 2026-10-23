@@ -70,7 +70,7 @@ export function CostCentersPage() {
     return nodes.map((node) => (
       <div key={node.costCenterID}>
         <div
-          className="flex items-center justify-between px-4 py-2.5 hover:bg-accent/50 transition-colors border-b border-border/30"
+          className="flex items-center justify-between px-4 py-2.5 hover:bg-accent/50 transition-colors border-b border-border"
           style={{ marginRight: `${depth * 1.5}rem` }}
         >
           <div className="flex items-center gap-2">

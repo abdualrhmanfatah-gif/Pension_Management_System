@@ -8,22 +8,12 @@ import {
   Wallet,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import { fiscalYearsApi, quartersApi, reportsApi } from "@/api/accounting";
 import type { VoucherDto } from "@/api/vouchers";
 import { vouchersApi } from "@/api/vouchers";
 import { TrialBalanceReport } from "@/components/domain/accounting";
-import {
-  altRowFill,
-  buildReportFooter,
-  buildReportHeader,
-  buildTableHeader,
-  buildTotalsRow,
-  createWorkbook,
-  exportWorkbook,
-  type HeaderField,
-  styleDataCell,
-} from "@/components/domain/print/excel.utils";
 import { StickyHeader, Text } from "@/components/ui";
 import {
   Badge,
@@ -112,149 +102,19 @@ export function QuarterDetailsPage() {
   /* ═══ التصدير بتصميم احترافي ═══ */
   const quarterName = selectedQuarter?.quarterName ?? "";
   const yearNum = selectedQuarter?.startDate ? new Date(selectedQuarter.startDate).getFullYear() : "";
-  const trialTotalDebit = trialBalance?.reduce((s, i) => s + i.totalDebit, 0) ?? 0;
-  const trialTotalCredit = trialBalance?.reduce((s, i) => s + i.totalCredit, 0) ?? 0;
-  void trialTotalCredit;
-
-  const metaQuarter: HeaderField[] = [
-    { label: "الفصل", value: quarterName },
-    { label: "السنة", value: String(yearNum) },
-  ];
-
-  const exportPeriods = async () => {
-    if (!details) return;
-    const { ws } = createWorkbook("تفصيل الفترة");
-    ws.columns = [
-      { header: "", key: "period", width: 25 },
-      { header: "", key: "opening", width: 20 },
-      { header: "", key: "withdrawn", width: 20 },
-      { header: "", key: "spent", width: 20 },
-      { header: "", key: "closing", width: 20 },
-    ];
-    const startRow = await buildReportHeader(ws, "تفصيل حسب الفترة", 5, metaQuarter);
-    buildTableHeader(ws, startRow, ["الفترة", "الرصيد الافتتاحي", "سحب من البنك", "الصرف الفعلي", "الرصيد الختامي"]);
-
-    details.periods.forEach((p, i) => {
-      const r = ws.getRow(startRow + 1 + i);
-      r.getCell(1).value = p.periodName;
-      r.getCell(2).value = p.openingBalance;
-      r.getCell(3).value = p.withdrawn;
-      r.getCell(4).value = p.spent;
-      r.getCell(5).value = p.closingBalance;
-      styleDataCell(r.getCell(1), { bold: true, align: "start" });
-      styleDataCell(r.getCell(2), { numFmt: "#,##0" });
-      styleDataCell(r.getCell(3), { color: "FF1D4ED8", numFmt: "#,##0" });
-      styleDataCell(r.getCell(4), { color: "FFDC2626", numFmt: "#,##0" });
-      styleDataCell(r.getCell(5), { bold: true, numFmt: "#,##0" });
-      for (let c = 1; c <= 5; c++) altRowFill(r.getCell(c), i);
-    });
-
-    const totalRowNum = startRow + 1 + details.periods.length;
-    buildTotalsRow(ws, totalRowNum, [
-      { value: "الإجمالي" },
-      { value: "—" },
-      { value: details.totalWithdrawn, numFmt: "#,##0", color: "FF1D4ED8" },
-      { value: details.totalSpent, numFmt: "#,##0", color: "FFDC2626" },
-      { value: details.remainingBalance, numFmt: "#,##0", bold: true },
-    ]);
-    ws.getRow(totalRowNum).height = 22;
-
-    buildReportFooter(ws, 5);
-    await exportWorkbook(ws.workbook, `فترة_${selectedQuarter?.quarterName ?? "فصل"}`);
-  };
-
-  const exportExpenses = async () => {
-    if (!details) return;
-    const { ws } = createWorkbook("تفصيل المصروفات");
-    ws.columns = [
-      { header: "", key: "code", width: 15 },
-      { header: "", key: "name", width: 35 },
-      { header: "", key: "amount", width: 20 },
-      { header: "", key: "count", width: 12 },
-    ];
-    const startRow = await buildReportHeader(ws, "تفصيل المصروفات حسب الحساب", 4, metaQuarter);
-    buildTableHeader(ws, startRow, ["كود الحساب", "اسم الحساب", "المبلغ", "عدد القيود"]);
-
-    details.expenseBreakdown.forEach((e, i) => {
-      const r = ws.getRow(startRow + 1 + i);
-      r.getCell(1).value = e.accountCode;
-      r.getCell(2).value = e.accountName;
-      r.getCell(3).value = e.amount;
-      r.getCell(4).value = e.entryCount;
-      styleDataCell(r.getCell(1), { bold: true });
-      styleDataCell(r.getCell(2), { bold: true, align: "start" });
-      styleDataCell(r.getCell(3), { color: "FFDC2626", numFmt: "#,##0" });
-      styleDataCell(r.getCell(4), { bold: true });
-      for (let c = 1; c <= 4; c++) altRowFill(r.getCell(c), i);
-    });
-
-    buildReportFooter(ws, 4);
-    await exportWorkbook(ws.workbook, `مصروفات_${selectedQuarter?.quarterName ?? "فصل"}`);
-  };
-
-  const exportTrialBalanceData = async (trialData: TrialBalanceItemDto[]) => {
-    const { ws } = createWorkbook("ميزان المراجعه");
-    const COL_COUNT = 9;
-    ws.columns = [
-      { header: "", key: "code", width: 15 },
-      { header: "", key: "name", width: 28 },
-      { header: "", key: "openDebit", width: 18 },
-      { header: "", key: "openCredit", width: 18 },
-      { header: "", key: "movDebit", width: 18 },
-      { header: "", key: "movCredit", width: 18 },
-      { header: "", key: "closeDebit", width: 18 },
-      { header: "", key: "closeCredit", width: 18 },
-      { header: "", key: "balance", width: 18 },
-    ];
-    const startRow = await buildReportHeader(ws, "ميزان المراجعه للفصل", COL_COUNT, metaQuarter);
-    buildTableHeader(ws, startRow, [
-      "الكود", "الحساب",
-      "افتتاحي مدين", "افتتاحي دائن",
-      "حركه مدين", "حركه دائن",
-      "ختامي مدين", "ختامي دائن",
-      "الرصيد",
-    ]);
-
-    trialData.forEach((item, i) => {
-      const r = ws.getRow(startRow + 1 + i);
-      r.getCell(1).value = item.accountCode;
-      r.getCell(2).value = item.accountName;
-      r.getCell(3).value = item.openingDebit;
-      r.getCell(4).value = item.openingCredit;
-      r.getCell(5).value = item.movementDebit;
-      r.getCell(6).value = item.movementCredit;
-      r.getCell(7).value = item.closingDebit;
-      r.getCell(8).value = item.closingCredit;
-      r.getCell(9).value = item.balance;
-      styleDataCell(r.getCell(1), { bold: true });
-      styleDataCell(r.getCell(2), { bold: true, align: "start" });
-      [3, 4, 5, 6, 7, 8].forEach(c => styleDataCell(r.getCell(c), { numFmt: "#,##0" }));
-      styleDataCell(r.getCell(9), { numFmt: "#,##0", bold: true });
-      for (let c = 1; c <= 9; c++) altRowFill(r.getCell(c), i);
-    });
-
-    const totalRowNum = startRow + 1 + trialData.length;
-    const totOpenDebit = trialData.reduce((s, i) => s + i.openingDebit, 0);
-    const totOpenCredit = trialData.reduce((s, i) => s + i.openingCredit, 0);
-    const totMovDebit = trialData.reduce((s, i) => s + i.movementDebit, 0);
-    const totMovCredit = trialData.reduce((s, i) => s + i.movementCredit, 0);
-    const totCloseDebit = trialData.reduce((s, i) => s + i.closingDebit, 0);
-    const totCloseCredit = trialData.reduce((s, i) => s + i.closingCredit, 0);
-    buildTotalsRow(ws, totalRowNum, [
-      { value: "الإجمالي" },
-      undefined,
-      { value: totOpenDebit, numFmt: "#,##0" },
-      { value: totOpenCredit, numFmt: "#,##0" },
-      { value: totMovDebit, numFmt: "#,##0" },
-      { value: totMovCredit, numFmt: "#,##0" },
-      { value: totCloseDebit, numFmt: "#,##0" },
-      { value: totCloseCredit, numFmt: "#,##0" },
-      { value: trialTotalDebit, numFmt: "#,##0" },
-    ]);
-    ws.getRow(totalRowNum).height = 22;
-
-    buildReportFooter(ws, COL_COUNT);
-    await exportWorkbook(ws.workbook, `ميزان_المراجعه_${selectedQuarter?.quarterName ?? "فصل"}`);
+  const [isExporting, setIsExporting] = useState(false);
+  const exportQuarterDetails = async (section: "periods" | "expenses") => {
+    if (!selectedQuarter || isExporting) return;
+    setIsExporting(true);
+    try {
+      if (section === "periods") await quartersApi.exportPeriods(selectedQuarter.quarterID);
+      else await quartersApi.exportExpenses(selectedQuarter.quarterID);
+      toast.success("تم التصدير بنجاح");
+    } catch {
+      toast.error("فشل تصدير تفاصيل الفصل");
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   return (
@@ -326,12 +186,12 @@ export function QuarterDetailsPage() {
                 {/* ── تفصيل الفترة ── */}
                 <TabsContent value="periods" className="mt-4">
                   <Card className="border-none rounded-3xl overflow-hidden">
-                    <div className="p-4 bg-muted/30 font-bold flex items-center justify-between">تفصيل حسب الفترة<Button variant="outline" size="sm" onClick={() => exportPeriods()} className="gap-2"><Download className="w-4 h-4" />تصدير Excel</Button></div>
+                    <div className="p-4 bg-muted/30 font-bold flex items-center justify-between">تفصيل حسب الفترة<Button variant="outline" size="sm" disabled={isExporting} onClick={() => exportQuarterDetails("periods")} className="gap-2"><Download className="w-4 h-4" />تصدير Excel</Button></div>
                         <div className="overflow-x-auto">
                         <table className="w-full text-base text-foreground" role="table" aria-label="أوامر الصرف">
                       <thead className="bg-muted/50 sticky top-0 z-10"><tr><th className="text-end p-4 text-sm md:text-base lg:text-xl">الفترة</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">الافتتاحي</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">سحب من البنك</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">الصرف الفعلي</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">الختامي</th></tr></thead>
                       <tbody>
-                        {details.periods.map((p) => (<tr key={p.periodID} className="border-t border-border/50 hover:bg-muted/20"><td className="p-4 font-medium">{p.periodName}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(p.openingBalance)}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-info">{p.withdrawn > 0 ? `+${formatCurrency(p.withdrawn)}` : "—"}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">{p.spent > 0 ? `-${formatCurrency(p.spent)}` : "—"}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(p.closingBalance)}</td></tr>))}
+                        {details.periods.map((p) => (<tr key={p.periodID} className="border-t border-border hover:bg-muted/20"><td className="p-4 font-medium">{p.periodName}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(p.openingBalance)}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-info">{p.withdrawn > 0 ? `+${formatCurrency(p.withdrawn)}` : "—"}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">{p.spent > 0 ? `-${formatCurrency(p.spent)}` : "—"}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(p.closingBalance)}</td></tr>))}
                         <tr className="bg-muted/30 font-bold"><td className="p-4">الإجمالي</td><td className="p-4">—</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-info">+{formatCurrency(details.totalWithdrawn)}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">-{formatCurrency(details.totalSpent)}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(details.remainingBalance)}</td></tr>
                       </tbody>
                     </table>
@@ -342,12 +202,12 @@ export function QuarterDetailsPage() {
                 {/* ── المصروفات ── */}
                 <TabsContent value="expenses" className="mt-4">
                   <Card className="border-none rounded-3xl overflow-hidden">
-                    <div className="p-4 bg-muted/30 font-bold flex items-center justify-between">تفصيل المصروفات حسب الحساب<Button variant="outline" size="sm" onClick={() => exportExpenses()} className="gap-2"><Download className="w-4 h-4" />تصدير Excel</Button></div>
+                    <div className="p-4 bg-muted/30 font-bold flex items-center justify-between">تفصيل المصروفات حسب الحساب<Button variant="outline" size="sm" disabled={isExporting} onClick={() => exportQuarterDetails("expenses")} className="gap-2"><Download className="w-4 h-4" />تصدير Excel</Button></div>
                     {details.expenseBreakdown.length > 0 ? (
                       <div className="overflow-x-auto">
                       <table className="w-full text-base text-foreground" role="table" aria-label="تفصيل المصروفات">
                         <thead className="bg-muted/50 sticky top-0 z-10"><tr><th className="text-end p-4 text-sm md:text-base lg:text-xl">كود الحساب</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">اسم الحساب</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">المبلغ</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">عدد القيود</th></tr></thead>
-                        <tbody>{details.expenseBreakdown.map((e) => (<tr key={e.accountID} className="border-t border-border/50 hover:bg-muted/20"><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{e.accountCode}</td><td className="p-4">{e.accountName}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">{formatCurrency(e.amount)}</td><td className="p-4 text-center font-bold text-sm md:text-base lg:text-lg">{e.entryCount}</td></tr>))}</tbody>
+                        <tbody>{details.expenseBreakdown.map((e) => (<tr key={e.accountID} className="border-t border-border hover:bg-muted/20"><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{e.accountCode}</td><td className="p-4">{e.accountName}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">{formatCurrency(e.amount)}</td><td className="p-4 text-center font-bold text-sm md:text-base lg:text-lg">{e.entryCount}</td></tr>))}</tbody>
                       </table>
                       </div>
                     ) : (
@@ -378,7 +238,7 @@ export function QuarterDetailsPage() {
                           </thead>
                           <tbody>
                             {quarterVouchers.map((v) => (
-                              <tr key={v.voucherID} className="border-t border-border/50 hover:bg-muted/20">
+                              <tr key={v.voucherID} className="border-t border-border hover:bg-muted/20">
                                 <td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{v.voucherNumber}</td>
                                 <td className="p-4">{new Date(v.voucherDate).toLocaleDateString("ar-SA")}</td>
                                 <td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">{formatCurrency(v.amount)}</td>
@@ -416,7 +276,7 @@ export function QuarterDetailsPage() {
                   <Card className="border-none rounded-3xl overflow-hidden">
                     <div className="p-4 bg-muted/30 font-bold">ميزان المراجعه للفصل</div>
                     <div className="p-4">
-                      {selectedQuarter && <TrialBalanceReport fromDate={selectedQuarter.startDate} toDate={selectedQuarter.endDate} onExport={(d) => exportTrialBalanceData(d)} />}
+                      {selectedQuarter && <TrialBalanceReport fromDate={selectedQuarter.startDate} toDate={selectedQuarter.endDate} />}
                     </div>
                   </Card>
                 </TabsContent>

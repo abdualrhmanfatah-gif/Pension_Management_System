@@ -3,6 +3,7 @@ namespace PensionMS.Core.DTOs.Financial;
 public class CreateFinancialEntitlementDto
 {
     public int RetireeID { get; set; }
+    // حقول توافق مع المستدعين الحاليين؛ خدمة الإنشاء تستمد المبلغ والتاريخ من كشف الإحالة والتسويات.
     public decimal Amount { get; set; }
     public DateTime EffectiveDate { get; set; }
     public string? Notes { get; set; }
@@ -10,6 +11,8 @@ public class CreateFinancialEntitlementDto
 
 public class FinancialEntitlementDto
 {
+    /// <summary>رتبة المصدر الذي اعتمدته عملية إنشاء الاستحقاق؛ لا يمثل عموداً في جدول الاستحقاقات.</summary>
+    public int? RankID { get; set; }
     public int EntitlementID { get; set; }
     public int RetireeID { get; set; }
     public string? RetireeFullName { get; set; }

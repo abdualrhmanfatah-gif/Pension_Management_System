@@ -109,7 +109,7 @@ export function JournalEntryViewDialog({ open, onOpenChange, entryId }: JournalE
                   </thead>
                   <tbody>
                     {entry.lines.map((line: JournalEntryLineDto, idx) => (
-                      <tr key={line.lineID} className={`border-t border-border/50 ${idx % 2 === 0 ? "bg-muted/5" : ""} hover:bg-muted/20 transition-colors`}>
+                      <tr key={line.lineID} className={`border-t border-border ${idx % 2 === 0 ? "bg-muted/5" : ""} hover:bg-muted/20 transition-colors`}>
                         <td className="p-2.5">
                           <div className="flex items-center gap-2">
                             <span className="font-mono text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded">{line.accountCode}</span>

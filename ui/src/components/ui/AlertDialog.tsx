@@ -1,6 +1,7 @@
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import * as React from "react";
 
+import { handleDialogEnter } from "@/lib/enterFocus";
 import { cn } from "@/lib/utils";
 
 const AlertDialog = AlertDialogPrimitive.Root;
@@ -27,7 +28,7 @@ AlertDialogOverlay.displayName = AlertDialogPrimitive.Overlay.displayName;
 const AlertDialogContent = React.forwardRef<
   React.ComponentRef<typeof AlertDialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>
->(({ className, ...props }, ref) => (
+>(({ className, onKeyDown, ...props }, ref) => (
   <AlertDialogPortal>
     <AlertDialogOverlay />
     <AlertDialogPrimitive.Content
@@ -37,6 +38,10 @@ const AlertDialogContent = React.forwardRef<
         className
       )}
       {...props}
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        handleDialogEnter(event.currentTarget, event.nativeEvent);
+      }}
     />
   </AlertDialogPortal>
 ));

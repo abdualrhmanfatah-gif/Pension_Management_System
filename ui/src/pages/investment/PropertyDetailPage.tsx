@@ -55,7 +55,7 @@ export function PropertyDetailPage() {
                         <Heading level="h1" className="font-black">{property.propertyName}</Heading>
                         <Text variant="description" className="flex items-center gap-2 font-medium">
                             <Building2 className="w-4 h-4 text-muted-primary" /> {property.propertyTypeName} 
-                            <span className="opacity-30 mx-1">|</span>
+                            <span className="opacity-100 mx-1">|</span>
                             <MapPin className="w-4 h-4 text-muted-primary" /> {property.locationCity}
                         </Text>
                     </div>

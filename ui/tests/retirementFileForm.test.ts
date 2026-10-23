@@ -180,9 +180,9 @@ test("only a non-closed file counts as active", () => {
     const closed = { fileID: 1, statusID: 4 };
     const unknown = { fileID: 2, statusID: null };
     const active = { fileID: 3, statusID: 2 };
-    assert.equal(findActiveFile([closed], 4), undefined);
-    assert.equal(findActiveFile([closed, unknown, active], 4)?.fileID, 2);
-    assert.equal(findActiveFile([], 4), undefined);
+    assert.equal(findActiveFile([closed])?.fileID, closed.fileID);
+    assert.equal(findActiveFile([unknown, active])?.fileID, 2);
+    assert.equal(findActiveFile([]), undefined);
 });
 
 test("a failed active-file check fails closed instead of letting the user through", () => {
@@ -194,8 +194,12 @@ test("a failed active-file check fails closed instead of letting the user throug
 test("phone format is validated when provided and stays optional", () => {
     assert.equal(validateStep(makeForm({ phone: "" }), 2, { today }).phone, undefined);
     assert.equal(validateStep(makeForm({ phone: "777123456" }), 2, { today }).phone, undefined);
-    assert.equal(validateStep(makeForm({ phone: "12345" }), 2, { today }).phone, "رقم الهاتف يجب أن يتكون من 9 أرقام ويبدأ بالرقم 7");
-    assert.equal(validateStep(makeForm({ phone: "77712345678" }), 2, { today }).phone, "رقم الهاتف يجب أن يتكون من 9 أرقام ويبدأ بالرقم 7");
+    assert.equal(validateStep(makeForm({ phone: "01234567" }), 2, { today }).phone, undefined);
+    assert.equal(validateStep(makeForm({ phone: "12345" }), 2, { today }).phone, "رقم الهاتف يجب أن يكون 8 أو 9 أرقام");
+    assert.equal(validateStep(makeForm({ phone: "77712345678" }), 2, { today }).phone, "رقم الهاتف يجب أن يكون 8 أو 9 أرقام");
+    assert.equal(validateStep(makeForm({ phone: "612345678" }), 2, { today }).phone, "رقم الهاتف غير صحيح (موبايل: 7XXXXXXXX / أرضي: 0XXXXXXX)");
+    assert.equal(validateStep(makeForm({ phone: "12345678" }), 2, { today }).phone, "رقم الهاتف غير صحيح (موبايل: 7XXXXXXXX / أرضي: 0XXXXXXX)");
+    assert.equal(validateStep(makeForm({ phone: "012345678" }), 2, { today }).phone, "رقم الهاتف غير صحيح (موبايل: 7XXXXXXXX / أرضي: 0XXXXXXX)");
 });
 
 test("submitted dates are plain YYYY-MM-DD, never ISO instants", () => {

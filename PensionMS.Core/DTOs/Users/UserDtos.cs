@@ -1,5 +1,18 @@
 namespace PensionMS.Core.DTOs.Users;
 
+public class SetUserRoleAssignmentsDto
+{
+    public List<UserRoleScopeDto> Assignments { get; set; } = new();
+}
+
+public class UserRoleScopeDto
+{
+    public int RoleId { get; set; }
+    public int? BranchId { get; set; }
+    public int? RegionId { get; set; }
+    public bool IsCentral { get; set; }
+}
+
 public class CreateUserDto
 {
     public string FullName { get; set; } = string.Empty;
@@ -61,6 +74,9 @@ public class UserAssignmentDto
     public string RoleName { get; set; } = string.Empty;
     public int? BranchId { get; set; }
     public string? BranchName { get; set; }
+    public int? RegionId { get; set; }
+    public string? RegionName { get; set; }
+    public bool IsCentral { get; set; }
     public bool IsActive { get; set; }
     public DateTime CreatedAt { get; set; }
 }

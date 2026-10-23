@@ -254,8 +254,8 @@ export function FileWorkflowManager({
     }));
 
     return (
-        <div className="space-y-3 md:space-y-8">
-            <Card className="p-3 sm:p-6 rounded-2xl">
+        <div className="space-y-1.5 md:space-y-2.5">
+            <Card className="px-3 py-2 sm:px-5 sm:py-2.5 rounded-2xl">
                 <Stepper
                     steps={stepItems}
                     activeStep={currentSectionIndex}
@@ -264,7 +264,7 @@ export function FileWorkflowManager({
                 />
             </Card>
 
-            <Tabs dir="rtl" value={activeTab} onValueChange={(v) => onTabChange(v as TabKey)} className="space-y-2 md:space-y-6 text-start">
+            <Tabs dir="rtl" value={activeTab} onValueChange={(v) => onTabChange(v as TabKey)} className="space-y-1.5 md:space-y-2.5 text-start">
                 <div className="relative border-b border-border">
                     <TabsList className="h-auto bg-transparent p-0 gap-0 w-full flex overflow-x-auto scrollbar-hide">
                         {visibleTabsInActiveSection.map((tabKey) => {
@@ -274,7 +274,7 @@ export function FileWorkflowManager({
                                     key={tabKey}
                                     value={tabKey}
                                     aria-keyshortcuts="Alt+ArrowLeft Alt+ArrowRight"
-                                    className="group relative gap-2 px-4 py-3 whitespace-nowrap flex-shrink-0 rounded-none border-0 bg-transparent font-semibold text-sm text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors duration-200 data-[state=active]:text-primary data-[state=active]:bg-transparent after:absolute after:bottom-0 after:inset-x-0 after:h-0.5 after:bg-primary after:scale-x-0 after:transition-transform after:duration-200 data-[state=active]:after:scale-x-100"
+                                    className="group relative gap-2 px-3.5 py-2.5 whitespace-nowrap flex-shrink-0 rounded-none border-0 bg-transparent font-semibold text-xs sm:text-sm text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors duration-200 data-[state=active]:text-primary data-[state=active]:bg-transparent after:absolute after:bottom-0 after:inset-x-0 after:h-0.5 after:bg-primary after:scale-x-0 after:transition-transform after:duration-200 data-[state=active]:after:scale-x-100"
                                 >
                                     {config.icon}
                                     {config.label}
@@ -290,7 +290,7 @@ export function FileWorkflowManager({
                 </div>
 
 
-                <div className="mt-6">
+                <div className="mt-2.5">
                     <Suspense fallback={<TabLoadingSkeleton />}>
                         <TabsContent value="entitled" className="m-0 focus-visible:outline-none">
                             <EntitledPersonsTab fileId={file.fileID} />

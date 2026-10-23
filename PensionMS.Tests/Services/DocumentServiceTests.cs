@@ -1,3 +1,5 @@
+using PensionMS.Testing;
+using PensionMS.Infrastructure.Services.Documents;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using PensionMS.Core.Constants;
@@ -5,7 +7,6 @@ using PensionMS.Core.DTOs.Documents;
 using PensionMS.Core.Entities;
 using PensionMS.Core.Exceptions;
 using PensionMS.Core.Interfaces;
-using PensionMS.Infrastructure.Services;
 using Xunit;
 
 namespace PensionMS.Tests.Services;
@@ -13,31 +14,95 @@ namespace PensionMS.Tests.Services;
 public class DocumentServiceTests
 {
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-    private readonly Mock<IBranchScopeProvider> _branchScopeMock;
+    private readonly Mock<ITestBranchScope> _branchScopeMock;
     private readonly Mock<IImmutableAuditService> _auditMock;
     private readonly DocumentService _service;
+    private readonly Mock<IMissingDocumentService> _missingService = new();
 
     public DocumentServiceTests()
     {
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _branchScopeMock = new Mock<IBranchScopeProvider>();
+        _branchScopeMock = new Mock<ITestBranchScope>();
         _auditMock = new Mock<IImmutableAuditService>();
+        _missingService.Setup(m => m.GetRequiredPairsAsync(It.IsAny<int>()))
+            .ReturnsAsync(new List<PensionMS.Core.DTOs.MissingDocuments.AutoDetectedMissingDocumentDto>());
 
         _service = new DocumentService(
             _unitOfWorkMock.Object,
             Mock.Of<IFileStorageService>(),
-            Mock.Of<IComplianceEngine>(),
             Mock.Of<IEntitlementEngine>(),
-            Mock.Of<IFileReviewService>(),
-            _branchScopeMock.Object,
+            Mock.Of<IFileReviewService>(), TestPensionAccess.From(_unitOfWorkMock.Object, _branchScopeMock.Object),
             _auditMock.Object,
-            Microsoft.Extensions.Logging.Abstractions.NullLogger<DocumentService>.Instance);
+            Microsoft.Extensions.Logging.Abstractions.NullLogger<DocumentService>.Instance, _missingService.Object);
     }
 
     private void SetupDocument(Document doc)
     {
         _unitOfWorkMock.Setup(u => u.Documents.Query())
             .Returns(new TestAsyncEnumerable<Document>(new[] { doc }));
+    }
+
+    [Theory]
+    [InlineData("valid", true)]
+    [InlineData("expires-today", true)]
+    [InlineData("expired", false)]
+    [InlineData("rejected", false)]
+    [InlineData("deleted", false)]
+    [InlineData("other-retiree", false)]
+    [InlineData("agent", false)]
+    [InlineData("file-only", false)]
+    [InlineData("other-file", false)]
+    [InlineData("other-type", false)]
+    public async Task IdentityPath_SelectsNewestValidDocumentForExactRetireeOwner(string scenario, bool useNewest)
+    {
+        SetupBranch(null, isHq: true);
+        _unitOfWorkMock.Setup(u => u.RetirementFiles.Query()).Returns(new TestAsyncEnumerable<RetirementFile>([
+            new RetirementFile { FileID = 10, RetireeID = 2 }
+        ]));
+        var older = new Document { DocumentID = 1, FileID = 10, RetireeID = 2,
+            DocumentTypeID = DocumentTypeConstants.NationalId, FilePath = "older.png", CreatedAt = DateTime.UtcNow.AddDays(-1) };
+        var newest = new Document { DocumentID = 2, FileID = 10, RetireeID = 2,
+            DocumentTypeID = DocumentTypeConstants.NationalId, FilePath = "newest.png", CreatedAt = older.CreatedAt.AddHours(1) };
+        if (scenario == "expires-today") newest.ExpiryDate = PensionMS.Core.Time.YemenTime.Today;
+        if (scenario == "expired") newest.ExpiryDate = PensionMS.Core.Time.YemenTime.Today.AddDays(-1);
+        if (scenario == "rejected") newest.PendingReviewStatus = PendingReviewStatus.Rejected;
+        if (scenario == "deleted") newest.IsDeleted = true;
+        if (scenario == "other-retiree") newest.RetireeID = 3;
+        if (scenario == "agent") newest.AgentID = 5;
+        if (scenario == "file-only") newest.RetireeID = null;
+        if (scenario == "other-file") newest.FileID = 11;
+        if (scenario == "other-type") newest.DocumentTypeID = DocumentTypeConstants.DeathCertificate;
+        _unitOfWorkMock.Setup(u => u.Documents.Query()).Returns(new TestAsyncEnumerable<Document>([older, newest]));
+
+        var response = await _service.GetRetireeIdentityPathAsync(10);
+
+        Assert.True(response.IsSuccess, response.Message);
+        Assert.Equal(useNewest ? "newest.png" : "older.png", response.Data);
+        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(), Times.Never);
+    }
+
+    [Fact]
+    public async Task IdentityPath_ReturnsNullWhenNoValidIdentityExists()
+    {
+        SetupBranch(null, isHq: true);
+        _unitOfWorkMock.Setup(u => u.RetirementFiles.Query()).Returns(new TestAsyncEnumerable<RetirementFile>([
+            new RetirementFile { FileID = 10, RetireeID = 2 }
+        ]));
+        SetupDocument(new Document { DocumentID = 1, FileID = 10, RetireeID = 2,
+            DocumentTypeID = DocumentTypeConstants.NationalId, FilePath = "rejected.png",
+            PendingReviewStatus = PendingReviewStatus.Rejected });
+        var result = await _service.GetRetireeIdentityPathAsync(10);
+        Assert.True(result.IsSuccess);
+        Assert.Null(result.Data);
+    }
+
+    [Fact]
+    public async Task IdentityPath_RejectsForeignFileBeforeReadingDocuments()
+    {
+        SetupBranch(1);
+        SetupFileBranch(10, 2);
+        Assert.False((await _service.GetRetireeIdentityPathAsync(10)).IsSuccess);
+        _unitOfWorkMock.VerifyGet(u => u.Documents, Times.Never);
     }
 
     private void SetupFileBranch(int fileId, int branchId)
@@ -110,7 +175,7 @@ public class DocumentServiceTests
         var result = await _service.ReviewAsync(1, new ReviewDocumentDto { PendingReviewStatus = 2 }, 7);
 
         Assert.False(result.IsSuccess);
-        Assert.Equal("لا تملك صلاحية فحص وثيقة في فرع آخر", result.Message);
+        Assert.Equal("الوثيقة غير موجودة", result.Message);
     }
 
     [Fact]
@@ -139,7 +204,7 @@ public class DocumentServiceTests
         var result = await _service.GetByIdAsync(1);
 
         Assert.False(result.IsSuccess);
-        Assert.Equal("لا تملك صلاحية الوصول إلى وثيقة في فرع آخر", result.Message);
+        Assert.Equal("الوثيقة غير موجودة", result.Message);
     }
 
     [Fact]
@@ -213,12 +278,10 @@ public class DocumentServiceTests
         new DocumentService(
             _unitOfWorkMock.Object,
             storage,
-            Mock.Of<IComplianceEngine>(),
             Mock.Of<IEntitlementEngine>(),
-            Mock.Of<IFileReviewService>(),
-            _branchScopeMock.Object,
+            Mock.Of<IFileReviewService>(), TestPensionAccess.From(_unitOfWorkMock.Object, _branchScopeMock.Object),
             _auditMock.Object,
-            Microsoft.Extensions.Logging.Abstractions.NullLogger<DocumentService>.Instance);
+            Microsoft.Extensions.Logging.Abstractions.NullLogger<DocumentService>.Instance, _missingService.Object);
 
     private Mock<IFileStorageService> SetupStorage()
     {

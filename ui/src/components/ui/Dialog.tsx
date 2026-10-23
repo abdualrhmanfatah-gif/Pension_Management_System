@@ -3,6 +3,7 @@ import * as React from 'react';
 import { createPortal } from 'react-dom';
 
 import { claimDialogEvent, type DialogLayer,isTopmostDialog, registerDialogLayer } from '@/lib/dialog-stack';
+import { handleDialogEnter } from '@/lib/enterFocus';
 import { cn } from '@/lib/utils';
 
 // ─── Context ──────────────────────────────────────────
@@ -348,6 +349,9 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
       onKeyDown?.(e);
+      if (open && isTopmostDialog(dialogRef.current)) {
+        handleDialogEnter(e.currentTarget as HTMLElement, e.nativeEvent);
+      }
     };
 
     const content = (
@@ -404,7 +408,7 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
               onClick={() => onOpenChange(false)}
               className={cn(
                 'absolute end-2 top-2',
-                'rounded-full opacity-60 ring-offset-background transition-all duration-200',
+                'rounded-full opacity-100 ring-offset-background transition-all duration-200',
                 'hover:opacity-100 hover:bg-accent hover:text-accent-foreground',
                 'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
                 'disabled:pointer-events-none z-50',
@@ -443,7 +447,7 @@ const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
     className={cn(
       'flex flex-col gap-1 text-center sm:text-[start]',
       'px-[var(--dlg-section-p)] py-3',
-      'border-b font-sans',
+      'font-sans',
       className
     )}
     {...props}
@@ -456,7 +460,7 @@ const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
     className={cn(
       'flex flex-col-reverse gap-1.5 sm:flex-row sm:justify-end sm:gap-2',
       'px-[var(--dlg-section-p)] py-[var(--dlg-footer-py)]',
-      'border-t bg-muted/5 font-sans',
+      'bg-muted/5 font-sans',
       className
     )}
     {...props}

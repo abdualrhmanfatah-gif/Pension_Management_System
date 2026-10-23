@@ -119,7 +119,7 @@ export function JournalEntryDetailsPage() {
 
       {/* Lines */}
       <Card className="border-none rounded-3xl overflow-hidden">
-        <div className="p-4 border-b border-border/40">
+        <div className="p-4 border-b border-border">
           <Heading level="h3" className="font-semibold">بنود القيد</Heading>
         </div>
         <DataTable

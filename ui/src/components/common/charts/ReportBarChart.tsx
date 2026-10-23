@@ -150,7 +150,7 @@ function HorizontalBarChart({
                         dir="rtl"
                     >
                         <div className="flex items-center justify-between text-sm">
-                            <span className="truncate flex-1 font-semibold text-foreground/90 transition-colors group-hover:text-foreground text-start">
+                            <span className="truncate flex-1 font-semibold text-foreground transition-colors group-hover:text-foreground text-start">
                                 {String(d[xKey])}
                             </span>
                             <div className="shrink-0 flex items-center gap-2 tabular-nums">
@@ -270,7 +270,7 @@ function VerticalBarChart({
                                 maxBarSize={50}
                                 minPointSize={10}
                                 stackId={yk.stackId}
-                                className="transition-opacity hover:opacity-80"
+                                className="transition-opacity hover:opacity-100"
                             >
                                 {data.map((_, i) => (
                                     <Cell
@@ -310,9 +310,9 @@ export const ReportBarChart = React.memo(function ReportBarChart({
 
     if (!hasData) {
         return (
-            <Card className={cn("border border-border/60 bg-card shadow-sm flex flex-col items-center justify-center min-h-[300px]", className)}>
+            <Card className={cn("border border-border bg-card shadow-sm flex flex-col items-center justify-center min-h-[300px]", className)}>
                 <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-100">
                         <path d="M3 3v18h18" />
                         <path d="M18 17V9" />
                         <path d="M13 17V5" />
@@ -325,9 +325,9 @@ export const ReportBarChart = React.memo(function ReportBarChart({
     }
 
     return (
-        <Card className={cn("border border-border/60 bg-card shadow-sm transition-shadow duration-200 hover:shadow-md flex flex-col overflow-hidden", className)}>
+        <Card className={cn("border border-border bg-card shadow-sm transition-shadow duration-200 hover:shadow-md flex flex-col overflow-hidden", className)}>
             {title && (
-                <div dir="rtl" className="px-5 pt-5 pb-2 shrink-0 border-b border-border/40">
+                <div dir="rtl" className="px-5 pt-5 pb-2 shrink-0 border-b border-border">
                     <Heading level="h3" className="text-sm font-bold text-foreground">
                         {title}
                     </Heading>

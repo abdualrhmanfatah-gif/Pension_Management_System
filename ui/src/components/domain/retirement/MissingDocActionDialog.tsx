@@ -169,7 +169,7 @@ export function MissingDocActionDialog({
                                         onClick={() => setValue("actionType", "pledge", { shouldDirty: true })}
                                     >
                                         <span className="font-bold">تعهد</span>
-                                        <span className="text-[10px] sm:text-xs opacity-70">التزام بإحضار الوثيقة لاحقاً</span>
+                                        <span className="text-[10px] sm:text-xs opacity-100">التزام بإحضار الوثيقة لاحقاً</span>
                                     </Button>
                                     <Button 
                                         type="button"
@@ -181,7 +181,7 @@ export function MissingDocActionDialog({
                                         onClick={() => setValue("actionType", "exemption", { shouldDirty: true })}
                                     >
                                         <span className="font-bold">إعفاء</span>
-                                        <span className="text-[10px] sm:text-xs opacity-70">إسقاط المطالبة بالوثيقة</span>
+                                        <span className="text-[10px] sm:text-xs opacity-100">إسقاط المطالبة بالوثيقة</span>
                                     </Button>
                                 </div>
                             )}

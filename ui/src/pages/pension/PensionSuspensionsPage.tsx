@@ -312,7 +312,7 @@ export function PensionSuspensionsPage() {
 
                     {/* Selected File Display */}
                     {selectedFile && (
-                        <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 flex items-center gap-3">
+                        <div className="bg-primary/5 border border-primary rounded-lg p-3 flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold shrink-0">
                                 {selectedFile.retireeFullName?.charAt(0)}
                             </div>

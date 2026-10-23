@@ -1,0 +1,166 @@
+[
+  {
+    "id": "loaded_history_does_not_popup",
+    "expected": 0,
+    "actual": 0,
+    "passes": true
+  },
+  {
+    "id": "timer_progress_decreases",
+    "expected": true,
+    "actual": true,
+    "passes": true
+  },
+  {
+    "id": "hover_pauses_timer",
+    "expected": "87.2314%",
+    "actual": "87.2314%",
+    "passes": true
+  },
+  {
+    "id": "timer_removes_card_after_resume",
+    "expected": 0,
+    "actual": 0,
+    "passes": true
+  },
+  {
+    "id": "four_events_three_visible_one_pending",
+    "expected": {
+      "visible": 3,
+      "pending": 1
+    },
+    "actual": {
+      "visible": 3,
+      "pending": 1
+    },
+    "passes": true
+  },
+  {
+    "id": "dismiss_shows_next_queued_card",
+    "expected": {
+      "visible": 3,
+      "pending": 0
+    },
+    "actual": {
+      "visible": 3,
+      "pending": 0
+    },
+    "passes": true
+  },
+  {
+    "id": "reconnect_invalidates_queries",
+    "expected": true,
+    "actual": true,
+    "passes": true
+  },
+  {
+    "id": "disconnected_polling_recovers_history_and_count",
+    "expected": true,
+    "actual": true,
+    "passes": true
+  },
+  {
+    "id": "connected_stops_fallback_polling",
+    "expected": 0,
+    "actual": 0,
+    "passes": true
+  },
+  {
+    "id": "notification_has_no_duplicate_sonner_surface",
+    "expected": 0,
+    "actual": 0,
+    "passes": true
+  },
+  {
+    "id": "duplicate_delivery_one_card_and_one_sound",
+    "expected": {
+      "cards": 1,
+      "sounds": 1
+    },
+    "actual": {
+      "cards": 1,
+      "sounds": 1
+    },
+    "passes": true
+  },
+  {
+    "id": "dismissed_notification_does_not_replay",
+    "expected": {
+      "cards": 0,
+      "sounds": 1
+    },
+    "actual": {
+      "cards": 0,
+      "sounds": 1
+    },
+    "passes": true
+  },
+  {
+    "id": "floating_open_marks_read_and_uses_server_destination",
+    "expected": {
+      "route": "/files/13",
+      "read": true
+    },
+    "actual": {
+      "route": "/files/13",
+      "read": true
+    },
+    "passes": true
+  },
+  {
+    "id": "switch_account_no_previous_history",
+    "expected": null,
+    "actual": null,
+    "passes": true
+  },
+  {
+    "id": "switch_account_clears_previous_cache",
+    "expected": 0,
+    "actual": 0,
+    "passes": true
+  },
+  {
+    "id": "old_connection_callback_rejected",
+    "expected": 0,
+    "actual": 0,
+    "passes": true
+  },
+  {
+    "id": "new_account_loads_its_own_history",
+    "expected": 2,
+    "actual": 2,
+    "passes": true
+  },
+  {
+    "id": "logout_clears_cards_queue_and_audio",
+    "expected": {
+      "cards": 0,
+      "pending": 0,
+      "paused": true
+    },
+    "actual": {
+      "cards": 0,
+      "pending": 0,
+      "paused": true
+    },
+    "passes": true
+  },
+  {
+    "id": "strictmode_leaves_only_one_active_connection",
+    "expected": 1,
+    "actual": 1,
+    "passes": true
+  },
+  {
+    "id": "late_audio_rejection_cannot_rearm_after_logout",
+    "expected": 5,
+    "actual": 5,
+    "passes": true
+  },
+  {
+    "id": "strictmode_logout_clears_cards",
+    "expected": 0,
+    "actual": 0,
+    "passes": true
+  }
+]

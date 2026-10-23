@@ -151,7 +151,7 @@ export function FixedAssetsReport(_props: FixedAssetsReportProps) {
                 filteredAssets
                   .filter(a => a.status === 0)
                   .map((asset) => (
-                    <tr key={asset.assetID} className="border-t border-border/50 hover:bg-muted/20">
+                    <tr key={asset.assetID} className="border-t border-border hover:bg-muted/20">
                       <td className="p-3 font-mono text-xs">{asset.assetNumber}</td>
                       <td className="p-3 font-medium">{asset.assetName}</td>
                       <td className="p-3 text-muted-foreground">{asset.categoryName || "—"}</td>

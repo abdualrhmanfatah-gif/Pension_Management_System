@@ -1,3 +1,4 @@
+using PensionMS.Core.Interfaces.Reporting;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -22,6 +23,7 @@ public class AccountingController : ControllerBase
     private readonly IFiscalPeriodService _fiscalPeriod;
     private readonly IClosingService _closing;
     private readonly IAccountingExportService _exportService;
+    private readonly IBudgetService _budget;
 
     public AccountingController(
         IChartOfAccountService chartOfAccount,
@@ -30,7 +32,8 @@ public class AccountingController : ControllerBase
         IReportingService reporting,
         IFiscalPeriodService fiscalPeriod,
         IClosingService closing,
-        IAccountingExportService exportService)
+        IAccountingExportService exportService,
+        IBudgetService budget)
     {
         _chartOfAccount = chartOfAccount;
         _journalEntry = journalEntry;
@@ -39,6 +42,7 @@ public class AccountingController : ControllerBase
         _fiscalPeriod = fiscalPeriod;
         _closing = closing;
         _exportService = exportService;
+        _budget = budget;
     }
 
     private IActionResult ReturnFile(byte[] bytes, string format, string baseName)
@@ -317,11 +321,56 @@ public class AccountingController : ControllerBase
     [HttpGet("reports/trial-balance/export")]
     [Authorize(Policy = "Accounting.Reports")]
     public async Task<IActionResult> ExportTrialBalance(
-        [FromQuery] int? periodId, [FromQuery] DateTime? fromDate, [FromQuery] DateTime? toDate, [FromQuery] string format = "excel")
+        [FromQuery] int? periodId, [FromQuery] DateTime? fromDate, [FromQuery] DateTime? toDate,
+        [FromQuery] string format = "excel", [FromQuery] int? accountLevel = null)
     {
+        if (accountLevel.HasValue && (accountLevel < 1 || accountLevel > 5))
+            return BadRequest(ApiResponse<string>.Fail("مستوى الحساب يجب أن يكون بين 1 و5"));
         var data = await _reporting.GetTrialBalanceAsync(periodId, fromDate, toDate);
-        var bytes = await _exportService.ExportTrialBalanceAsync(data, format);
+        if (!data.IsSuccess) return data.ToActionResult();
+        var bytes = await _exportService.ExportTrialBalanceAsync(data, format, accountLevel);
         return ReturnFile(bytes, format, "TrialBalance");
+    }
+
+    [HttpGet("reports/quarterly/export")]
+    [Authorize(Policy = "Accounting.Reports")]
+    public async Task<IActionResult> ExportQuarterly([FromQuery] int fiscalYearId, [FromQuery] int quarterId,
+        [FromQuery] string format = "excel")
+    {
+        var quarter = await _fiscalPeriod.GetQuarterDetailsAsync(quarterId);
+        if (!quarter.IsSuccess) return quarter.ToActionResult();
+        if (quarter.Data == null || quarter.Data.FiscalYearID != fiscalYearId)
+            return BadRequest(ApiResponse<string>.Fail("الفصل المحدد لا يتبع السنة المالية المختارة"));
+        var data = await _reporting.GetIncomeStatementAsync(fiscalYearId, quarterId);
+        if (!data.IsSuccess) return data.ToActionResult();
+        return ReturnFile(await _exportService.ExportQuarterlyAsync(data, format, quarter.Data.QuarterName), format, "QuarterlyReport");
+    }
+
+    [HttpGet("reports/budget/export")]
+    [Authorize(Policy = "Accounting.Reports")]
+    public async Task<IActionResult> ExportBudget([FromQuery] int fiscalYearId, [FromQuery] string format = "excel")
+    {
+        var data = await _budget.GetBudgetReportAsync(fiscalYearId);
+        if (!data.IsSuccess) return data.ToActionResult();
+        return ReturnFile(await _exportService.ExportBudgetAsync(data, format), format, "BudgetReport");
+    }
+
+    [HttpGet("quarters/{quarterId:int}/periods/export")]
+    [Authorize(Policy = "Accounting.Reports")]
+    public async Task<IActionResult> ExportQuarterPeriods(int quarterId)
+    {
+        var data = await _fiscalPeriod.GetQuarterDetailsAsync(quarterId);
+        if (!data.IsSuccess) return data.ToActionResult();
+        return ReturnFile(await _exportService.ExportQuarterPeriodsAsync(data), "excel", "QuarterPeriods");
+    }
+
+    [HttpGet("quarters/{quarterId:int}/expenses/export")]
+    [Authorize(Policy = "Accounting.Reports")]
+    public async Task<IActionResult> ExportQuarterExpenses(int quarterId)
+    {
+        var data = await _fiscalPeriod.GetQuarterDetailsAsync(quarterId);
+        if (!data.IsSuccess) return data.ToActionResult();
+        return ReturnFile(await _exportService.ExportQuarterExpensesAsync(data), "excel", "QuarterExpenses");
     }
 
     [HttpGet("reports/balance-sheet/export")]

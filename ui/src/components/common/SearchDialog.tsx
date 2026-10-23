@@ -120,7 +120,7 @@ export function SearchDialog<T>({
                     <Search className="w-4 h-4" />
                 </DialogTrigger>
             )}
-            <DialogContent className="sm:max-w-2xl p-0 gap-0 overflow-hidden border-border/60">
+            <DialogContent className="sm:max-w-2xl p-0 gap-0 overflow-hidden border-border">
                 <DialogHeader className="px-5 pt-5 pb-0 border-b-0">
                     <DialogTitle className="text-lg font-bold">{title}</DialogTitle>
                 </DialogHeader>
@@ -133,13 +133,13 @@ export function SearchDialog<T>({
                             value={searchText}
                             onChange={(e) => { setSearchText(e.target.value); setActiveIndex(-1); }}
                             onKeyDown={handleKeyDown}
-                            className="pr-10 h-12 text-base border-2 border-primary/20 focus-visible:border-primary/40 focus-visible:ring-1 focus-visible:ring-primary/20 bg-muted/30"
+                            className="pr-10 h-12 text-base border-2 border-primary focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary/20 bg-muted/30"
                             autoFocus
                         />
                     </div>
 
                     {debouncedSearch.length >= minLength && (
-                        <div ref={listRef} className="mt-3 max-h-[28rem] overflow-y-auto space-y-1 divide-y divide-border/40" role="listbox">
+                        <div ref={listRef} className="mt-3 max-h-[28rem] overflow-y-auto space-y-1 divide-y divide-border" role="listbox">
                             {isLoading ? (
                                 <p className="text-sm text-muted-foreground text-center py-8">جاري البحث...</p>
                             ) : uniqueNames.length > 0 ? (

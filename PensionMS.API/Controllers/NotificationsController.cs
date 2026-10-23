@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using PensionMS.Core.Interfaces;
 using PensionMS.Core.DTOs.Common;
 using PensionMS.Core.DTOs.Notifications;
+using PensionMS.API.Extensions;
 using System.Security.Claims;
 
 namespace PensionMS.API.Controllers;
@@ -14,10 +15,12 @@ namespace PensionMS.API.Controllers;
 public class NotificationsController : ControllerBase
 {
     private readonly INotificationService _notificationService;
+    private readonly IAuthorizationService _authorizationService;
 
-    public NotificationsController(INotificationService notificationService)
+    public NotificationsController(INotificationService notificationService, IAuthorizationService authorizationService)
     {
         _notificationService = notificationService;
+        _authorizationService = authorizationService;
     }
 
     [HttpGet]
@@ -50,6 +53,24 @@ public class NotificationsController : ControllerBase
         var userId = GetUserId();
         var result = await _notificationService.MarkAllAsReadAsync(userId);
         return Ok(result);
+    }
+
+    /// <summary>
+    /// تنزيل مرفق إشعار — الملكية مفروضة في الخدمة: المستلم أو System.Admin فقط.
+    /// </summary>
+    [HttpGet("{id:long}/attachments/{attachmentId:int}/download")]
+    public async Task<IActionResult> DownloadAttachment(long id, int attachmentId)
+    {
+        var userId = GetUserId();
+        var isAdmin = (await _authorizationService.AuthorizeAsync(User, "System.Admin")).Succeeded;
+
+        var result = await _notificationService.DownloadAttachmentAsync(id, attachmentId, userId, isAdmin);
+        if (!result.IsSuccess)
+            return result.ToActionResult();
+        var attachment = result.Data;
+        if (attachment is null)
+            return NotFound(ApiResponse<NotificationAttachmentDownloadDto>.Fail("المرفق غير موجود"));
+        return File(attachment.Content, attachment.ContentType, attachment.FileName);
     }
 
     private int GetUserId()

@@ -43,7 +43,7 @@ export const ReportsPage: React.FC = () => {
                                 {category}
                             </Heading>
                             <div className="h-px flex-1 bg-border/60" />
-                            <span className="text-xs font-bold text-muted-foreground/50 uppercase tracking-widest bg-muted px-2 py-0.5 rounded">
+                            <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest bg-muted px-2 py-0.5 rounded">
                                 {reports.length} تقارير
                             </span>
                         </div>

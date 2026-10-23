@@ -114,7 +114,7 @@ function ActivityTable({ entries, isLoading }: { entries: RecentActivity[] | und
             {entries.map((item) => (
                 <div
                     key={item.logID}
-                    className="flex items-center justify-between p-3 rounded-xl bg-muted/30 border border-border/40 hover:bg-muted/50 transition-colors"
+                    className="flex items-center justify-between p-3 rounded-xl bg-muted/30 border border-border hover:bg-muted/50 transition-colors"
                 >
                     <div className="flex items-center gap-3">
                         <div className={cn("px-2 py-0.5 rounded-md text-caption font-bold", actionStyle(item.action))}>
@@ -482,7 +482,7 @@ export function DashboardPage() {
                 ) : (
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                         {/* Budget Utilization */}
-                        <Card className="border border-border/60 shadow-sm hover:shadow-md transition-shadow">
+                        <Card className="border border-border shadow-sm hover:shadow-md transition-shadow">
                             <CardContent className="p-5">
                                 <div className="flex items-center gap-3 mb-5">
                                     <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-muted text-muted-foreground">
@@ -575,7 +575,7 @@ export function DashboardPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
                     {/* Accounting Details */}
                     <div className="lg:col-span-2 space-y-4">
-                        <Card className="border border-border/60 shadow-sm hover:shadow-md transition-shadow">
+                        <Card className="border border-border shadow-sm hover:shadow-md transition-shadow">
                             <CardContent className="p-5">
                                 <div className="flex items-center gap-3 mb-5">
                                     <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-muted text-muted-foreground">
@@ -615,7 +615,7 @@ export function DashboardPage() {
                                         />
                                     </div>
                                 )}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 pt-4 border-t border-border/40">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 pt-4 border-t border-border">
                                     <div className="text-center p-3 rounded-lg bg-muted/30">
                                         <p className="text-lg font-black text-foreground">
                                             {accountingDashboard?.openPeriods ?? 0}
@@ -633,7 +633,7 @@ export function DashboardPage() {
                         </Card>
 
                         {/* Batch Status */}
-                        <Card className="border border-border/60 shadow-sm hover:shadow-md transition-shadow">
+                        <Card className="border border-border shadow-sm hover:shadow-md transition-shadow">
                             <CardContent className="p-5">
                                 <div className="flex items-center gap-3 mb-5">
                                     <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-muted text-muted-foreground">
@@ -662,7 +662,7 @@ export function DashboardPage() {
                                         />
                                     </div>
                                 )}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 pt-4 border-t border-border/40">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 pt-4 border-t border-border">
                                     <div className="text-center p-3 rounded-lg bg-muted/30">
                                         <p className="text-lg font-black text-foreground">
                                             {data?.pendingSettlementsCount ?? 0}
@@ -682,7 +682,7 @@ export function DashboardPage() {
 
                     {/* Activity Feed */}
                     <div className="lg:col-span-3">
-                        <Card className="border border-border/60 shadow-sm hover:shadow-md transition-shadow">
+                        <Card className="border border-border shadow-sm hover:shadow-md transition-shadow">
                             <CardContent className="p-5">
                                 <div className="flex items-center gap-3 mb-5">
                                     <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-muted text-muted-foreground">

@@ -247,7 +247,7 @@ export function UserPermissionsDialog({
                                                     <PermStateIcon state={state} />
                                                     <div className="flex-1 min-w-0 text-start">
                                                         <Text variant="label" className="leading-tight">{getPermissionName(p.code)}</Text>
-                                                        <p className="text-[10px] sm:text-xs text-muted-foreground/70 font-mono mt-0.5">{p.code}</p>
+                                                        <p className="text-[10px] sm:text-xs text-muted-foreground font-mono mt-0.5">{p.code}</p>
                                                         {p.description && (
                                                             <p className="text-[11px] text-muted-foreground truncate mt-1">{p.description}</p>
                                                         )}

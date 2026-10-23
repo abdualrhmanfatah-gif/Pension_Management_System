@@ -8,6 +8,12 @@ namespace PensionMS.Core.Interfaces;
 /// </summary>
 public interface IPensionSuspensionService
 {
+    /// <summary>يفحص حالة الملف والمراجعة والإيقافات ضمن نطاق الصلاحية. تعذر الفحص يمنع الصرف.</summary>
+    Task<ApiResponse<PaymentHoldCheckDto>> CheckPaymentHoldAsync(int fileId);
+
+    /// <summary>حالة المعاش المعروضة من حالة الملف واعتماد المراجعة والإيقافات، وليست فحص أهلية الصرف الكامل.</summary>
+    Task<ApiResponse<string>> GetSalaryStatusAsync(int fileId);
+
     // ── Suspensions ──
     Task<ApiResponse<SuspensionDto>> CreateWithPledgeAsync(CreateSuspensionDto dto, int userId);
     Task<ApiResponse<bool>> EndSuspensionAsync(int suspensionId, EndSuspensionDto dto, int userId);

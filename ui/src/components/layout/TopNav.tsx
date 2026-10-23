@@ -80,7 +80,7 @@ const UserMenu = memo(function UserMenu() {
 
       <DropdownMenuContent align="end" sideOffset={8} className="w-56 sm:w-64 p-1.5">
         {/* User info header */}
-        <div className="px-3 py-2.5 border-b border-border/50 mb-1">
+        <div className="px-3 py-2.5 border-b border-border mb-1">
           <p className="text-sm font-semibold">{user?.fullName ?? "مستخدم"}</p>
           <p className="text-xs text-muted-foreground mt-0.5">{user?.username ?? "---"}</p>
         </div>
@@ -171,7 +171,7 @@ export const TopNav = memo(function TopNav() {
 
         <Link
           to="/dashboard"
-          className="flex items-center gap-1.5 sm:gap-2 min-w-0 hover:opacity-80 transition-opacity"
+          className="flex items-center gap-1.5 sm:gap-2 shrink-0 no-underline hover:no-underline hover:opacity-100 transition-opacity"
         >
           <picture>
             <source srcSet="/pension-logo.webp" type="image/webp" />
@@ -181,7 +181,7 @@ export const TopNav = memo(function TopNav() {
               className="w-7 h-7 sm:w-8 sm:h-8 object-contain shrink-0"
             />
           </picture>
-          <h1 className="text-xs sm:text-sm font-black text-foreground leading-tight truncate">
+          <h1 className="text-xs sm:text-sm font-bold text-foreground leading-tight whitespace-nowrap">
             صندوق التقاعد الأمني
           </h1>
         </Link>
@@ -194,32 +194,32 @@ export const TopNav = memo(function TopNav() {
       </header>
 
 {/* ── Desktop Header ─────────────────────────── */}
-      <header dir="rtl" className="hidden lg:flex items-center h-14 border-0 border-b border-border/50 bg-background px-4 print:hidden">
+      <header dir="rtl" className="hidden lg:flex items-center h-14 border-0 border-b border-border bg-background px-4 print:hidden">
         {/* Logo + Name */}
         <Link
           to="/dashboard"
-          className="flex items-center gap-2.5 shrink-0 me-4 hover:opacity-80 transition-opacity"
+          className="flex items-center gap-2.5 shrink-0 no-underline hover:no-underline hover:opacity-100 transition-opacity"
         >
           <picture>
             <source srcSet="/pension-logo.webp" type="image/webp" />
             <img
               src="/pension-logo.png"
               alt="الشعار"
-              className="w-8 h-8 object-contain shrink-0"
+              className="w-9 h-9 object-contain shrink-0"
             />
           </picture>
-          <div className="min-w-0 hidden xl:block">
-            <h1 className="text-sm font-black text-foreground leading-tight truncate">
+          <div className="flex flex-col text-start justify-center shrink-0 whitespace-nowrap">
+            <h1 className="text-sm font-bold text-foreground leading-tight whitespace-nowrap">
               صندوق التقاعد الأمني
             </h1>
-            <p className="text-[10px] text-foreground">
+            <p className="text-[11px] font-medium text-muted-foreground leading-none mt-0.5 whitespace-nowrap">
               الإدارة العامة
             </p>
           </div>
         </Link>
 
         {/* Separator */}
-        <div className="w-px h-6 bg-border/50 shrink-0" />
+        <div className="w-px h-6 bg-border/60 shrink-0 mx-3" />
 
         {/* Navigation items */}
         <nav className="flex items-center gap-0.5 me-auto px-2">

@@ -218,7 +218,7 @@ export function AssetCategoryFormDialog({ open, onOpenChange, onSaved, category 
                 </FormSection>
 
                 <FormSection title="الحالة الإدارية" icon={Activity}>
-                    <div className="flex items-center gap-3 p-4 bg-muted/30 rounded-2xl border border-border/40">
+                    <div className="flex items-center gap-3 p-4 bg-muted/30 rounded-2xl border border-border">
                         <Checkbox
                             id="acat-active-check"
                             checked={watch("isActive")}

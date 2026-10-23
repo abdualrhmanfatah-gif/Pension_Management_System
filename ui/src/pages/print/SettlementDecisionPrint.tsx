@@ -133,7 +133,7 @@ export function SettlementDecisionPrint() {
                                     <tbody className="divide-y divide-gray-200 print:divide-black">
                                         {items.map((item, index) => (
                                             <tr key={item.settlementItemID}>
-                                                <td className="p-1.5 font-mono text-muted-foreground/60 print:text-black">{index + 1}</td>
+                                                <td className="p-1.5 font-mono text-muted-foreground print:text-black">{index + 1}</td>
                                                 <td className="p-1.5 font-mono">{item.militaryNumber || "—"}</td>
                                                 <td className="p-1.5 font-medium">{item.retireeFullName}</td>
                                                 <td className="p-1.5 text-muted-foreground">{item.currentRankName}</td>

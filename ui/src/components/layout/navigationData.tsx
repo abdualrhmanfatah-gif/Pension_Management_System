@@ -142,7 +142,7 @@ export const subGroupLabels: Record<string, string> = {
   // ── إدارة المعاشات  ──
   "social-research": "قسم البحث الاجتماعي والفحص",
   "settlement-link": "قسم التسوية والربط",
-  entitlements: "قسم الاستحقاقات",
+  entitlements: "قسم الاستحقاق",
   "records-stats": "قسم السجلات والإحصاء",
   documentation: "قسم التوثيق",
   reports: "التقارير",
@@ -321,7 +321,7 @@ export const navItems: NavItem[] = [
     subGroup: "settlement-link",
   },
 
-  // قسم الاستحقاقات
+  // قسم الاستحقاق
   {
     label: "ملفات التقاعد",
     path: "/files",
@@ -452,7 +452,7 @@ export const navItems: NavItem[] = [
     subGroup: "reports",
   },
   {
-    label: "المتقاعدين النشطين",
+    label: "تقرير المتقاعدين",
     path: "/reports/ret-02",
     icon: <Activity className={ICON} />,
     requiredPermission: "Report.Pension.View",

@@ -162,12 +162,12 @@ export function BasicInfoSection({
                         {/* الصورة الشخصية */}
                         <div className="flex-shrink-0">
                             <div className="relative group">
-                                <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/30 to-primary/10 rounded-2xl blur opacity-50 group-hover:opacity-75 transition duration-500" />
+                                <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/30 to-primary/10 rounded-2xl blur opacity-100 group-hover:opacity-100 transition duration-500" />
                                 <EditableImage
                                     src={getPhotoUrl(resolvePersonalPhotoPath(retiree)) || getPhotoUrl(resolvePersonalPhotoPath(file)) || (!file.isAlive ? getDefaultDeceasedAvatar(file.gender) : null)}
                                     alt={retiree.fullName}
                                     className="relative w-24 h-32 rounded-2xl border-[4px] border-card object-cover bg-muted transition-all duration-300 group-hover:scale-[1.02]"
-                                    fallbackIcon={<User className="w-10 h-10 text-muted-foreground/60" />}
+                                    fallbackIcon={<User className="w-10 h-10 text-muted-foreground" />}
                                     canEdit={canEditRetiree}
                                     imgWidth={96}
                                     imgHeight={128}

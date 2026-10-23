@@ -28,14 +28,14 @@ function LogoWithFallback() {
 
     if (failed) {
         return (
-            <div className="inline-flex items-center justify-center w-28 h-28 rounded-3xl bg-hero-fg/5 backdrop-blur-xl mb-4 border border-hero-fg/10 ">
+            <div className="inline-flex items-center justify-center w-28 h-28 rounded-3xl bg-hero-fg/5 backdrop-blur-xl mb-4 border border-hero-fg ">
                 <ShieldCheck className="w-16 h-16 text-hero-accent" strokeWidth={1.5} />
             </div>
         );
     }
 
     return (
-        <div className="inline-flex items-center justify-center w-28 h-28 rounded-3xl bg-hero-fg/5 backdrop-blur-xl mb-4 overflow-hidden border border-hero-fg/10 ">
+        <div className="inline-flex items-center justify-center w-28 h-28 rounded-3xl bg-hero-fg/5 backdrop-blur-xl mb-4 overflow-hidden border border-hero-fg ">
             <picture>
               <source srcSet="/pension-logo.webp" type="image/webp" />
               <img src="/pension-logo.png" alt="الشعار" fetchPriority="high" className="w-full h-full object-contain p-2" onError={() => setFailed(true)} />
@@ -170,7 +170,7 @@ export function LoginPage() {
                 </div>
 
                 {/* Card */}
-                <div className="bg-hero-fg/10 border border-hero-fg/10 rounded-2xl p-8 ">
+                <div className="bg-hero-fg/10 border border-hero-fg rounded-2xl p-8 ">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 [&_label]:text-hero-fg">
                         {/* API Error + Cooldown */}
                         {apiError && (
@@ -178,7 +178,7 @@ export function LoginPage() {
                                 variant="destructive"
                                 title={cooldown > 0 ? `انتظر ${Math.ceil(cooldown / 1000)} ثانية قبل المحاولة التالية` : apiError}
                                 icon={cooldown > 0 ? <TimerReset className="h-4 w-4" /> : undefined}
-                                className="bg-red-500/10 border-red-400/20 text-red-300"
+                                className="bg-red-500/10 border-red-400 text-red-300"
                             />
                         )}
 
@@ -190,7 +190,7 @@ export function LoginPage() {
                             placeholder="أدخل اسم المستخدم"
                             label="اسم المستخدم"
                             error={errors.username?.message}
-                            className="dark-autofill-fix bg-hero-fg/5 border-hero-fg/10 text-foreground placeholderr:text-hero-accent/50 focus:ring-hero-accent/50 focus:border-transparent"
+                            className="dark-autofill-fix bg-hero-fg/5 border-hero-fg text-foreground placeholderr:text-hero-accent/50 focus:ring-hero-accent/50 focus:border-transparent"
                             {...register("username")}
                         />
 
@@ -203,7 +203,7 @@ export function LoginPage() {
                                 placeholder="أدخل كلمة المرور"
                                 label="كلمة المرور"
                                 error={errors.password?.message}
-                                className="dark-autofill-fix bg-hero-fg/5 border-hero-fg/10 text-foreground placeholderr:text-hero-accent/50 focus:ring-hero-accent/50 focus:border-transparent pe-10"
+                                className="dark-autofill-fix bg-hero-fg/5 border-hero-fg text-foreground placeholderr:text-hero-accent/50 focus:ring-hero-accent/50 focus:border-transparent pe-10"
                                 {...register("password")}
                             />
                             <Button
@@ -211,7 +211,7 @@ export function LoginPage() {
                                 size="sm"
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute end-3 top-8 text-hero-accent/70 hover:text-hero-accent"
+                                className="absolute end-3 top-8 text-hero-accent hover:text-hero-accent"
                             >
                                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             </Button>

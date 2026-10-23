@@ -209,7 +209,6 @@ public class JournalEntryService : IJournalEntryService
             entry.Status = "Posted";
             entry.PostedByUserID = userId;
             entry.PostedAt = DateTime.UtcNow;
-            _unitOfWork.JournalEntries.Update(entry);
 
             foreach (var line in entry.Lines)
             {
@@ -259,11 +258,11 @@ public class JournalEntryService : IJournalEntryService
             return ApiResponse<JournalEntryDto>.Fail("لا توجد فترة محاسبية مفتوحة حالياً لإنشاء قيد العكس");
 
         JournalEntry reversal;
-        await _unitOfWork.BeginTransactionAsync();
+        var ownsTransaction = !_unitOfWork.HasActiveTransaction;
+        if (ownsTransaction) await _unitOfWork.BeginTransactionAsync();
         try
         {
             entry.Status = "Reversed";
-            _unitOfWork.JournalEntries.Update(entry);
 
             var reversalEntryNumber = await GenerateEntryNumberAsync(DateTime.UtcNow);
             reversal = new JournalEntry
@@ -307,6 +306,7 @@ public class JournalEntryService : IJournalEntryService
             foreach (var rl in reversalLines)
             {
                 await UpdateAccountBalanceAsync(reversal.PeriodID, rl.AccountID, rl.Debit, rl.Credit);
+                await CreateBankTransactionIfBankAccount(reversal, rl);
             }
 
             var receiptVoucherType = await _unitOfWork.JournalEntryTypes.Query()
@@ -325,16 +325,15 @@ public class JournalEntryService : IJournalEntryService
                 {
                     voucher.Status = VoucherStatus.Draft;
                     voucher.UpdatedAt = DateTime.UtcNow;
-                    _unitOfWork.Vouchers.Update(voucher);
                 }
             }
 
             await _unitOfWork.SaveChangesAsync();
-            await _unitOfWork.CommitAsync();
+            if (ownsTransaction) await _unitOfWork.CommitAsync();
         }
         catch
         {
-            await _unitOfWork.RollbackAsync();
+            if (ownsTransaction) await _unitOfWork.RollbackAsync();
             throw;
         }
 
@@ -370,7 +369,8 @@ public class JournalEntryService : IJournalEntryService
         if (!creditAccount.IsActive || !creditAccount.IsPostable)
             return new FinancialOperationResultDto { IsSuccess = false, Message = $"حساب الدائن '{mapping.CreditAccountCode}' غير نشط أو غير قابل للترحيل" };
 
-        await _unitOfWork.BeginTransactionAsync();
+        var ownsTransaction = !_unitOfWork.HasActiveTransaction;
+        if (ownsTransaction) await _unitOfWork.BeginTransactionAsync();
         try
         {
             var entryNumber = await GenerateEntryNumberAsync(request.OperationDate);
@@ -408,7 +408,7 @@ public class JournalEntryService : IJournalEntryService
             await UpdateAccountBalanceAsync(request.PeriodID, creditAccount.AccountID, 0, request.Amount);
             await _unitOfWork.SaveChangesAsync();
 
-            await _unitOfWork.CommitAsync();
+            if (ownsTransaction) await _unitOfWork.CommitAsync();
 
             return new FinancialOperationResultDto
             {
@@ -432,7 +432,7 @@ public class JournalEntryService : IJournalEntryService
         }
         catch
         {
-            await _unitOfWork.RollbackAsync();
+            if (ownsTransaction) await _unitOfWork.RollbackAsync();
             throw;
         }
     }

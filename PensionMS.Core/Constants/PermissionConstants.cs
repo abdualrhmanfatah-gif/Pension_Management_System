@@ -2,6 +2,7 @@ namespace PensionMS.Core.Constants;
 
 public static class PermissionConstants
 {
+    public const string FileTransfer = "File.Transfer";
     // ── Agent ──
     public const string AgentView = "Agent.View";
     public const string AgentAdd = "Agent.Add";

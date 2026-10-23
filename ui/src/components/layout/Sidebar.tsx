@@ -54,7 +54,7 @@ const SidebarNavLink = memo(function SidebarNavLink({ item, onClick }: { item: N
               "shrink-0 transition-transform duration-200 group-hover:scale-110",
               isActive
                 ? "text-amber-400"
-                : "text-white group-hover:text-amber-400/80"
+                : "text-white group-hover:text-amber-400"
             )}
           >
             {item.icon}
@@ -90,7 +90,7 @@ const SubGroupSection = memo(function SubGroupSection({
         <Accordion.Trigger
           className={cn(
             "flex w-full items-center gap-2 rounded-lg px-2 py-2 min-h-[36px]",
-            "text-xs font-bold text-white/70 tracking-wide",
+            "text-xs font-bold text-white tracking-wide",
             "transition-all hover:bg-white/[0.04] hover:text-white",
             "hover:no-underline outline-none sub-group-trigger",
             "[&_svg]:transition-all [&_svg]:duration-200"
@@ -100,23 +100,23 @@ const SubGroupSection = memo(function SubGroupSection({
           <span className="flex-1 text-start">
             {subGroupLabels[subGroup] || subGroup}
           </span>
-          <span className="text-white/70 group-hover:text-white group-data-[state=open]:text-amber-400">
+          <span className="text-white group-hover:text-white group-data-[state=open]:text-amber-400">
             <Plus className="h-4 w-4 hidden group-data-[state=closed]:block" />
             <Minus className="h-4 w-4 hidden group-data-[state=open]:block" />
           </span>
         </Accordion.Trigger>
       </Accordion.Header>
       <Accordion.Content className="overflow-hidden data-[state=closed]:animate-slide-up data-[state=open]:animate-slide-down">
-        <div className="space-y-0.5 ps-2 border-s border-white/[0.08] ms-1 mt-0.5 pb-1">
+        <div className="space-y-0.5 ps-2 border-s border-white ms-1 mt-0.5 pb-1">
           {subItems.map((item) => (
             <SidebarNavLink key={item.path} item={item} onClick={onItemClick} />
           ))}
           {nestedSubGroups.map((nestedGroup) => (
             <div key={nestedGroup} className="mt-2">
-              <div className="text-[10px] font-bold text-amber-400/80 px-2 py-1 tracking-wider">
+              <div className="text-[10px] font-bold text-amber-400 px-2 py-1 tracking-wider">
                 {subGroupLabels[nestedGroup] || nestedGroup}
               </div>
-              <div className="space-y-0.5 border-s border-amber-400/20 ms-1 mt-0.5">
+              <div className="space-y-0.5 border-s border-amber-400 ms-1 mt-0.5">
                 {items
                   .filter((i) => i.nestedIn === subGroup && i.subGroup === nestedGroup)
                   .map((item) => (
@@ -258,7 +258,7 @@ export function Sidebar() {
       className={cn(
         "fixed top-0 right-0 z-[60] flex h-dvh w-64 max-w-[85vw] flex-col will-change-transform",
         "bg-[hsl(var(--sidebar))] text-[hsl(var(--sidebar-foreground))]",
-        "border-l border-white/[0.06]",
+        "border-l border-white",
         "transition-transform duration-300 ease-out",
         isOpen ? "max-lg:translate-x-0" : "max-lg:translate-x-full",
         "lg:translate-x-0"
@@ -271,7 +271,7 @@ export function Sidebar() {
       onTouchEnd={handleTouchEnd}
     >
       {/* ── Header ─────────────────────────────── */}
-      <div className="shrink-0 px-5 py-6 border-b border-white/[0.08]">
+      <div className="shrink-0 px-5 py-6 border-b border-white">
         <div className="flex items-center gap-3.5">
           <picture>
             <source srcSet="/pension-logo.webp" type="image/webp" />
@@ -285,7 +285,7 @@ export function Sidebar() {
             <h1 className="text-sm font-black text-white leading-tight truncate tracking-wide">
               صندوق التقاعد الأمني
             </h1>
-            <p className="text-xs text-white/70 mt-1 truncate font-medium tracking-wider">
+            <p className="text-xs text-white mt-1 truncate font-medium tracking-wider">
               الإدارة العامة
             </p>
           </div>
@@ -293,7 +293,7 @@ export function Sidebar() {
             variant="ghost"
             size="icon"
             onClick={handleClose}
-            className="lg:hidden h-10 w-10 text-white/60 hover:text-white hover:bg-white/[0.08]"
+            className="lg:hidden h-10 w-10 text-white hover:text-white hover:bg-white/[0.08]"
             aria-label="إغلاق القائمة"
           >
             <X className="h-5 w-5" />
@@ -347,7 +347,7 @@ export function Sidebar() {
                   "[&_svg]:transition-all [&_svg]:duration-200"
                 )}
               >
-                <span className="shrink-0 text-white group-hover:text-amber-400/80 group-data-[state=open]:text-amber-400/90 group-hover:scale-110 transition-transform">
+                <span className="shrink-0 text-white group-hover:text-amber-400 group-data-[state=open]:text-amber-400 group-hover:scale-110 transition-transform">
                   {groupIcons[group]}
                 </span>
                 <span className="flex-1 text-start">
@@ -390,16 +390,16 @@ export function Sidebar() {
       </nav>
 
       {/* ── User Footer ────────────────────────── */}
-      <div className="shrink-0 border-t border-white/[0.08] px-3 py-3">
+      <div className="shrink-0 border-t border-white px-3 py-3">
         <div className="flex items-center gap-2.5">
           <div className="flex items-center justify-center w-10 h-10 rounded-md bg-white/[0.08] shrink-0">
-            <User className="h-4 w-4 text-white/60" />
+            <User className="h-4 w-4 text-white" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold text-white/90 truncate leading-tight">
+            <p className="text-xs font-semibold text-white truncate leading-tight">
               {user?.fullName || "مستخدم"}
             </p>
-            <p className="text-[10px] sm:text-xs text-white/60 truncate">
+            <p className="text-[10px] sm:text-xs text-white truncate">
               {user?.role || ""}
             </p>
           </div>
@@ -407,7 +407,7 @@ export function Sidebar() {
             variant="ghost"
             size="icon"
             onClick={handleLogout}
-            className="h-10 w-10 text-white/40 hover:text-red-400 hover:bg-white/[0.08]"
+            className="h-10 w-10 text-white hover:text-red-400 hover:bg-white/[0.08]"
             aria-label="تسجيل الخروج"
           >
             <LogOut className="h-4 w-4" />

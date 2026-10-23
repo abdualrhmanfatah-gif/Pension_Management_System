@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { AlertTriangle, CheckCircle2,ShieldAlert } from "lucide-react";
+import { AlertTriangle, Ban, CheckCircle2, ShieldAlert } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -13,6 +13,7 @@ import {
     DataTable,
     Heading,
     LoadingIndicator,
+    TabHeader,
     useConfirm} from "@/components/ui";
 import { SUSPENSION_STATUS } from "@/constants";
 import { useApiMutation } from "@/hooks";
@@ -143,6 +144,12 @@ export function SuspensionsTab({ fileId }: SuspensionsTabProps) {
 
     return (
         <div className="space-y-3 md:space-y-6 animate-in fade-in duration-500 text-start">
+            <TabHeader
+                title="سجل إيقاف المعاش"
+                description="متابعة ورصد قرارات إيقاف المعاش واستئناف الصرف للملف التقاعدي"
+                icon={Ban}
+            />
+
             {activeSuspension && (
                 <Card className="bg-rose-500/5 border-rose-100 p-4 flex items-start gap-4 text-start">
                     <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 shrink-0">
@@ -150,7 +157,7 @@ export function SuspensionsTab({ fileId }: SuspensionsTabProps) {
                     </div>
                     <div className="space-y-1">
                         <Heading level="h4" className="font-bold text-rose-900">الملف موقوف حالياً</Heading>
-                        <p className="text-sm text-rose-800/80">هذا الملف لديه إيقاف نشط صادر من {activeSuspension.suspensionSource} بتاريخ {formatDate(activeSuspension.suspensionDate)} بسبب {activeSuspension.suspensionReason}.</p>
+                        <p className="text-sm text-rose-800">هذا الملف لديه إيقاف نشط صادر من {activeSuspension.suspensionSource} بتاريخ {formatDate(activeSuspension.suspensionDate)} بسبب {activeSuspension.suspensionReason}.</p>
                     </div>
                 </Card>
             )}

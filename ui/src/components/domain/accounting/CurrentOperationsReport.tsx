@@ -159,7 +159,7 @@ export function CurrentOperationsReport({ fiscalYearId, externalFilters, hideInt
               ) : (
                 <div className="space-y-2">
                   {classified.revenueAccounts.map((account: TrialBalanceItemDto) => (
-                    <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                    <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{account.accountCode}</span>
                         <span className="text-sm mr-2">{account.accountName}</span>
@@ -182,7 +182,7 @@ export function CurrentOperationsReport({ fiscalYearId, externalFilters, hideInt
               ) : (
                 <div className="space-y-2">
                   {classified.expenseAccounts.map((account: TrialBalanceItemDto) => (
-                    <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                    <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{account.accountCode}</span>
                         <span className="text-sm mr-2">{account.accountName}</span>
@@ -205,7 +205,7 @@ export function CurrentOperationsReport({ fiscalYearId, externalFilters, hideInt
               ) : (
                 <div className="space-y-2">
                   {classified.assetAccounts.map((account: TrialBalanceItemDto) => (
-                    <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                    <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{account.accountCode}</span>
                         <span className="text-sm mr-2">{account.accountName}</span>
@@ -228,7 +228,7 @@ export function CurrentOperationsReport({ fiscalYearId, externalFilters, hideInt
               ) : (
                 <div className="space-y-2">
                   {classified.equityAccounts.map((account: TrialBalanceItemDto) => (
-                    <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                    <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{account.accountCode}</span>
                         <span className="text-sm mr-2">{account.accountName}</span>
@@ -238,7 +238,7 @@ export function CurrentOperationsReport({ fiscalYearId, externalFilters, hideInt
                     </div>
                   ))}
                   {classified.liabilityAccounts.map((account: TrialBalanceItemDto) => (
-                    <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                    <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{account.accountCode}</span>
                         <span className="text-sm mr-2">{account.accountName}</span>

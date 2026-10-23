@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { AlertCircle, AlertTriangle, CheckCircle2, ChevronDown, ChevronUp, Eye, FileText, History, Inbox, ShieldCheck, ThumbsDown, ThumbsUp, XCircle } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 import { retirementApi } from "@/api/retirement";
 import { DocumentViewerDialog } from "@/components/domain/retirement/DocumentViewerDialog";
@@ -66,10 +67,8 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
 
     const statusMutation = useApiMutation(
         async ({ action, notes }: { action: typeof REVIEW_ACTION[keyof typeof REVIEW_ACTION], notes: string }) => {
-            let newStatusId = 2;
-            if (action === REVIEW_ACTION.RETURN) newStatusId = 6;
-            if (action === REVIEW_ACTION.REJECT) newStatusId = 4;
-            return retirementApi.updateFileStatus(fileId, newStatusId, notes);
+            if (action === REVIEW_ACTION.APPROVE) return retirementApi.approveReview(fileId, notes);
+            return retirementApi.rejectReview(fileId, notes);
         },
         {
             successMessage: (_, variables) =>
@@ -147,8 +146,12 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
 
     const handleRejectItem = async (change: FieldChange) => {
         if (!change.itemId) return;
+        if (!reviewNotes.trim()) {
+            toast.error("اكتب سبب الرفض في ملاحظات المراجعة أولًا");
+            return;
+        }
         const ok = await confirm({ title: "رفض التغيير", description: `رفض "${translateFieldName(change.fieldName)}"؟`, variant: "danger" });
-        if (ok) rejectItemMutation.mutate({ itemId: change.itemId, reason: "" });
+        if (ok && reviewNotes.trim()) rejectItemMutation.mutate({ itemId: change.itemId, reason: reviewNotes.trim() });
     };
 
     if (loadingDocs || loadingTransitions) return <LoadingIndicator message="جاري تحميل بيانات المراجعة..." />;
@@ -159,8 +162,8 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-6">
                     {showDiff && (
-                        <Card className={`rounded-3xl p-8 relative overflow-hidden ${needsReview ? 'border-warning/30' : 'border-muted'}`}>
-                            <div className={`absolute top-0 end-0 p-4 opacity-5`}>
+                        <Card className={`rounded-3xl p-8 relative overflow-hidden ${needsReview ? 'border-warning' : 'border-muted'}`}>
+                            <div className={`absolute top-0 end-0 p-4 opacity-100`}>
                                 {needsReview ? <AlertTriangle className="w-24 h-24 text-warning" /> : <CheckCircle2 className="w-24 h-24 text-success" />}
                             </div>
 
@@ -195,13 +198,13 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
                             {loadingDiff ? (
                                 <div className="py-6 text-center text-muted-foreground animate-pulse">جاري تحميل الفروقات...</div>
                             ) : reviewDiff && reviewDiff.sections.length > 0 ? (
-                                <div className={`space-y-4 mb-6 max-h-[40vh] sm:max-h-[500px] overflow-y-auto ${needsReview ? '' : 'opacity-75'}`}>
+                                <div className={`space-y-4 mb-6 max-h-[40vh] sm:max-h-[500px] overflow-y-auto ${needsReview ? '' : 'opacity-100'}`}>
                                     {reviewDiff.sections.map((section: FileReviewDiffSection) => (
                                         <div key={section.sectionName} className="border border-border rounded-2xl overflow-hidden">
                                             <div className="bg-muted/30 px-5 py-3 border-b">
                                                 <h4 className="font-bold text-sm">{section.sectionName}</h4>
                                             </div>
-                                            <div className="divide-y divide-border/50">
+                                            <div className="divide-y divide-border">
                                                 {section.fieldChanges.length === 0 ? (
                                                     <div className="px-5 py-4 text-xs text-muted-foreground">لا توجد تغييرات في هذا القسم</div>
                                                 ) : (
@@ -229,6 +232,10 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
                             )}
 
                             {needsReview && (
+                                <Textarea value={reviewNotes} onChange={(event) => setReviewNotes(event.target.value)}
+                                    placeholder="ملاحظات المراجعة وسبب الرفض" aria-label="ملاحظات المراجعة وسبب الرفض" />
+                            )}
+                            {needsReview && (
                                 <div className="flex flex-wrap gap-3 pt-4 border-t border-dashed">
                                     <Button
                                         size="lg"
@@ -242,7 +249,7 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
                                     <Button
                                         variant="outline"
                                         size="lg"
-                                        className="h-12 px-8 rounded-2xl gap-2 font-black border-danger/20 bg-danger/5 text-danger hover:bg-danger/10 transition-all"
+                                        className="h-12 px-8 rounded-2xl gap-2 font-black border-danger bg-danger/5 text-danger hover:bg-danger/10 transition-all"
                                         onClick={() => handleReviewDecision("reject")}
                                         loading={reviewMutation.isPending}
                                         disabled={!canReviewReject}
@@ -255,7 +262,7 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
                     )}
 
                     <Card className="rounded-3xl p-8 relative overflow-hidden">
-                        <div className="absolute top-0 end-0 p-4 opacity-5">
+                        <div className="absolute top-0 end-0 p-4 opacity-100">
                             <ShieldCheck className="w-24 h-24" />
                         </div>
 
@@ -272,7 +279,7 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
                         {fileSummary && ((fileSummary.missingDocumentsCount || 0) > 0 || (fileSummary.missingDataCount || 0) > 0) && (
                             <AlertBanner
                                 variant="warning"
-                                className="mb-8 items-start border-warning/30"
+                                className="mb-8 items-start border-warning"
                                 message={
                                     <div className="flex flex-col gap-2">
                                         <div>
@@ -291,7 +298,7 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
                                 loading={statusMutation.isPending && reviewAction === REVIEW_ACTION.APPROVE}>
                                 <ShieldCheck className="w-5 h-5" /> اعتماد الملف نهائياً
                             </Button>
-                            <Button variant="outline" size="lg" className="h-14 px-8 rounded-2xl gap-2 font-black border-warning/20 bg-warning/5 text-warning hover:bg-warning/10 transition-all"
+                            <Button variant="outline" size="lg" className="h-14 px-8 rounded-2xl gap-2 font-black border-warning bg-warning/5 text-warning hover:bg-warning/10 transition-all"
                                 onClick={() => setReviewAction(REVIEW_ACTION.RETURN)}>
                                 <History className="w-5 h-5" /> إرجاع للاستكمال
                             </Button>
@@ -306,7 +313,7 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
                                 <div className="space-y-4">
                                     <div className="flex justify-between items-center flex-wrap">
                                         <h4 className="font-bold text-sm">ملاحظات {reviewAction === REVIEW_ACTION.RETURN ? "الإرجاع" : "الرفض"}</h4>
-                                        <Badge variant="outline" className="text-[10px] sm:text-xs uppercase font-black tracking-widest px-2 py-0.5 rounded-lg border-primary/20 text-primary">إلزامي</Badge>
+                                        <Badge variant="outline" className="text-[10px] sm:text-xs uppercase font-black tracking-widest px-2 py-0.5 rounded-lg border-primary text-primary">إلزامي</Badge>
                                     </div>
                                     <Textarea
                                         className="min-h-[120px] rounded-2xl border-2 border-muted bg-muted/30 p-4"
@@ -368,7 +375,7 @@ export function ReviewTab({ fileId, file: fileSummary }: ReviewTabProps) {
                         <div className="p-5 border-b bg-muted/30">
                             <Heading level="h3" className="font-black text-sm">قائمة التحقق من الوثائق</Heading>
                         </div>
-                        <div className="p-2 divide-y divide-border/50 max-h-[40vh] sm:max-h-[500px] overflow-y-auto">
+                        <div className="p-2 divide-y divide-border max-h-[40vh] sm:max-h-[500px] overflow-y-auto">
                             {!documents || !Array.isArray(documents) || documents.length === 0 ? (
                                 <EmptyState icon={Inbox} title="لا توجد وثائق مرفوعة حالياً." />
                             ) : (
@@ -426,7 +433,7 @@ function EntityChangeCard({ change, needsReview, expandedChange, onToggleExpand,
 
     const statusIcon = isApproved ? <CheckCircle2 className="w-4 h-4 text-success" /> : isPending ? <AlertTriangle className="w-4 h-4 text-warning" /> : <XCircle className="w-4 h-4 text-danger" />;
     const statusBadge = isApproved ? "معتمد" : isPending ? "بانتظار المراجعة" : "مرفوض";
-    const statusBadgeClass = isApproved ? "bg-success/5 text-success border-success/20" : isPending ? "bg-warning/5 text-warning border-warning/20" : "bg-danger/5 text-danger border-danger/20";
+    const statusBadgeClass = isApproved ? "bg-success/5 text-success border-success" : isPending ? "bg-warning/5 text-warning border-warning" : "bg-danger/5 text-danger border-danger";
 
     return (
         <div className="relative">
@@ -452,7 +459,7 @@ function EntityChangeCard({ change, needsReview, expandedChange, onToggleExpand,
 
             {isExpanded && hasDetails && (
                 <div className="px-5 pb-3 animate-in slide-in-from-top-1 duration-150">
-                    <div className="bg-muted/20 rounded-xl p-3 space-y-2 border border-border/50">
+                    <div className="bg-muted/20 rounded-xl p-3 space-y-2 border border-border">
                         {(change.fieldDetails || []).map((detail, i) => (
                             <div key={i} className="grid grid-cols-1 sm:grid-cols-[1fr_1.5fr_1.5fr] gap-3 text-xs">
                                 <span className="font-bold text-muted-foreground">{translateFieldName(detail.fieldName)}</span>

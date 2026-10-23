@@ -178,7 +178,7 @@ export function CashFlowPage() {
                 ) : (
                   <div className="space-y-2">
                     {report.operatingItems.map((item, i) => (
-                      <div key={i} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                      <div key={i} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                         <div className="flex items-center gap-2">
                           {item.type === "Inflow" ? (
                             <ArrowDown className="w-4 h-4 text-success" />
@@ -212,7 +212,7 @@ export function CashFlowPage() {
                 ) : (
                   <div className="space-y-2">
                     {report.investingItems.map((item, i) => (
-                      <div key={i} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                      <div key={i} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                         <div className="flex items-center gap-2">
                           {item.type === "Inflow" ? (
                             <ArrowDown className="w-4 h-4 text-success" />
@@ -246,7 +246,7 @@ export function CashFlowPage() {
                 ) : (
                   <div className="space-y-2">
                     {report.financingItems.map((item, i) => (
-                      <div key={i} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                      <div key={i} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                         <div className="flex items-center gap-2">
                           {item.type === "Inflow" ? (
                             <ArrowDown className="w-4 h-4 text-success" />

@@ -2,11 +2,12 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2, FileText, ShieldCheck, User } from "lucide-react";
-import { useEffect, useMemo } from "react";
-import { Controller,useForm, useWatch } from "react-hook-form";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import { Controller,type Resolver, type ResolverOptions,useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 import api from "@/api/axios";
+import { retirementApi } from "@/api/retirement";
 import {
     BaseFormDialog,
     DateInput,
@@ -15,9 +16,11 @@ import {
     FormSection,
     Input,
     NoteBox,
+    yemenPhoneSchema,
 } from "@/components/ui";
-import { useApiMutation } from "@/hooks";
-import { useGuardianQuery } from "@/hooks/queries/useGuardianQuery";
+import { useApiMutation, useRecordNavigation } from "@/hooks";
+import { GUARDIAN_KEY } from "@/hooks/queries/useGuardianQuery";
+import { GUARDIANS_KEY } from "@/hooks/queries/useGuardiansQuery";
 import { cn } from "@/lib/utils";
 import type { GuardianDto } from "@/types/retirement";
 
@@ -26,7 +29,7 @@ import type { GuardianDto } from "@/types/retirement";
 const guardianCreateSchema = z.object({
     fullName: z.string().min(1, "اسم الوصي مطلوب"),
     nationalID: z.string().length(12, "الرقم الوطني يجب أن يتكون من 12 رقماً"),
-    phone: z.string().optional(),
+    phone: yemenPhoneSchema.optional().or(z.literal("")),
     guardianshipDocNumber: z.string().min(1, "رقم صك الوصاية مطلوب"),
     startDate: z.string().min(1, "تاريخ بدء الوصاية مطلوب"),
     entitledIDs: z.array(z.number()).min(1, "يجب اختيار مستحق واحد على الأقل"),
@@ -38,7 +41,7 @@ const guardianCreateSchema = z.object({
 const guardianEditSchema = z.object({
     fullName: z.string().min(1, "اسم الوصي مطلوب"),
     nationalID: z.string().length(12, "الرقم الوطني يجب أن يتكون من 12 رقماً"),
-    phone: z.string().optional(),
+    phone: yemenPhoneSchema.optional().or(z.literal("")),
     guardianshipDocNumber: z.string().optional(),
     startDate: z.string().optional(),
     entitledIDs: z.array(z.number()).optional(),
@@ -82,50 +85,89 @@ export function GuardianDialog({
     mode = "create",
     initialData
 }: GuardianDialogProps) {
-    // جلب البيانات الطازجة في وضع التعديل
+    // في وضع التعديل: معرّف الوصي المفتوح (لبذر فهرس التنقل)
     const editId = mode === "edit" ? initialData?.guardianID : undefined;
-    const { data: freshData } = useGuardianQuery(editId, !!editId && open);
 
-    const effectiveData = useMemo(() => {
-        if (mode === "edit" && freshData) return freshData;
-        return initialData;
-    }, [mode, freshData, initialData]);
+    // تحويل بيانات الوصي (من التفاصيل أو صف القائمة) إلى قيم النموذج
+    const toFormValues = useCallback((data: GuardianDto): GuardianFormValues => ({
+        fullName: data.fullName,
+        nationalID: data.nationalID,
+        phone: data.phone ?? "",
+        guardianshipDocNumber: data.guardianshipDocNumber,
+        startDate: data.startDate?.split("T")[0] ?? "",
+        entitledIDs: data.minors?.filter(m => m.isActive).map(m => m.entitledID) ?? [],
+    }), []);
+
+    // وضع فعلي مرجعي — يقرأه المصحّح عند الإرسال بعد تحديد effectiveMode
+    const effectiveModeRef = useRef<"create" | "edit">(mode);
+
+    const form = useForm<GuardianFormValues>({
+        resolver: ((values: GuardianFormValues, context: unknown, options: ResolverOptions<GuardianFormValues>) => {
+            const schema = effectiveModeRef.current === "create" ? guardianCreateSchema : guardianEditSchema;
+            const resolve = zodResolver(schema) as unknown as Resolver<GuardianFormValues>;
+            return resolve(values, context, options);
+        }) as Resolver<GuardianFormValues>,
+        defaultValues: useMemo(
+            () => (mode === "edit" && initialData ? toFormValues(initialData) : { ...createEmptyDefaults }),
+            [mode, initialData, toFormValues],
+        ),
+    });
+
+    const { control, register, setValue, trigger, watch, reset, formState: { errors, isDirty } } = form;
+
+    // ─── Alt+↑/↓: التنقل بين أوصياء الملف (المنطق المشترك في useRecordNavigation) ───
+    const savingRef = useRef(false);
+    const { activeRecord, detailReady, effectiveMode } = useRecordNavigation<
+        GuardianDto,
+        GuardianDto,
+        GuardianFormValues
+    >({
+        open,
+        mode,
+        editRecordId: editId,
+        listKey: [GUARDIANS_KEY, fileId],
+        fetchList: async () => (await retirementApi.getGuardians(fileId)) as unknown as GuardianDto[],
+        getId: g => g.guardianID,
+        detailKey: id => [GUARDIAN_KEY, id],
+        fetchDetail: id => retirementApi.getGuardianById(id) as Promise<GuardianDto>,
+        getDetailId: d => d.guardianID,
+        emptyMessage: "لا يوجد أوصياء مسجلون لهذا الملف",
+        emptyDefaults: createEmptyDefaults,
+        toFormValues: record => toFormValues(record as GuardianDto),
+        form,
+        isDirty,
+        isBusyRef: savingRef,
+        focusField: "fullName",
+    });
+
+    // جلب البيانات الطازجة: السجل الحالي (تفاصيل أو صف القائمة)، وإلا initialData
+    const effectiveData = (activeRecord ?? initialData) as GuardianDto | undefined;
+
+    useEffect(() => {
+        effectiveModeRef.current = effectiveMode;
+    }, [effectiveMode]);
 
     const mutation = useApiMutation(
         async (formData: FormData) => {
-            if (mode === "create") {
+            if (effectiveMode === "create") {
                 return api.post("/guardians", formData, { headers: { "Content-Type": "multipart/form-data" } });
             } else {
                 return api.put(`/guardians/${effectiveData?.guardianID}`, formData, { headers: { "Content-Type": "multipart/form-data" } });
             }
         },
         {
-            invalidateKeys: [["guardians"], ["retirement-file", fileId]],
-            successMessage: mode === "create" ? "تم تسجيل الوصي بنجاح" : "تم تحديث بيانات الوصي بنجاح",
+            invalidateKeys: [[GUARDIANS_KEY, fileId], ["retirement-file", fileId]],
+            successMessage: effectiveMode === "create" ? "تم تسجيل الوصي بنجاح" : "تم تحديث بيانات الوصي بنجاح",
             onSuccess: () => {
                 sessionStorage.removeItem(DRAFT_KEY);
             }
         }
     );
 
-    const form = useForm<GuardianFormValues>({
-        resolver: zodResolver(mode === "create" ? guardianCreateSchema : guardianEditSchema) as any,
-        defaultValues: useMemo(() => {
-            if (mode === "edit" && effectiveData) {
-                return {
-                    fullName: effectiveData.fullName,
-                    nationalID: effectiveData.nationalID,
-                    phone: effectiveData.phone ?? "",
-                    guardianshipDocNumber: effectiveData.guardianshipDocNumber,
-                    startDate: effectiveData.startDate?.split("T")[0] ?? "",
-                    entitledIDs: effectiveData.minors?.filter(m => m.isActive).map(m => m.entitledID) ?? [],
-                };
-            }
-            return { ...createEmptyDefaults };
-        }, [mode, effectiveData])
-    });
-
-    const { control, register, setValue, trigger, watch, reset, formState: { errors, isDirty } } = form;
+    // مزامنة حارس التنقل مع حالة الحفظ (يُقرأ عند الضغط فقط)
+    useEffect(() => {
+        savingRef.current = mutation.isPending;
+    }, [mutation.isPending]);
 
     useEffect(() => {
         if (open && mode === "create") {
@@ -139,17 +181,17 @@ export function GuardianDialog({
 
     const allValues = watch();
     useEffect(() => {
-        if (mode === "create" && isDirty) {
+        if (effectiveMode === "create" && isDirty) {
             const { personalPhoto: _p, nationalIDDocument: _n, guardianshipDocument: _g, ...textFields } = allValues;
             void _p; void _n; void _g;
             sessionStorage.setItem(DRAFT_KEY, JSON.stringify(textFields));
         }
-    }, [allValues, isDirty, mode]);
+    }, [allValues, isDirty, effectiveMode]);
 
     const performSubmit = async (values: GuardianFormValues, keepOpen = false) => {
         const formData = new FormData();
 
-        if (mode === "create") {
+        if (effectiveMode === "create") {
             formData.append("fileID", fileId.toString());
             values.entitledIDs?.forEach((id: number) => formData.append("entitledIDs", id.toString()));
             formData.append("startDate", (values.startDate ?? "") + "T00:00:00");
@@ -194,46 +236,39 @@ export function GuardianDialog({
         trigger("entitledIDs");
     };
 
-    const initialValues = useMemo(() => {
-        if (mode !== "edit" || !effectiveData) return undefined;
-        return {
-            fullName: effectiveData.fullName,
-            nationalID: effectiveData.nationalID,
-            phone: effectiveData.phone ?? "",
-            guardianshipDocNumber: effectiveData.guardianshipDocNumber,
-            startDate: effectiveData.startDate?.split("T")[0] ?? "",
-            entitledIDs: effectiveData.minors?.filter(m => m.isActive).map(m => m.entitledID) ?? [],
-        };
-    }, [mode, effectiveData]);
+    const initialValues = useMemo(
+        () => (effectiveData && (effectiveMode === "edit" || activeRecord) ? toFormValues(effectiveData) : undefined),
+        [effectiveData, effectiveMode, activeRecord, toFormValues]
+    );
 
     return (
         <BaseFormDialog
             open={open}
             onOpenChange={(o) => !o && onClose()}
-            title={mode === "create" ? "تسجيل وصي جديد" : "تعديل بيانات الوصي"}
-            description={mode === "create" ? "أدخل بيانات الوصي واختر المستحقين (القاصرين) التابعين له" : "تحديث بيانات الوصي المسجلة"}
+            title={effectiveMode === "create" ? "تسجيل وصي جديد" : "تعديل بيانات الوصي"}
+            description={effectiveMode === "create" ? "أدخل بيانات الوصي واختر المستحقين (القاصرين) التابعين له" : "تحديث بيانات الوصي المسجلة"}
             size="full"
-            isLoading={mutation.isPending}
+            isLoading={mutation.isPending || !detailReady}
             isDirty={isDirty}
             onSubmit={form.handleSubmit(handleFormSubmit as any)}
-            onSaveAndNew={mode === "create" ? handleSaveAndNew : undefined}
+            onSaveAndNew={effectiveMode === "create" ? handleSaveAndNew : undefined}
             resetOnOpen={true}
             reset={form.reset}
             initialValues={initialValues}
             showGlobalError
             formErrors={errors}
-            submitLabel={mode === "create" ? "تسجيل الوصي" : "حفظ التعديلات"}
+            submitLabel={effectiveMode === "create" ? "تسجيل الوصي" : "حفظ التعديلات"}
         >
             <div className="space-y-4" dir="rtl">
                 {/* اختيار المستحقين - فقط في وضع الإنشاء */}
-                {mode === "create" && (
+                {effectiveMode === "create" && (
                     <FormSection title="المستحقين التابعين" icon={ShieldCheck}>
                         <FormField label="اختر القاصرين" required error={errors.entitledIDs?.message}>
-                            <div className="border border-border/40 rounded-2xl p-2 max-h-[35vh] overflow-y-auto bg-background/30 space-y-1">
+                            <div className="border border-border rounded-2xl p-2 max-h-[35vh] overflow-y-auto bg-background/30 space-y-1">
                                 {availableEntitleds.length === 0 ? (
                                     <div className="flex flex-col items-center justify-center h-full text-center p-6 space-y-3">
                                         <div className="p-3 bg-muted rounded-full">
-                                            <ShieldCheck className="w-8 h-8 text-muted-foreground/40" />
+                                            <ShieldCheck className="w-8 h-8 text-muted-foreground" />
                                         </div>
                                         <p className="text-xs text-muted-foreground leading-relaxed">لا يوجد قاصرين متاحين بدون أوصياء حالياً</p>
                                     </div>
@@ -277,11 +312,11 @@ export function GuardianDialog({
                             <Input {...register("nationalID")} placeholder="12xxxxxxxxxx" />
                         </FormField>
 
-                        <FormField label="رقم صك الوصاية" required={mode === "create"} error={errors.guardianshipDocNumber?.message}>
+                        <FormField label="رقم صك الوصاية" required={effectiveMode === "create"} error={errors.guardianshipDocNumber?.message}>
                             <Input {...register("guardianshipDocNumber")} className="font-mono font-bold" />
                         </FormField>
 
-                        {mode === "create" && (
+                        {effectiveMode === "create" && (
                             <FormField label="تاريخ بدء الوصاية" required error={errors.startDate?.message}>
                                 <Controller
                                     name="startDate"
@@ -306,7 +341,7 @@ export function GuardianDialog({
                 {/* المرفقات والوثائق */}
                 <FormSection title="المرفقات والوثائق" icon={FileText}>
                     <NoteBox title="تنبيه" className="mb-4">
-                        {mode === "create"
+                        {effectiveMode === "create"
                             ? "يرجى التأكد من وضوح الوثائق الممسوحة ضوئياً لضمان سرعة قبول الملف."
                             : "اترك الحقول فارغة إذا كنت لا تريد تغيير المرفقات الحالية."
                         }

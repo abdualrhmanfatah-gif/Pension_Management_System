@@ -1,6 +1,7 @@
 export {
   emailSchema,
   nationalIdSchema,
+  PHONE_ERROR_MESSAGE,
   requiredFile,
   requiredNumber,
   requiredString,

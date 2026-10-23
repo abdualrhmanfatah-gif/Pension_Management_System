@@ -3,8 +3,8 @@ import { DollarSign, FileText, FileWarning, History, MapPin, Shield, User,UserCh
 import { Badge, Button } from "@/components/ui";
 import { Heading } from "@/components/ui";
 import { Text } from "@/components/ui";
-import { RecordStateBadge } from "@/components/ui";
 import { REVIEW_SECTIONS, REVIEW_SECTIONS_AR } from "@/constants";
+import { retirementFileStatusName } from "@/constants/retirement";
 import { cn, getDefaultDeceasedAvatar, getPhotoUrl, getStatusColorClass, resolvePersonalPhotoPath } from "@/lib/utils";
 import type { RetireeDetail, RetirementFileDetail, ReviewSection } from "@/types/retirement";
 
@@ -42,7 +42,7 @@ export function FileReviewSidebar({
             <div className="relative overflow-hidden border-b border-border">
                 {/* خلفية علوية متدرجة */}
                 <div className="h-16 bg-gradient-to-br from-primary/15 via-primary/5 to-background relative">
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--primary)_0%,transparent_60%)] opacity-[0.07]" />
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--primary)_0%,transparent_60%)] opacity-100" />
                     <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
                 </div>
 
@@ -51,7 +51,7 @@ export function FileReviewSidebar({
                     <div className="flex flex-col items-center">
                         {/* الصورة الشخصية */}
                         <div className="relative group">
-                            <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/30 to-primary/10 rounded-2xl blur opacity-50 group-hover:opacity-75 transition duration-500" />
+                            <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/30 to-primary/10 rounded-2xl blur opacity-100 group-hover:opacity-100 transition duration-500" />
                             {photoUrl ? (
                                 <img
                                     src={photoUrl}
@@ -60,7 +60,7 @@ export function FileReviewSidebar({
                                 />
                             ) : (
                                 <div className="relative w-20 h-28 rounded-2xl border-[4px] border-card bg-muted flex items-center justify-center">
-                                    <User className="w-8 h-8 text-muted-foreground/60" />
+                                    <User className="w-8 h-8 text-muted-foreground" />
                                 </div>
                             )}
                             {/* شارة الحالة على الصورة */}
@@ -69,7 +69,7 @@ export function FileReviewSidebar({
                                 file.isAlive ? "bg-emerald-500" : "bg-red-500"
                             )}>
                                 {file.isAlive && (
-                                    <div className="absolute inset-0 rounded-full bg-emerald-500 animate-ping opacity-40" />
+                                    <div className="absolute inset-0 rounded-full bg-emerald-500 animate-ping opacity-100" />
                                 )}
                             </div>
                         </div>
@@ -100,13 +100,13 @@ export function FileReviewSidebar({
                         <InfoPill
                             icon={<MapPin className="w-3 h-3" />}
                             label="العنوان"
-                            value={`${retiree.governorate || "—"} — ${retiree.city || "—"}`}
+                            value={retiree.governorate && retiree.city ? `${retiree.governorate}، ${retiree.city}` : retiree.governorate || retiree.city || "—"}
                         />
                     </div>
 
                     {/* شارة الحالة */}
                     <div className="flex justify-center mt-3">
-                        <RecordStateBadge state={(file.statusID as any) || "active"} />
+                        <Badge variant="outline">{retirementFileStatusName(file.statusID)}</Badge>
                     </div>
                 </div>
             </div>
@@ -152,12 +152,12 @@ export function FileReviewSidebar({
 /* ─── مكون مساعد ─── */
 function InfoPill({ icon, label, value, dir }: { icon: React.ReactNode; label: string; value: string; dir?: string }) {
     return (
-        <div className="flex items-center justify-between p-2 rounded-xl bg-muted/40 border border-border/40 hover:bg-muted/60 transition-colors group min-w-0">
+        <div className="flex items-center justify-between gap-2 p-2 rounded-xl bg-muted/40 border border-border hover:bg-muted/60 transition-colors group min-w-0">
             <div className="flex items-center gap-1.5 text-muted-foreground shrink-0">
                 {icon}
-                <span className="text-[9px] font-bold uppercase tracking-wider">{label}</span>
+                <span className="text-xs font-bold">{label}</span>
             </div>
-            <p className="text-[10px] font-mono font-semibold text-foreground truncate min-w-0 ms-2" title={value} dir={dir}>
+            <p className="text-xs font-semibold text-foreground truncate min-w-0 text-end" title={value} dir={dir}>
                 {value}
             </p>
         </div>

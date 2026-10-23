@@ -4,7 +4,7 @@ using PensionMS.Core.DTOs.RetirementFiles;
 namespace PensionMS.Core.Interfaces;
 
 /// <summary>
-/// خدمة إدارة حالات ملفات التقاعد — تغيير الحالة + فحص SoD + التحولات المسموحة
+/// خدمة إدارة حالات ملفات التقاعد والتحولات المسموحة وتوثيقها
 /// </summary>
 public interface IFileStatusService
 {
@@ -12,8 +12,4 @@ public interface IFileStatusService
     Task<ApiResponse<List<FileStatusDto>>> GetAllowedStatusTransitionsAsync(int fileId);
     Task<ApiResponse<List<FileStatusDto>>> GetFileStatusesAsync();
 
-    /// <summary>
-    /// يُشغَّل من الـ Background Job — يوقف الملفات النشطة التي انتهت مدة تعهداتها
-    /// </summary>
-    Task ProcessExpiredPledgesAsync();
 }

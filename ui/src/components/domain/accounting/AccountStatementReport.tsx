@@ -148,7 +148,7 @@ export function AccountStatementReport({ fiscalYearId, fromDate: propFromDate, t
             </thead>
             <tbody>
               {items.map((item, i) => (
-                <tr key={i} className="border-t border-border/50 hover:bg-muted/20">
+                <tr key={i} className="border-t border-border hover:bg-muted/20">
                   <td className="p-2 text-xs">{new Date(item.entryDate).toLocaleDateString("ar-SA")}</td>
                   <td className="p-2 font-mono text-xs ltr" dir="ltr">{item.entryNumber}</td>
                   <td className="p-2 text-xs">{item.description}</td>

@@ -113,7 +113,7 @@ export function VoucherViewDialog({ open, onOpenChange, voucherId }: Props) {
               </SummaryCard>
 
               {/* المبلغ */}
-              <div className="rounded-xl border bg-primary/5 border-primary/20 p-4">
+              <div className="rounded-xl border bg-primary/5 border-primary p-4">
                 <div className="flex items-center gap-1.5 mb-1">
                   <DollarSign className="w-3.5 h-3.5 text-primary" />
                   <span className="text-xs text-muted-foreground">المبلغ</span>

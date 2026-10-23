@@ -68,7 +68,7 @@ function DocumentPreview({ doc }: { doc: DocumentItem }) {
 
     return (
         <div className="flex flex-col items-center justify-center h-full gap-4 p-6">
-            <FileText className="w-16 h-16 text-muted-foreground/40" />
+            <FileText className="w-16 h-16 text-muted-foreground" />
             <div className="text-center">
                 <p className="font-medium">{doc.documentTypeName}</p>
                 <p className="text-sm text-muted-foreground mt-1">
@@ -186,7 +186,7 @@ export function DocumentsSection({ fileId }: DocumentsSectionProps) {
                                                 "flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors",
                                                 selectedDoc?.documentID === doc.documentID
                                                     ? "border-primary bg-primary/5"
-                                                    : "border-border bg-card hover:border-muted-foreground/30"
+                                                    : "border-border bg-card hover:border-muted-foreground"
                                             )}
                                         >
                                             <FileText className={cn(

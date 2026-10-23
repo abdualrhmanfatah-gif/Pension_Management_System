@@ -10,10 +10,12 @@ public interface IMinistryApprovalService
     Task<ApiResponse<MinistryApprovalBatchDto>> GetBatchByIdAsync(int id);
     Task<ApiResponse<MinistryApprovalBatchDto>> CreateBatchAsync(CreateBatchDto dto, int userId);
     Task<ApiResponse<int>> ImportExcelAsync(int batchId, IRemoteFile file);
-    Task<ApiResponse<PagedResult<MinistryApprovalItemDto>>> GetBatchItemsAsync(int batchId, int pageNumber, int pageSize, string? searchTerm);
-    Task<ApiResponse<PagedResult<MinistryApprovalItemDto>>> GetAllItemsAsync(int pageNumber, int pageSize, string? searchTerm, bool? isProcessed);
+    Task<ApiResponse<PagedResult<MinistryApprovalItemDto>>> GetBatchItemsAsync(int batchId, int pageNumber, int pageSize, string? searchTerm, byte? gender = null);
+    Task<ApiResponse<PagedResult<MinistryApprovalItemDto>>> GetAllItemsAsync(int pageNumber, int pageSize, string? searchTerm, bool? isProcessed, byte? gender = null);
     Task<ApiResponse<bool>> DeleteBatchAsync(int id, int userId);
     Task<ApiResponse<MinistryApprovalItemDto>> AddManualItemAsync(int batchId, AddManualItemDto dto, int userId);
+    Task<ApiResponse<MinistryApprovalItemDto>> UpdateManualItemAsync(int itemId, UpdateManualItemDto dto);
+    Task<ApiResponse<bool>> DeleteManualItemAsync(int itemId, int userId);
     Task<ApiResponse<object>> ProcessItemAsync(int itemId, int processedByUserId);
     Task<ApiResponse<MinistryApprovalItemDto>> GetItemByIdAsync(int itemId);
     Task<ApiResponse<ForceDashboardStatsDto>> GetDashboardStatsAsync();

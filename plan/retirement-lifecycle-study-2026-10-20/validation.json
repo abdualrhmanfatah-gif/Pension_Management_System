@@ -1,0 +1,11 @@
+{
+  "snapshot_files": 1768,
+  "coverage_files": 1768,
+  "validated_anchors": 271,
+  "validated_references": 1916,
+  "validated_supplemental_references": 609,
+  "validated_mutation_candidates": 92,
+  "changed_existing_files": [],
+  "missing_existing_files": [],
+  "failures": []
+}

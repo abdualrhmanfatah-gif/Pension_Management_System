@@ -59,7 +59,7 @@ export function HrDocumentsPage() {
       render: (row) => (
         <div className="flex items-center gap-2">
             <FileText className="h-4 w-4 text-muted-primary" />
-            <span className="font-medium text-sm text-foreground/90">{row.fileName}</span>
+            <span className="font-medium text-sm text-foreground">{row.fileName}</span>
         </div>
       ),
     },
@@ -67,7 +67,7 @@ export function HrDocumentsPage() {
       key: "documentType",
       header: "التصنيف",
       render: (row) => (
-        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20">
+        <Badge variant="outline" className="bg-primary/5 text-primary border-primary">
           {row.documentTypeName}
         </Badge>
       ),

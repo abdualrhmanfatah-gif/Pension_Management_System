@@ -1,3 +1,4 @@
+using PensionMS.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using PensionMS.Core.Constants;
 using PensionMS.Core.DTOs.Common;
@@ -162,7 +163,10 @@ public class InvestmentLeasingService : IInvestmentLeasingService
     // LEASE CONTRACTS
     // ----------------------------------------------------------------------
 
-    public async Task<ApiResponse<int>> CreateLeaseContractAsync(CreateLeaseDto dto, int userId)
+    public Task<ApiResponse<int>> CreateLeaseContractAsync(CreateLeaseDto dto, int userId) =>
+        UnitOfWorkTransaction.ExecuteAsync(_unitOfWork, () => CreateLeaseContractCoreAsync(dto, userId));
+
+    private async Task<ApiResponse<int>> CreateLeaseContractCoreAsync(CreateLeaseDto dto, int userId)
     {
         var unit = await _unitOfWork.PropertyUnits.GetByIdAsync(dto.UnitID);
         if (unit == null || unit.IsDeleted)

@@ -1,0 +1,6 @@
+﻿{
+    "Input":  "documents\\..\\notifications\\review-fixture.pdf",
+    "BlockedBeforeResolve":  false,
+    "Resolved":  "F:\\Projects\\Pension_Management_System\\PensionMS.API\\wwwroot\\uploads\\notifications\\review-fixture.pdf",
+    "IsNotificationAttachment":  true
+}

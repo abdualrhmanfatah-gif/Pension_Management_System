@@ -117,7 +117,7 @@ export function DocumentReviewPanel({
             <Card className="flex-1 flex flex-col overflow-hidden">
                 <div className="flex-1 flex items-center justify-center text-muted-foreground">
                     <div className="text-center">
-                        <FileText className="w-12 h-12 mx-auto mb-3 opacity-30" />
+                        <FileText className="w-12 h-12 mx-auto mb-3 opacity-100" />
                         <Text variant="body">اختر وثيقة من القائمة لعرض تفاصيلها</Text>
                     </div>
                 </div>
@@ -202,7 +202,7 @@ export function DocumentReviewPanel({
                             }
                             return (
                                 <div className="text-center text-muted-foreground">
-                                    <FileText className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                                    <FileText className="w-10 h-10 mx-auto mb-2 opacity-100" />
                                     <Text variant="body">نوع الملف غير مدعوم للعرض</Text>
                                     <p className="text-xs mt-1">{doc.fileName}</p>
                                 </div>
@@ -210,7 +210,7 @@ export function DocumentReviewPanel({
                         })()
                     ) : (
                         <div className="text-center text-muted-foreground">
-                            <FileText className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                            <FileText className="w-10 h-10 mx-auto mb-2 opacity-100" />
                             <Text variant="body">لا يوجد ملف مرفق</Text>
                         </div>
                     )}

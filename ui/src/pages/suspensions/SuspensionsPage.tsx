@@ -132,7 +132,7 @@ export function SuspensionsPage() {
                     variant="ghost"
                     size="sm"
                     onClick={() => navigate(`/files/${row.fileID}?tab=suspensions`)}
-                    className="text-primary hover:text-primary/80"
+                    className="text-primary hover:text-primary"
                 >
                     عرض الملف
                 </Button>

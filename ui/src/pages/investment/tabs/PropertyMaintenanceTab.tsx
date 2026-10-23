@@ -135,7 +135,7 @@ export function PropertyMaintenanceTab({ propertyId }: PropertyMaintenanceTabPro
                             variant="outline"
                             size="sm"
                             onClick={() => handleOpenWorkOrder(row)}
-                            className="gap-1.5 text-xs border-success/30 text-success hover:bg-success/10"
+                            className="gap-1.5 text-xs border-success text-success hover:bg-success/10"
                         >
                             <Wrench className="w-3.5 h-3.5" /> الأوامر
                         </Button>

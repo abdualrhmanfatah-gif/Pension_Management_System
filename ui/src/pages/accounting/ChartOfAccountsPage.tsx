@@ -266,7 +266,7 @@ export function ChartOfAccountsPage() {
           {selectedAccount ? (
             <div className="flex flex-col h-full">
               {/* Header with gradient accent */}
-              <div className="bg-gradient-to-l from-primary/5 to-primary/10 p-5 border-b border-primary/10">
+              <div className="bg-gradient-to-l from-primary/5 to-primary/10 p-5 border-b border-primary">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="p-2.5 bg-primary/10 rounded-xl shrink-0">
@@ -288,48 +288,48 @@ export function ChartOfAccountsPage() {
               </div>
 
               {/* Info fields */}
-              <div className="p-4 divide-y divide-muted/40">
+              <div className="p-4 divide-y divide-muted">
                 <div className="flex items-center gap-2 py-2 text-sm">
-                  <Tag className="w-3.5 h-3.5 text-muted-foreground/60" />
+                  <Tag className="w-3.5 h-3.5 text-muted-foreground" />
                   <span className="text-muted-foreground font-medium">الاسم</span>
                   <span className="font-medium mr-auto">{selectedAccount.accountName}</span>
                 </div>
                 <div className="flex items-center gap-2 py-2 text-sm">
-                  <Scale className="w-3.5 h-3.5 text-muted-foreground/60" />
+                  <Scale className="w-3.5 h-3.5 text-muted-foreground" />
                   <span className="text-muted-foreground font-medium">الطبيعة</span>
                   <span className="font-medium mr-auto">{selectedAccount.accountNature === "Debit" ? "مدين" : "دائن"}</span>
                 </div>
                 <div className="flex items-center gap-2 py-2 text-sm">
-                  <Layers className="w-3.5 h-3.5 text-muted-foreground/60" />
+                  <Layers className="w-3.5 h-3.5 text-muted-foreground" />
                   <span className="text-muted-foreground font-medium">التصنيف</span>
                   <span className="font-medium mr-auto">{ACCOUNT_CATEGORY_AR[selectedAccount.accountCategory as keyof typeof ACCOUNT_CATEGORY_AR] || selectedAccount.accountCategory}</span>
                 </div>
                 <div className="flex items-center gap-2 py-2 text-sm">
-                  <Layers className="w-3.5 h-3.5 text-muted-foreground/60" />
+                  <Layers className="w-3.5 h-3.5 text-muted-foreground" />
                   <span className="text-muted-foreground font-medium">المستوى</span>
                   <span className="font-medium mr-auto">{selectedAccount.accountLevel}</span>
                 </div>
                 <div className="flex items-center gap-2 py-2 text-sm">
-                  <Hash className="w-3.5 h-3.5 text-muted-foreground/60" />
+                  <Hash className="w-3.5 h-3.5 text-muted-foreground" />
                   <span className="text-muted-foreground font-medium">قابل للترحيل</span>
                   <span className="font-medium mr-auto">{selectedAccount.isPostable ? "نعم" : "لا"}</span>
                 </div>
                 {selectedAccount.parentAccountName && (
                   <div className="flex items-center gap-2 py-2 text-sm">
-                    <FolderTree className="w-3.5 h-3.5 text-muted-foreground/60" />
+                    <FolderTree className="w-3.5 h-3.5 text-muted-foreground" />
                     <span className="text-muted-foreground font-medium">الحساب الأب</span>
                     <span className="font-medium mr-auto">{selectedAccount.parentAccountName}</span>
                   </div>
                 )}
                 {selectedAccount.description && (
                   <div className="flex items-center gap-2 py-2 text-sm">
-                    <FileText className="w-3.5 h-3.5 text-muted-foreground/60" />
+                    <FileText className="w-3.5 h-3.5 text-muted-foreground" />
                     <span className="text-muted-foreground font-medium">الوصف</span>
                     <span className="font-medium mr-auto">{selectedAccount.description}</span>
                   </div>
                 )}
                 <div className="flex items-center gap-2 py-2 text-sm">
-                  <GitFork className="w-3.5 h-3.5 text-muted-foreground/60" />
+                  <GitFork className="w-3.5 h-3.5 text-muted-foreground" />
                   <span className="text-muted-foreground font-medium">الحسابات الفرعية</span>
                   <span className="font-medium mr-auto">{selectedAccount.subAccountsCount}</span>
                 </div>
@@ -364,7 +364,7 @@ export function ChartOfAccountsPage() {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center h-48 text-muted-foreground">
-              <BookOpen className="w-12 h-12 mb-3 opacity-30" />
+              <BookOpen className="w-12 h-12 mb-3 opacity-100" />
               <Text variant="body">اختر حساباً من القائمة لعرض التفاصيل</Text>
             </div>
           )}

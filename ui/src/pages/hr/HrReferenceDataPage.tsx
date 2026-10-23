@@ -154,7 +154,7 @@ function DepartmentsTab({ onEdit, onAdd }: { onEdit: (d: DepartmentDto) => void,
     {
       key: "code",
       header: "الكود",
-      render: (r) => <span className="font-mono text-xs font-black text-primary bg-primary/5 px-2 py-1 rounded-md border border-primary/10">{r.code}</span>
+      render: (r) => <span className="font-mono text-xs font-black text-primary bg-primary/5 px-2 py-1 rounded-md border border-primary">{r.code}</span>
     },
     { key: "name", header: "اسم الإدارة", render: (r) => <span className="font-bold text-foreground">{r.name}</span> },
     { key: "employeesCount", header: "عدد الموظفين", render: (r) => <span className="font-mono font-bold">{r.employeesCount}</span> },
@@ -202,7 +202,7 @@ function SectionsTab({ onEdit, onAdd }: { onEdit: (s: SectionDto) => void, onAdd
     {
       key: "code",
       header: "الكود",
-      render: (r) => <span className="font-mono text-xs font-black text-primary bg-primary/5 px-2 py-1 rounded-md border border-primary/10">{r.code}</span>
+      render: (r) => <span className="font-mono text-xs font-black text-primary bg-primary/5 px-2 py-1 rounded-md border border-primary">{r.code}</span>
     },
     { key: "name", header: "اسم القسم", render: (r) => <span className="font-bold text-foreground">{r.name}</span> },
     { key: "departmentName", header: "الإدارة التابع لها", render: (r) => <span className="text-xs font-medium text-muted-foreground">{r.departmentName}</span> },
@@ -250,7 +250,7 @@ function JobTitlesTab({ onEdit, onAdd }: { onEdit: (j: JobTitleDto) => void, onA
     {
       key: "code",
       header: "الكود",
-      render: (r) => <span className="font-mono text-xs font-black text-primary bg-primary/5 px-2 py-1 rounded-md border border-primary/10">{r.code}</span>
+      render: (r) => <span className="font-mono text-xs font-black text-primary bg-primary/5 px-2 py-1 rounded-md border border-primary">{r.code}</span>
     },
     { key: "name", header: "المسمى الوظيفي", render: (r) => <span className="font-bold text-foreground">{r.name}</span> },
     { key: "employeesCount", header: "عدد الموظفين", render: (r) => <span className="font-mono font-bold">{r.employeesCount}</span> },

@@ -14,9 +14,12 @@ namespace PensionMS.Infrastructure.Data;
 
 using PensionMS.Infrastructure.Data.Configurations;
 
-public class PensionDbContext : DbContext
+public partial class PensionDbContext : DbContext
 {
-    public PensionDbContext(DbContextOptions<PensionDbContext> options) : base(options) { }
+    public PensionDbContext(DbContextOptions<PensionDbContext> options, ICurrentUserContext? lifecycleScope = null) : base(options)
+    {
+        _lifecycleScope = lifecycleScope;
+    }
 
     #region DbSets — Core
     public DbSet<Retiree> Retirees => Set<Retiree>();

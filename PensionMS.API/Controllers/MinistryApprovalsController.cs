@@ -7,6 +7,7 @@ using PensionMS.Core.DTOs.Ministry;
 using PensionMS.Core.DTOs.MinistryApprovals;
 using PensionMS.Core.Interfaces;
 using System.Security.Claims;
+using System.ComponentModel.DataAnnotations;
 
 namespace PensionMS.API.Controllers;
 
@@ -59,17 +60,19 @@ public class MinistryApprovalsController : ControllerBase
 
     [HttpGet("batches/{id:int}/items")]
     [Authorize(Policy = "Ministry.View")]
-    public async Task<IActionResult> GetItems(int id, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? q = null)
+    public async Task<IActionResult> GetItems(int id, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? q = null,
+        [FromQuery, Range(GenderConstants.Male, GenderConstants.Female, ErrorMessage = "قيمة الجنس يجب أن تكون 1 (ذكر) أو 2 (أنثى)")] byte? gender = null)
     {
-        var result = await _approvalService.GetBatchItemsAsync(id, pageNumber, pageSize, q);
+        var result = await _approvalService.GetBatchItemsAsync(id, pageNumber, pageSize, q, gender);
         return result.ToActionResult();
     }
 
     [HttpGet("all-items")]
     [Authorize(Policy = "Ministry.View")]
-    public async Task<IActionResult> GetAllItems([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20, [FromQuery] string? q = null, [FromQuery] bool? isProcessed = null)
+    public async Task<IActionResult> GetAllItems([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20, [FromQuery] string? q = null, [FromQuery] bool? isProcessed = null,
+        [FromQuery, Range(GenderConstants.Male, GenderConstants.Female, ErrorMessage = "قيمة الجنس يجب أن تكون 1 (ذكر) أو 2 (أنثى)")] byte? gender = null)
     {
-        var result = await _approvalService.GetAllItemsAsync(pageNumber, pageSize, q, isProcessed);
+        var result = await _approvalService.GetAllItemsAsync(pageNumber, pageSize, q, isProcessed, gender);
         return result.ToActionResult();
     }
 
@@ -96,6 +99,23 @@ public class MinistryApprovalsController : ControllerBase
     {
         var userId = this.GetUserId();
         var result = await _approvalService.AddManualItemAsync(id, dto, userId);
+        return result.ToActionResult();
+    }
+
+    [HttpPut("items/{itemId:int}")]
+    [Authorize(Policy = "Ministry.Manage")]
+    public async Task<IActionResult> UpdateManualItem(int itemId, [FromBody] UpdateManualItemDto dto)
+    {
+        var result = await _approvalService.UpdateManualItemAsync(itemId, dto);
+        return result.ToActionResult();
+    }
+
+    [HttpDelete("items/{itemId:int}")]
+    [Authorize(Policy = "Ministry.Manage")]
+    public async Task<IActionResult> DeleteManualItem(int itemId)
+    {
+        var userId = this.GetUserId();
+        var result = await _approvalService.DeleteManualItemAsync(itemId, userId);
         return result.ToActionResult();
     }
 

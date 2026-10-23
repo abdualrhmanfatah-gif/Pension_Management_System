@@ -1,0 +1,12 @@
+{
+  "files": 181,
+  "replacements": 635,
+  "categories": {
+    "text-alpha": 130,
+    "element-opacity": 116,
+    "border-alpha": 389
+  },
+  "targetedRemaining": 0,
+  "onlyTargetedSourceEdits": true,
+  "otherTransparencyCategoriesUnchanged": true
+}

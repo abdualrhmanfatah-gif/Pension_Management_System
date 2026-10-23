@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.StaticFiles;
+using PensionMS.API.Files;
+using PensionMS.Core.Interfaces;
 
 namespace PensionMS.API.Controllers;
 
@@ -9,53 +10,30 @@ namespace PensionMS.API.Controllers;
 [Authorize]
 public class FilesController : ControllerBase
 {
-    private static readonly HashSet<string> AllowedExtensions = new(StringComparer.OrdinalIgnoreCase)
-    {
-        ".pdf", ".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg",
-        ".doc", ".docx", ".xls", ".xlsx", ".csv", ".txt"
-    };
-
     private readonly string _uploadsPath;
-    private readonly FileExtensionContentTypeProvider _contentTypeProvider;
+    private readonly IDocumentService _documents;
 
-    public FilesController(IWebHostEnvironment env)
+    public FilesController(IWebHostEnvironment env, IDocumentService documents)
     {
         _uploadsPath = Path.GetFullPath(Path.Combine(env.WebRootPath, "uploads"));
-        _contentTypeProvider = new FileExtensionContentTypeProvider();
+        _documents = documents;
     }
 
     [HttpGet("{*filePath}")]
-    public IActionResult GetFile(string filePath)
+    public async Task<IActionResult> GetFile(string filePath)
     {
         try
         {
-            var normalizedPath = filePath.Replace('\\', '/').TrimStart('/');
-            if (normalizedPath.StartsWith("uploads/", StringComparison.OrdinalIgnoreCase))
-                normalizedPath = normalizedPath["uploads/".Length..];
-
-            var fullPath = Path.GetFullPath(Path.Combine(_uploadsPath, normalizedPath));
-
-            // مقارنة حد المجلد بالفاصل الكامل لمنع المجلدات المجاورة مثل uploads-backup
-            var uploadsRoot = _uploadsPath.EndsWith(Path.DirectorySeparatorChar)
-                ? _uploadsPath
-                : _uploadsPath + Path.DirectorySeparatorChar;
-
-            if (!fullPath.StartsWith(uploadsRoot, StringComparison.OrdinalIgnoreCase))
-                return BadRequest("Invalid path");
-
-            if (!AllowedExtensions.Contains(Path.GetExtension(fullPath)))
+            if (!PublicUploadFiles.TryResolve(_uploadsPath, filePath, out var fullPath) ||
+                !System.IO.File.Exists(fullPath))
                 return NotFound();
 
-            if (!System.IO.File.Exists(fullPath))
-                return NotFound();
+            if (!await _documents.CanDownloadAsync(filePath)) return NotFound();
 
-            if (!_contentTypeProvider.TryGetContentType(fullPath, out var contentType))
-                contentType = "application/octet-stream";
-
-            Response.Headers["Cache-Control"] = "private, max-age=86400";
+            Response.Headers["Cache-Control"] = "private, no-store";
             Response.Headers["X-Content-Type-Options"] = "nosniff";
 
-            return PhysicalFile(fullPath, contentType);
+            return PhysicalFile(fullPath, PublicUploadFiles.ContentType(fullPath));
         }
         catch
         {

@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { BookOpen, CreditCard, FileText, Trash2,User } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
@@ -23,10 +23,12 @@ import {
     Textarea,
 } from "@/components/ui";
 import { LEGACY_BOOK_COLORS } from "@/constants";
+import { useRecordNavigation } from "@/hooks";
 import { useDocumentBlob } from "@/hooks/useDocumentBlob";
 import { chartColors } from "@/lib/chartColors";
 import { toDateOnlyYemen } from "@/lib/date";
 import { cn } from "@/lib/utils";
+import type { PaymentBookItem } from "@/types/retirement";
 
 // ─── Validation Schema ─────────────────────────────────
 
@@ -65,12 +67,20 @@ interface ExistingImage {
     filePath: string;
 }
 
+export interface PaymentBookSubmitContext {
+    paymentBookID?: number;
+}
+
 interface PaymentBookDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    onSubmit: (values: BookFormValues) => void;
+    /** معرّف الملف — يفعّل التنقل Alt+↑/↓ بين دفاتر الملف (اختياري) */
+    fileId?: number;
+    onSubmit: (values: BookFormValues, ctx: PaymentBookSubmitContext) => void | Promise<unknown>;
     isLoading?: boolean;
     mode: "create" | "edit";
+    /** معرّف الدفتر عند الفتح بالتعديل (يملكه التبويب) */
+    editRecordId?: number;
     initialData?: Partial<BookFormValues>;
     existingImages?: ExistingImage[];
     onDeleteImage?: (documentID: number) => void;
@@ -82,6 +92,13 @@ interface PaymentBookDialogProps {
 }
 
 const DRAFT_KEY = "payment_book_draft";
+
+const DEFAULT_BOOK_VALUES: BookFormValues = {
+    bookType: "يدوي", legacyColor: "أخضر", bookNumber: "", issueDate: "", expiryDate: "",
+    changeReason: "", status: "فعال", autoCreateSalaryRecipient: true,
+    recipientType: "", recipientName: "", salaryRecipientType: "", salaryRecipientName: "",
+    salaryRecipientID: null, notes: "", bookImage: null, issuingBranchID: null,
+};
 
 const COLOR_HEX: Record<string, string> = {
     "أبيض": "#ffffff",
@@ -98,9 +115,11 @@ function BlobImage({ filePath, alt, className }: { filePath: string; alt?: strin
 export function PaymentBookDialog({
     open,
     onOpenChange,
+    fileId,
     onSubmit,
     isLoading,
     mode,
+    editRecordId,
     initialData,
     existingImages = [],
     onDeleteImage,
@@ -108,40 +127,76 @@ export function PaymentBookDialog({
 }: PaymentBookDialogProps) {
     const form = useForm<BookFormValues>({
         resolver: zodResolver(bookSchema) as import("react-hook-form").Resolver<BookFormValues>,
-        defaultValues: {
-            bookType: "يدوي",
-            legacyColor: "أخضر",
-            bookNumber: "",
-            issueDate: "",
-            expiryDate: "",
-            changeReason: "",
-            status: "فعال",
-            autoCreateSalaryRecipient: true,
-            notes: "",
-            bookImage: null,
-            issuingBranchID: null,
-        },
+        defaultValues: DEFAULT_BOOK_VALUES,
     });
 
     const { control, register, setValue, watch, reset, formState: { errors, isDirty } } = form;
+
+    // تحويل صف القائمة إلى قيم النموذج (لا يوجد endpoint لتفاصيل دفتر واحد)
+    const toFormValues = useCallback((row: PaymentBookItem): BookFormValues => ({
+        ...DEFAULT_BOOK_VALUES,
+        bookType: row.bookType || DEFAULT_BOOK_VALUES.bookType,
+        legacyColor: row.legacyColor || "",
+        bookNumber: row.bookNumber || "",
+        issueDate: row.issueDate ? row.issueDate.split("T")[0] : "",
+        expiryDate: row.expiryDate ? row.expiryDate.split("T")[0] : "",
+        changeReason: row.changeReason || "",
+        recipientType: row.recipientType || "",
+        recipientName: row.recipientName || "",
+        status: row.status || "",
+        notes: row.notes || "",
+        issuingBranchID: row.issuingBranchID || null,
+    }), []);
+
+    // ─── Alt+↑/↓: التنقل بين دفاتر صرف الملف (المنطق المشترك في useRecordNavigation) ───
+    const savingRef = useRef(false);
+    const { activeRecord, detailReady, effectiveMode } = useRecordNavigation<
+        PaymentBookItem,
+        PaymentBookItem,
+        BookFormValues
+    >({
+        open: open && fileId != null,
+        mode,
+        editRecordId: mode === "edit" ? editRecordId : undefined,
+        listKey: ["payment-books", fileId],
+        fetchList: async () => (await retirementApi.getPaymentBooks(fileId as number)) as unknown as PaymentBookItem[],
+        getId: b => b.paymentBookID,
+        emptyMessage: "لا يوجد دفاتر صرف مسجلة لهذا الملف",
+        emptyDefaults: DEFAULT_BOOK_VALUES,
+        toFormValues: record => toFormValues(record as PaymentBookItem),
+        form,
+        isDirty,
+        isBusyRef: savingRef,
+        focusField: "bookNumber",
+    });
+
+    // معرّف الدفتر المستهدف للحفظ: السجل المتنقَّل إليه، وإلا دفتر فتح التعديل
+    const effectiveRecordId = activeRecord?.paymentBookID ?? (mode === "edit" ? editRecordId : undefined);
+    // رقم الدفتر المرجعي لفحص التكرار في وضع التعديل
+    const baselineBookNumber = activeRecord?.bookNumber ?? initialData?.bookNumber;
+
+    // مزامنة حارس التنقل مع حالة الحفظ القادمة من التبويب
+    useEffect(() => {
+        savingRef.current = !!isLoading;
+    }, [isLoading]);
 
     useEffect(() => {
         if (open && mode === "create") {
             const saved = sessionStorage.getItem(DRAFT_KEY);
             if (saved) {
-                try { reset(JSON.parse(saved)); } catch { /* ignore */ }
+                try { reset({ ...DEFAULT_BOOK_VALUES, ...JSON.parse(saved), bookImage: null }); } catch { /* ignore */ }
             }
         }
     }, [open, mode, reset]);
 
     const allValues = watch();
     useEffect(() => {
-        if (mode === "create" && isDirty) {
+        if (open && effectiveMode === "create" && isDirty) {
             const { bookImage: _b, ...textFields } = allValues;
             void _b;
             sessionStorage.setItem(DRAFT_KEY, JSON.stringify(textFields));
         }
-    }, [allValues, mode, isDirty]);
+    }, [allValues, open, effectiveMode, isDirty]);
 
     const bookType = useWatch({ control, name: "bookType" });
     const issueDate = useWatch({ control, name: "issueDate" });
@@ -210,7 +265,7 @@ export function PaymentBookDialog({
                 try {
                     // Only check for duplicates if it's a legacy book AND 
                     // (it's create mode OR the book number actually changed during edit)
-                    if (isLegacy && data.bookNumber && (mode === "create" || data.bookNumber !== initialData?.bookNumber)) {
+                    if (isLegacy && data.bookNumber && (effectiveMode === "create" || data.bookNumber !== baselineBookNumber)) {
                         try {
                             const exists = await retirementApi.checkBookNumber(data.bookNumber);
                             if (exists) {
@@ -223,7 +278,9 @@ export function PaymentBookDialog({
                             console.warn("فشل التحقق من رقم الدفتر، سيتم المتابعة:", apiError);
                         }
                     }
-                    onSubmit(data);
+                    await onSubmit(data, {
+                        paymentBookID: effectiveMode === "edit" ? effectiveRecordId : undefined,
+                    });
                 } catch (error) {
                     console.error("خطأ أثناء حفظ الدفتر:", error);
                 }
@@ -232,28 +289,30 @@ export function PaymentBookDialog({
                 console.warn("أخطاء التحقق:", validationErrors);
             }
         );
-    }, [form, onSubmit, isLegacy, mode, initialData?.bookNumber]);
+    }, [form, onSubmit, isLegacy, effectiveMode, baselineBookNumber, effectiveRecordId]);
 
     const initialValues = useMemo(() => {
+        if (effectiveMode === "create") return DEFAULT_BOOK_VALUES;
         if (!initialData) return undefined;
         return {
+            ...DEFAULT_BOOK_VALUES,
             ...initialData,
             issueDate: initialData.issueDate ? initialData.issueDate.split('T')[0] : "",
             expiryDate: initialData.expiryDate ? initialData.expiryDate.split('T')[0] : "",
             issuingBranchID: initialData.issuingBranchID || null,
         } as BookFormValues;
-    }, [initialData]);
+    }, [initialData, effectiveMode]);
 
     return (
         <BaseFormDialog<BookFormValues>
             open={open}
             onOpenChange={onOpenChange}
-            title={mode === "create" ? (isLegacy ? "إضافة دفتر صرف قديم" : "إصدار دفتر صرف جديد") : "تعديل بيانات دفتر الصرف"}
-            description={mode === "create"
+            title={effectiveMode === "create" ? (isLegacy ? "إضافة دفتر صرف قديم" : "إصدار دفتر صرف جديد") : "تعديل بيانات دفتر الصرف"}
+            description={effectiveMode === "create"
                 ? (isLegacy ? "إضافة دفتر يدوي قديم (أبيض/أخضر/أزرق) مع بيانات المستلم." : "سيتم إلغاء تفعيل أي دفتر حالي للملف تلقائياً.")
-                : `تعديل بيانات الدفتر رقم: ${initialData?.bookNumber}`}
+                : `تعديل بيانات الدفتر رقم: ${baselineBookNumber ?? ""}`}
             size="full"
-            isLoading={isLoading}
+            isLoading={isLoading || !detailReady}
             isDirty={isDirty}
             onSubmit={handleSubmitWithCheck}
             resetOnOpen={true}
@@ -261,7 +320,7 @@ export function PaymentBookDialog({
             initialValues={initialValues || undefined}
             showGlobalError
             formErrors={errors}
-            submitLabel={mode === "create" ? (isLegacy ? "إضافة الدفتر القديم" : "إصدار الدفتر") : "حفظ التعديلات"}
+            submitLabel={effectiveMode === "create" ? (isLegacy ? "إضافة الدفتر القديم" : "إصدار الدفتر") : "حفظ التعديلات"}
         >
             <div className="space-y-4">
 
@@ -272,6 +331,7 @@ export function PaymentBookDialog({
                         {/* Radio Cards: نوع الدفتر */}
                         <FormField label="نوع الدفتر" required error={errors.bookType?.message}>
                             <RadioGroup
+                                dir="rtl"
                                 value={isLegacy ? "يدوي" : "إلكتروني"}
                                 onValueChange={(val) => {
                                     if (val === "إلكتروني") {
@@ -292,7 +352,7 @@ export function PaymentBookDialog({
                                     "flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all",
                                     !isLegacy
                                         ? "border-primary bg-primary/5"
-                                        : "border-border hover:border-border/60"
+                                        : "border-border hover:border-border"
                                 )}>
                                     <RadioGroupItem value="إلكتروني" className="sr-only" />
                                     <CreditCard className={cn("w-5 h-5 shrink-0", !isLegacy ? "text-primary" : "text-muted-foreground")} />
@@ -306,7 +366,7 @@ export function PaymentBookDialog({
                                     "flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all",
                                     isLegacy
                                         ? "border-primary bg-primary/5"
-                                        : "border-border hover:border-border/60"
+                                        : "border-border hover:border-border"
                                 )}>
                                     <RadioGroupItem value="يدوي" className="sr-only" />
                                     <BookOpen className={cn("w-5 h-5 shrink-0", isLegacy ? "text-primary" : "text-muted-foreground")} />
@@ -335,7 +395,7 @@ export function PaymentBookDialog({
                                                 onClick={() => setValue("legacyColor", color, { shouldDirty: true, shouldValidate: true })}
                                             >
                                                 <div
-                                                    className="w-5 h-5 rounded border border-black/10"
+                                                    className="w-5 h-5 rounded border border-black"
                                                     style={{ backgroundColor: COLOR_HEX[color] || "#ccc" }}
                                                 />
                                                 <span className="text-xs text-muted-foreground">{color}</span>
@@ -358,7 +418,7 @@ export function PaymentBookDialog({
                                             placeholder="أدخل الرقم المطبوع على الدفتر"
                                             autoFocus
                                             className={cn(
-                                                "font-mono font-bold",
+                                                "font-bold",
                                                 bookNumberError && "border-destructive focus:ring-destructive/20"
                                             )}
                                             onBlur={(e) => {
@@ -368,14 +428,14 @@ export function PaymentBookDialog({
                                         />
                                         {checkingBookNumber && (
                                             <div className="absolute left-2 top-1/2 -translate-y-1/2">
-                                                <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                                                <div className="w-4 h-4 border-2 border-primary border-t-primary rounded-full animate-spin" />
                                             </div>
                                         )}
                                     </div>
                                 </FormField>
                             ) : (
                                 <FormField label="رقم الدفتر">
-                                    <Input value="سيتم التوليد تلقائياً" disabled className="font-mono text-muted-foreground" />
+                                    <Input value="سيتم التوليد تلقائياً" disabled className="text-muted-foreground" />
                                 </FormField>
                             )}
 
@@ -490,7 +550,7 @@ export function PaymentBookDialog({
                         </div>
 
                         {/* مستلم المعاش (يظهر فقط في الإنشاء الإلكتروني) */}
-                        {!isLegacy && mode === "create" && (
+                        {!isLegacy && effectiveMode === "create" && (
                             <>
                                 <label className="flex items-center gap-2 text-sm font-medium cursor-pointer">
                                     <input

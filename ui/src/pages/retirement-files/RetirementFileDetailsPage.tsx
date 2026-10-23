@@ -6,16 +6,20 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { retirementApi } from "@/api/retirement";
 import { PermissionGate } from "@/components/auth/PermissionGate";
 import { CorrectLifeStatusDialog, type CorrectLifeStatusValues } from "@/components/domain/retirement/CorrectLifeStatusDialog";
+import { FileLifecycleActions } from "@/components/domain/retirement/FileLifecycleActions";
 import { RecordDeathDialog, type RecordDeathFormValues } from "@/components/domain/retirement/RecordDeathDialog";
 import { RetirementFileDialog } from "@/components/domain/retirement/RetirementFileDialog";
 import { RetirementFileSidebar } from "@/components/domain/retirement/RetirementFileSidebar";
 import { StatusUpdateDialog } from "@/components/domain/retirement/StatusUpdateDialog";
 import { DetailLayout } from "@/components/layout/DetailLayout";
 import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
     AlertBanner,
     Badge,
     BaseSheet,
-    Breadcrumb,
     Button,
     Heading,
     Skeleton,
@@ -206,22 +210,15 @@ export function RetirementFileDetailsPage() {
 
     return (
         <DetailLayout
-            breadcrumb={
-                <Breadcrumb
-                    items={[
-                        { label: "ملفات التقاعد", href: "/files" },
-                        { label: file.fileNumber }
-                    ]}
-                />
-            }
+            stickyHeader
             headerTitle={
                 <div className="flex items-start gap-2 sm:gap-3 min-w-0">
-                    <Button variant="ghost" size="icon" onClick={() => navigate("/files")} className="rounded-full shrink-0 mt-0.5 sm:mt-1 h-8 w-8 sm:h-10 sm:w-10" aria-label="العودة لقائمة الملفات">
+                    <Button variant="ghost" size="icon" onClick={() => navigate("/files")} className="rounded-full shrink-0 mt-0.5 h-8 w-8" aria-label="العودة لقائمة الملفات">
                         <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                     </Button>
                     <div className="flex flex-col text-start min-w-0 flex-1">
                         <Heading level="h1" className={cn(
-                            "text-base sm:text-2xl font-black tracking-tight leading-tight break-words",
+                            "text-base sm:text-xl font-black tracking-tight leading-tight break-words",
                             getStatusColorClass(file.statusID)
                         )}>
                             {file.retireeFullName}
@@ -233,6 +230,15 @@ export function RetirementFileDetailsPage() {
                             <span className="text-[10px] sm:text-sm text-muted-foreground font-medium">ملف رقم <span dir="ltr" className="font-mono">{file.fileNumber}</span></span>
                         </div>
                     </div>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="sm:hidden rounded-xl border h-9 w-9 shrink-0 self-center"
+                        onClick={() => setActionsOpen(true)}
+                        aria-label="إجراءات إضافية"
+                    >
+                        <MoreHorizontal className="w-4 h-4" />
+                    </Button>
                 </div>
             }
             headerActions={
@@ -240,96 +246,135 @@ export function RetirementFileDetailsPage() {
                     <PermissionGate permission="File.Edit.FinancialData">
                         <Button
                             variant="outline"
-                            className="gap-1.5 sm:gap-2 font-bold border-emerald-500/20 bg-emerald-500/5 text-emerald-700 hover:bg-emerald-100 flex-1 sm:flex-none whitespace-nowrap h-9 sm:h-10 text-[11px] sm:text-sm px-2.5 sm:px-4"
+                            className="hidden sm:inline-flex gap-1.5 sm:gap-2 font-bold border-emerald-500 bg-emerald-500/5 text-emerald-700 hover:bg-emerald-100 sm:flex-none whitespace-nowrap h-9 text-[11px] sm:text-sm px-2.5 sm:px-4"
                             onClick={() => setEditFileOpen(true)}
                         >
-                            <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" /> <span className="hidden sm:inline">تعديل البيانات الأساسية</span><span className="sm:hidden">تعديل</span>
+                            <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" /> <span className="hidden sm:inline">تعديل البيانات الأساسية</span>
                         </Button>
                     </PermissionGate>
 
                     <PermissionGate permission="File.ChangeStatus.Approve">
-                        <Button className="gap-1.5 sm:gap-2 font-bold flex-1 sm:flex-none whitespace-nowrap h-9 sm:h-10 text-[11px] sm:text-sm px-2.5 sm:px-4" onClick={() => setUpdateStatusOpen(true)}>
-                            <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" /> <span className="hidden sm:inline">تغيير الحالة / اعتماد</span><span className="sm:hidden">الحالة</span>
+                        <Button className="hidden sm:inline-flex gap-1.5 sm:gap-2 font-bold sm:flex-none whitespace-nowrap h-9 text-[11px] sm:text-sm px-2.5 sm:px-4" onClick={() => setUpdateStatusOpen(true)}>
+                            <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" /> <span className="hidden sm:inline">تغيير الحالة / اعتماد</span>
                         </Button>
                     </PermissionGate>
 
-                    <Button variant="ghost" size="icon" className="rounded-xl border  h-9 w-9 sm:h-10 sm:w-10 shrink-0" onClick={() => setActionsOpen(true)} aria-label="إجراءات إضافية">
+                    <Button variant="ghost" size="icon" className="hidden sm:inline-flex rounded-xl border h-9 w-9 shrink-0" onClick={() => setActionsOpen(true)} aria-label="إجراءات إضافية">
                         <MoreHorizontal className="w-4 h-4 sm:w-5 sm:h-5" />
                     </Button>
                 </div>
             }
             sidebar={<RetirementFileSidebar file={file} retiree={retiree} isCompact={false} />}
         >
-            <div className="space-y-6">
-                {file && file.reviewStatus === 3 && (
-                    <AlertBanner
-                        variant="danger"
-                        className="items-start"
-                        message={
-                            <div className="flex flex-col gap-2">
-                                <div>
-                                    <strong className="text-sm">تم رفض التعديلات الأخيرة</strong>
-                                    <Text variant="body" className="mt-0.5">يرجى إصلاح الملاحظات التالية ثم إعادة التعديل:</Text>
-                                </div>
-                                {file.reviewNotes && (
-                                    <div className="text-sm max-w-3xl bg-destructive/10 p-3 rounded-lg border border-destructive/20 leading-relaxed font-semibold">
-                                        {file.reviewNotes}
+            <div className="space-y-2.5 md:space-y-3.5">
+                <FileLifecycleActions fileId={fileId} statusId={file.statusID} previousStatusId={file.previousStatusID} reviewStatus={file.reviewStatus} salaryStatus={file.salaryStatus} />
+                {(() => {
+                    const hasReviewDanger = file?.reviewStatus === 3;
+                    const hasReviewWarning = file?.reviewStatus === 1;
+                    const hasMissing = file && ((file.missingDocumentsCount || 0) > 0 || (file.missingDataCount || 0) > 0);
+                    
+                    if (!hasReviewDanger && !hasReviewWarning && !hasMissing) return null;
+                    
+                    const alertsCount = (hasReviewDanger ? 1 : 0) + (hasReviewWarning ? 1 : 0) + (hasMissing ? 1 : 0);
+                    if (alertsCount === 0) return null;
+
+                    return (
+                        <Accordion 
+                            type="single" 
+                            collapsible 
+                            defaultValue={hasReviewDanger ? "alerts" : undefined}
+                            className={cn(
+                                "w-full border rounded-xl overflow-hidden",
+                                hasReviewDanger ? "bg-destructive/5 border-destructive" : "bg-amber-50/50 dark:bg-amber-950/20 border-amber-500"
+                            )}
+                        >
+                            <AccordionItem value="alerts" className="border-none">
+                                <AccordionTrigger className={cn(
+                                    "px-4 py-3 hover:no-underline",
+                                    hasReviewDanger ? "text-destructive hover:bg-destructive/10" : "text-amber-700 dark:text-amber-400 hover:bg-amber-500/5"
+                                )}>
+                                    <div className="flex items-center gap-2">
+                                        <AlertTriangle className="w-5 h-5 shrink-0" />
+                                        <span className="font-bold">يوجد ({alertsCount}) تنبيهات بخصوص هذا الملف يرجى مراجعتها</span>
                                     </div>
-                                )}
-                            </div>
-                        }
-                        icon={<AlertTriangle className="w-5 h-5 mt-0.5" />}
-                    />
-                )}
+                                </AccordionTrigger>
+                                <AccordionContent className="px-4 pb-4">
+                                    <div className="flex flex-col gap-3 pt-2">
+                                        {hasReviewDanger && (
+                                            <AlertBanner
+                                                variant="danger"
+                                                className="items-start"
+                                                message={
+                                                    <div className="flex flex-col gap-2">
+                                                        <div>
+                                                            <strong className="text-sm">تم رفض التعديلات الأخيرة</strong>
+                                                            <Text variant="body" className="mt-0.5">يرجى إصلاح الملاحظات التالية ثم إعادة التعديل:</Text>
+                                                        </div>
+                                                        {file.reviewNotes && (
+                                                            <div className="text-sm max-w-3xl bg-destructive/10 p-3 rounded-lg border border-destructive leading-relaxed font-semibold">
+                                                                {file.reviewNotes}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                }
+                                                icon={<AlertTriangle className="w-5 h-5 mt-0.5" />}
+                                            />
+                                        )}
 
-                {file && file.reviewStatus === 1 && (
-                    <AlertBanner
-                        variant="warning"
-                        className="items-start sm:items-center"
-                        message={
-                            <div className="flex flex-col gap-0.5">
-                                <strong className="text-sm">الملف قيد المراجعة</strong>
-                                <Text variant="body-sm" className="sm:text-sm">هناك تعديلات على هذا الملف بانتظار المراجعة والاعتماد من قبل التدقيق.</Text>
-                            </div>
-                        }
-                        icon={<Shield className="w-5 h-5 mt-0.5" />}
-                    />
-                )}
+                                        {hasReviewWarning && (
+                                            <AlertBanner
+                                                variant="warning"
+                                                className="items-start sm:items-center"
+                                                message={
+                                                    <div className="flex flex-col gap-0.5">
+                                                        <strong className="text-sm">الملف قيد المراجعة</strong>
+                                                        <Text variant="body-sm" className="sm:text-sm">هناك تعديلات على هذا الملف بانتظار المراجعة والاعتماد من قبل التدقيق.</Text>
+                                                    </div>
+                                                }
+                                                icon={<Shield className="w-5 h-5 mt-0.5" />}
+                                            />
+                                        )}
 
-                {file && ((file.missingDocumentsCount || 0) > 0 || (file.missingDataCount || 0) > 0) && (
-                    <AlertBanner
-                        variant="warning"
-                        className="items-start sm:items-center"
-                        message={
-                            <div className="flex flex-col gap-1.5">
-                                <div>
-                                    <strong className="text-sm">تنبيه: مستندات وبيانات ناقصة</strong>
-                                    <Text variant="body-sm" className="sm:text-sm mt-0.5">يوجد {file.missingDocumentsCount || 0} وثيقة ناقصة و {file.missingDataCount || 0} حقول بيانات غير مكتملة. يرجى المراجعة لاستكمالها.</Text>
-                                </div>
-                                {((file.missingDocumentsList && file.missingDocumentsList.length > 0) || (file.missingDataList && file.missingDataList.length > 0)) && (
-                                    <details className="group mt-1 cursor-pointer">
-                                        <summary className="text-xs font-bold opacity-75 hover:opacity-100 select-none focus-visible:ring-2 focus-visible:ring-primary/20 rounded mb-1">
-                                            عرض وتفاصيل النواقص
-                                        </summary>
-                                        <div className="flex flex-col gap-2 mt-2 cursor-auto animate-in fade-in duration-300">
-                                            {file.missingDocumentsList && file.missingDocumentsList.length > 0 && (
-                                                <div className="text-xs bg-amber-900/10 dark:bg-amber-100/10 p-2.5 rounded-lg border border-amber-900/10 leading-relaxed">
-                                                    <strong>الوثائق الناقصة:</strong> {file.missingDocumentsList.join("، ")}
-                                                </div>
-                                            )}
-                                            {file.missingDataList && file.missingDataList.length > 0 && (
-                                                <div className="text-xs bg-amber-900/10 dark:bg-amber-100/10 p-2.5 rounded-lg border border-amber-900/10 leading-relaxed">
-                                                    <strong>البيانات غير المكتملة:</strong> {file.missingDataList.join("، ")}
-                                                </div>
-                                            )}
-                                        </div>
-                                    </details>
-                                )}
-                            </div>
-                        }
-                        icon={<AlertTriangle className="w-5 h-5 mt-0.5" />}
-                    />
-                )}
+                                        {hasMissing && (
+                                            <AlertBanner
+                                                variant="warning"
+                                                className="items-start sm:items-center"
+                                                message={
+                                                    <div className="flex flex-col gap-1.5">
+                                                        <div>
+                                                            <strong className="text-sm">تنبيه: مستندات وبيانات ناقصة</strong>
+                                                            <Text variant="body-sm" className="sm:text-sm mt-0.5">يوجد {file.missingDocumentsCount || 0} وثيقة ناقصة و {file.missingDataCount || 0} حقول بيانات غير مكتملة. يرجى المراجعة لاستكمالها.</Text>
+                                                        </div>
+                                                        {((file.missingDocumentsList && file.missingDocumentsList.length > 0) || (file.missingDataList && file.missingDataList.length > 0)) && (
+                                                            <details className="group mt-1 cursor-pointer">
+                                                                <summary className="text-xs font-bold opacity-100 hover:opacity-100 select-none focus-visible:ring-2 focus-visible:ring-primary/20 rounded mb-1">
+                                                                    عرض وتفاصيل النواقص
+                                                                </summary>
+                                                                <div className="flex flex-col gap-2 mt-2 cursor-auto animate-in fade-in duration-300">
+                                                                    {file.missingDocumentsList && file.missingDocumentsList.length > 0 && (
+                                                                        <div className="text-xs bg-amber-900/10 dark:bg-amber-100/10 p-2.5 rounded-lg border border-amber-900 leading-relaxed">
+                                                                            <strong>الوثائق الناقصة:</strong> {file.missingDocumentsList.join("، ")}
+                                                                        </div>
+                                                                    )}
+                                                                    {file.missingDataList && file.missingDataList.length > 0 && (
+                                                                        <div className="text-xs bg-amber-900/10 dark:bg-amber-100/10 p-2.5 rounded-lg border border-amber-900 leading-relaxed">
+                                                                            <strong>البيانات غير المكتملة:</strong> {file.missingDataList.join("، ")}
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            </details>
+                                                        )}
+                                                    </div>
+                                                }
+                                                icon={<AlertTriangle className="w-5 h-5 mt-0.5" />}
+                                            />
+                                        )}
+                                    </div>
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
+                    );
+                })()}
                 <FileWorkflowManager
                     file={file}
                     activeTab={activeTab}
@@ -380,6 +425,30 @@ export function RetirementFileDetailsPage() {
 
             <BaseSheet open={actionsOpen} onOpenChange={setActionsOpen} title="إجراءات إضافية">
                 <div className="space-y-2 p-4 text-start">
+                    <PermissionGate permission="File.Edit.FinancialData">
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            className="sm:hidden w-full justify-start gap-3 h-12 rounded-xl text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800"
+                            onClick={() => { setActionsOpen(false); setEditFileOpen(true); }}
+                            aria-label="تعديل البيانات الأساسية"
+                        >
+                            <User className="w-5 h-5" /> تعديل البيانات الأساسية
+                        </Button>
+                    </PermissionGate>
+
+                    <PermissionGate permission="File.ChangeStatus.Approve">
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            className="sm:hidden w-full justify-start gap-3 h-12 rounded-xl"
+                            onClick={() => { setActionsOpen(false); setUpdateStatusOpen(true); }}
+                            aria-label="تغيير الحالة / اعتماد"
+                        >
+                            <Shield className="w-5 h-5" /> تغيير الحالة / اعتماد
+                        </Button>
+                    </PermissionGate>
+
                     {canViewStatement && (
                         <Button
                             type="button"

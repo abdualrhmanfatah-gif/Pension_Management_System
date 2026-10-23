@@ -130,7 +130,7 @@ export function CreateSuspensionDialog({ open, onOpenChange, onCreated }: Create
                 {/* ── اختيار الملف ── */}
                 <FormSection title="اختيار ملف التقاعد" icon={FileText}>
                     {selectedFile ? (
-                        <div className="flex items-center justify-between p-3 bg-destructive/5 border border-destructive/20 rounded-xl">
+                        <div className="flex items-center justify-between p-3 bg-destructive/5 border border-destructive rounded-xl">
                             <div className="flex items-center gap-3">
                                 <div className="bg-destructive/10 p-2 rounded-lg">
                                     <FileText className="w-4 h-4 text-destructive" />

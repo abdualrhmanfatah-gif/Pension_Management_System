@@ -33,15 +33,15 @@ export function MaintenancePage() {
     const getStatusBadge = (status: string) => {
         switch (status) {
             case BATCH_STATUS.COMPLETED:
-                return <Badge variant={BADGE_VARIANT.SUCCESS} className="gap-1 bg-success/10 text-success border-success/30">
+                return <Badge variant={BADGE_VARIANT.SUCCESS} className="gap-1 bg-success/10 text-success border-success">
                     <CheckCircle2 className="w-3 h-3" /> مكتملة
                 </Badge>;
             case 'InProgress':
-                return <Badge variant={BADGE_VARIANT.INFO} className="gap-1 bg-info/10 text-info border-info/30">
+                return <Badge variant={BADGE_VARIANT.INFO} className="gap-1 bg-info/10 text-info border-info">
                     <Clock className="w-3 h-3" /> قيد التنفيذ
                 </Badge>;
             case BATCH_STATUS.NEW:
-                return <Badge variant={BADGE_VARIANT.DANGER} className="gap-1 bg-danger/10 text-danger border-danger/30">
+                return <Badge variant={BADGE_VARIANT.DANGER} className="gap-1 bg-danger/10 text-danger border-danger">
                     <AlertCircle className="w-3 h-3" /> جديدة
                 </Badge>;
             default:
@@ -107,7 +107,7 @@ export function MaintenancePage() {
                                 setWorkOrderRequest(row);
                                 setWorkOrderOpen(true);
                             }}
-                            className="gap-1 border-success/30 text-success hover:bg-success/10 font-bold"
+                            className="gap-1 border-success text-success hover:bg-success/10 font-bold"
                         >
                             <Wrench className="w-3.5 h-3.5" /> أوامر العمل
                         </Button>

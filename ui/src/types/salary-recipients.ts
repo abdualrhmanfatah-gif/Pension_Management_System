@@ -18,11 +18,14 @@ export const createSalaryRecipientSchema = z.object({
     nationalID: z.string().optional(),
     socialStatusID: z.number().optional(),
     healthStatusID: z.number().optional(),
+    entitledAmount: z.string().optional().refine(value => !value || Number(value) > 0, "أدخل مبلغاً أكبر من صفر"),
 }).refine(data => {
     return data.retireeID || data.agentID || data.entitledID || data.guardianID;
 }, {
     message: "يجب اختيار مستلم",
     path: ["recipientType"],
+}).refine(data => data.recipientType !== "وصي" || !!data.entitledID, {
+    message: "اختر المستحق الذي ينوب عنه الوصي", path: ["entitledID"],
 });
 
 export const endSalaryRecipientSchema = z.object({

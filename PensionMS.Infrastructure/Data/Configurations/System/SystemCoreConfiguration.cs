@@ -10,6 +10,13 @@ public class AuditLogConfiguration : IEntityTypeConfiguration<AuditLog>
     {
         builder.HasKey(e => e.LogID);
         builder.Property(e => e.Action).HasMaxLength(100);
+        builder.HasIndex(e => new { e.TableID, e.RecordID, e.CreatedAt })
+            .IsDescending(false, false, true)
+            .HasDatabaseName("IX_AuditLogs_Record_CreatedAt");
+        builder.HasIndex(e => new { e.CreatedAt, e.LogID })
+            .IsDescending(true, true)
+            .IncludeProperties(e => new { e.TableID, e.UserID, e.Action })
+            .HasDatabaseName("IX_AuditLogs_Recent");
     }
 }
 

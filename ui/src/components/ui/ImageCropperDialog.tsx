@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { toast } from "sonner";
 
+import { canvasToFile } from "@/lib/document-image";
+
 import {
     DEFAULT_CROP_TIMEOUT_MS,
     runCropPipeline,
@@ -19,22 +21,6 @@ export interface ImageCropperDialogProps {
 }
 
 // ─── Helpers ─────────────────────────────────────────────
-
-function canvasToFile(canvas: HTMLCanvasElement, originalName: string): Promise<File> {
-    return new Promise((resolve, reject) => {
-        canvas.toBlob((blob) => {
-            if (!blob) {
-                reject(new Error("فشل تحويل Canvas"));
-                return;
-            }
-            // Strip GUID prefix added by LocalFileStorageService (e.g. "guid_original.jpg")
-            const cleaned = originalName.replace(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}_/i, "");
-            const baseName = cleaned.replace(/\.[^.]+$/, "");
-            const name = baseName.endsWith("_scanned") ? `${baseName}.jpg` : `${baseName}_scanned.jpg`;
-            resolve(new File([blob], name, { type: "image/jpeg" }));
-        }, "image/jpeg", 0.85);
-    });
-}
 
 // ─── Component ───────────────────────────────────────────
 
@@ -57,7 +43,6 @@ export function ImageCropperDialog({
     const isClosingRef = useRef(false);
     const originalFileRef = useRef<File | null>(null);
     const deviceCapabilities = getDeviceCapabilities();
-
 
     const cleanupAll = useCallback(() => {
         displayUrlRef.current = "";
@@ -219,7 +204,6 @@ export function ImageCropperDialog({
         }
     }, [manualCorners, imageFile, onCrop, onClose, isSaving, deviceCapabilities]);
 
-
     const handleCancel = useCallback(() => {
         if (!isSaving) onClose();
     }, [isSaving, onClose]);
@@ -227,7 +211,7 @@ export function ImageCropperDialog({
     return (
         <Dialog open={open} onOpenChange={(v) => !v && handleCancel()}>
             <DialogContent ref={dialogRef} aria-labelledby={titleId} className="p-0 sm:max-w-2xl" dir="rtl" size="lg" clipContent={false}>
-                <DialogHeader className="shrink-0 px-3 sm:px-6 py-2 sm:py-4 border-b border-border/50">
+                <DialogHeader className="shrink-0 px-3 sm:px-6 py-2 sm:py-4 border-b border-border">
                     <DialogTitle id={titleId} className="text-base sm:text-xl">تعديل حواف المستند</DialogTitle>
                 </DialogHeader>
 
@@ -242,7 +226,7 @@ export function ImageCropperDialog({
                     </div>
                 )}
 
-                <div className="shrink-0 px-3 sm:px-6 py-2 sm:py-4 border-t border-border/50 bg-muted/5">
+                <div className="shrink-0 px-3 sm:px-6 py-2 sm:py-4 border-t border-border bg-muted/5">
                     <FormDialogFooter
                         saveLabel={isStoring ? "جارٍ الحفظ..." : isSaving ? "جاري القص..." : "تأكيد التعديل"}
                         cancelLabel="إلغاء"

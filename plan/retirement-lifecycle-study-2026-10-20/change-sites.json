@@ -1,0 +1,2190 @@
+[
+  {
+    "path": "PensionMS.Core/Constants/FileStatusConstants.cs",
+    "action": "CHANGE",
+    "rules": "R01,R06",
+    "sites": [
+      {
+        "line": 6,
+        "anchor": "class FileStatusConstants"
+      },
+      {
+        "line": 11,
+        "anchor": "Closed ="
+      },
+      {
+        "line": 13,
+        "anchor": "Pending ="
+      },
+      {
+        "line": 14,
+        "anchor": "UnderReview ="
+      }
+    ],
+    "change": "تعريف الحالات الأربع والتوافق مع أرقام الحالات القديمة، دون خلط موقوف المعاش بحالة الملف."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Lookups/FileStatusConfiguration.cs",
+    "action": "CHANGE",
+    "rules": "R01,R10",
+    "sites": [
+      {
+        "line": 17,
+        "anchor": "builder.HasData("
+      }
+    ],
+    "change": "أسماء وقائمة حالات الملف الجديدة مع المحافظة على التاريخ في التحويل."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "action": "CHANGE",
+    "rules": "R01,R05,R06,R07",
+    "sites": [
+      {
+        "line": 43,
+        "anchor": "ChangeStatusAsync("
+      },
+      {
+        "line": 79,
+        "anchor": "case FileStatusConstants.Active"
+      },
+      {
+        "line": 207,
+        "anchor": "GetAllowedStatusTransitionsAsync("
+      },
+      {
+        "line": 240,
+        "anchor": "GetFileStatusesAsync("
+      },
+      {
+        "line": 277,
+        "anchor": "ProcessExpiredPledgesAsync("
+      },
+      {
+        "line": 379,
+        "anchor": "GetAllowedTransitions(int"
+      }
+    ],
+    "change": "تغيير مصفوفة الانتقالات، توحيد شروط الاعتماد والتفعيل، فصل انتهاء الاستحقاق والإيقافات؛ إزالة الكتابة لحالة Suspended."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "action": "CHANGE",
+    "rules": "R02,R03,R04,R05,R06,R07,R09,R10,R11,R12",
+    "sites": [
+      {
+        "line": 142,
+        "anchor": "WithReviewTransactionAsync("
+      },
+      {
+        "line": 165,
+        "anchor": "RequestReviewCoreAsync("
+      },
+      {
+        "line": 189,
+        "anchor": "var existingAll ="
+      },
+      {
+        "line": 262,
+        "anchor": "var tableDefs ="
+      },
+      {
+        "line": 418,
+        "anchor": "ApproveReviewCoreAsync("
+      },
+      {
+        "line": 452,
+        "anchor": "RejectReviewCoreAsync("
+      },
+      {
+        "line": 495,
+        "anchor": "ApproveItemCoreAsync("
+      },
+      {
+        "line": 529,
+        "anchor": "RejectItemCoreAsync("
+      },
+      {
+        "line": 571,
+        "anchor": "AutoResolveFileReviewCoreAsync(int"
+      },
+      {
+        "line": 681,
+        "anchor": "SetEntityReviewStatusForFileAsync(int"
+      },
+      {
+        "line": 729,
+        "anchor": "AcknowledgeEntityRejectionAsync("
+      },
+      {
+        "line": 811,
+        "anchor": "UpdateEntityPendingStatusForItemAsync(FileReviewItem"
+      }
+    ],
+    "change": "تمييز التجهيز والتعديل والإرسال والمراجعة الانتقالية وإعادة الاستحقاق؛ حصر القرار بالدورة والبند؛ ربط التعليق بإيقاف المراجعة؛ الرفض يبقي معلقاً والاعتماد يفعّل بعد الفحوص."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "action": "CHANGE",
+    "rules": "R03,R04,R06,R10,R11",
+    "sites": [
+      {
+        "line": 63,
+        "anchor": "CreateAsync("
+      },
+      {
+        "line": 66,
+        "anchor": "existingActive ="
+      },
+      {
+        "line": 201,
+        "anchor": "StatusID = FileStatusConstants.New"
+      },
+      {
+        "line": 412,
+        "anchor": "HandleRetireeDeathAsync("
+      },
+      {
+        "line": 609,
+        "anchor": "CorrectRetireeLifeStatusAsync("
+      },
+      {
+        "line": 797,
+        "anchor": "UpdateAsync("
+      },
+      {
+        "line": 1011,
+        "anchor": "AssignEmployeeAsync("
+      },
+      {
+        "line": 1046,
+        "anchor": "DeleteAsync("
+      }
+    ],
+    "change": "ضبط إنشاء الملف وإدخال بياناته الأولى، منع فتح ملف بديل لتجاوز إعادة الاستحقاق، مسارات الوفاة والتصحيح والتعديل والحذف والإسناد، ومعاملات الحفظ مع التعليق."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/PensionSuspensionService.cs",
+    "action": "CHANGE",
+    "rules": "R07,R09",
+    "sites": [
+      {
+        "line": 29,
+        "anchor": "CreateWithPledgeAsync("
+      },
+      {
+        "line": 36,
+        "anchor": "existingSuspension ="
+      },
+      {
+        "line": 103,
+        "anchor": "file.StatusID = FileStatusConstants.Suspended"
+      },
+      {
+        "line": 144,
+        "anchor": "EndSuspensionAsync("
+      },
+      {
+        "line": 168,
+        "anchor": "file.StatusID = file.PreviousStatusID"
+      },
+      {
+        "line": 332,
+        "anchor": "CreateExemptionAsync("
+      }
+    ],
+    "change": "دعم أسباب إيقاف مستقلة ومتزامنة؛ عدم تغيير حالة الملف عند إنشاء/إنهاء إيقاف؛ تمييز إيقاف المراجعة ورفع سببه فقط وإعادة تقييم المبالغ المحجوزة."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/PayrollGenerationService.cs",
+    "action": "CHANGE",
+    "rules": "R08,R09",
+    "sites": [
+      {
+        "line": 25,
+        "anchor": "GenerateForBatchAsync("
+      },
+      {
+        "line": 29,
+        "anchor": "var onDate ="
+      },
+      {
+        "line": 31,
+        "anchor": "var activeFiles ="
+      },
+      {
+        "line": 98,
+        "anchor": "fileIdsWithSuspension.Contains"
+      },
+      {
+        "line": 55,
+        "anchor": "var recipientsByFile ="
+      },
+      {
+        "line": 74,
+        "anchor": "var allEntitlements ="
+      },
+      {
+        "line": 86,
+        "anchor": "var activeBooks ="
+      },
+      {
+        "line": 219,
+        "anchor": "StatusID = TransactionStatusConstants.PendingSend"
+      }
+    ],
+    "change": "فصل استحقاق إنشاء المبلغ عن السماح بصرفه؛ إنشاء البنود المستحقة الموقوفة؛ حساب الفترة المطلوبة من الكشف ومراعاة النسخة المعتمدة."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/SalaryPaymentBatchService.cs",
+    "action": "CHANGE",
+    "rules": "R08,R09,R11",
+    "sites": [
+      {
+        "line": 157,
+        "anchor": "ApproveCoreAsync("
+      },
+      {
+        "line": 249,
+        "anchor": "GenerateItemsAsync("
+      },
+      {
+        "line": 361,
+        "anchor": "UpdateItemStatusAsync("
+      },
+      {
+        "line": 390,
+        "anchor": "ExportBatchToExcelAsync("
+      },
+      {
+        "line": 490,
+        "anchor": "SuspensionStatusConstants.CodeActive"
+      },
+      {
+        "line": 521,
+        "anchor": "ImportTransactionResultsAsync("
+      },
+      {
+        "line": 331,
+        "anchor": "MapItemToDto("
+      }
+    ],
+    "change": "فحص الحجز في الاعتماد والتصدير وتغيير الحالة واستيراد النتائج؛ المحافظة على البنود المتراكمة وهويتها وعدم إعادة صرف السابق؛ مراجعة الإجماليات والقيد المحاسبي للكشف المختلط."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/RetireeService.cs",
+    "action": "CHANGE",
+    "rules": "R04,R11",
+    "sites": [
+      {
+        "line": 195,
+        "anchor": "UpdateAsync("
+      },
+      {
+        "line": 274,
+        "anchor": "DeleteAsync("
+      },
+      {
+        "line": 465,
+        "anchor": "UploadPhotoAsync("
+      }
+    ],
+    "change": "مسارات مباشرة لا تطلب المراجعة حالياً؛ إضافة سياق الملف محل المعاملة وحماية البيانات المشتركة والصور."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+    "action": "CHANGE",
+    "rules": "R03,R04,R06,R11",
+    "sites": [
+      {
+        "line": 84,
+        "anchor": "CreateAsync("
+      },
+      {
+        "line": 230,
+        "anchor": "UpdateAsync("
+      },
+      {
+        "line": 202,
+        "anchor": "ReEvaluateEntitlementStatusAsync("
+      },
+      {
+        "line": 381,
+        "anchor": "DeleteAsync("
+      },
+      {
+        "line": 407,
+        "anchor": "StopAsync("
+      },
+      {
+        "line": 517,
+        "anchor": "ReactivateAsync("
+      },
+      {
+        "line": 657,
+        "anchor": "RecordDeathAsync("
+      },
+      {
+        "line": 705,
+        "anchor": "ManualActivateAsync("
+      }
+    ],
+    "change": "جميع عمليات المستحق بما فيها الإيقاف والوفاة والاستعادة، وآثارها على الوكيل والمستلم؛ حفظ التعديل والتعليق والإيقاف كوحدة متسقة."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/AgentService.cs",
+    "action": "CHANGE",
+    "rules": "R03,R04,R11",
+    "sites": [
+      {
+        "line": 42,
+        "anchor": "WithinFileAsync"
+      },
+      {
+        "line": 59,
+        "anchor": "CreateCoreAsync("
+      },
+      {
+        "line": 62,
+        "anchor": "UpdateCoreAsync("
+      },
+      {
+        "line": 65,
+        "anchor": "DeactivateCoreAsync("
+      },
+      {
+        "line": 68,
+        "anchor": "DeleteCoreAsync("
+      },
+      {
+        "line": 591,
+        "anchor": "UpdatePhotoAsync("
+      }
+    ],
+    "change": "الحفاظ على قفل الملف الموجود، وفصل التجهيز الأولي عن المراجعة؛ التقاط الإضافة والحذف والصورة وآثار إنهاء الوكالة."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/GuardianService.cs",
+    "action": "CHANGE",
+    "rules": "R03,R04,R11",
+    "sites": [
+      {
+        "line": 41,
+        "anchor": "CanEditAsync("
+      },
+      {
+        "line": 82,
+        "anchor": "AssignCoreAsync("
+      },
+      {
+        "line": 218,
+        "anchor": "EndGuardianshipAsync("
+      },
+      {
+        "line": 261,
+        "anchor": "UpdateAsync("
+      },
+      {
+        "line": 303,
+        "anchor": "AddMinorCoreAsync("
+      },
+      {
+        "line": 146,
+        "anchor": "TransferSalaryToGuardianAsync("
+      },
+      {
+        "line": 244,
+        "anchor": "ReturnSalaryToEntitledAsync("
+      }
+    ],
+    "change": "تعديل الوصي المباشر بلا مراجعة، وربط/فك القاصر وتغيير مستلم الحصة؛ مراعاة المفتاح المركب للربط."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/PaymentBookService.cs",
+    "action": "CHANGE",
+    "rules": "R03,R04,R11",
+    "sites": [
+      {
+        "line": 193,
+        "anchor": "CreateCoreAsync("
+      },
+      {
+        "line": 362,
+        "anchor": "UpdateAsync("
+      },
+      {
+        "line": 389,
+        "anchor": "DeleteAsync("
+      }
+    ],
+    "change": "التجهيز الأولي، إلغاء/استبدال الدفتر القديم وآثاره، وتعليق متسق يشمل حذف الدفتر."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/SalaryRecipientService.cs",
+    "action": "CHANGE",
+    "rules": "R03,R04,R11",
+    "sites": [
+      {
+        "line": 49,
+        "anchor": "CreateCoreAsync("
+      },
+      {
+        "line": 349,
+        "anchor": "EndCoreAsync("
+      },
+      {
+        "line": 405,
+        "anchor": "UpdatePhotoAsync("
+      }
+    ],
+    "change": "تعيين/إنهاء مستلم وصورته وتأثيرها على كيان الشخص المشترك، مع سياق الملف والإيقاف الصحيح."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentService.cs",
+    "action": "CHANGE",
+    "rules": "R03,R04,R11",
+    "sites": [
+      {
+        "line": 264,
+        "anchor": "UploadAsync("
+      },
+      {
+        "line": 264,
+        "anchor": "deferPostProcessing"
+      },
+      {
+        "line": 585,
+        "anchor": "RefreshAfterUploadAsync("
+      },
+      {
+        "line": 555,
+        "anchor": "ProcessFileLevelPostUploadAsync("
+      },
+      {
+        "line": 389,
+        "anchor": "ResolveOwnerFileAsync("
+      },
+      {
+        "line": 908,
+        "anchor": "DeleteAsync("
+      },
+      {
+        "line": 956,
+        "anchor": "UpdateAsync("
+      },
+      {
+        "line": 721,
+        "anchor": "ReviewAsync("
+      }
+    ],
+    "change": "الرفع الفوري والمؤجل والجماعي؛ الإيقاف عند الحفظ لا بعد طلب لاحق؛ النسخة الأصلية والملف الثنائي؛ توحيد مراجعة الوثيقة مع قرار الملف وكشف المحذوف."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/FinancialEntitlementService.cs",
+    "action": "CHANGE",
+    "rules": "R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 127,
+        "anchor": "CreateAsync("
+      },
+      {
+        "line": 238,
+        "anchor": "EndAsync("
+      }
+    ],
+    "change": "إنشاء/إنهاء الاستحقاق لا يطلب مراجعة حالياً؛ البيانات مرتبطة بالمتقاعد لا بملف محدد؛ حفظ المعتمد للفترات وإعادة الاستحقاق."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/EntitlementEngine.cs",
+    "action": "CHANGE",
+    "rules": "R04,R06,R08",
+    "sites": [
+      {
+        "line": 19,
+        "anchor": "CheckCoreEligibilityAsync("
+      },
+      {
+        "line": 66,
+        "anchor": "ReEvaluateEntitlementStatusAsync("
+      },
+      {
+        "line": 92,
+        "anchor": "DeactivateLinkedAgentsAndRecipientsAsync("
+      }
+    ],
+    "change": "تمييز المبلغ المستحق عن المنع من الصرف، وتنسيق إعادة التقييم الآلية وآثارها دون دورة مراجعة ذاتية."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentPledgeService.cs",
+    "action": "CHANGE",
+    "rules": "R03,R04,R11",
+    "sites": [
+      {
+        "line": 54,
+        "anchor": "CreateAsync("
+      },
+      {
+        "line": 125,
+        "anchor": "MarkFulfilledAsync("
+      },
+      {
+        "line": 168,
+        "anchor": "UpdateAsync("
+      },
+      {
+        "line": 196,
+        "anchor": "DeleteAsync("
+      }
+    ],
+    "change": "التعهد والتسوية والحذف تغيّر متطلبات الملف دون طلب مراجعة؛ فصل آثارها عن سبب الإيقاف."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentExemptionService.cs",
+    "action": "CHANGE",
+    "rules": "R03,R04,R11",
+    "sites": [
+      {
+        "line": 46,
+        "anchor": "CreateAsync("
+      },
+      {
+        "line": 105,
+        "anchor": "UpdateAsync("
+      },
+      {
+        "line": 124,
+        "anchor": "DeleteAsync("
+      }
+    ],
+    "change": "الإعفاء وربط النواقص ومرفق التوجيه وتغيير متطلبات الاعتماد."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+    "action": "CHANGE",
+    "rules": "R03,R04,R11",
+    "sites": [
+      {
+        "line": 107,
+        "anchor": "CreateAsync("
+      },
+      {
+        "line": 168,
+        "anchor": "MarkFulfilledAsync("
+      },
+      {
+        "line": 193,
+        "anchor": "DeleteAsync("
+      }
+    ],
+    "change": "إضافة/تسوية/حذف النواقص، وآثار الرفع التي تستوفيها تلقائياً."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileNoteService.cs",
+    "action": "CONTRACT",
+    "rules": "R04",
+    "sites": [
+      {
+        "line": 30,
+        "anchor": "CreateAsync("
+      },
+      {
+        "line": 54,
+        "anchor": "DeleteAsync("
+      }
+    ],
+    "change": "الملاحظات كيانات ملف مرتبطة؛ حسم شمول العمليات الإدارية ضمن عبارة أي كيان، وعدم الخلط مع الملاحظات الآلية."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/MinistryApprovalService.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04",
+    "sites": [
+      {
+        "line": 459,
+        "anchor": "UpdateManualItemAsync("
+      },
+      {
+        "line": 559,
+        "anchor": "ProcessItemAsync("
+      },
+      {
+        "line": 755,
+        "anchor": "ProcessBulkApprovalsAsync("
+      }
+    ],
+    "change": "إنشاء المتقاعد من الإحالة وتعديل بيانات المصدر؛ عدم إطلاق مراجعة ملف لم يُنشأ بعد، ومراجعة انعكاس تعديلات المصدر بعد اعتماده."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/ComplianceEngine.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R11",
+    "sites": [
+      {
+        "line": 132,
+        "anchor": "RefreshComplianceCacheAsync("
+      }
+    ],
+    "change": "تحديث عدادات النواقص تلقائياً يحفظ الملف؛ منع إنتاج مراجعة متكررة من العدادات والطوابع الزمنية."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "action": "CHANGE",
+    "rules": "R01,R02,R10",
+    "sites": [
+      {
+        "line": 111,
+        "anchor": "GetAllAsync("
+      },
+      {
+        "line": 316,
+        "anchor": "GetByRetireeIdAsync("
+      },
+      {
+        "line": 402,
+        "anchor": "GetFileChangeLogAsync("
+      },
+      {
+        "line": 753,
+        "anchor": "GetForDataEntryAsync("
+      },
+      {
+        "line": 809,
+        "anchor": "GetForDocumentUploadAsync("
+      },
+      {
+        "line": 909,
+        "anchor": "GetDocumentUploadStatsAsync("
+      },
+      {
+        "line": 1057,
+        "anchor": "GetDataEntryStatsAsync("
+      }
+    ],
+    "change": "الفلاتر وقوائم الإدخال والرفع والإحصاءات والبيانات المحذوفة؛ التجهيز مقابل المعلق/المنتهي ومراجعة كل الملفات القديمة."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileDtoMapper.cs",
+    "action": "CHANGE",
+    "rules": "R01,R02",
+    "sites": [
+      {
+        "line": 33,
+        "anchor": "FileStatusName ="
+      },
+      {
+        "line": 71,
+        "anchor": "ReviewStatus ="
+      }
+    ],
+    "change": "تسمية معلق وانتهى استحقاقه، وإظهار حالة المراجعة ووضع المعاش بصورة مستقلة."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/WorkflowEngine.cs",
+    "action": "CHANGE",
+    "rules": "R01,R03,R05",
+    "sites": [
+      {
+        "line": 21,
+        "anchor": "RouteFileAsync("
+      },
+      {
+        "line": 44,
+        "anchor": "FileStatusConstants.Incomplete"
+      },
+      {
+        "line": 50,
+        "anchor": "FileStatusConstants.UnderReview"
+      }
+    ],
+    "change": "مهام التجهيز والتصحيح والمراجعة وتفعيل الملف من القرار النهائي مع إكمال المهام السابقة."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Helpers/PensionFileAccess.cs",
+    "action": "CHANGE",
+    "rules": "R01,R06",
+    "sites": [
+      {
+        "line": 19,
+        "anchor": "Editable(RetirementFile file)"
+      }
+    ],
+    "change": "إزالة حظر التعديل المبني على موقوف/مرفوض وإتاحة تصحيح بيانات المنتهي بالإجراء المحدد."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Helpers/RecipientScope.cs",
+    "action": "CONTRACT",
+    "rules": "R04,R08,R11",
+    "sites": [
+      {
+        "line": 18,
+        "anchor": "End(SalaryRecipient"
+      },
+      {
+        "line": 38,
+        "anchor": "Reviewed(PendingReviewStatus"
+      },
+      {
+        "line": 41,
+        "anchor": "AgentPayable(Agent"
+      }
+    ],
+    "change": "تُستخدم في أهلية الصرف وإنهاء المستلمين؛ لا تخفض المستحق المتراكم بسبب حالة مراجعة مؤقتة."
+  },
+  {
+    "path": "PensionMS.API/Interceptors/AuditSaveChangesInterceptor.cs",
+    "action": "CHANGE",
+    "rules": "R04,R11",
+    "sites": [
+      {
+        "line": 58,
+        "anchor": "BeforeSaveChanges(DbContext?"
+      },
+      {
+        "line": 91,
+        "anchor": "var action ="
+      },
+      {
+        "line": 158,
+        "anchor": "var pk ="
+      },
+      {
+        "line": 54,
+        "anchor": "FixupCreatedRecordIdsAsync("
+      }
+    ],
+    "change": "تدقيق حذف منطقي ومفاتيح مركبة وسياق الملف، والتقاط القيم والأفعال الحقيقية بدل الاعتماد على Update عام."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Audit/SnapshotService.cs",
+    "action": "CONTRACT",
+    "rules": "R04,R11,R12",
+    "sites": [
+      {
+        "line": 24,
+        "anchor": "CaptureAsync("
+      },
+      {
+        "line": 41,
+        "anchor": "var fullState ="
+      }
+    ],
+    "change": "اللقطة الحالية محدودة ببيانات رأس الملف؛ لا تكفي لاستعادة المستحقين والوكلاء والوثائق أو حساب المستحقات التاريخية."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Security/SoD/SoDGuardService.cs",
+    "action": "CHANGE",
+    "rules": "R05,R11",
+    "sites": [
+      {
+        "line": 21,
+        "anchor": "ValidateAsync("
+      },
+      {
+        "line": 34,
+        "anchor": "a.TableID == 2"
+      }
+    ],
+    "change": "سجل الأعمال الحالي يقتصر على جدول الملف؛ فحص محرري الكيانات المرتبطة ضمن الاعتماد الموحّد."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Security/SoD/SoDRules.cs",
+    "action": "CHANGE",
+    "rules": "R05,R11",
+    "sites": [
+      {
+        "line": 10,
+        "anchor": "class DocumentUploaderCannotApproveRule"
+      },
+      {
+        "line": 31,
+        "anchor": "class FinancialEditorCannotApproveRule"
+      },
+      {
+        "line": 52,
+        "anchor": "class ApproverCannotActivateRule"
+      }
+    ],
+    "change": "مواءمة الاعتماد الذي يفعّل مباشرة مع فصل المُدخل عن المراجع دون تجاوز الضوابط."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Repositories/UnitOfWork.cs",
+    "action": "CONTRACT",
+    "rules": "R04,R09,R10,R11",
+    "sites": [
+      {
+        "line": 449,
+        "anchor": "LockFileReviewAsync("
+      },
+      {
+        "line": 459,
+        "anchor": "LockSalaryBatchAsync("
+      },
+      {
+        "line": 468,
+        "anchor": "BeginTransactionAsync("
+      }
+    ],
+    "change": "مراجعة القفل والمعاملات المشتركة للإيقاف والاعتماد والإفراج والتشغيل الجماعي وترتيب الأقفال."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/UnitOfWorkTransaction.cs",
+    "action": "CONTRACT",
+    "rules": "R04,R11",
+    "sites": [
+      {
+        "line": 10,
+        "anchor": "ExecuteAsync<T>"
+      }
+    ],
+    "change": "نمط جاهز لملكية المعاملة المتداخلة؛ نشر فشل المراجعة بدل حفظ البيانات مع فشل التعليق."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Repositories/SettlementRepository.cs",
+    "action": "CHANGE",
+    "rules": "R04,R08,R11",
+    "sites": [
+      {
+        "line": 328,
+        "anchor": "ApplyRetireeRankUpdatesAsync("
+      },
+      {
+        "line": 343,
+        "anchor": "file.RankID ="
+      },
+      {
+        "line": 358,
+        "anchor": "retiree.ApprovalItem.Salary ="
+      }
+    ],
+    "change": "مسار كتابة غير مباشر يعدل رتبة جميع ملفات المتقاعد وراتب مصدره؛ يحتاج سياق الملف والتعليق والنسخة المعتمدة."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Settlements/SettlementService.cs",
+    "action": "CHANGE",
+    "rules": "R04,R08,R11",
+    "sites": [
+      {
+        "line": 131,
+        "anchor": "ImportExcelAsync("
+      },
+      {
+        "line": 496,
+        "anchor": "_financialEntitlementService.CreateAsync"
+      },
+      {
+        "line": 508,
+        "anchor": "ApplyRetireeRankUpdatesAsync"
+      },
+      {
+        "line": 860,
+        "anchor": "LinkItemToRetireeAsync("
+      }
+    ],
+    "change": "الاستيراد وربط المتقاعد ينشئان استحقاقاً ويعدلان رتب الملفات؛ ربط آثار التسوية بالمراجعة والإيقاف مع حفظ المعاملة."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Repositories/Repository.cs",
+    "action": "CONTRACT",
+    "rules": "R04,R11",
+    "sites": [
+      {
+        "line": 57,
+        "anchor": "Delete(T entity)"
+      }
+    ],
+    "change": "الحذف الحالي Remove حقيقي؛ عدم استخدامه لحذف أعمال يجب حفظ تاريخها."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Jobs/ExpiredPledgesJob.cs",
+    "action": "CHANGE",
+    "rules": "R07",
+    "sites": [
+      {
+        "line": 42,
+        "anchor": "ProcessExpiredPledgesAsync("
+      }
+    ],
+    "change": "العمل الدوري مسجل؛ يجب أن يوقف المعاش فقط، بما فيه الملف المعلق، دون إعادة حالة Suspended."
+  },
+  {
+    "path": "PensionMS.Core/Constants/LookupConstants.cs",
+    "action": "CHANGE",
+    "rules": "R08,R09",
+    "sites": [
+      {
+        "line": 26,
+        "anchor": "class TransactionStatusConstants"
+      }
+    ],
+    "change": "الثوابت Failed=3/Cancelled=4 لا تطابق Seed: استلام=3 وفشل=4 وإلغاء=5؛ يجب حسم الترميز قبل تمثيل الحجز أو الإفراج."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Lookups/TransactionStatusConfiguration.cs",
+    "action": "CHANGE",
+    "rules": "R08,R09",
+    "sites": [
+      {
+        "line": 17,
+        "anchor": "builder.HasData("
+      }
+    ],
+    "change": "توافق حالات الحوالة مع الثوابت وحالة منع الصرف المطلوبة دون تغيير نتائج حوالات قديمة."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/System/SystemTableConfiguration.cs",
+    "action": "CHANGE",
+    "rules": "R04,R11",
+    "sites": [
+      {
+        "line": 36,
+        "anchor": "TableID = 19,"
+      }
+    ],
+    "change": "المراجعة تفترض PaymentBooks=19 بينما Seed يخصصه لكشوف التسويات ولا يزرع PaymentBooks؛ التحقق من SystemTables الفعلي وإصلاح الربط."
+  },
+  {
+    "path": "PensionMS.Core/Constants/SystemTableConstants.cs",
+    "action": "CHANGE",
+    "rules": "R04,R11",
+    "sites": [
+      {
+        "line": 6,
+        "anchor": "class SystemTableConstants"
+      }
+    ],
+    "change": "توحيد معرّفات الكيانات المدققة بدل الأرقام المتناثرة مع التوافق مع البيانات الفعلية."
+  },
+  {
+    "path": "PensionMS.Core/Constants/MissingDocumentStatusConstants.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05",
+    "sites": [
+      {
+        "line": 3,
+        "anchor": "class MissingDocumentStatusConstants"
+      }
+    ],
+    "change": "حالات النواقص تبقى مستقلة عن حالات الملف؛ تحقق من شروط التسوية والتعهد والإعفاء عند الاعتماد."
+  },
+  {
+    "path": "ui/src/constants/retirement.ts",
+    "action": "CHANGE",
+    "rules": "R01,R06",
+    "sites": [
+      {
+        "line": 6,
+        "anchor": "FILE_STATUS ="
+      },
+      {
+        "line": 20,
+        "anchor": "CLOSED_STATUS_ID"
+      }
+    ],
+    "change": "الحالات الأربع؛ إزالة اعتماد منع الملف المكرر على استثناء Closed."
+  },
+  {
+    "path": "ui/src/components/domain/retirement/FileStatusBadge.tsx",
+    "action": "CHANGE",
+    "rules": "R01",
+    "sites": [
+      {
+        "line": 4,
+        "anchor": "STATUS_VARIANTS"
+      }
+    ],
+    "change": "شارات الحالات الجديدة مع الإبقاء على موقوف للمعاش خارج خريطة الملف."
+  },
+  {
+    "path": "ui/src/components/domain/retirement/StatusUpdateDialog.tsx",
+    "action": "CHANGE",
+    "rules": "R01,R05,R06",
+    "sites": [
+      {
+        "line": 25,
+        "anchor": "sensitiveStatusIDs"
+      },
+      {
+        "line": 52,
+        "anchor": "statusWarnings:"
+      }
+    ],
+    "change": "الأرقام 3/4/6/8 ورسائل الإغلاق النهائي وإلغاء الاستحقاق؛ استبدال الإجراءات بما يطابق المراجعة والانتهاء وإعادة الاستحقاق."
+  },
+  {
+    "path": "ui/src/pages/retirement-files/FileReviewPage.tsx",
+    "action": "CHANGE",
+    "rules": "R02,R05",
+    "sites": [
+      {
+        "line": 51,
+        "anchor": "updateFileStatus(fileId, 2"
+      },
+      {
+        "line": 61,
+        "anchor": "updateFileStatus(fileId, 3"
+      }
+    ],
+    "change": "مسار /files/:id/review يغير الحالة مباشرة؛ يجب أن يستخدم قرارات المراجعة، فالرفض الحالي يطلب Suspended."
+  },
+  {
+    "path": "ui/src/components/domain/retirement/FileReviewHeader.tsx",
+    "action": "CHANGE",
+    "rules": "R01,R02",
+    "sites": [
+      {
+        "line": 53,
+        "anchor": "RecordStateBadge state={statusID"
+      }
+    ],
+    "change": "تمرير رقم حالة الملف إلى شارة عامة تعتمد مفاتيح نصية؛ فصل حالة الملف عن المراجعة."
+  },
+  {
+    "path": "ui/src/components/domain/retirement/FileReviewSidebar.tsx",
+    "action": "CHANGE",
+    "rules": "R01,R02",
+    "sites": [
+      {
+        "line": 6,
+        "anchor": "RecordStateBadge"
+      }
+    ],
+    "change": "مراجعة استخدام شارة عامة لحالة الملف وعرض المعاش بصورة مستقلة."
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFileDetailsPage.tsx",
+    "action": "CHANGE",
+    "rules": "R01,R04,R05,R06,R07",
+    "sites": [
+      {
+        "line": 184,
+        "anchor": "const statusMutation"
+      },
+      {
+        "line": 226,
+        "anchor": "file.statusID === 2"
+      },
+      {
+        "line": 270,
+        "anchor": "file?.reviewStatus === 3"
+      }
+    ],
+    "change": "توحيد الحالات والإجراءات وصلاحيات التعديل، وإظهار سبب إيقاف المعاش وتحديث جميع البيانات بعد القرار."
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFilesPage.tsx",
+    "action": "CHANGE",
+    "rules": "R01,R02,R10",
+    "sites": [
+      {
+        "line": 209,
+        "anchor": "FileStatusBadge statusId"
+      },
+      {
+        "line": 210,
+        "anchor": "row.reviewStatus === 1"
+      }
+    ],
+    "change": "الفلاتر والقوائم والشارات والإحالة الجماعية والحالة المعلقة مع مراجعة مرفوضة."
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/ReviewTab.tsx",
+    "action": "CHANGE",
+    "rules": "R02,R05,R07,R09",
+    "sites": [
+      {
+        "line": 67,
+        "anchor": "const statusMutation"
+      },
+      {
+        "line": 86,
+        "anchor": "const reviewMutation"
+      },
+      {
+        "line": 108,
+        "anchor": "const approveItemMutation"
+      }
+    ],
+    "change": "توحيد الاعتماد الكلي والجزئي ومنع تغيير الحالة كبديل للمراجعة وتحديث الإيقافات والمستحقات المحجوزة."
+  },
+  {
+    "path": "ui/src/pages/review/FileReviewDetailPage.tsx",
+    "action": "CHANGE",
+    "rules": "R02,R05,R07,R09",
+    "sites": [
+      {
+        "line": 384,
+        "anchor": "const reviewMutation"
+      },
+      {
+        "line": 399,
+        "anchor": "const approveItemMutation"
+      },
+      {
+        "line": 410,
+        "anchor": "const rejectItemMutation"
+      }
+    ],
+    "change": "دورة المراجعة الحالية فقط، وفشل شروط التفعيل، وتحديث حالة الملف وإيقافه وبنود المعاش بعد القرار."
+  },
+  {
+    "path": "ui/src/pages/pension/FileReviewListPage.tsx",
+    "action": "CHANGE",
+    "rules": "R02,R05,R10",
+    "sites": [
+      {
+        "line": 77,
+        "anchor": "رفض الملف:"
+      },
+      {
+        "line": 197,
+        "anchor": "function FileReviewListPage"
+      }
+    ],
+    "change": "عرض المراجعات المرفوضة التي ما زالت معلقة والانتقالية وإعادة الاستحقاق، وتسمية رفض المراجعة."
+  },
+  {
+    "path": "ui/src/lib/retirementFileForm.ts",
+    "action": "CHANGE",
+    "rules": "R03,R06",
+    "sites": [
+      {
+        "line": 271,
+        "anchor": "findActiveFile<"
+      }
+    ],
+    "change": "منع فتح ملف جديد بدلاً من إعادة استحقاق الملف نفسه؛ دالة تعتمد حالياً على استثناء Closed."
+  },
+  {
+    "path": "ui/src/components/domain/retirement/CreateFileWizard.tsx",
+    "action": "CHANGE",
+    "rules": "R03,R04,R06",
+    "sites": [
+      {
+        "line": 1308,
+        "anchor": "لا يمكن فتح ملف جديد لمتقاعد لديه ملف غير مغلق"
+      }
+    ],
+    "change": "تجهيز أولي وإرسال صريح، وحماية الملف الموجود وتحديث النص والفحوص المقابلة للخلفية."
+  },
+  {
+    "path": "ui/src/constants/queryKeys.ts",
+    "action": "CHANGE",
+    "rules": "R04,R05,R07,R09",
+    "sites": [
+      {
+        "line": 13,
+        "anchor": "retirement: {"
+      },
+      {
+        "line": 173,
+        "anchor": "salaries: {"
+      }
+    ],
+    "change": "تغطية مفاتيح الملف والمراجعة والإيقافات وكشوف الرواتب عند كل عملية أو قرار."
+  },
+  {
+    "path": "ui/src/hooks/useDocumentMutations.ts",
+    "action": "CHANGE",
+    "rules": "R03,R04,R11",
+    "sites": [
+      {
+        "line": 17,
+        "anchor": "invalidateKeys:"
+      }
+    ],
+    "change": "إبطال حالة الملف ومراجعته وإيقافاته ورواتبه بعد عمليات الوثائق، مع معالجة الرفع المؤجل."
+  },
+  {
+    "path": "ui/src/hooks/queries/useFileDetailsQuery.ts",
+    "action": "CHANGE",
+    "rules": "R01,R02,R07",
+    "sites": [
+      {
+        "line": 6,
+        "anchor": "interface RetirementFileDetail"
+      },
+      {
+        "line": 84,
+        "anchor": "FILE_DETAIL_KEY"
+      }
+    ],
+    "change": "عقد حالة الملف ومراجعته ووضع المعاش وسياق الملف للمتقاعد وتحديث البيانات المشتركة."
+  },
+  {
+    "path": "ui/src/hooks/queries/useReviewItemsQuery.ts",
+    "action": "CHANGE",
+    "rules": "R02",
+    "sites": [
+      {
+        "line": 8,
+        "anchor": "groupBySection"
+      },
+      {
+        "line": 37,
+        "anchor": "getReviewDiff"
+      }
+    ],
+    "change": "تجميع بنود دورة المراجعة الحالية بدل القرارات التاريخية، وإظهار الحذف والروابط."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.cs",
+    "action": "CHANGE",
+    "rules": "R01,R02,R07",
+    "sites": [
+      {
+        "line": 43,
+        "anchor": "FileStatusConstants."
+      }
+    ],
+    "change": "إحصاءات الحالات الأربع منفصلة عن إيقاف المعاش؛ منع العد حسب نص الاسم أو ضم الجديد إلى النشط."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "action": "CHANGE",
+    "rules": "R01,R02,R07",
+    "sites": [
+      {
+        "line": 32,
+        "anchor": "FileStatusConstants."
+      }
+    ],
+    "change": "إحصاءات الحالات الأربع منفصلة عن إيقاف المعاش؛ منع العد حسب نص الاسم أو ضم الجديد إلى النشط."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/RetirementFileReportService.cs",
+    "action": "CHANGE",
+    "rules": "R01,R02,R07",
+    "sites": [
+      {
+        "line": 53,
+        "anchor": "GetRetirementFileReportSummaryAsync("
+      },
+      {
+        "line": 65,
+        "anchor": "ClosedCount ="
+      }
+    ],
+    "change": "إحصاءات الحالات الأربع منفصلة عن إيقاف المعاش؛ منع العد حسب نص الاسم أو ضم الجديد إلى النشط."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Retirement.cs",
+    "action": "CHANGE",
+    "rules": "R01,R02,R07",
+    "sites": [
+      {
+        "line": 56,
+        "anchor": "FileStatusConstants."
+      }
+    ],
+    "change": "إحصاءات الحالات الأربع منفصلة عن إيقاف المعاش؛ منع العد حسب نص الاسم أو ضم الجديد إلى النشط."
+  },
+  {
+    "path": "PensionMS.Core/Entities/RetirementFile.cs",
+    "action": "CONTRACT",
+    "rules": "R02,R04,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 8,
+        "anchor": "class RetirementFile"
+      }
+    ],
+    "change": "تحديد بيانات دورة المراجعة ونوع العملية والنسخة المعتمدة وسياق الملف وسبب الحجز والفترة المالية؛ لا تُعتمد إضافة أعمدة أو جداول قبل التصميم."
+  },
+  {
+    "path": "PensionMS.Core/Entities/FileReviewItem.cs",
+    "action": "CONTRACT",
+    "rules": "R02,R04,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 6,
+        "anchor": "class FileReviewItem"
+      }
+    ],
+    "change": "تحديد بيانات دورة المراجعة ونوع العملية والنسخة المعتمدة وسياق الملف وسبب الحجز والفترة المالية؛ لا تُعتمد إضافة أعمدة أو جداول قبل التصميم."
+  },
+  {
+    "path": "PensionMS.Core/Entities/PensionSuspension.cs",
+    "action": "CONTRACT",
+    "rules": "R02,R04,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 8,
+        "anchor": "class PensionSuspension"
+      }
+    ],
+    "change": "تحديد بيانات دورة المراجعة ونوع العملية والنسخة المعتمدة وسياق الملف وسبب الحجز والفترة المالية؛ لا تُعتمد إضافة أعمدة أو جداول قبل التصميم."
+  },
+  {
+    "path": "PensionMS.Core/Entities/SalaryPaymentItem.cs",
+    "action": "CONTRACT",
+    "rules": "R02,R04,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 8,
+        "anchor": "class SalaryPaymentItem"
+      }
+    ],
+    "change": "تحديد بيانات دورة المراجعة ونوع العملية والنسخة المعتمدة وسياق الملف وسبب الحجز والفترة المالية؛ لا تُعتمد إضافة أعمدة أو جداول قبل التصميم."
+  },
+  {
+    "path": "PensionMS.Core/Entities/Retiree.cs",
+    "action": "CONTRACT",
+    "rules": "R02,R04,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 8,
+        "anchor": "class Retiree"
+      }
+    ],
+    "change": "تحديد بيانات دورة المراجعة ونوع العملية والنسخة المعتمدة وسياق الملف وسبب الحجز والفترة المالية؛ لا تُعتمد إضافة أعمدة أو جداول قبل التصميم."
+  },
+  {
+    "path": "PensionMS.Core/Entities/FinancialEntitlement.cs",
+    "action": "CONTRACT",
+    "rules": "R02,R04,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 8,
+        "anchor": "class FinancialEntitlement"
+      }
+    ],
+    "change": "تحديد بيانات دورة المراجعة ونوع العملية والنسخة المعتمدة وسياق الملف وسبب الحجز والفترة المالية؛ لا تُعتمد إضافة أعمدة أو جداول قبل التصميم."
+  },
+  {
+    "path": "PensionMS.Core/Entities/GuardianEntitledPerson.cs",
+    "action": "CONTRACT",
+    "rules": "R02,R04,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 8,
+        "anchor": "class GuardianEntitledPerson"
+      }
+    ],
+    "change": "تحديد بيانات دورة المراجعة ونوع العملية والنسخة المعتمدة وسياق الملف وسبب الحجز والفترة المالية؛ لا تُعتمد إضافة أعمدة أو جداول قبل التصميم."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/CoreConfiguration.cs",
+    "action": "CONTRACT",
+    "rules": "R02,R04,R07,R08,R11",
+    "sites": [
+      {
+        "line": 7,
+        "anchor": "class "
+      }
+    ],
+    "change": "قيود وفهارس وعلاقات الحفظ والمراجعة والإيقاف والبنود والفترات؛ مواءمة أي تغيير مع SQL اليدوي."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/CoreRelationsConfiguration.cs",
+    "action": "CONTRACT",
+    "rules": "R02,R04,R07,R08,R11",
+    "sites": [
+      {
+        "line": 7,
+        "anchor": "class "
+      }
+    ],
+    "change": "قيود وفهارس وعلاقات الحفظ والمراجعة والإيقاف والبنود والفترات؛ مواءمة أي تغيير مع SQL اليدوي."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/PayrollConfiguration.cs",
+    "action": "CONTRACT",
+    "rules": "R02,R04,R07,R08,R11",
+    "sites": [
+      {
+        "line": 7,
+        "anchor": "class "
+      }
+    ],
+    "change": "قيود وفهارس وعلاقات الحفظ والمراجعة والإيقاف والبنود والفترات؛ مواءمة أي تغيير مع SQL اليدوي."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/DocumentEntitiesConfiguration.cs",
+    "action": "CONTRACT",
+    "rules": "R02,R04,R07,R08,R11",
+    "sites": [
+      {
+        "line": 7,
+        "anchor": "class "
+      }
+    ],
+    "change": "قيود وفهارس وعلاقات الحفظ والمراجعة والإيقاف والبنود والفترات؛ مواءمة أي تغيير مع SQL اليدوي."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/FinalLookupsConfiguration.cs",
+    "action": "CONTRACT",
+    "rules": "R02,R04,R07,R08,R11",
+    "sites": [
+      {
+        "line": 7,
+        "anchor": "class "
+      }
+    ],
+    "change": "قيود وفهارس وعلاقات الحفظ والمراجعة والإيقاف والبنود والفترات؛ مواءمة أي تغيير مع SQL اليدوي."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/PensionDbContext.cs",
+    "action": "CONTRACT",
+    "rules": "R02,R04,R07,R11",
+    "sites": [
+      {
+        "line": 102,
+        "anchor": "FileReviewItems =>"
+      },
+      {
+        "line": 217,
+        "anchor": "GLOBAL: RowVersion"
+      },
+      {
+        "line": 294,
+        "anchor": "HasQueryFilter(lambda)"
+      }
+    ],
+    "change": "تسجيل أي كيانات لاحقة والتحقق من الفلاتر والحذف والتزامن في المراجعة والترحيل."
+  },
+  {
+    "path": "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+    "action": "CONTRACT",
+    "rules": "R04,R05,R07,R09",
+    "sites": [
+      {
+        "line": 9,
+        "anchor": "class "
+      }
+    ],
+    "change": "التسجيل اليدوي الفعلي أصبح داخل امتدادات DI؛ تسجيل أي تبعيات إضافية هنا وتحديث الموكات المقابلة."
+  },
+  {
+    "path": "PensionMS.Infrastructure/DependencyInjection/PayrollServiceCollectionExtensions.cs",
+    "action": "CONTRACT",
+    "rules": "R04,R05,R07,R09",
+    "sites": [
+      {
+        "line": 7,
+        "anchor": "class "
+      }
+    ],
+    "change": "التسجيل اليدوي الفعلي أصبح داخل امتدادات DI؛ تسجيل أي تبعيات إضافية هنا وتحديث الموكات المقابلة."
+  },
+  {
+    "path": "PensionMS.Infrastructure/DependencyInjection/DocumentsServiceCollectionExtensions.cs",
+    "action": "CONTRACT",
+    "rules": "R04,R05,R07,R09",
+    "sites": [
+      {
+        "line": 7,
+        "anchor": "class "
+      }
+    ],
+    "change": "التسجيل اليدوي الفعلي أصبح داخل امتدادات DI؛ تسجيل أي تبعيات إضافية هنا وتحديث الموكات المقابلة."
+  },
+  {
+    "path": "PensionMS.Infrastructure/DependencyInjection/SecurityServiceCollectionExtensions.cs",
+    "action": "CONTRACT",
+    "rules": "R04,R05,R07,R09",
+    "sites": [
+      {
+        "line": 8,
+        "anchor": "class "
+      }
+    ],
+    "change": "التسجيل اليدوي الفعلي أصبح داخل امتدادات DI؛ تسجيل أي تبعيات إضافية هنا وتحديث الموكات المقابلة."
+  },
+  {
+    "path": "PensionMS.Infrastructure/DependencyInjection/BackgroundJobsServiceCollectionExtensions.cs",
+    "action": "CONTRACT",
+    "rules": "R04,R05,R07,R09",
+    "sites": [
+      {
+        "line": 6,
+        "anchor": "class "
+      }
+    ],
+    "change": "التسجيل اليدوي الفعلي أصبح داخل امتدادات DI؛ تسجيل أي تبعيات إضافية هنا وتحديث الموكات المقابلة."
+  },
+  {
+    "path": "PensionMS.API/Controllers/RetirementFilesController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 18,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/FileReviewController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 12,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/FileStatusesController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 11,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/RetireesController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 14,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/EntitledPersonsController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 12,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/AgentsController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 12,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/GuardiansController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 12,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/PaymentBooksController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 12,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/SalaryRecipientsController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 12,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/DocumentsController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 13,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/FinancialEntitlementsController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 12,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/PensionSuspensionsController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 12,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/DocumentPledgesController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 13,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/DocumentExemptionsController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 13,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/MissingDocumentsController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 12,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/FileNotesController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 12,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/SalaryPaymentBatchesController.cs",
+    "action": "CONTRACT",
+    "rules": "R03,R04,R05,R06,R07,R08,R09,R10,R11",
+    "sites": [
+      {
+        "line": 14,
+        "anchor": "class "
+      }
+    ],
+    "change": "العقود والصلاحيات وسياق الملف؛ تدقيق جميع مسارات الكتابة، والاعتماد والإرسال وإعادة الاستحقاق وإحالة الجميع؛ تنفيذ السياسة في منطق الأعمال أيضاً."
+  },
+  {
+    "path": "PensionMS.API/Controllers/SettlementsController.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R04,R08,R11",
+    "sites": [
+      {
+        "line": 13,
+        "anchor": "class "
+      }
+    ],
+    "change": "مدخل غير مباشر أو قائمة مرجعية/مهام؛ تحقق من سياق الملف ومعنى الحالات دون تعديل مجالات أخرى."
+  },
+  {
+    "path": "PensionMS.API/Controllers/LookupsController.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R04,R08,R11",
+    "sites": [
+      {
+        "line": 11,
+        "anchor": "class "
+      }
+    ],
+    "change": "مدخل غير مباشر أو قائمة مرجعية/مهام؛ تحقق من سياق الملف ومعنى الحالات دون تعديل مجالات أخرى."
+  },
+  {
+    "path": "PensionMS.API/Controllers/ComplianceController.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R04,R08,R11",
+    "sites": [
+      {
+        "line": 13,
+        "anchor": "class "
+      }
+    ],
+    "change": "مدخل غير مباشر أو قائمة مرجعية/مهام؛ تحقق من سياق الملف ومعنى الحالات دون تعديل مجالات أخرى."
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/IFileStatusService.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R05,R06,R08,R10",
+    "sites": [
+      {
+        "line": 9,
+        "anchor": "interface IFileStatusService"
+      }
+    ],
+    "change": "واجهة بلا استدعاء مباشر لثوابت الحالات؛ قد يلزم تغيير السياق أو نتيجة العملية مع تحديث كل المنفذين والموكات."
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/IRetirementFileService.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R05,R06,R08,R10",
+    "sites": [
+      {
+        "line": 10,
+        "anchor": "interface IRetirementFileService"
+      }
+    ],
+    "change": "واجهة بلا استدعاء مباشر لثوابت الحالات؛ قد يلزم تغيير السياق أو نتيجة العملية مع تحديث كل المنفذين والموكات."
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/IWorkflowEngine.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R05,R06,R08,R10",
+    "sites": [
+      {
+        "line": 7,
+        "anchor": "interface IWorkflowEngine"
+      }
+    ],
+    "change": "واجهة بلا استدعاء مباشر لثوابت الحالات؛ قد يلزم تغيير السياق أو نتيجة العملية مع تحديث كل المنفذين والموكات."
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/IComplianceEngine.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R05,R06,R08,R10",
+    "sites": [
+      {
+        "line": 5,
+        "anchor": "interface IComplianceEngine"
+      }
+    ],
+    "change": "واجهة بلا استدعاء مباشر لثوابت الحالات؛ قد يلزم تغيير السياق أو نتيجة العملية مع تحديث كل المنفذين والموكات."
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/ILookupService.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R05,R06,R08,R10",
+    "sites": [
+      {
+        "line": 5,
+        "anchor": "interface ILookupService"
+      }
+    ],
+    "change": "واجهة بلا استدعاء مباشر لثوابت الحالات؛ قد يلزم تغيير السياق أو نتيجة العملية مع تحديث كل المنفذين والموكات."
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/ISettlementRepository.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R05,R06,R08,R10",
+    "sites": [
+      {
+        "line": 7,
+        "anchor": "interface ISettlementRepository"
+      }
+    ],
+    "change": "واجهة بلا استدعاء مباشر لثوابت الحالات؛ قد يلزم تغيير السياق أو نتيجة العملية مع تحديث كل المنفذين والموكات."
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/ISettlementService.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R05,R06,R08,R10",
+    "sites": [
+      {
+        "line": 6,
+        "anchor": "interface ISettlementService"
+      }
+    ],
+    "change": "واجهة بلا استدعاء مباشر لثوابت الحالات؛ قد يلزم تغيير السياق أو نتيجة العملية مع تحديث كل المنفذين والموكات."
+  },
+  {
+    "path": "PensionMS.Core/Entities/FileStatus.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R08,R10",
+    "sites": [
+      {
+        "line": 6,
+        "anchor": "class "
+      }
+    ],
+    "change": "عقد/قائمة أو حساب اكتمال وتقارير متأثرة؛ ينبغي ألا تتحول النواقص أو نص الحالة إلى صلاحية تشغيل أو صرف ضمنية."
+  },
+  {
+    "path": "PensionMS.Core/Entities/MissingDocument.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R08,R10",
+    "sites": [
+      {
+        "line": 8,
+        "anchor": "class "
+      }
+    ],
+    "change": "عقد/قائمة أو حساب اكتمال وتقارير متأثرة؛ ينبغي ألا تتحول النواقص أو نص الحالة إلى صلاحية تشغيل أو صرف ضمنية."
+  },
+  {
+    "path": "PensionMS.Core/DTOs/RetirementFiles/FileStatusDto.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R08,R10",
+    "sites": [
+      {
+        "line": 3,
+        "anchor": "class "
+      }
+    ],
+    "change": "عقد/قائمة أو حساب اكتمال وتقارير متأثرة؛ ينبغي ألا تتحول النواقص أو نص الحالة إلى صلاحية تشغيل أو صرف ضمنية."
+  },
+  {
+    "path": "PensionMS.Core/DTOs/MissingDocuments/MissingDocumentDtos.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R08,R10",
+    "sites": [
+      {
+        "line": 3,
+        "anchor": "class "
+      }
+    ],
+    "change": "عقد/قائمة أو حساب اكتمال وتقارير متأثرة؛ ينبغي ألا تتحول النواقص أو نص الحالة إلى صلاحية تشغيل أو صرف ضمنية."
+  },
+  {
+    "path": "PensionMS.Core/DTOs/Discrepancy/RetireeDiscrepancyDto.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R08,R10",
+    "sites": [
+      {
+        "line": 3,
+        "anchor": "class "
+      }
+    ],
+    "change": "عقد/قائمة أو حساب اكتمال وتقارير متأثرة؛ ينبغي ألا تتحول النواقص أو نص الحالة إلى صلاحية تشغيل أو صرف ضمنية."
+  },
+  {
+    "path": "PensionMS.Core/DTOs/Reports/ReportDtos.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R08,R10",
+    "sites": [
+      {
+        "line": 8,
+        "anchor": "class "
+      }
+    ],
+    "change": "عقد/قائمة أو حساب اكتمال وتقارير متأثرة؛ ينبغي ألا تتحول النواقص أو نص الحالة إلى صلاحية تشغيل أو صرف ضمنية."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Administration/LookupService.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R08,R10",
+    "sites": [
+      {
+        "line": 8,
+        "anchor": "class "
+      }
+    ],
+    "change": "عقد/قائمة أو حساب اكتمال وتقارير متأثرة؛ ينبغي ألا تتحول النواقص أو نص الحالة إلى صلاحية تشغيل أو صرف ضمنية."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileCompleteness.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R08,R10",
+    "sites": [
+      {
+        "line": 8,
+        "anchor": "class "
+      }
+    ],
+    "change": "عقد/قائمة أو حساب اكتمال وتقارير متأثرة؛ ينبغي ألا تتحول النواقص أو نص الحالة إلى صلاحية تشغيل أو صرف ضمنية."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Reporting/ReportRegistry.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R08,R10",
+    "sites": [
+      {
+        "line": 5,
+        "anchor": "class "
+      }
+    ],
+    "change": "عقد/قائمة أو حساب اكتمال وتقارير متأثرة؛ ينبغي ألا تتحول النواقص أو نص الحالة إلى صلاحية تشغيل أو صرف ضمنية."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Reporting/Exporters/UploaderStatsReportExporter.cs",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R08,R10",
+    "sites": [
+      {
+        "line": 7,
+        "anchor": "class "
+      }
+    ],
+    "change": "عقد/قائمة أو حساب اكتمال وتقارير متأثرة؛ ينبغي ألا تتحول النواقص أو نص الحالة إلى صلاحية تشغيل أو صرف ضمنية."
+  },
+  {
+    "path": "ui/src/api/discrepancy.ts",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 5,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "ui/src/components/common/UploaderStatsView.tsx",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 52,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "ui/src/components/domain/print/print.types.ts",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 4,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "ui/src/components/domain/retirement/CorrectLifeStatusDialog.tsx",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 13,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "ui/src/components/domain/retirement/DocumentChecklistField.tsx",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 26,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "ui/src/components/domain/retirement/EntitledPersonDetails.tsx",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 24,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "ui/src/components/domain/retirement/ExemptionDialog.tsx",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 31,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "ui/src/components/domain/retirement/PersonDocCard.tsx",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 30,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "ui/src/components/domain/retirement/PledgeDialog.tsx",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 35,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "ui/src/components/domain/retirement/RecordDeathDialog.tsx",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 20,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "ui/src/components/domain/retirement/RetirementFileSidebar.tsx",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 43,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "ui/src/components/domain/retirement/sections/DocumentsSection.tsx",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 83,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "ui/src/lib/bulkUploadDraft.ts",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 3,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "ui/src/pages/pension/KashfReportsPage.tsx",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 33,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "ui/src/pages/print/PrintableRetirementFileReport.tsx",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 41,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "ui/src/pages/print/SettlementDecisionPrint.tsx",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 15,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "ui/src/pages/settlements/SettlementBatchDetailsPage.tsx",
+    "action": "CONTRACT",
+    "rules": "R01,R03,R04,R06,R08,R11",
+    "sites": [
+      {
+        "line": 19,
+        "anchor": "export "
+      }
+    ],
+    "change": "مستهلك غير مباشر أو نص/عقد مرتبط بالملف؛ راجع العمليات والسياق والنسخة المعتمدة ودلالة الانتظار في العرض والطباعة."
+  },
+  {
+    "path": "PensionMS.API/Program.cs",
+    "action": "CONTRACT",
+    "rules": "R05,R06,R10,R11",
+    "sites": [
+      {
+        "line": 73,
+        "anchor": "AddPensionInfrastructureServices"
+      },
+      {
+        "line": 178,
+        "anchor": "File.Review.Approve"
+      },
+      {
+        "line": 177,
+        "anchor": "File.Review.View"
+      }
+    ],
+    "change": "صلاحيات الإجراءات الجديدة/المعاد استخدامها، خصوصاً أن إرسال المراجعة الحالي يتطلب File.Review.View."
+  },
+  {
+    "path": "PensionMS.API/Validators/Validators.cs",
+    "action": "CONTRACT",
+    "rules": "R04,R06,R11",
+    "sites": [
+      {
+        "line": 58,
+        "anchor": "class CreateRetirementFileValidator"
+      },
+      {
+        "line": 93,
+        "anchor": "class UpdateRetirementFileValidator"
+      }
+    ],
+    "change": "السبب وسياق الملف والإجراء وصحة التغيير دون تعليق عند الحفظ بلا تغيير فعلي."
+  }
+]

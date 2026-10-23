@@ -1,6 +1,7 @@
 import type { ApiResponse, PagedResult } from "@/types/api";
 
 import api from "./axios";
+import { exportReportFile } from "./reportExport";
 import { type NameValuePair,retirementApi, type RetirementFileReportFilter, type RetirementFileReportRow } from "./retirement";
 
 // ═══════════════════════════════════════
@@ -18,6 +19,7 @@ export interface ReportFilter {
     fiscalYear?: number;
     quarter?: string;
     search?: string;
+    decisionType?: string;
     pageNumber?: number;
     pageSize?: number;
     rankId?: number;
@@ -27,6 +29,20 @@ export interface ReportFilter {
 }
 
 export type ReportDataRow = Record<string, string | number | boolean | null | undefined>;
+
+export interface SettlementSummary {
+    totalItems: number;
+    totalAmount: number;
+    decisionCount: number;
+    averageAmount: number;
+}
+
+export interface ActiveRetireesSummary extends Record<string, number> {
+    totalCount: number;
+    totalPension: number;
+    avgPension: number;
+    governorateCount: number;
+}
 
 // ═══════════════════════════════════════
 // Retirement File Report Types
@@ -89,6 +105,10 @@ export const reportsApi = {
     exportFileStatus: (filter: ReportFilter, format: "excel" | "pdf" = "excel") => exportReport('/reports/retirement/file-status/export', filter, undefined, format),
 
     getActiveRetirees: (filter: ReportFilter) => api.get<ApiResponse<PagedResult<ReportDataRow>>>('/reports/retirement/active-retirees', { params: filter }).then(r => r.data),
+    getActiveRetireesSummary: (filter: ReportFilter) => api.get<ApiResponse<ActiveRetireesSummary>>('/reports/retirement/active-retirees/summary', { params: filter }).then(r => {
+        if (!r.data.isSuccess || !r.data.data) throw new Error(r.data.message || 'تعذر تحميل إجماليات المتقاعدين');
+        return r.data.data;
+    }),
     exportActiveRetirees: (filter: ReportFilter, format: "excel" | "pdf" = "excel") => exportReport('/reports/retirement/active-retirees/export', filter, undefined, format),
 
     getSuspensions: (filter: ReportFilter) => api.get<ApiResponse<PagedResult<ReportDataRow>>>('/reports/retirement/suspensions', { params: filter }).then(r => r.data),
@@ -99,6 +119,7 @@ export const reportsApi = {
     exportSalaryBatches: (filter: ReportFilter, format: "excel" | "pdf" = "excel") => exportReport('/reports/financial/salary-batches/export', filter, undefined, format),
 
     getSettlements: (filter: ReportFilter) => api.get<ApiResponse<PagedResult<ReportDataRow>>>('/reports/financial/settlements', { params: filter }).then(r => r.data),
+    getSettlementsSummary: (filter: ReportFilter) => api.get<ApiResponse<SettlementSummary>>('/reports/financial/settlements/summary', { params: filter }).then(r => r.data?.data ?? null),
     exportSettlements: (filter: ReportFilter, format: "excel" | "pdf" = "excel") => exportReport('/reports/financial/settlements/export', filter, undefined, format),
 
     getBudgetQuarter: (filter: ReportFilter) => api.get<ApiResponse<PagedResult<ReportDataRow>>>('/reports/financial/fiscal-period', { params: filter }).then(r => r.data),
@@ -147,27 +168,7 @@ export const reportsApi = {
 // HELPER FOR EXPORTS
 // ═══════════════════════════════════════
 async function exportReport(url: string, filter: ReportFilter, timeout?: number, format: "excel" | "pdf" = "excel") {
-    const params = { ...filter, format };
-    const response = await api.get(url, { params, responseType: 'blob', timeout });
-    const contentDisposition = response.headers['content-disposition'];
-    const contentType = response.headers['content-type'] || '';
-    let filename = format === 'pdf' ? 'report.pdf' : 'report.xlsx';
-    if (contentDisposition) {
-        const filenameMatch = contentDisposition.match(/filename="?(.+)"?/);
-        if (filenameMatch && filenameMatch.length === 2) {
-            filename = filenameMatch[1];
-        }
-    }
-
-    const blobType = contentType.includes('pdf') ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-    const blob = new Blob([response.data], { type: blobType });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(link.href);
+    return exportReportFile(url, { ...filter, format }, format === "pdf" ? "report.pdf" : "report.xlsx", timeout);
 }
 
 // ═══════════════════════════════════════
@@ -330,19 +331,22 @@ export const REPORT_CATALOG: ReportConfig[] = [
     },
     {
         id: 'ret-02',
-        name: 'المتقاعدين النشطين',
+        name: 'تقرير المتقاعدين',
         category: 'التقاعد',
         icon: 'UserGroupIcon',
-        description: 'قائمة بالمتقاعدين النشطين مالياً',
+        description: 'جميع المتقاعدين الأحياء والمتوفين مع بيان حالة الحياة',
         fetchData: (filter) => reportsApi.getActiveRetirees(filter),
+        fetchSummary: (filter) => reportsApi.getActiveRetireesSummary(filter),
         exportData: (filter, format) => reportsApi.exportActiveRetirees(filter, format),
         filters: ['fromDate', 'toDate', 'search'],
         columns: [
             { key: 'fullName', label: 'الاسم' },
             { key: 'nationalID', label: 'الهوية' },
+            { key: 'militaryNumber', label: 'الرقم العسكري' },
             { key: 'rankName', label: 'الرتبة' },
             { key: 'category', label: 'الفئة' },
             { key: 'monthlyPension', label: 'المعاش الشهري', type: 'currency' },
+            { key: 'status', label: 'حالة الحياة' },
             { key: 'governorate', label: 'المحافظة' },
         ],
         charts: [
@@ -350,8 +354,8 @@ export const REPORT_CATALOG: ReportConfig[] = [
             { type: 'horizontalBar', title: 'التوزيع حسب المحافظة', nameKey: 'governorate', valueKey: 'count', dataKey: 'governorate' },
         ],
         summaryCards: [
-            { title: 'إجمالي المتقاعدين', valueKey: 'totalCount', color: 'blue', format: 'number', variant: 'blue', description: 'عدد المتقاعدين النشطين', icon: 'Users' },
-            { title: 'إجمالي المعاشات', valueKey: 'totalPension', color: 'green', format: 'currency', variant: 'emerald', description: 'الإجمالي الشهري', icon: 'DollarSign' },
+            { title: 'إجمالي المتقاعدين', valueKey: 'totalCount', color: 'blue', format: 'number', variant: 'blue', description: 'الأحياء والمتوفون', icon: 'Users' },
+            { title: 'إجمالي المعاشات', valueKey: 'totalPension', color: 'green', format: 'currency', variant: 'emerald', description: 'الاستحقاقات المسجلة', icon: 'DollarSign' },
             { title: 'متوسط المعاش', valueKey: 'avgPension', color: 'purple', format: 'currency', variant: 'purple', description: 'لكل متقاعد', icon: 'BarChart3' },
             { title: 'المحافظات', valueKey: 'governorateCount', color: 'yellow', format: 'number', variant: 'warning', description: 'محافظات مختلفة', icon: 'MapPin' },
         ],
@@ -422,24 +426,27 @@ export const REPORT_CATALOG: ReportConfig[] = [
         icon: 'CalculatorIcon',
         description: 'تقرير بالتسويات المالية والفروقات',
         fetchData: (filter) => reportsApi.getSettlements(filter),
+        fetchSummary: async (filter) => (await reportsApi.getSettlementsSummary(filter)) as unknown as Record<string, unknown>,
         exportData: (filter, format) => reportsApi.exportSettlements(filter, format),
-        filters: ['fromDate', 'toDate', 'search', 'statusId'],
+        filters: ['fromDate', 'toDate', 'search', 'decisionType'],
         columns: [
             { key: 'decisionNumber', label: 'رقم القرار' },
+            { key: 'decisionDate', label: 'تاريخ القرار', type: 'date' },
             { key: 'retireeName', label: 'المتقاعد' },
-            { key: 'amount', label: 'المبلغ', type: 'currency' },
-            { key: 'status', label: 'الحالة' },
-            { key: 'createdAt', label: 'تاريخ الإنشاء', type: 'date' },
+            { key: 'militaryNumber', label: 'الرقم العسكري' },
+            { key: 'previousRank', label: 'الرتبة السابقة' },
+            { key: 'processedRank', label: 'الرتبة المعالجة' },
+            { key: 'status', label: 'نوع القرار' },
         ],
         charts: [
-            { type: 'donut', title: 'التسويات حسب النوع', nameKey: 'type', valueKey: 'count', dataKey: 'type' },
-            { type: 'stackedBar', title: 'الحالات', nameKey: 'status', valueKey: 'count', dataKey: 'status' },
+            { type: 'donut', title: 'القيود حسب الرتبة المعالجة', nameKey: 'processedRank', valueKey: 'count', dataKey: 'processedRank' },
+            { type: 'stackedBar', title: 'القيود حسب نوع القرار', nameKey: 'status', valueKey: 'count', dataKey: 'status' },
         ],
         summaryCards: [
-            { title: 'إجمالي التسويات', valueKey: 'totalCount', color: 'blue', format: 'number', variant: 'blue', description: 'تسويات مالية', icon: 'Calculator' },
-            { title: 'إجمالي المبالغ', valueKey: 'totalAmount', color: 'green', format: 'currency', variant: 'emerald', description: 'قيمة التسويات', icon: 'DollarSign' },
-            { title: 'معلقة', valueKey: 'pendingCount', color: 'yellow', format: 'number', variant: 'warning', description: 'بانتظار الاعتماد', icon: 'Clock' },
-            { title: 'معتمدة', valueKey: 'approvedCount', color: 'green', format: 'number', variant: 'success', description: 'تم الاعتماد', icon: 'CheckCircle' },
+            { title: 'إجمالي القيود', valueKey: 'totalItems', color: 'blue', format: 'number', variant: 'blue', description: 'قيود التسوية', icon: 'Calculator' },
+            { title: 'إجمالي المبالغ', valueKey: 'totalAmount', color: 'green', format: 'currency', variant: 'emerald', description: 'صافي قيمة التسويات', icon: 'DollarSign' },
+            { title: 'عدد القرارات', valueKey: 'decisionCount', color: 'purple', format: 'number', variant: 'purple', description: 'قرارات التسوية', icon: 'FileText' },
+            { title: 'متوسط المبلغ', valueKey: 'averageAmount', color: 'yellow', format: 'currency', variant: 'warning', description: 'لكل قيد', icon: 'BarChart3' },
         ],
     },
     {

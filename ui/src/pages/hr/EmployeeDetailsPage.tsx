@@ -157,7 +157,7 @@ export function EmployeeDetailsPage() {
             <div className="space-y-3">
                 <InfoPair label="تاريخ الإضافة" value={formatDate(employee.createdAt)} layout="row" />
                 <InfoPair label="آخر تحديث" value={formatDate(employee.updatedAt) || "—"} layout="row" />
-                <div className="flex justify-between items-center text-sm border-b border-muted/50 pb-2 last:border-0 last:pb-0">
+                <div className="flex justify-between items-center text-sm border-b border-muted pb-2 last:border-0 last:pb-0">
                     <span className="text-muted-foreground">حالة الخدمة</span>
                     <Badge variant={employee.isInService ? "success" : "warning"}>
                         {employee.isInService ? "في الخدمة" : "خارج الخدمة"}
@@ -402,7 +402,7 @@ function EmployeeHistoryTab({ employeeId }: { employeeId: number }) {
       ) : (
         <div className="space-y-4">
           {history.map((item: ServiceHistoryEventDto, idx: number) => (
-            <div key={idx} className="group flex flex-wrap gap-2 p-4 rounded-xl border border-border/50 hover:bg-muted/30 transition-colors">
+            <div key={idx} className="group flex flex-wrap gap-2 p-4 rounded-xl border border-border hover:bg-muted/30 transition-colors">
               <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground shrink-0 mt-1">
                 <Clock className="w-5 h-5" />
               </div>

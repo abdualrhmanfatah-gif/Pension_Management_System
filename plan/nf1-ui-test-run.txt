@@ -1,0 +1,197 @@
+﻿
+> ui@0.0.0 test
+> tsc --noEmit -p tsconfig.test.json && node --test "src/**/*.test.ts" "tests/**/*.test.ts"
+
+ظ£¤ rect crop ┘è┘╪ز┘é╪╖ ╪د┘┘à┘╪╖┘é╪ر ╪║┘è╪▒ ╪د┘┘à╪ز┘╪د╪╕╪▒╪ر ╪ذ╪د┘╪د╪ز╪ش╪د┘ç ╪د┘╪╡╪ص┘è╪ص (38.4086ms)
+ظ£¤ rect crop ┘à╪╣ ╪ز┘â╪ذ┘è╪▒ maxDimension ┘è╪ص╪د┘╪╕ ╪╣┘┘ë ╪د┘╪د╪ز╪ش╪د┘ç (37.8725ms)
+ظ£¤ ╪د┘┘é╪د╪خ╪│╪ر ╪د┘┘à╪▒┘â╪▓┘è╪ر ┘┘╪┤┘â┘ ╪د┘┘à┘╪╕┘ê╪▒┘è = 38 (projective ┘╪د bilinear) (4.5474ms)
+ظ£¤ ┘è╪▒┘à┘è ╪«╪╖╪ث┘ï ╪ذ╪د┘╪╣╪▒╪ذ┘è╪ر ╪╣┘╪» ╪د┘╪▓┘ê╪د┘è╪د ╪د┘┘à╪╣┘è╪ذ╪ر ╪ذ╪»┘ ╪ح╪▒╪ش╪د╪╣ ╪د┘╪ث╪╡┘ (1.9618ms)
+ظ£¤ processWithProgress ┘è╪▒┘╪╢ ╪د┘╪▓┘ê╪د┘è╪د ╪د┘┘à╪╣┘è╪ذ╪ر ╪ث┘è╪╢╪د┘ï (2.1922ms)
+ظ£¤ fitToBudget ┘è╪ص╪ز╪▒┘à ╪│┘é┘ ╪د┘╪ذ╪╣╪» (2.3869ms)
+ظ£¤ fitToBudget ┘è╪ص╪ز╪▒┘à ╪│┘é┘ ╪د┘╪ذ┘â╪│┘╪د╪ز ╪ص╪ز┘ë ┘à╪╣ ╪د┘╪ز┘é╪▒┘è╪ذ (0.4536ms)
+ظ£¤ fitToBudget ┘╪د ┘è┘â╪ذ┘ّ╪▒ ╪د┘╪╡┘ê╪▒ ╪د┘╪╡╪║┘è╪▒╪ر (1.7705ms)
+ظ£¤ fitToBudget ┘è╪ص╪د┘╪╕ ╪╣┘┘ë ┘╪│╪ذ╪ر ╪د┘╪ث╪ذ╪╣╪د╪» ╪╢┘à┘ ╪ذ┘â╪│┘ ┘ê╪د╪ص╪» (0.3842ms)
+ظ£¤ fitToBudget ┘è╪╣┘è╪» ┘é┘è┘à╪د┘ï ┘à┘ê╪ش╪ذ╪ر finite ╪╣┘╪» ┘à╪»╪«┘╪د╪ز ┘à╪╣╪╖┘ê╪ذ╪ر (0.4597ms)
+ظ£¤ fitToBudget ┘è╪ص╪ز╪▒┘à ┘à┘è╪▓╪د┘┘è╪ر ╪║┘è╪▒ ╪╡╪د┘╪ص╪ر ╪╣╪ذ╪▒ ┘é┘è┘à╪ر ╪ذ╪»┘è┘╪ر ┘à┘ê╪ش╪ذ╪ر (0.3058ms)
+ظ£¤ estimateOutputSize ┘è╪ص╪│╪ذ ┘à╪ز┘ê╪│╪╖ ╪ث╪╢┘╪د╪╣ ╪د┘┘à╪▒╪ذ╪╣ ╪د┘┘à┘╪╕┘ê╪▒ (0.5828ms)
+ظ£¤ estimateOutputSize ┘è╪╣┘è╪» 1x1 ╪╣┘╪» ╪ز╪»┘ç┘ê╪▒ ╪د┘╪▓┘ê╪د┘è╪د (0.257ms)
+ظ£¤ estimateOutputSize ┘╪د ┘è╪ز╪ش╪د┘ê╪▓ ┘à┘è╪▓╪د┘┘è╪ر ╪د┘╪ذ┘â╪│┘╪د╪ز (0.278ms)
+ظ£¤ getCropBudget ┘è╪┤╪ز┘é ┘à┘è╪▓╪د┘┘è╪ر ╪د┘╪ذ┘â╪│┘╪د╪ز ┘à┘ ┘é╪»╪▒╪د╪ز ╪د┘╪ش┘ç╪د╪▓ (0.7173ms)
+ظ£¤ computeCropRegion ┘è╪ذ┘é┘è ╪ث╪ذ╪╣╪د╪» ╪د┘╪╣┘à┘ ╪»╪د╪«┘ ╪د┘┘à┘è╪▓╪د┘┘è╪ر (0.5503ms)
+ظ£¤ computeCropRegion ┘è╪ذ┘é┘ë ╪╢┘à┘ ╪ص╪»┘ê╪» ╪د┘┘à╪╡╪»╪▒ (0.309ms)
+ظ£¤ expiry dates include their full Yemen calendar day (3.5229ms)
+ظ£¤ age uses the birthday, including leap-day clamping (0.6774ms)
+ظ£¤ display preserves dates and recognizes UTC and legacy Yemen wall times (6.1584ms)
+ظ£¤ display is identical across browser host timezones (1005.7669ms)
+ظ£¤ toDateOnlyYemen: midnight boundary in Yemen (0.5127ms)
+ظ£¤ toDateOnlyYemen: year boundary in Yemen (0.1811ms)
+ظ£¤ toDateOnlyYemen: invalid instants (0.2763ms)
+ظ£¤ normalizeDateInputValue: DateOnly values unchanged (0.2988ms)
+ظ£¤ normalizeDateInputValue: API wall time keeps its own day (0.5678ms)
+ظ£¤ normalizeDateInputValue: DateTimeOffset and UTC converted to Yemen date (0.6778ms)
+ظ£¤ normalizeDateInputValue: invalid and empty values (0.3329ms)
+ظ£¤ todayYemen returns current Yemen calendar date (0.5191ms)
+ظ£¤ formatDateInputDisplay: DateOnly and API wall time (0.2038ms)
+ظ£¤ formatDateInputDisplay: instants converted to Yemen date (0.1535ms)
+ظ£¤ formatDateInputDisplay: invalid and empty values (0.116ms)
+ظ£¤ ExemptionDialog path: API DateTime seeds DateInput display (0.2328ms)
+ظ£¤ addDaysToDateOnly: calendar days across month and year (0.4273ms)
+ظ£¤ addMonthsToDateOnly: clamps to last day of month (0.7756ms)
+ظ£¤ addYearsToDateOnly: Feb 29 clamps to Feb 28 in non-leap years (0.4199ms)
+ظ£¤ date-only arithmetic: invalid values return empty (0.3577ms)
+ظ£¤ result independent of host process timezone (482.2968ms)
+ظ£¤ ╪│┘è╪د┘é ╪║┘è╪▒ ╪ت┘à┘ ┘è╪▒╪┤╪» ┘┘ HTTPS ╪ث┘ê localhost (1.7893ms)
+ظ£¤ ╪║┘è╪د╪ذ getUserMedia ┘è╪▒╪┤╪» ┘╪ز╪ص╪»┘è╪س ╪د┘┘à╪ز╪╡┘╪ص (0.3063ms)
+ظ£¤ ╪د┘╪ش╪د┘ç╪▓┘è╪ر ╪ز╪╣┘è╪» null (0.3488ms)
+ظ£¤ ╪ث╪│┘à╪د╪ة ╪د┘╪ث╪«╪╖╪د╪ة ╪ز╪ز╪▒╪ش┘à ┘╪▒╪│╪د╪خ┘ ┘à┘à┘è╪▓╪ر (0.3937ms)
+ظ£¤ readErrorName ┘è┘é╪▒╪ث DOMException ┘ê╪║┘è╪▒┘ç (0.4852ms)
+ظ£¤ scalePoints ┘è╪ص╪ش┘ّ┘à ╪د┘┘à╪ص┘ê╪▒┘è┘ independently (6.0113ms)
+ظ£¤ scalePoints ╪ذ╪ث╪ذ╪╣╪د╪» ╪╡┘╪▒┘è╪ر ┘è╪╣┘è╪» ┘╪│╪«╪ر ╪»┘ê┘ ╪ز╪║┘è┘è╪▒ (0.7008ms)
+ظ£¤ orderQuadPoints ┘è╪▒╪ز╪ذ ┘à╪│╪ز╪╖┘è┘┘ï╪د ┘à╪د╪خ┘┘ï╪د ╪ز╪▒╪ز┘è╪ذ┘ï╪د ╪╡╪ص┘è╪ص┘ï╪د (4.7122ms)
+ظ£¤ orderQuadPoints ┘è╪▒┘╪╢ ╪║┘è╪▒ ╪د┘╪▒╪ذ╪د╪╣┘è (0.3788ms)
+ظ£¤ pickBestQuad ┘è╪«╪ز╪د╪▒ ╪د┘╪ث┘â╪ذ╪▒ ╪╢┘à┘ ╪د┘┘╪╖╪د┘é ┘ê┘è╪▒┘╪╢ ╪«╪د╪▒╪ش ╪د┘┘╪╖╪د┘é (0.7353ms)
+ظ£¤ releaseScanEngine ┘╪ش┘╪│╪ر ┘à╪ش┘ç┘ê┘╪ر ┘╪د ┘è╪▒┘à┘è (0.2908ms)
+ظ£¤ ╪▒┘é╪╣╪ر ╪┤╪╖╪▒┘╪ش ╪ص╪د╪»╪ر ┘╪د ╪ز╪ص╪ز╪د╪ش ┘à╪▒╪د╪ش╪╣╪ر (10.163ms)
+ظ£¤ ┘à╪│╪╖╪ص ╪▒┘à╪د╪»┘è: ╪╢╪ذ╪د╪ذ┘è╪ر ┘ê╪ز╪ذ╪د┘è┘ ┘à┘╪«┘╪╢ (2.6652ms)
+ظ£¤ ╪╡┘ê╪▒╪ر ╪»╪د┘â┘╪ر ╪ز╪▒┘╪╣ ╪ز┘╪ذ┘è┘ç ╪ح╪╢╪د╪ة╪ر ╪«╪د┘╪ز╪ر (3.7192ms)
+ظ£¤ ╪ذ┘é╪╣╪ر ╪ذ┘è╪╢╪د╪ة ┘â╪ذ┘è╪▒╪ر ╪ز╪▒┘╪╣ ╪ز┘╪ذ┘è┘ç ┘┘à╪╣╪د┘ (2.4461ms)
+ظ£¤ OPEN ┘à┘ idle ┘è╪ص┘à┘ّ┘ ╪د┘┘à╪ص╪▒┘â ┘ê┘è┘╪ز┘é┘ ┘┘╪ز┘ç┘è╪خ╪ر (3.1636ms)
+ظ£¤ ╪د┘╪س╪ذ╪د╪ز ┘╪س┘╪د╪س ╪ح╪╖╪د╪▒╪د╪ز ┘è╪╖┘┘é ╪د┘╪ز┘é╪د╪╖┘ï╪د ┘ê╪د╪ص╪»┘ï╪د ╪ذ┘ captureId (0.8382ms)
+ظ£¤ ╪د┘┘é╪╖╪د╪╣ ╪د┘╪ح╪╖╪د╪▒ ╪ث╪س┘╪د╪ة ╪د┘╪س╪ذ╪د╪ز ┘è╪╣┘è╪» ┘┘╪ذ╪ص╪س (0.3636ms)
+ظ£¤ ┘╪ز┘è╪ش╪ر captureId ┘é╪»┘è┘à╪ر ╪ز┘╪ز╪ش╪د┘ç┘ ┘ê┘╪د ╪ز┘é╪ذ┘ ╪╣┘╪╡╪▒┘ï╪د (0.3655ms)
+ظ£¤ ┘╪┤┘ ╪د┘╪د┘╪ز┘é╪د╪╖ ┘è╪╣┘è╪» ┘┘╪ذ╪ص╪س ┘ê┘╪د ┘è┘╪ز┘é┘ ┘┘┘ê╪س┘è┘é╪ر ╪د┘╪ز╪د┘┘è╪ر (0.4978ms)
+ظ£¤ ╪ذ┘ê╪د╪ذ╪ر ╪د┘╪ح╪▓╪د┘╪ر: ╪ح╪╖╪د╪▒ ┘ê╪د╪ص╪» ┘╪د╪▒╪║ ┘╪د ┘è╪│┘┘ّ╪ص╪î ┘ê╪║┘è╪د╪ذ ┘à╪ج┘â╪» ╪س┘à ┘à╪╢┘╪╣ ┘è╪╣┘è╪» ┘┘╪ذ╪ص╪س (0.3057ms)
+ظ£¤ ╪د┘╪د┘╪ز┘é╪د╪╖ ╪د┘┘è╪»┘ê┘è ┘è╪ز╪ش╪د┘ê╪▓ ╪د┘╪س╪ذ╪د╪ز ┘à┘ ╪د┘╪ذ╪ص╪س (0.3717ms)
+ظ£¤ ╪ص╪» ╪د┘╪╣┘╪د╪╡╪▒ ╪د┘┘é╪د╪ذ┘ ┘┘╪╢╪ذ╪╖ ┘è╪╣┘à┘ (4.4278ms)
+ظ£¤ END ┘à┘ ╪ث┘è ╪ص╪د┘╪ر ┘è╪ص╪▒╪▒ ╪د┘┘à╪ص╪▒┘â ┘ê┘è┘┘ç┘è (2.1022ms)
+ظ£¤ validateCorners ┘è┘é╪ذ┘ ┘à╪│╪ز╪╖┘è┘╪د┘ï ╪╡╪ص┘è╪ص╪د┘ï (2.1122ms)
+ظ£¤ validateCorners ┘è╪▒┘╪╢ ╪د┘╪▓┘ê╪د┘è╪د ╪د┘┘à╪ز┘é╪╖╪╣╪ر (bow-tie) (0.4927ms)
+ظ£¤ validateCorners ┘è╪▒┘╪╢ ╪د┘╪▓┘ê╪د┘è╪د ╪د┘┘à╪ز╪╖╪د╪ذ┘é╪ر ┘ê╪د┘┘à┘╪╖┘é┘è╪ر (1.2279ms)
+ظ£¤ computeHomography ┘è┘┘é┘ ┘à╪▒╪ذ╪╣ ╪د┘┘ê╪ص╪»╪ر ╪ح┘┘ë ╪د┘╪▓┘ê╪د┘è╪د ╪ذ╪»┘é╪ر (topLeftV=0) (2.4951ms)
+ظ£¤ computeHomography topLeftV=1 ┘è┘é┘╪ذ ╪د╪ز╪ش╪د┘ç v (┘à╪«╪▒╪ش WebGL) (0.6689ms)
+ظ£¤ computeHomography ┘è╪ز╪╣╪د┘à┘ ┘à╪╣ ╪د┘╪┤┘â┘ ╪د┘┘à┘╪╕┘ê╪▒┘è (trapezoid) (0.3965ms)
+ظ£¤ computeHomography ┘è╪▒╪ش╪╣ null ╪╣┘╪» ╪د┘╪▓┘ê╪د┘è╪د ╪د┘┘à╪╣┘è╪ذ╪ر (0.2774ms)
+ظ£¤ ╪د┘╪▒┘╪╣ ╪د┘╪ش┘à╪د╪╣┘è ┘è╪ص╪د┘╪╕ ╪╣┘┘ë ╪د┘┘à╪▒┘┘é╪د╪ز ┘ê╪ص╪د┘╪ر ╪د┘╪ز╪ص╪»┘è╪س ╪د┘┘┘ç╪د╪خ┘è ╪╣┘╪» ╪د┘╪ح┘╪║╪د╪ة ┘ê╪ح╪╣╪د╪»╪ر ╪د┘┘à╪ص╪د┘ê┘╪ر (1913.3583ms)
+ظû╢ ╪ز╪ص┘à┘è┘ ╪╡┘ê╪▒ ╪د┘┘ê╪س╪د╪خ┘é
+  ظ£¤ pages/retirement-files/DocumentProcessPage.tsx: ┘╪د ┘è╪╣┘è┘ّ┘ crossOrigin (5.8774ms)
+  ظ£¤ components/domain/retirement/DocumentProcessDialog.tsx: ┘╪د ┘è╪╣┘è┘ّ┘ crossOrigin (1.4201ms)
+  ظ£¤ components/ui/CornerEditor.tsx: ┘╪د ┘è╪╣┘è┘ّ┘ crossOrigin (0.899ms)
+  ظ£¤ components/ui/ImageCropperDialog.tsx: ┘╪د ┘è╪╣┘è┘ّ┘ crossOrigin (0.7101ms)
+  ظ£¤ DocumentProcessPage ┘è╪ش┘╪ذ ╪د┘╪╡┘ê╪▒╪ر ╪╣╪ذ╪▒ useDocumentBlob (1.353ms)
+  ظ£¤ DocumentProcessDialog ┘è╪ش┘╪ذ ╪د┘╪╡┘ê╪▒╪ر ╪╣╪ذ╪▒ useDocumentBlob (0.7887ms)
+  ظ£¤ useDocumentBlob ┘è╪ش┘╪ذ ╪ذ┘à╪│╪د╪▒ ┘╪│╪ذ┘è ┘ê baseURL ┘╪د╪▒╪║ (0.7754ms)
+  ظ£¤ getFileRelativeUrl ┘è╪ش╪▒┘ّ╪» ╪د┘╪ث╪╡┘ ┘┘è╪ذ┘é┘ë same-origin (0.923ms)
+ظ£¤ ╪ز╪ص┘à┘è┘ ╪╡┘ê╪▒ ╪د┘┘ê╪س╪د╪خ┘é (15.7432ms)
+ظû╢ normalizeApiError
+  ظ£¤ ValidationProblemDetails: ┘è╪╣╪▒╪╢ ╪│╪ذ╪ذ ╪د┘╪▒┘╪╢ ╪╣┘┘ë ┘à╪│╪ز┘ê┘ë ╪د┘╪╖┘╪ذ ╪ذ┘╪د ╪د╪│┘à ╪ص┘é┘ (2.7662ms)
+  ظ£¤ ValidationProblemDetails ╪ذ┘à┘╪ز╪د╪ص $ (┘┘à╪╖ MVC ┘╪ث╪«╪╖╪د╪ة ╪د┘╪ش╪░╪▒) (0.494ms)
+  ظ£¤ ╪ث╪«╪╖╪د╪ة ╪د┘╪ص┘é┘ê┘ ╪ز┘╪│┘à┘ّ┘ë ╪ذ╪ث╪│┘à╪د╪ة ╪ص┘é┘ê┘┘ç╪د (1.4784ms)
+  ظ£¤ ┘è╪▒┘╪╢ ╪د┘╪╣┘┘ê╪د┘ ╪د┘╪ح┘╪ش┘┘è╪▓┘è ┘ê┘è╪│┘é╪╖ ┘╪▒╪│╪د┘╪ر ╪╣╪▒╪ذ┘è╪ر (0.4404ms)
+  ظ£¤ ┘è┘é╪ذ┘ ╪د┘╪╣┘┘ê╪د┘ ╪ح╪░╪د ┘â╪د┘ ╪ذ╪د┘╪╣╪▒╪ذ┘è╪ر (0.3573ms)
+  ظ£¤ message ┘à┘ ApiResponse ┘è╪ذ┘é┘ë ╪ث┘ê┘┘ê┘è╪ر ╪╣┘┘ë errors (0.3091ms)
+  ظ£¤ ╪ث╪«╪╖╪د╪ة ApiResponse ╪ذ╪╡┘è╪║╪ر ┘à╪╡┘┘ê┘╪ر ╪ز┘╪╣╪▒╪╢ ┘â┘é╪د╪خ┘à╪ر (0.4048ms)
+  ظ£¤ ┘è┘╪╕┘ّ┘ ┘ê╪│┘ê┘à HTML ┘à┘ ╪د┘╪▒╪│╪د┘╪ر (2.4811ms)
+  ظ£¤ ┘è╪│┘é╪╖ ╪ح┘┘ë ╪▒╪│╪د┘╪ر ╪╣╪▒╪ذ┘è╪ر ┘┘╪ص╪د┘╪د╪ز ╪ذ┘╪د ╪│╪ذ╪ذ (0.4639ms)
+ظ£¤ normalizeApiError (12.3513ms)
+ظû╢ useNotificationStore ظ¤ ╪│┘┘ê┘â ╪د┘╪╣╪»┘ّ╪د╪» (N06/N16)
+  ظ£û ╪د┘╪╣╪»┘ّ╪د╪» ┘ê╪د┘╪ص╪ش┘à ┘à┘ ╪د┘╪«╪د╪»┘à ┘╪د ┘è╪│╪ز╪ذ╪»┘╪د┘ ╪ذ╪ث╪ص╪ش╪د┘à ╪د┘╪╡┘╪ص╪ر ╪د┘╪ش╪▓╪خ┘è╪ر (6.1347ms)
+  ظ£û markAsRead ┘╪د ┘è╪«╪╡┘à ┘à╪ص┘┘è┘ï╪د ┘à┘ ╪╣╪»┘ّ╪د╪» ╪ص╪»╪س┘ç ┘à╪ص╪»╪س ╪ذ╪د┘┘╪╣┘ (N16) (2.4717ms)
+  ظ£û ┘ê╪╡┘ê┘ ╪ص╪»╪س ╪ش╪»┘è╪» ┘╪د ┘è╪╣╪»┘ّ┘ ╪د┘╪╣╪»┘ّ╪د╪» ┘à╪ص┘┘è┘ï╪د╪ؤ ┘à╪▓╪د┘à┘╪ر ╪د┘╪د╪│╪ز╪╣┘╪د┘à ┘ç┘è ┘à╪╡╪»╪▒┘ç (2.1027ms)
+ظ£û useNotificationStore ظ¤ ╪│┘┘ê┘â ╪د┘╪╣╪»┘ّ╪د╪» (N06/N16) (13.3889ms)
+ظû╢ useNotificationStore ظ¤ ╪╢┘ê╪د╪ذ╪╖ ╪ز╪╣┘à┘ ╪د┘┘è┘ê┘à
+  ظ£¤ ┘à┘╪╣ ╪د┘╪ز┘â╪▒╪د╪▒ ╪ذ┘à╪╣╪▒┘ّ┘ ╪د┘╪ح╪┤╪╣╪د╪▒ (2.338ms)
+  ظ£¤ ╪│┘é┘ 50 ╪╣┘╪╡╪▒┘ï╪د ┘┘è ╪د┘╪╖╪د╪ذ┘ê╪▒ (40.0203ms)
+  ظ£¤ reset ┘è╪╡┘┘ّ╪▒ ┘â┘ ╪د┘╪ص╪د┘╪ر (0.5654ms)
+  ظ£¤ markAllAsRead ┘è╪╡┘┘ّ╪▒ ╪د┘╪╣╪»┘ّ╪د╪» ┘ê╪╣┘╪د┘à╪ز┘ç ╪╣┘┘ë ╪د┘╪╣┘╪د╪╡╪▒ (0.9174ms)
+ظ£¤ useNotificationStore ظ¤ ╪╢┘ê╪د╪ذ╪╖ ╪ز╪╣┘à┘ ╪د┘┘è┘ê┘à (44.9493ms)
+ظû╢ useNotificationStore ظ¤ ╪╣╪▓┘ ╪د┘╪ش┘╪│╪ر (NF1.2)
+  ظ£¤ bindUser ┘è╪▒╪ذ╪╖ ╪د┘┘à╪ز╪ش╪▒ ╪ذ╪د┘┘à╪│╪ز╪«╪»┘à ┘ê┘è┘à┘╪╣ ╪ز╪║┘è┘è╪▒ ┘┘╪│ ╪د┘╪ص╪│╪د╪ذ (1.8874ms)
+  ظ£¤ ╪ز╪ذ╪»┘è┘ ╪د┘╪ص╪│╪د╪ذ ┘è╪╡┘┘ّ╪▒ ╪د┘┘é╪د╪خ┘à╪ر ┘ê╪د┘╪╣╪»┘ّ╪د╪» ┘┘ê╪▒┘ï╪د (0.8871ms)
+  ظ£¤ reset ┘è┘╪║┘è ╪د┘╪▒╪ذ╪╖ (╪«╪▒┘ê╪ش/╪د┘╪ز┘ç╪د╪ة ╪ش┘╪│╪ر) (0.5715ms)
+  ظ£¤ ╪د┘╪«╪▒┘ê╪ش ╪س┘à ╪»╪«┘ê┘ ╪ص╪│╪د╪ذ ╪ش╪»┘è╪» ┘╪د ┘è╪╣╪▒╪╢ ╪ذ┘è╪د┘╪د╪ز ╪د┘╪ص╪│╪د╪ذ ╪د┘┘é╪»┘è┘à (1.1449ms)
+ظ£¤ useNotificationStore ظ¤ ╪╣╪▓┘ ╪د┘╪ش┘╪│╪ر (NF1.2) (5.2911ms)
+ظ£¤ draft of another retiree is discarded entirely, not just its identity fields (1.6964ms)
+ظ£¤ draft is restored only for the same retiree and edit mode never reads drafts (0.456ms)
+ظ£¤ draft keeps default lookups when stored values are empty (0.2951ms)
+ظ£¤ draft never carries File objects (0.4395ms)
+ظ£¤ invalid draft JSON falls back to a clean form (0.4622ms)
+ظ£¤ prefill keeps DateOnly values untouched (1.248ms)
+ظ£¤ today is accepted as a birth date regardless of host timezone (0.5981ms)
+ظ£¤ future birth and death dates are rejected by calendar comparison (0.8967ms)
+ظ£¤ death date before birth date is rejected (0.4553ms)
+ظ£¤ prefill failure blocks saving so defaults cannot overwrite real retiree data (0.4279ms)
+ظ£¤ an active file blocks the retiree step (0.2243ms)
+ظ£¤ enter in the retiree step opens the existing file instead of advancing (0.1672ms)
+ظ£¤ only a non-closed file counts as active (0.1563ms)
+ظ£¤ a failed active-file check fails closed instead of letting the user through (0.1424ms)
+ظ£¤ phone format is validated when provided and stays optional (2.0393ms)
+ظ£¤ submitted dates are plain YYYY-MM-DD, never ISO instants (31.0504ms)
+ظ£¤ creating an alive retiree omits deathDate (0.4992ms)
+ظ£¤ editing ordinary file data does not submit life status fields (0.22ms)
+ظ£¤ explicit cancel asks when data exists, dismissal only asks for unsaved edits (0.1538ms)
+ظ╣ tests 117
+ظ╣ suites 5
+ظ╣ pass 114
+ظ╣ fail 3
+ظ╣ cancelled 0
+ظ╣ skipped 0
+ظ╣ todo 0
+ظ╣ duration_ms 2770.1132
+
+ظ£û failing tests:
+
+test at tests\notifications.test.ts:24:5
+ظ£û ╪د┘╪╣╪»┘ّ╪د╪» ┘ê╪د┘╪ص╪ش┘à ┘à┘ ╪د┘╪«╪د╪»┘à ┘╪د ┘è╪│╪ز╪ذ╪»┘╪د┘ ╪ذ╪ث╪ص╪ش╪د┘à ╪د┘╪╡┘╪ص╪ر ╪د┘╪ش╪▓╪خ┘è╪ر (6.1347ms)
+  AssertionError [ERR_ASSERTION]: N06: ╪ص╪ش┘à ╪د┘╪╡┘╪ص╪ر ┘╪د ┘è╪ص╪»┘ّ ╪د┘╪╣╪»┘ّ╪د╪» ╪د┘┘à┘ê╪س┘ê┘é ┘à┘ ╪د┘╪«╪د╪»┘à
+  
+  7 !== 25
+  
+      at TestContext.<anonymous> (file:///F:/Projects/Pension_Management_System/ui/tests/notifications.test.ts:30:16)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1533:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 7,
+    expected: 25,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\notifications.test.ts:34:5
+ظ£û markAsRead ┘╪د ┘è╪«╪╡┘à ┘à╪ص┘┘è┘ï╪د ┘à┘ ╪╣╪»┘ّ╪د╪» ╪ص╪»╪س┘ç ┘à╪ص╪»╪س ╪ذ╪د┘┘╪╣┘ (N16) (2.4717ms)
+  AssertionError [ERR_ASSERTION]: N16: ╪د┘╪╣╪»┘ّ╪د╪» ┘à┘┘â ╪د┘╪«╪د╪»┘à╪ؤ ╪د┘┘é╪▒╪د╪ة╪ر ╪زinvalidate ┘╪د ╪ز╪«╪╡┘à
+  
+  1 !== 2
+  
+      at TestContext.<anonymous> (file:///F:/Projects/Pension_Management_System/ui/tests/notifications.test.ts:41:16)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\notifications.test.ts:45:5
+ظ£û ┘ê╪╡┘ê┘ ╪ص╪»╪س ╪ش╪»┘è╪» ┘╪د ┘è╪╣╪»┘ّ┘ ╪د┘╪╣╪»┘ّ╪د╪» ┘à╪ص┘┘è┘ï╪د╪ؤ ┘à╪▓╪د┘à┘╪ر ╪د┘╪د╪│╪ز╪╣┘╪د┘à ┘ç┘è ┘à╪╡╪»╪▒┘ç (2.1027ms)
+  AssertionError [ERR_ASSERTION]: ╪د┘┘ê╪╡┘ê┘ ╪د┘┘╪ص╪╕┘è ┘è╪ص╪»┘ّ╪س ╪د┘╪╖╪د╪ذ┘ê╪▒ ┘╪د ╪د┘╪╣╪»┘ّ╪د╪» ╪د┘┘à╪»┘┘ê╪╣
+  
+  6 !== 5
+  
+      at TestContext.<anonymous> (file:///F:/Projects/Pension_Management_System/ui/tests/notifications.test.ts:51:16)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 6,
+    expected: 5,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -5,9 +5,13 @@ import { documentsApi } from "@/api/documents";
 import { retirementApi } from "@/api/retirement";
 import { Badge, BaseFormDialog, Button, EditableImage, Heading } from "@/components/ui";
 import { useApiMutation } from "@/hooks";
+import { type AgencyScope,agentScopeLabel } from "@/lib/agentScope";
 import { formatDate, getDocumentUrl, getPhotoUrl, resolvePersonalPhotoPath } from "@/lib/utils";
 
 interface Agent {
+    agencyScope?: AgencyScope | null;
+    entitledID?: number | null;
+    entitledPersonName?: string | null;
     agentID: number;
     fileID: number;
     fileNumber: string;
@@ -42,14 +46,18 @@ export function ViewAgentDialog({ open, onClose, agent, fileId }: Props) {
     });
 
     const updatePhotoMutation = useApiMutation(
-        (formData: FormData) => retirementApi.updateAgent(agent!.agentID, formData),
+        (formData: FormData) => {
+            const photo = formData.get("PersonalPhoto");
+            if (!(photo instanceof File)) throw new Error("الصورة مطلوبة");
+            return retirementApi.uploadAgentPhoto(agent!.agentID, photo);
+        },
         {
             successMessage: "تم تحديث الصورة الشخصية للوكيل بنجاح",
             invalidateKeys: [["agents", fileId], ["retirement-file"]],
         }
     );
 
-    const getAgentPhotoUrl = (agent: any) => getPhotoUrl(resolvePersonalPhotoPath(agent));
+    const getAgentPhotoUrl = (agent: Agent) => getPhotoUrl(resolvePersonalPhotoPath(agent));
 
     if (!agent) return null;
 
@@ -64,7 +72,7 @@ export function ViewAgentDialog({ open, onClose, agent, fileId }: Props) {
                 footer={null}
             >
                 <div className="space-y-4">
-                    <div className="bg-gradient-to-l from-primary/5 to-primary/10 rounded-xl p-4 lg:p-6 border border-primary/20">
+                    <div className="bg-gradient-to-l from-primary/5 to-primary/10 rounded-xl p-4 lg:p-6 border border-primary">
                         <div className="flex flex-col sm:flex-row gap-3 lg:gap-4 items-start">
                             <div className="flex-shrink-0">
                                 <EditableImage
@@ -97,7 +105,7 @@ export function ViewAgentDialog({ open, onClose, agent, fileId }: Props) {
                             <div className="flex-1 space-y-2 lg:space-y-3 min-w-0">
                                 <div>
                                     <Heading level="h2" className="text-base lg:text-2xl font-bold text-foreground break-words">{agent.fullName}</Heading>
-                                    <p className="text-xs lg:text-sm text-muted-foreground mt-1">وكيل مفوض</p>
+                                    <p className="text-xs lg:text-sm text-muted-foreground mt-1 break-words">{agentScopeLabel(agent)}</p>
                                 </div>
                                 <div className="flex flex-wrap gap-2 lg:gap-4">
                                     <Badge variant={agent.isActive ? "success" : "outline"} className="text-xs lg:text-sm px-2.5 lg:px-3 py-0.5 lg:py-1">
@@ -173,7 +181,7 @@ export function ViewAgentDialog({ open, onClose, agent, fileId }: Props) {
                                                     {isPdf ? (
                                                         <div className="w-full h-48 border rounded-lg overflow-hidden bg-muted/50"><iframe src={docUrl} className="w-full h-full border-0" title={doc.fileName} /></div>
                                                     ) : (
-                                                        <img src={docUrl} alt={doc.documentTypeName} className="w-full rounded-lg border cursor-pointer hover:opacity-90 transition-opacity max-h-64 object-contain bg-muted/30" loading="lazy" onClick={() => window.open(docUrl, '_blank')} />
+                                                        <img src={docUrl} alt={doc.documentTypeName} className="w-full rounded-lg border cursor-pointer hover:opacity-100 transition-opacity max-h-64 object-contain bg-muted/30" loading="lazy" onClick={() => window.open(docUrl, '_blank')} />
                                                     )}
                                                     <p className="text-xs text-muted-foreground truncate" title={doc.fileName}>{doc.fileName}</p>
                                                 </div>

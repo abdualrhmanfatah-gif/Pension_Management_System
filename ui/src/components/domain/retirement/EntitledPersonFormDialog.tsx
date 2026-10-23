@@ -1,12 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Heart, ShieldCheck,User } from "lucide-react";
+import { Heart, Percent, ShieldCheck,User } from "lucide-react";
 import React from "react";
-import { useEffect, useMemo,useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 import api from "@/api/axios";
+import { retirementApi } from "@/api/retirement";
 import {
     BaseFormDialog,
     DateInput,
@@ -18,19 +19,22 @@ import {
     NoteBox,
     yemenPhoneSchema
 } from "@/components/ui";
-import { useApiMutation } from "@/hooks";
-import { useEntitledPersonQuery } from "@/hooks/queries/useEntitledPersonQuery";
+import { useApiMutation, useRecordNavigation } from "@/hooks";
+import { ENTITLED_PERSON_KEY } from "@/hooks/queries/useEntitledPersonQuery";
 import { useFileDetailsQuery } from "@/hooks/queries/useFileDetailsQuery";
 import { normalizeDateInputValue } from "@/lib/date";
 import { getDocumentUrl } from "@/lib/utils";
 import { useAuthStore } from "@/stores/authStore";
 
+import { EntitlementAmountField } from "./EntitlementAmountField";
+
 type EntitledFormValues = z.infer<typeof entitledSchemaRelaxed>;
 
-export interface EntitledPersonDetail extends EntitledFormValues {
+export interface EntitledPersonDetail extends Omit<EntitledFormValues, "entitledAmount"> {
     entitledID: number;
     nationalIdImageUrl?: string | null;
     updatedAt?: string;
+    sharePercent?: number | null;
 }
 
 interface EntitledPersonFormDialogProps {
@@ -57,6 +61,7 @@ const entitledSchemaRelaxed = z.object({
     socialStatusID: z.number().optional().or(z.literal(0)),
     healthStatusID: z.number().optional().or(z.literal(0)),
     hasDisabilityException: z.boolean(),
+    entitledAmount: z.string().optional().refine(value => !value || Number(value) > 0, "أدخل مبلغاً أكبر من صفر"),
     nationalIdImage: z.union([z.instanceof(File), z.string()]).optional(),
 });
 
@@ -76,13 +81,6 @@ export function EntitledPersonFormDialog({
 
     // في وضع التعديل: جلب البيانات من الخادم بدلاً من الاعتماد على initialData القديمة
     const editId = mode === "edit" ? initialData?.entitledID : undefined;
-    const { data: freshData } = useEntitledPersonQuery(editId, !!editId && open);
-
-    // استخدم البيانات الطازجة إذا كانت متوفرة، وإلا استخدم initialData
-    const effectiveData = useMemo(() => {
-        if (mode === "edit" && freshData) return freshData as unknown as EntitledPersonDetail;
-        return initialData;
-    }, [mode, freshData, initialData]);
 
     // ─── Lookups Query ──────────────────────────────────
     const { data: lookups } = useQuery({
@@ -106,7 +104,7 @@ export function EntitledPersonFormDialog({
     const { file } = useFileDetailsQuery(fileId);
     const retireeIsAlive = retireeIsAliveProp ?? file?.isAlive ?? true;
 
-    const createEmptyDefaults = {
+    const createEmptyDefaults = useMemo(() => ({
         fullName: "",
         nationalID: "",
         relationshipID: 0,
@@ -115,7 +113,28 @@ export function EntitledPersonFormDialog({
         socialStatusID: 0,
         healthStatusID: 0,
         hasDisabilityException: false,
-    };
+        entitledAmount: undefined,
+    }), []);
+
+    // تحويل بيانات مستحق (من التفاصيل أو صف القائمة) إلى قيم النموذج
+    const toFormValues = useCallback((data: EntitledPersonDetail | undefined) => {
+        if (!data) return undefined;
+        return {
+            ...data,
+            dateOfBirth: data.dateOfBirth ? data.dateOfBirth.split('T')[0] : "",
+            relationshipID: data.relationshipID || 0,
+            socialStatusID: data.socialStatusID || 0,
+            healthStatusID: data.healthStatusID || 0,
+            entitledAmount: undefined,
+            // Map existing image URL to the form field if no new file is selected
+            nationalIdImage: (() => {
+                const url = data.nationalIdImageUrl;
+                if (!url) return undefined;
+                if (url.startsWith("http")) return url;
+                return getDocumentUrl(url) ?? url;
+            })(),
+        };
+    }, []);
 
     const form = useForm<EntitledFormValues>({
         resolver: (values, context, options) => {
@@ -138,26 +157,54 @@ export function EntitledPersonFormDialog({
 
     const { control, register, setValue, watch, formState: { errors, isDirty } } = form;
 
+    // ─── Alt+↑/↓: التنقل بين مستحقي الملف (المنطق المشترك في useRecordNavigation) ───
+    const savingRef = React.useRef(false);
+    const { activeRecord, detailReady, effectiveMode } = useRecordNavigation<
+        EntitledPersonDetail,
+        EntitledPersonDetail,
+        EntitledFormValues
+    >({
+        open,
+        mode,
+        editRecordId: editId,
+        listKey: ["entitled-persons", fileId],
+        fetchList: async () => (await retirementApi.getEntitledPersons(fileId)) as unknown as EntitledPersonDetail[],
+        getId: r => r.entitledID,
+        detailKey: id => [ENTITLED_PERSON_KEY, id],
+        fetchDetail: id => retirementApi.getEntitledPersonById(id) as unknown as Promise<EntitledPersonDetail>,
+        getDetailId: d => d.entitledID,
+        emptyMessage: "لا يوجد ورثة مسجلون لهذا الملف",
+        emptyDefaults: createEmptyDefaults,
+        toFormValues: record => toFormValues(record) as EntitledFormValues,
+        form,
+        isDirty,
+        isBusyRef: savingRef,
+        focusField: "relationshipID",
+    });
+
+    // استخدم السجل الحالي (تفاصيل طازجة أو صف القائمة)، وإلا initialData
+    const effectiveData = (activeRecord ?? initialData) as EntitledPersonDetail | undefined;
+
     // ─── Default health status to "سليم" ─────────────────
     const currentHealthStatusID = useWatch({ control, name: "healthStatusID" });
     useEffect(() => {
-        if (!lookups || mode !== "create") return;
+        if (!lookups || effectiveMode !== "create") return;
         if (currentHealthStatusID && currentHealthStatusID !== 0) return;
         const salim = lookups.healthStatuses.find(h => h.name.trim() === "سليم");
         if (salim) {
             setValue("healthStatusID", salim.id, { shouldDirty: false });
         }
-    }, [lookups, currentHealthStatusID, mode, setValue]);
+    }, [lookups, currentHealthStatusID, effectiveMode, setValue]);
 
-    // Save draft on changes (create mode only)
+    // Save draft on changes (create mode only — لا يُحفظ مستحق محمّل عبر التنقل في مسودة الإنشاء)
     const allValues = watch();
     useEffect(() => {
-        if (mode === "create" && isDirty) {
+        if (effectiveMode === "create" && isDirty) {
             const { nationalIdImage: _, ...textFields } = allValues;
             void _;
             sessionStorage.setItem(DRAFT_KEY, JSON.stringify(textFields));
         }
-    }, [allValues, mode, isDirty]);
+    }, [allValues, effectiveMode, isDirty]);
 
     const [now] = useState(() => Date.now());
     const dobValue = useWatch({ control, name: "dateOfBirth" });
@@ -225,7 +272,7 @@ export function EntitledPersonFormDialog({
 
     // ─── Mutation Logic ────────────────────────────────
     const mutation = useApiMutation(async (values: EntitledFormValues) => {
-        if (mode === "create") {
+        if (effectiveMode === "create") {
             const formData = new FormData();
             formData.append("fileID", fileId.toString());
             formData.append("fullName", values.fullName);
@@ -241,6 +288,7 @@ export function EntitledPersonFormDialog({
             formData.append("socialStatusID", (values.socialStatusID || 0).toString());
             formData.append("healthStatusID", (values.healthStatusID || 0).toString());
             formData.append("hasDisabilityException", values.hasDisabilityException.toString());
+            if (values.entitledAmount) formData.append("entitledAmount", values.entitledAmount);
 
             if (values.nationalIdImage instanceof File) {
                 formData.append("nationalIdImage", values.nationalIdImage);
@@ -263,6 +311,7 @@ export function EntitledPersonFormDialog({
             formData.append("socialStatusID", (values.socialStatusID || 0).toString());
             formData.append("healthStatusID", (values.healthStatusID || 0).toString());
             if (values.hasDisabilityException !== undefined) formData.append("hasDisabilityException", values.hasDisabilityException.toString());
+            if (values.entitledAmount) formData.append("entitledAmount", values.entitledAmount);
             if (values.nationalIdImage instanceof File) formData.append("nationalIdImage", values.nationalIdImage);
             if (effectiveData?.updatedAt) formData.append("updatedAt", effectiveData.updatedAt);
 
@@ -271,7 +320,7 @@ export function EntitledPersonFormDialog({
             });
         }
     }, {
-        successMessage: mode === "create" ? "تم إضافة المستحق بنجاح" : "تم تحديث بيانات المستحق",
+        successMessage: effectiveMode === "create" ? "تم إضافة المستحق بنجاح" : "تم تحديث بيانات المستحق",
         errorTitle: "خطأ في الحفظ",
         invalidateKeys: [
             ["entitled-persons", fileId],
@@ -295,7 +344,7 @@ export function EntitledPersonFormDialog({
                 setTimeout(() => form.setFocus("relationshipID"), 150);
             } else {
                 onOpenChange(false);
-                if (mode === "create") {
+                if (effectiveMode === "create") {
                     form.reset({ ...createEmptyDefaults });
                 }
                 onSuccess?.();
@@ -312,6 +361,11 @@ export function EntitledPersonFormDialog({
         }
     });
 
+    // مزامنة حارس التنقل مع حالة الحفظ (يُقرأ عند الضغط فقط)
+    useEffect(() => {
+        savingRef.current = mutation.isPending;
+    }, [mutation.isPending]);
+
     const handleFormSubmit = React.useCallback((values: EntitledFormValues) => {
         return mutation.mutateAsync(values).catch(() => undefined);
     }, [mutation]);
@@ -323,42 +377,28 @@ export function EntitledPersonFormDialog({
         })();
     }, [form, handleFormSubmit]);
 
-    const initialValues = useMemo(() => {
-        const data = effectiveData;
-        if (!data) return undefined;
-        return {
-            ...data,
-            dateOfBirth: data.dateOfBirth ? data.dateOfBirth.split('T')[0] : "",
-            relationshipID: data.relationshipID || 0,
-            socialStatusID: data.socialStatusID || 0,
-            healthStatusID: data.healthStatusID || 0,
-            // Map existing image URL to the form field if no new file is selected
-            nationalIdImage: (() => {
-                const url = (data as any).nationalIdImageUrl;
-                if (!url) return undefined;
-                if (url.startsWith("http")) return url;
-                return getDocumentUrl(url) ?? url;
-            })(),
-        };
-    }, [effectiveData]);
+    const initialValues = useMemo(
+        () => toFormValues(effectiveData),
+        [toFormValues, effectiveData]
+    );
 
     return (
         <BaseFormDialog
             open={open}
             onOpenChange={onOpenChange}
-            title={mode === "create" ? "إضافة وريث جديد" : "تعديل بيانات الوريث"}
-            description={mode === "create" ? "أدخل بيانات الوريث في الملف التقاعدي" : "تحديث بيانات الوريث المعتمدة"}
+            title={effectiveMode === "create" ? "إضافة وريث جديد" : "تعديل بيانات الوريث"}
+            description={effectiveMode === "create" ? "أدخل بيانات الوريث في الملف التقاعدي" : "تحديث بيانات الوريث المعتمدة"}
             size="full"
-            isLoading={mutation.isPending}
+            isLoading={mutation.isPending || !detailReady}
             isDirty={isDirty}
             onSubmit={form.handleSubmit(handleFormSubmit)}
-            onSaveAndNew={mode === "create" ? handleSaveAndAddAnother : undefined}
+            onSaveAndNew={effectiveMode === "create" ? handleSaveAndAddAnother : undefined}
             resetOnOpen={true}
             reset={form.reset}
             initialValues={initialValues}
             showGlobalError
             formErrors={errors}
-            submitLabel={mode === "create" ? "إضافة الوريث" : "حفظ التعديلات"}
+            submitLabel={effectiveMode === "create" ? "إضافة الوريث" : "حفظ التعديلات"}
         >
             <div className="space-y-4">
                 <FormSection title="البيانات الشخصية والقرابة" icon={User}>
@@ -474,23 +514,31 @@ export function EntitledPersonFormDialog({
                             />
                         </FormField>
 
-                        <div className="flex items-center gap-3 pt-2">
-                            <div className="flex items-center gap-3 bg-primary/5 p-3 rounded-xl border border-primary/10 w-full">
-                                <ShieldCheck className="w-5 h-5 text-primary shrink-0" />
-                                <div className="flex items-center gap-3">
-                                    <input
-                                        type="checkbox"
-                                        id="hasDisabilityException"
-                                        className="min-h-[44px] min-w-[44px] w-6 h-6 text-primary border-border rounded-md focus:ring-primary cursor-pointer transition-all"
-                                        {...register("hasDisabilityException")}
-                                    />
-                                    <label htmlFor="hasDisabilityException" className="text-xs font-bold leading-none cursor-pointer text-primary/80 hover:text-primary transition-colors">
-                                        استثناء عجز / عالة
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                        <FormField label="الاستثناءات" error={errors.hasDisabilityException?.message}>
+                            <label
+                                htmlFor="hasDisabilityException"
+                                className="flex items-center gap-2.5 h-11 sm:h-10 px-3 bg-primary/5 hover:bg-primary/10 border border-primary rounded-md w-full cursor-pointer transition-colors"
+                            >
+                                <ShieldCheck className="w-4 h-4 text-primary shrink-0" />
+                                <input
+                                    type="checkbox"
+                                    id="hasDisabilityException"
+                                    className="w-4 h-4 text-primary border-border rounded focus:ring-primary cursor-pointer transition-all"
+                                    {...register("hasDisabilityException")}
+                                />
+                                <span className="text-xs font-bold text-primary hover:text-primary transition-colors select-none">
+                                    استثناء عجز / عالة
+                                </span>
+                            </label>
+                        </FormField>
                     </div>
+                </FormSection>
+
+                <FormSection title="حصة المعاش" icon={Percent}>
+                    <Controller name="entitledAmount" control={control} render={({ field, fieldState }) => (
+                        <EntitlementAmountField retireeId={file?.retireeID} value={field.value} onChange={field.onChange}
+                            onBlur={field.onBlur} inputRef={field.ref} savedSharePercent={effectiveData?.sharePercent} error={fieldState.error?.message} />
+                    )} />
                 </FormSection>
 
                 {isAdult && (
@@ -506,7 +554,7 @@ export function EntitledPersonFormDialog({
                     </FormSection>
                 )}
 
-                {retireeIsAlive && mode === "create" && (
+                {retireeIsAlive && effectiveMode === "create" && (
                     <NoteBox type="info" title="ملاحظة">
                         المتقاعد على قيد الحياة — سيُضاف الوريث بحالة <strong>موقوف</strong> حتى تسجيل وفاة المتقاعد.
                         يمكنك إكمال بياناته لاحقاً.

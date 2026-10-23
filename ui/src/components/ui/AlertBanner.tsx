@@ -33,15 +33,15 @@ interface AlertBannerProps {
 
 const variantStyles: Record<AlertVariant, string> = {
     warning:
-        "bg-amber-50 border-amber-200 text-amber-800 dark:bg-amber-950/30 dark:border-amber-800/50 dark:text-amber-200",
+        "bg-amber-50 border-amber-200 text-amber-800 dark:bg-amber-950/30 dark:border-amber-800 dark:text-amber-200",
     info:
-        "bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-950/30 dark:border-blue-800/50 dark:text-blue-200",
+        "bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-950/30 dark:border-blue-800 dark:text-blue-200",
     danger:
-        "bg-red-50 border-red-200 text-red-800 dark:bg-red-950/30 dark:border-red-800/50 dark:text-red-200",
+        "bg-red-50 border-red-200 text-red-800 dark:bg-red-950/30 dark:border-red-800 dark:text-red-200",
     success:
-        "bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-950/30 dark:border-emerald-800/50 dark:text-emerald-200",
+        "bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-950/30 dark:border-emerald-800 dark:text-emerald-200",
     destructive:
-        "bg-red-50 border-red-200 text-red-800 dark:bg-red-950/30 dark:border-red-800/50 dark:text-red-200",
+        "bg-red-50 border-red-200 text-red-800 dark:bg-red-950/30 dark:border-red-800 dark:text-red-200",
 };
 
 const actionStyles: Record<AlertVariant, string> = {
@@ -58,7 +58,7 @@ export function AlertBanner({
     message,
     title,
     children,
-    description: _description,
+    description,
     action,
     dismissable = true,
     className,
@@ -68,7 +68,8 @@ export function AlertBanner({
 
     if (dismissed) return null;
 
-    const content = message || title || children;
+    const content = message ?? title ?? children;
+    const hasSeparateChildren = children != null && (message != null || title != null);
 
     const el = React.isValidElement(content) ? (content as React.ReactElement<{ children: React.ReactNode }>) : null;
     const childCount = el ? React.Children.toArray(el.props.children).length : 0;
@@ -101,30 +102,33 @@ export function AlertBanner({
                     <X className="w-3 h-3 sm:w-4 sm:h-4" />
                 </Button>
             )}
-            <div className="flex items-center gap-1 sm:gap-3 sm:flex-1 min-w-0">
-                {icon && <span className="shrink-0 [&>svg]:w-3.5 [&>svg]:h-3.5 sm:[&>svg]:w-5 sm:[&>svg]:h-5">{icon}</span>}
-                {/* Mobile: first child only */}
-                {hasMultipleChildren && (
-                    <span className="flex-1 font-medium break-words sm:hidden">{firstChild}</span>
-                )}
-                {/* Mobile: full content if single child */}
-                {!hasMultipleChildren && (
-                    <span className="flex-1 font-medium break-words sm:hidden">{content}</span>
-                )}
-                {/* Desktop: full content */}
-                <span className="hidden sm:inline sm:flex-1 sm:font-medium sm:break-words">{content}</span>
-                {hasMultipleChildren && (
-                    <button
-                        type="button"
-                        onClick={() => setExpanded(!expanded)}
-                        className="sm:hidden shrink-0 p-0.5 rounded hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-                        aria-label={expanded ? "طي" : "توسيع"}
-                    >
-                        <ChevronDown
-                            className={cn("w-3.5 h-3.5 transition-transform duration-200", expanded && "rotate-180")}
-                        />
-                    </button>
-                )}
+            <div className="flex min-w-0 flex-col gap-1 sm:flex-1">
+                <div className="flex min-w-0 items-center gap-1 sm:gap-3">
+                    {icon && <span className="shrink-0 [&>svg]:w-3.5 [&>svg]:h-3.5 sm:[&>svg]:w-5 sm:[&>svg]:h-5">{icon}</span>}
+                    {/* Mobile: first child only */}
+                    {hasMultipleChildren && (
+                        <span className="flex-1 font-medium break-words sm:hidden">{firstChild}</span>
+                    )}
+                    {/* Mobile: full content if single child */}
+                    {!hasMultipleChildren && (
+                        <span className="flex-1 font-medium break-words sm:hidden">{content}</span>
+                    )}
+                    {/* Desktop: full content */}
+                    <span className="hidden sm:inline sm:flex-1 sm:font-medium sm:break-words">{content}</span>
+                    {hasMultipleChildren && (
+                        <button
+                            type="button"
+                            onClick={() => setExpanded(!expanded)}
+                            className="sm:hidden shrink-0 p-0.5 rounded hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+                            aria-label={expanded ? "طي" : "توسيع"}
+                        >
+                            <ChevronDown
+                                className={cn("w-3.5 h-3.5 transition-transform duration-200", expanded && "rotate-180")}
+                            />
+                        </button>
+                    )}
+                </div>
+                {description && <div className="text-xs leading-relaxed sm:text-sm">{description}</div>}
             </div>
             {/* Mobile expanded content */}
             {expanded && hasMultipleChildren && (
@@ -134,6 +138,7 @@ export function AlertBanner({
                     ))}
                 </div>
             )}
+            {hasSeparateChildren && <div className="w-full sm:w-auto">{children}</div>}
             {action && (
                 <div className="flex items-center gap-1.5 sm:gap-2 sm:shrink-0">
                     <Button

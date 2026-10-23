@@ -6,4 +6,5 @@ namespace PensionMS.Core.Constants;
 public static class SystemTableConstants
 {
     public const int RetirementFiles = 2;
+    public const int SalaryPaymentBatches = 14;
 }

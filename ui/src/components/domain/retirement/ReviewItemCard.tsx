@@ -101,7 +101,7 @@ export function ReviewItemCard({ item, onApprove, onReject }: ReviewItemCardProp
                     "rounded-xl border p-4 transition-all duration-200 shadow-sm w-full overflow-auto max-h-[80vh]",
                     isApproved && "border-emerald-200 bg-emerald-50/50 dark:border-emerald-800 dark:bg-emerald-950/20",
                     isRejected && "border-rose-200 bg-rose-50/50 dark:border-rose-800 dark:bg-rose-950/20",
-                    isPending && "border-border bg-card hover:border-primary/30 hover:shadow-md"
+                    isPending && "border-border bg-card hover:border-primary hover:shadow-md"
                 )}
             >
                 {/* Header */}
@@ -207,7 +207,7 @@ export function ReviewItemCard({ item, onApprove, onReject }: ReviewItemCardProp
                         )}
                     </div>
                 ) : (
-                    <div className="bg-muted/40 rounded-lg p-3 border border-border/50 space-y-2 w-max min-w-full">
+                    <div className="bg-muted/40 rounded-lg p-3 border border-border space-y-2 w-max min-w-full">
                         <div className="flex items-start justify-between gap-4">
                             <span className="text-xs font-bold text-muted-foreground shrink-0">القيمة السابقة:</span>
                             {isMainOldMedia ? (
@@ -282,7 +282,7 @@ export function ReviewItemCard({ item, onApprove, onReject }: ReviewItemCardProp
                                                     <Button
                                                         variant="outline"
                                                         size="sm"
-                                                        className="h-auto gap-2 text-xs font-bold text-primary bg-primary/10 border-primary/20 hover:bg-primary/20 w-max min-w-full justify-start"
+                                                        className="h-auto gap-2 text-xs font-bold text-primary bg-primary/10 border-primary hover:bg-primary/20 w-max min-w-full justify-start"
                                                         onClick={() => setPreviewUrl(documentUrl)}
                                                     >
                                                         <Eye className="w-4 h-4 shrink-0" />

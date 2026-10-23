@@ -5,6 +5,7 @@ namespace PensionMS.Core.Interfaces;
 /// </summary>
 public interface IScopedPermissionResolver
 {
+    Task<PensionMS.Core.Security.PermissionScope> GetAllowedScopeAsync(int userId, string permissionCode);
     /// <summary>
     /// هل يملك المستخدم صلاحية معينة؟ (بدون فحص نطاق)
     /// </summary>
@@ -20,8 +21,4 @@ public interface IScopedPermissionResolver
     /// </summary>
     Task<List<string>> GetUserPermissionsAsync(int userId);
 
-    /// <summary>
-    /// يجلب جميع معرّفات الفروع التي يملك المستخدم صلاحيات فيها
-    /// </summary>
-    Task<List<int>> GetUserBranchIdsAsync(int userId);
 }

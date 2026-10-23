@@ -73,7 +73,7 @@ export function UnifiedRetireeStatement({
                                 {fileDetail.file.personalPhotoPath ? (
                                     <img src={getUrl(fileDetail.file.personalPhotoPath)} alt="صورة المتقاعد" className="w-16 h-20 object-cover border-2 border-black rounded" loading="lazy" />
                                 ) : (
-                                    <div className="w-16 h-20 border-2 border-black rounded bg-muted/50 flex items-center justify-center text-[9px] text-muted-foreground/60">لا توجد</div>
+                                    <div className="w-16 h-20 border-2 border-black rounded bg-muted/50 flex items-center justify-center text-[9px] text-muted-foreground">لا توجد</div>
                                 )}
                             </div>
                             <div className="flex flex-col items-center w-16">
@@ -81,7 +81,7 @@ export function UnifiedRetireeStatement({
                                 {activeRecipientPhotoPath ? (
                                     <img src={getUrl(activeRecipientPhotoPath)} alt="صورة الوكيل أو الوصي" className="w-16 h-20 object-cover border-2 border-black rounded" loading="lazy" />
                                 ) : (
-                                    <div className="w-16 h-20 border-2 border-black rounded bg-muted/50 flex items-center justify-center text-[9px] text-muted-foreground/60">لا توجد</div>
+                                    <div className="w-16 h-20 border-2 border-black rounded bg-muted/50 flex items-center justify-center text-[9px] text-muted-foreground">لا توجد</div>
                                 )}
                             </div>
                         </>

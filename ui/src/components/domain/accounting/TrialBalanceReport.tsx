@@ -1,22 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { AlertCircle,CheckCircle } from "lucide-react";
 import { useCallback,useMemo, useState } from "react";
+import { toast } from "sonner";
 
 import { reportsApi } from "@/api/accounting";
 import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
 import { ReportBarChart, ReportPieChart } from "@/components/common/charts";
 import { ReportFilters } from "@/components/common/ReportFilters";
-import {
-  altRowFill,
-  autoFitColumns,
-  buildReportFooter,
-  buildReportHeader,
-  buildTableHeader,
-  buildTotalsRow,
-  createWorkbook,
-  exportWorkbook,
-  styleDataCell,
-} from "@/components/domain/print/excel.utils";
 import { type CustomColumnDef,DataTable } from "@/components/ui/DataTable";
 import { chartColors } from "@/lib/chartColors";
 import { formatCurrency } from "@/lib/utils";
@@ -27,13 +17,10 @@ interface TrialBalanceReportProps {
   periodId?: number;
   fromDate?: string;
   toDate?: string;
-  onExport?: (data: TrialBalanceItemDto[]) => void | Promise<void>;
-  exportLabel?: string;
   externalFilters?: { accountLevel?: string };
   hideInternalControls?: boolean;
 }
 
-const COL_COUNT = 9;
 
 export function TrialBalanceReport({
   fiscalYearId,
@@ -105,55 +92,14 @@ export function TrialBalanceReport({
   }, []);
 
   const handleExportExcel = useCallback(async () => {
-    const { ws } = createWorkbook("ميزان المراجعه");
-    autoFitColumns(ws, { 1: 15, 2: 28, 3: 18, 4: 18, 5: 18, 6: 18, 7: 18, 8: 18, 9: 18 });
-
-    const levelLabel = filters.accountLevel === 'all' || !filters.accountLevel ? "جميع المستويات" : `المستوى ${filters.accountLevel}`;
-    const dataStartRow = await buildReportHeader(ws, "ميزان المراجعه", COL_COUNT, [
-      { label: "الفلتر", value: levelLabel },
-    ]);
-
-    buildTableHeader(ws, dataStartRow, [
-      "الكود", "الحساب", "افتتاحي مدين", "افتتاحي دائن",
-      "حركه مدين", "حركه دائن", "ختامي مدين", "ختامي دائن", "الرصيد",
-    ]);
-
-    filteredData.forEach((item: TrialBalanceItemDto, i) => {
-      const r = ws.getRow(dataStartRow + 1 + i);
-      r.getCell(1).value = item.accountCode;
-      r.getCell(2).value = item.accountName;
-      r.getCell(3).value = item.openingDebit;
-      r.getCell(4).value = item.openingCredit;
-      r.getCell(5).value = item.movementDebit;
-      r.getCell(6).value = item.movementCredit;
-      r.getCell(7).value = item.closingDebit;
-      r.getCell(8).value = item.closingCredit;
-      r.getCell(9).value = item.balance;
-
-      styleDataCell(r.getCell(1), { bold: true });
-      styleDataCell(r.getCell(2), { bold: true });
-      [3, 4, 5, 6, 7, 8].forEach(c => styleDataCell(r.getCell(c), { numFmt: "#,##0" }));
-      styleDataCell(r.getCell(9), { numFmt: "#,##0", bold: true });
-
-      for (let c = 1; c <= 9; c++) altRowFill(r.getCell(c), i);
-    });
-
-    const totalRowNum = dataStartRow + 1 + filteredData.length;
-    buildTotalsRow(ws, totalRowNum, [
-      { value: "الإجمالي" },
-      undefined,
-      { value: filteredData.reduce((s: number, i: TrialBalanceItemDto) => s + i.openingDebit, 0), numFmt: "#,##0" },
-      { value: filteredData.reduce((s: number, i: TrialBalanceItemDto) => s + i.openingCredit, 0), numFmt: "#,##0" },
-      { value: filteredData.reduce((s: number, i: TrialBalanceItemDto) => s + i.movementDebit, 0), numFmt: "#,##0" },
-      { value: filteredData.reduce((s: number, i: TrialBalanceItemDto) => s + i.movementCredit, 0), numFmt: "#,##0" },
-      { value: filteredData.reduce((s: number, i: TrialBalanceItemDto) => s + i.closingDebit, 0), numFmt: "#,##0" },
-      { value: filteredData.reduce((s: number, i: TrialBalanceItemDto) => s + i.closingCredit, 0), numFmt: "#,##0" },
-      { value: grandTotalDebit, numFmt: "#,##0" },
-    ]);
-
-    buildReportFooter(ws, COL_COUNT);
-    await exportWorkbook(ws.workbook, `ميزان_المراجعه_${new Date().toISOString().slice(0, 10)}`);
-  }, [filteredData, grandTotalDebit, filters.accountLevel]);
+    try {
+      await reportsApi.exportTrialBalance({ periodId, fromDate, toDate,
+        accountLevel: filters.accountLevel === "all" ? undefined : Number(filters.accountLevel) });
+      toast.success("تم التصدير بنجاح");
+    } catch {
+      toast.error("فشل تصدير ميزان المراجعة");
+    }
+  }, [periodId, fromDate, toDate, filters.accountLevel]);
 
   const handlePrint = useCallback(() => {
     const params = new URLSearchParams();
@@ -328,7 +274,7 @@ export function TrialBalanceReport({
   );
 
   const footer = filteredData.length > 0 ? (
-    <div className={`rounded-lg p-4 font-bold ${isBalanced ? 'bg-success/10 border border-success/30' : 'bg-danger/10 border border-danger/30'}`}>
+    <div className={`rounded-lg p-4 font-bold ${isBalanced ? 'bg-success/10 border border-success' : 'bg-danger/10 border border-danger'}`}>
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-3">
           {isBalanced ? (

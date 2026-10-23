@@ -163,7 +163,7 @@ export function CumulativePnLReport({ fiscalYearId, hideInternalControls }: Cumu
             </thead>
             <tbody>
               {cumulativeData.map((row, i) => (
-                <tr key={i} className="border-t border-border/50 hover:bg-muted/20">
+                <tr key={i} className="border-t border-border hover:bg-muted/20">
                   <td className="p-3 font-medium">{row.quarterName}</td>
                   <td className="p-3 text-emerald-600 dark:text-emerald-400">{formatCurrency(row.revenue)}</td>
                   <td className="p-3 text-destructive">{formatCurrency(row.expenses)}</td>

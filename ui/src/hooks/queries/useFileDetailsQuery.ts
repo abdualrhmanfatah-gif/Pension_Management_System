@@ -4,6 +4,7 @@ import { retireeApi } from "@/api/retirees";
 import { retirementApi } from "@/api/retirement";
 
 export interface RetirementFileDetail {
+    previousStatusID?: number | null;
     reviewStatus: number;
     reviewNotes: any;
     salaryStatus?: string;
@@ -129,7 +130,8 @@ export function useFileDetailsQuery(fileId: number | undefined) {
                 reviewNotes: data.reviewNotes ?? d.ReviewNotes ?? null,
                 reviewRequestedAt: (data as any).reviewRequestedAt ?? d.ReviewRequestedAt ?? null,
                 reviewCompletedAt: (data as any).reviewCompletedAt ?? d.ReviewCompletedAt ?? null,
-                salaryStatus: "",
+                salaryStatus: data.salaryStatus ?? d.SalaryStatus ?? "",
+                previousStatusID: data.previousStatusID ?? d.PreviousStatusID,
                 pensionAmount: 0
             };
             

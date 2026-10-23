@@ -4,15 +4,6 @@ import { useCallback,useEffect, useState } from "react";
 import { fiscalYearsApi,reportsApi } from "@/api/accounting";
 import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
 import { ReportBarChart, ReportPieChart } from "@/components/common/charts";
-import {
-  altRowFill,
-  autoFitColumns,
-  buildReportFooter,
-  buildReportHeader,
-  createWorkbook,
-  exportWorkbook,
-  styleDataCell,
-} from "@/components/domain/print/excel.utils";
 import { chartColors } from "@/lib/chartColors";
 import { formatCurrency } from "@/lib/utils";
 import { cn } from "@/lib/utils";
@@ -47,44 +38,6 @@ export function IncomeStatementReport({ fiscalYearId, hideInternalControls }: In
     enabled: !!selectedYearId,
   });
 
-  const handleExportExcel = useCallback(async () => {
-    if (!data) return;
-    const { ws } = createWorkbook("قائمة الدخل");
-    autoFitColumns(ws, { 1: 15, 2: 35, 3: 20 });
-    const dataStartRow = await buildReportHeader(ws, "قائمة الدخل", 3, [
-      { label: "السنة المالية", value: String(selectedYearId) },
-    ]);
-
-    let row = dataStartRow;
-    const writeSection = (title: string, lines: { accountName: string; amount: number }[], total: number) => {
-      ws.getRow(row).getCell(1).value = title;
-      styleDataCell(ws.getRow(row).getCell(1), { bold: true });
-      row++;
-      lines.forEach((line, i) => {
-        ws.getRow(row).getCell(2).value = line.accountName;
-        ws.getRow(row).getCell(3).value = line.amount;
-        styleDataCell(ws.getRow(row).getCell(3), { numFmt: "#,##0" });
-        altRowFill(ws.getRow(row).getCell(1), i);
-        altRowFill(ws.getRow(row).getCell(2), i);
-        altRowFill(ws.getRow(row).getCell(3), i);
-        row++;
-      });
-      ws.getRow(row).getCell(2).value = `إجمالي ${title}`;
-      ws.getRow(row).getCell(3).value = total;
-      styleDataCell(ws.getRow(row).getCell(2), { bold: true });
-      styleDataCell(ws.getRow(row).getCell(3), { numFmt: "#,##0", bold: true });
-      row++;
-    };
-
-    writeSection("الإيرادات", data.revenues, data.totalRevenue);
-    writeSection("المصروفات", data.expenses, data.totalExpenses);
-    ws.getRow(row).getCell(1).value = "صافي الدخل";
-    ws.getRow(row).getCell(3).value = data.netIncome;
-    styleDataCell(ws.getRow(row).getCell(1), { bold: true });
-    styleDataCell(ws.getRow(row).getCell(3), { numFmt: "#,##0", bold: true });
-    buildReportFooter(ws, 3);
-    await exportWorkbook(ws.workbook, `قائمة_الدخل_${selectedYearId}`);
-  }, [data, selectedYearId]);
 
   const handlePrint = useCallback(() => {
     const params = new URLSearchParams();
@@ -95,7 +48,7 @@ export function IncomeStatementReport({ fiscalYearId, hideInternalControls }: In
   const renderLines = (lines: { accountCode: string; accountName: string; amount: number; accountLevel: number }[]) => {
     return lines.map((line, i) => (
       <div key={i} className={cn(
-        "flex justify-between px-3 py-1.5 border-t border-border/30 text-sm",
+        "flex justify-between px-3 py-1.5 border-t border-border text-sm",
         line.accountLevel <= 1 && "font-medium bg-muted/20",
         line.accountLevel === 2 && "pr-6",
         line.accountLevel >= 3 && "pr-10 text-xs"
@@ -145,9 +98,7 @@ export function IncomeStatementReport({ fiscalYearId, hideInternalControls }: In
       description="عرض الإيرادات والمصروفات وصافي الدخل"
       isLoading={isLoading}
       customKPIs={customKPIs}
-      chartContent={chartContent}
-      onExport={hideInternalControls ? undefined : (data ? handleExportExcel : undefined)}
-      onPrint={hideInternalControls ? undefined : (data ? handlePrint : undefined)}
+      chartContent={chartContent}      onPrint={hideInternalControls ? undefined : (data ? handlePrint : undefined)}
     >
       {error ? (
         <div className="text-destructive text-sm">فشل في تحميل التقرير</div>

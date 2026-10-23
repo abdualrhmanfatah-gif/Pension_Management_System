@@ -5,9 +5,10 @@ import { useCallback,useMemo, useState } from "react";
 import { retirementApi } from "@/api/retirement";
 import { AgentDialog } from "@/components/domain/retirement/AgentDialog";
 import { ViewAgentDialog } from "@/components/domain/retirement/ViewAgentDialog";
-import { Badge, Button, CrudPageLayout, type CustomColumnDef, EditableImage,useConfirm } from "@/components/ui";
+import { Badge, Button, CrudPageLayout, type CustomColumnDef, EditableImage, TabHeader, useConfirm } from "@/components/ui";
 import { PENDING_REVIEW_STATUS } from "@/constants";
 import { useApiMutation, useCreateShortcut, useCrudState } from "@/hooks";
+import { type AgencyScope,agentScopeLabel } from "@/lib/agentScope";
 import { formatDate, getPhotoUrl, resolvePersonalPhotoPath } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
 import type { AgentDto } from "@/types/retirement";
@@ -15,6 +16,9 @@ import type { AgentDto } from "@/types/retirement";
 // ─── Types ─────────────────────────────────────────────
 
 export interface Agent {
+    agencyScope?: AgencyScope | null;
+    entitledID?: number | null;
+    entitledPersonName?: string | null;
     agentID: number;
     fileID: number;
     fileNumber: string;
@@ -60,7 +64,7 @@ export function AgentsTab({ fileId, fileNumber }: AgentsTabProps) {
         (params: { entityType: string; entityId: number }) =>
             retirementApi.acknowledgeEntityRejection(params.entityType, params.entityId),
         {
-            successMessage: "تم قبول الرفض وإعادة الكيان لحالته الطبيعية",
+            successMessage: "تم إعادة المراجعة وإعادة الكيان لحالته الطبيعية",
             invalidateKeys: [["agents", fileId], ["retirement-file"]]
         }
     );
@@ -95,7 +99,11 @@ export function AgentsTab({ fileId, fileNumber }: AgentsTabProps) {
     );
 
     const updatePhotoMutation = useApiMutation(
-        ({ id, data }: { id: number; data: FormData }) => retirementApi.updateAgent(id, data),
+        ({ id, data }: { id: number; data: FormData }) => {
+            const photo = data.get("PersonalPhoto");
+            if (!(photo instanceof File)) throw new Error("الصورة مطلوبة");
+            return retirementApi.uploadAgentPhoto(id, photo);
+        },
         {
             successMessage: "تم تحديث الصورة الشخصية للوكيل بنجاح",
             invalidateKeys: [["agents", fileId], ["retirement-file"]],
@@ -175,6 +183,7 @@ export function AgentsTab({ fileId, fileNumber }: AgentsTabProps) {
             render: (row) => <span className="font-mono text-xs text-muted-foreground">{row.nationalID}</span>
         },
         { key: "agencyNumber", header: "رقم الوكالة", accessor: (row) => row.agencyNumber },
+        { key: "entitledPersonName", header: "الوكالة عن", render: (row) => agentScopeLabel(row) },
         {
             key: "agencyDate",
             header: "تاريخ الوكالة",
@@ -220,7 +229,7 @@ export function AgentsTab({ fileId, fileNumber }: AgentsTabProps) {
                         </Button>
                     )}
                     {row.pendingReviewStatus === PENDING_REVIEW_STATUS.REJECTED && (
-                        <Button size="icon" variant="ghost" className="min-h-[44px] min-w-[44px] text-amber-600" onClick={() => acknowledgeMutation.mutate({ entityType: "Agent", entityId: row.agentID })} title="قبول الرفض">
+                        <Button size="icon" variant="ghost" className="min-h-[44px] min-w-[44px] text-amber-600" onClick={() => acknowledgeMutation.mutate({ entityType: "Agent", entityId: row.agentID })} title="إعادة المراجعة">
                             <Check className="w-4 h-4" />
                         </Button>
                     )}
@@ -229,104 +238,115 @@ export function AgentsTab({ fileId, fileNumber }: AgentsTabProps) {
         }
     ], [canView, canEdit, canDelete, crud, handleOpenEdit, handleDeactivate, handleDelete, deleteMutation, updatePhotoMutation, acknowledgeMutation]);
 
-    useCreateShortcut(handleOpenCreate, canCreate && !agents.some(a => a.isActive));
+    useCreateShortcut(handleOpenCreate, canCreate);
 
     return (
-        <CrudPageLayout
-            title="الوكلاء المعتمدون"
-            description={`إدارة الوكلاء المخولين بالاستلام أو المراجعة للملف التقاعدي`}
-            createLabel="إضافة وكيل"
-            onCreateClick={handleOpenCreate}
-            canCreate={canCreate && !agents.some(a => a.isActive)}
-            columns={columns}
-            data={agents}
-            loading={isLoading}
-            emptyMessage="لا يوجد وكلاء مسجلون لهذا الملف."
-            renderMobileCard={(row) => (
-                <div className="p-3 space-y-2">
-                    <div className="flex items-center gap-2.5">
-                        <EditableImage
-                            src={getAgentPhotoUrl(row)}
-                            alt={row.fullName}
-                            fallbackIcon={<UserCheck className="w-7 h-7 text-muted-foreground" />}
-                            className="w-10 h-10 rounded-full object-cover border bg-muted/30 shrink-0"
-                            canEdit={canEdit}
-                            size="sm"
-                            onUpload={async (file) => {
-                                const formData = new FormData();
-                                formData.append("FullName", row.fullName);
-                                formData.append("NationalID", row.nationalID);
-                                formData.append("Phone", row.phone || "");
-                                formData.append("AgencyNumber", row.agencyNumber || "");
-                                
-                                const agencyDate = row.agencyDate ? row.agencyDate.split('T')[0] : "";
-                                formData.append("AgencyDate", agencyDate);
-                                
-                                if (row.agencyEndDate && row.agencyEndDate !== "0001-01-01T00:00:00") {
-                                     formData.append("AgencyEndDate", row.agencyEndDate.split('T')[0]);
-                                }
-                                
-                                formData.append("Notes", row.notes || "");
-                                formData.append("PersonalPhoto", file);
+        <div className="space-y-2 md:space-y-4 animate-in fade-in duration-500 text-start">
+            <TabHeader
+                title="الوكلاء المعتمدون"
+                description="إدارة الوكلاء المخولين بالاستلام أو المراجعة للملف التقاعدي"
+                icon={UserCheck}
+                action={{
+                    label: "إضافة وكيل",
+                    icon: UserCheck,
+                    onClick: handleOpenCreate,
+                    show: canCreate,
+                    title: "إضافة وكيل (Alt+A)"
+                }}
+            />
 
-                                await updatePhotoMutation.mutateAsync({ id: row.agentID, data: formData });
-                            }}
-                        />
-                        <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-1 flex-wrap">
-                                <span className="font-bold text-xs break-words">{row.fullName}</span>
-                                {row.pendingReviewStatus === PENDING_REVIEW_STATUS.PENDING_REVIEW && (
-                                    <Badge variant="warning" className="text-[8px] h-3.5 shrink-0">قيد المراجعة</Badge>
-                                )}
-                                {row.pendingReviewStatus === PENDING_REVIEW_STATUS.REJECTED && (
-                                    <Badge variant="destructive" className="text-[8px] h-3.5 shrink-0">مرفوض</Badge>
-                                )}
+            <CrudPageLayout
+                title="الوكلاء المعتمدون"
+                hideHeader={true}
+                columns={columns}
+                data={agents}
+                loading={isLoading}
+                emptyMessage="لا يوجد وكلاء مسجلون لهذا الملف."
+                renderMobileCard={(row) => (
+                    <div className="p-3 space-y-2">
+                        <div className="flex items-center gap-2.5">
+                            <EditableImage
+                                src={getAgentPhotoUrl(row)}
+                                alt={row.fullName}
+                                fallbackIcon={<UserCheck className="w-7 h-7 text-muted-foreground" />}
+                                className="w-10 h-10 rounded-full object-cover border bg-muted/30 shrink-0"
+                                canEdit={canEdit}
+                                size="sm"
+                                onUpload={async (file) => {
+                                    const formData = new FormData();
+                                    formData.append("FullName", row.fullName);
+                                    formData.append("NationalID", row.nationalID);
+                                    formData.append("Phone", row.phone || "");
+                                    formData.append("AgencyNumber", row.agencyNumber || "");
+
+                                    const agencyDate = row.agencyDate ? row.agencyDate.split('T')[0] : "";
+                                    formData.append("AgencyDate", agencyDate);
+
+                                    if (row.agencyEndDate && row.agencyEndDate !== "0001-01-01T00:00:00") {
+                                        formData.append("AgencyEndDate", row.agencyEndDate.split('T')[0]);
+                                    }
+
+                                    formData.append("Notes", row.notes || "");
+                                    formData.append("PersonalPhoto", file);
+
+                                    await updatePhotoMutation.mutateAsync({ id: row.agentID, data: formData });
+                                } } />
+                            <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-1 flex-wrap">
+                                    <span className="font-bold text-xs break-words">{row.fullName}</span>
+                                    {row.pendingReviewStatus === PENDING_REVIEW_STATUS.PENDING_REVIEW && (
+                                        <Badge variant="warning" className="text-[8px] h-3.5 shrink-0">قيد المراجعة</Badge>
+                                    )}
+                                    {row.pendingReviewStatus === PENDING_REVIEW_STATUS.REJECTED && (
+                                        <Badge variant="destructive" className="text-[8px] h-3.5 shrink-0">مرفوض</Badge>
+                                    )}
+                                </div>
+                                <p className="text-[10px] text-muted-foreground font-mono">{row.agencyNumber}</p>
+                                <p className="text-xs text-muted-foreground break-words">{agentScopeLabel(row)}</p>
                             </div>
-                            <p className="text-[10px] text-muted-foreground font-mono">{row.agencyNumber}</p>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs border-b border-border pb-2">
+                            <div>
+                                <span className="text-muted-foreground">تاريخ الوكالة:</span>
+                                <span className="font-bold me-1">{formatDate(row.agencyDate)}</span>
+                            </div>
+                            <div>
+                                <span className="text-muted-foreground">الحالة:</span>
+                                <Badge variant={row.isActive ? "success" : "ghost"} className="text-[9px] h-3.5 me-1">
+                                    {row.isActive ? "نشط" : "معطل"}
+                                </Badge>
+                            </div>
+                        </div>
+                        <div className="flex justify-end items-center gap-0.5">
+                            {canView && (
+                                <Button size="icon" variant="ghost" className="min-h-[36px] min-w-[36px] text-blue-600" onClick={() => crud.openViewer(row)}>
+                                    <Eye className="w-3.5 h-3.5" />
+                                </Button>
+                            )}
+                            {row.isActive && canEdit && (
+                                <Button size="icon" variant="ghost" className="min-h-[36px] min-w-[36px] text-muted-foreground" onClick={() => handleOpenEdit(row)}>
+                                    <Edit2 className="w-3.5 h-3.5" />
+                                </Button>
+                            )}
+                            {row.isActive && canDelete && (
+                                <Button size="icon" variant="ghost" className="min-h-[36px] min-w-[36px] text-destructive" onClick={() => handleDeactivate(row)}>
+                                    <X className="w-3.5 h-3.5" />
+                                </Button>
+                            )}
+                            {canDelete && (
+                                <Button size="icon" variant="ghost" className="min-h-[36px] min-w-[36px] text-red-600" onClick={() => handleDelete(row)}>
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                </Button>
+                            )}
+                            {row.pendingReviewStatus === PENDING_REVIEW_STATUS.REJECTED && (
+                                <Button size="icon" variant="ghost" className="min-h-[36px] min-w-[36px] text-amber-600" onClick={() => acknowledgeMutation.mutate({ entityType: "Agent", entityId: row.agentID })}>
+                                    <Check className="w-3.5 h-3.5" />
+                                </Button>
+                            )}
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs border-b border-border/60 pb-2">
-                        <div>
-                            <span className="text-muted-foreground">تاريخ الوكالة:</span>
-                            <span className="font-bold me-1">{formatDate(row.agencyDate)}</span>
-                        </div>
-                        <div>
-                            <span className="text-muted-foreground">الحالة:</span>
-                            <Badge variant={row.isActive ? "success" : "ghost"} className="text-[9px] h-3.5 me-1">
-                                {row.isActive ? "نشط" : "معطل"}
-                            </Badge>
-                        </div>
-                    </div>
-                    <div className="flex justify-end items-center gap-0.5">
-                        {canView && (
-                            <Button size="icon" variant="ghost" className="min-h-[36px] min-w-[36px] text-blue-600" onClick={() => crud.openViewer(row)}>
-                                <Eye className="w-3.5 h-3.5" />
-                            </Button>
-                        )}
-                        {row.isActive && canEdit && (
-                            <Button size="icon" variant="ghost" className="min-h-[36px] min-w-[36px] text-muted-foreground" onClick={() => handleOpenEdit(row)}>
-                                <Edit2 className="w-3.5 h-3.5" />
-                            </Button>
-                        )}
-                        {row.isActive && canDelete && (
-                            <Button size="icon" variant="ghost" className="min-h-[36px] min-w-[36px] text-destructive" onClick={() => handleDeactivate(row)}>
-                                <X className="w-3.5 h-3.5" />
-                            </Button>
-                        )}
-                        {canDelete && (
-                            <Button size="icon" variant="ghost" className="min-h-[36px] min-w-[36px] text-red-600" onClick={() => handleDelete(row)}>
-                                <Trash2 className="w-3.5 h-3.5" />
-                            </Button>
-                        )}
-                        {row.pendingReviewStatus === PENDING_REVIEW_STATUS.REJECTED && (
-                            <Button size="icon" variant="ghost" className="min-h-[36px] min-w-[36px] text-amber-600" onClick={() => acknowledgeMutation.mutate({ entityType: "Agent", entityId: row.agentID })}>
-                                <Check className="w-3.5 h-3.5" />
-                            </Button>
-                        )}
-                    </div>
-                </div>
-            )}
-        >
+                )}
+            >
             <AgentDialog
                 open={crud.isFormOpen}
                 onClose={crud.closeForm}
@@ -349,5 +369,6 @@ export function AgentsTab({ fileId, fileNumber }: AgentsTabProps) {
 
             {ConfirmDialogElement}
         </CrudPageLayout>
+    </div>
     );
 }

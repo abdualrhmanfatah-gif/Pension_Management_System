@@ -4,6 +4,8 @@ namespace PensionMS.Core.DTOs.SalaryRecipients;
 
 public class SalaryRecipientDto
 {
+    public int? EffectiveEntitledID { get; set; }
+    public string? EntitledPersonName { get; set; }
     public int RecipientID { get; set; }
     public int FileID { get; set; }
     public string FileNumber { get; set; } = string.Empty;

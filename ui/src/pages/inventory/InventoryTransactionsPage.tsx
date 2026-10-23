@@ -103,7 +103,7 @@ export function InventoryTransactionsPage() {
         <div key={row.inventoryTransactionID}
             role="button"
             tabIndex={0}
-            className="flex items-center gap-4 p-3 border-b border-border/40 last:border-b-0 hover:bg-muted/30 cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
+            className="flex items-center gap-4 p-3 border-b border-border last:border-b-0 hover:bg-muted/30 cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
             onClick={() => navigate(`/inventory/transactions/${row.inventoryTransactionID}`)}
             onKeyDown={(e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/inventory/transactions/${row.inventoryTransactionID}`); } }}>
             <div className="flex-1 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-11 gap-2 items-center text-sm">
@@ -135,7 +135,7 @@ export function InventoryTransactionsPage() {
         const first = group.transactions[0];
         const t = INVENTORY_TRANSACTION_TYPE[first.transactionType] ?? INVENTORY_TRANSACTION_TYPE[4];
         return (
-            <div key={group.batchID} className="border-b border-border/40 last:border-b-0">
+            <div key={group.batchID} className="border-b border-border last:border-b-0">
                 <div
                     role="button"
                     tabIndex={0}
@@ -150,7 +150,7 @@ export function InventoryTransactionsPage() {
                     <span className="text-xs text-muted-foreground ms-auto">{formatDate(first.transactionDate)}</span>
                 </div>
                 {isExpanded && (
-                    <div className="border-t border-border/40 bg-muted/5">
+                    <div className="border-t border-border bg-muted/5">
                         {group.transactions.map(renderRow)}
                     </div>
                 )}
@@ -189,7 +189,7 @@ export function InventoryTransactionsPage() {
                 </div>
             </div>
 
-            <Card className="p-4 flex flex-col sm:flex-row sm:items-center gap-4 bg-muted/20 border-border/60">
+            <Card className="p-4 flex flex-col sm:flex-row sm:items-center gap-4 bg-muted/20 border-border">
                 <div className="flex items-center gap-3">
                     <Text variant="label" className="whitespace-nowrap">تصفية حسب الصنف:</Text>
                     <Select
@@ -214,10 +214,10 @@ export function InventoryTransactionsPage() {
                 {loading ? (
                     <div className="py-8"><Loader text="جاري تحميل الحركات..." size={40} /></div>
                 ) : error ? (
-                    <div className="text-center py-12 text-destructive bg-destructive/10 rounded-lg border border-destructive/20">تعذر تحميل الحركات</div>
+                    <div className="text-center py-12 text-destructive bg-destructive/10 rounded-lg border border-destructive">تعذر تحميل الحركات</div>
                 ) : groupedTransactions.groups.length === 0 && groupedTransactions.singles.length === 0 ? (
                     <div className="text-center py-12 text-muted-foreground bg-muted/10 rounded-lg border border-dashed">
-                        <Inbox className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                        <Inbox className="w-10 h-10 mx-auto mb-2 opacity-100" />
                         <p className="font-bold">لا توجد حركات مخزون</p>
                         <p className="text-xs mt-1">لم يتم تسجيل أي حركات مخزون بعد</p>
                     </div>

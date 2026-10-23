@@ -1,0 +1,3047 @@
+[
+  {
+    "path": "PensionMS.API/Controllers/ComplianceController.cs",
+    "line": 49,
+    "text": "/// قائمة التجاوزات المعلقة التي تحتاج مراجعة"
+  },
+  {
+    "path": "PensionMS.API/Controllers/DocumentsController.cs",
+    "line": 55,
+    "text": "/// إحصائيات الأرشيف (بما فيها الملفات ذات الوثائق الناقصة)"
+  },
+  {
+    "path": "PensionMS.API/Controllers/FileStatusesController.cs",
+    "line": 11,
+    "text": "public class FileStatusesController : ControllerBase"
+  },
+  {
+    "path": "PensionMS.API/Controllers/FileStatusesController.cs",
+    "line": 13,
+    "text": "private readonly IFileStatusService _statusService;"
+  },
+  {
+    "path": "PensionMS.API/Controllers/FileStatusesController.cs",
+    "line": 15,
+    "text": "public FileStatusesController(IFileStatusService statusService)"
+  },
+  {
+    "path": "PensionMS.API/Controllers/FileStatusesController.cs",
+    "line": 24,
+    "text": "var result = await _statusService.GetFileStatusesAsync();"
+  },
+  {
+    "path": "PensionMS.API/Controllers/LookupsController.cs",
+    "line": 42,
+    "text": "public async Task<IActionResult> GetFileStatuses()"
+  },
+  {
+    "path": "PensionMS.API/Controllers/LookupsController.cs",
+    "line": 43,
+    "text": "=> Ok(await _lookupService.GetFileStatusesAsync());"
+  },
+  {
+    "path": "PensionMS.API/Controllers/MissingDocumentsController.cs",
+    "line": 66,
+    "text": "/// جلب الوثائق الناقصة المكتشفة تلقائياً (بناءً على IsRequired)"
+  },
+  {
+    "path": "PensionMS.API/Controllers/PensionSuspensionsController.cs",
+    "line": 74,
+    "text": "/// إعفاء وثائق ناقصة"
+  },
+  {
+    "path": "PensionMS.API/Controllers/ReportsController.cs",
+    "line": 78,
+    "text": "\"ret-01\" => await _reportService.ExportFileStatusReportAsync(filter),"
+  },
+  {
+    "path": "PensionMS.API/Controllers/ReportsController.cs",
+    "line": 200,
+    "text": "public async Task<IActionResult> GetFileStatusReport([FromQuery] ReportFilter filter) => (await _reportService.GetFileStatusReportAsync(filter)).ToActionResult();"
+  },
+  {
+    "path": "PensionMS.API/Controllers/ReportsController.cs",
+    "line": 204,
+    "text": "public async Task<IActionResult> ExportFileStatusReport([FromQuery] ReportFilter filter, [FromQuery] string format = \"excel\")"
+  },
+  {
+    "path": "PensionMS.API/Controllers/ReportsController.cs",
+    "line": 205,
+    "text": "=> await ExportWithFormatAsync(\"ret-01\", format, \"FileStatus\", filter);"
+  },
+  {
+    "path": "PensionMS.API/Controllers/RetirementFilesController.cs",
+    "line": 23,
+    "text": "private readonly IFileStatusService _statusService;"
+  },
+  {
+    "path": "PensionMS.API/Controllers/RetirementFilesController.cs",
+    "line": 36,
+    "text": "IFileStatusService statusService,"
+  },
+  {
+    "path": "PensionMS.API/Controllers/RetirementFilesController.cs",
+    "line": 158,
+    "text": "/// <summary>تصحيح حالة وفاة مسجلة خطأً وإعادة المتقاعد إلى حي مع إبقاء الصرف موقوفاً للمراجعة</summary>"
+  },
+  {
+    "path": "PensionMS.API/Controllers/RetirementFilesController.cs",
+    "line": 193,
+    "text": "// STATUS ENDPOINTS (IFileStatusService)"
+  },
+  {
+    "path": "PensionMS.API/Controllers/RetirementFilesController.cs",
+    "line": 213,
+    "text": "public async Task<IActionResult> GetFileStatuses()"
+  },
+  {
+    "path": "PensionMS.API/Controllers/RetirementFilesController.cs",
+    "line": 215,
+    "text": "var result = await _statusService.GetFileStatusesAsync();"
+  },
+  {
+    "path": "PensionMS.API/Controllers/RetirementFilesController.cs",
+    "line": 272,
+    "text": "/// ملفات لرافع الوثائق (ناقصة مستندات)"
+  },
+  {
+    "path": "PensionMS.Core/Constants/BatchStatusConstants.cs",
+    "line": 29,
+    "text": "/// <summary>معلق — قيد بانتظار المعالجة.</summary>"
+  },
+  {
+    "path": "PensionMS.Core/Constants/BatchStatusConstants.cs",
+    "line": 30,
+    "text": "public const string Pending = \"معلق\";"
+  },
+  {
+    "path": "PensionMS.Core/Constants/FileStatusConstants.cs",
+    "line": 6,
+    "text": "public static class FileStatusConstants"
+  },
+  {
+    "path": "PensionMS.Core/Constants/FileStatusConstants.cs",
+    "line": 10,
+    "text": "public const int Suspended = 3;     // موقوف"
+  },
+  {
+    "path": "PensionMS.Core/Constants/FileStatusConstants.cs",
+    "line": 12,
+    "text": "public const int Incomplete = 5;    // ناقص"
+  },
+  {
+    "path": "PensionMS.Core/Constants/FileStatusConstants.cs",
+    "line": 13,
+    "text": "public const int Pending = 6;       // معلق"
+  },
+  {
+    "path": "PensionMS.Core/Constants/FileStatusConstants.cs",
+    "line": 15,
+    "text": "public const int Rejected = 8;      // مرفوض"
+  },
+  {
+    "path": "PensionMS.Core/Constants/MissingDocumentStatusConstants.cs",
+    "line": 5,
+    "text": "public const string Pending = \"Pending\";       // ناقص"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/Accounting/AccountingDtos.cs",
+    "line": 712,
+    "text": "SecurityReceiveTender = 70,      // استلام تأمين مناقصة"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/Accounting/AccountingDtos.cs",
+    "line": 713,
+    "text": "SecurityReturnTender = 71,       // رد تأمين مناقصة"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/DashboardStatsDto.cs",
+    "line": 11,
+    "text": "/// <summary>ملفات نشطة (جديد + قيد المراجعة + معلق)</summary>"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/DashboardStatsDto.cs",
+    "line": 17,
+    "text": "/// <summary>ملفات مرفوضة</summary>"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/DashboardStatsDto.cs",
+    "line": 48,
+    "text": "/// <summary>قرارات تسوية جديدة (معلقة)</summary>"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/Discrepancy/RetireeDiscrepancyDto.cs",
+    "line": 31,
+    "text": "public string? FileStatusName { get; set; }"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/Discrepancy/RetireeDiscrepancyDto.cs",
+    "line": 63,
+    "text": "public string? FileStatus { get; set; }"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/Documents/DocumentDtos.cs",
+    "line": 113,
+    "text": "// الملفات ذات الوثائق الناقصة"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/EntitledPersons/EntitledPersonDtos.cs",
+    "line": 14,
+    "text": "public const string RetireeAlive    = \"RETIREE_ALIVE\";     // المتقاعد على قيد الحياة — الاستحقاق معلق"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/EntitledPersons/EntitledPersonDtos.cs",
+    "line": 15,
+    "text": "public const string MissingData     = \"MISSING_DATA\";      // بيانات/وثائق ناقصة بعد وفاة المتقاعد"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/MissingDocuments/MissingDocumentDtos.cs",
+    "line": 36,
+    "text": "// DTO للوثائق الناقصة المكتشفة تلقائياً"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/PensionStatisticsDto.cs",
+    "line": 16,
+    "text": "public List<FileStatusDistributionDto> FileStatusDistribution { get; set; } = new();"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/PensionStatisticsDto.cs",
+    "line": 30,
+    "text": "public class FileStatusDistributionDto"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/Reports/ReportDtos.cs",
+    "line": 118,
+    "text": "public class FileStatusRow"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/RetirementFiles/FileStatusDto.cs",
+    "line": 3,
+    "text": "public class FileStatusDto"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/RetirementFiles/RetirementFileDtos.cs",
+    "line": 53,
+    "text": "// FileStatusID removed — use PUT /{id}/status endpoint (ChangeStatusAsync) instead"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/RetirementFiles/RetirementFileDtos.cs",
+    "line": 96,
+    "text": "public string? FileStatusName { get; set; }"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/RetirementFiles/RetirementFileDtos.cs",
+    "line": 131,
+    "text": "public int MissingDataCount { get; set; }  // عدد البيانات الناقصة (عنوان، هاتف، إلخ)"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/RetirementFiles/RetirementFileDtos.cs",
+    "line": 156,
+    "text": "public string? FileStatusName { get; set; }"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/RetirementFiles/RetirementFileDtos.cs",
+    "line": 177,
+    "text": "public string? FileStatusName { get; set; }"
+  },
+  {
+    "path": "PensionMS.Core/DTOs/RetirementFiles/RetirementFileDtos.cs",
+    "line": 253,
+    "text": "public string? FileStatusName { get; set; }"
+  },
+  {
+    "path": "PensionMS.Core/Entities/FileStatus.cs",
+    "line": 6,
+    "text": "public class FileStatus"
+  },
+  {
+    "path": "PensionMS.Core/Entities/MissingDocument.cs",
+    "line": 6,
+    "text": "/// الوثائق الناقصة"
+  },
+  {
+    "path": "PensionMS.Core/Entities/PendingTask.cs",
+    "line": 6,
+    "text": "/// مهمة معلقة ضمن مسار العمل (Workflow)"
+  },
+  {
+    "path": "PensionMS.Core/Entities/RetirementFile.cs",
+    "line": 19,
+    "text": "public virtual FileStatus? Status { get; set; }"
+  },
+  {
+    "path": "PensionMS.Core/Entities/ServiceRequest.cs",
+    "line": 26,
+    "text": "public string Status { get; set; } = \"جديد\";   // جديد | قيد المراجعة | مقبول | مرفوض"
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/IComplianceEngine.cs",
+    "line": 13,
+    "text": "/// يحسب ملخص حالة الامتثال (العدد الكلي للمطلوب، المرفوع، والناقص)"
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/IFileStatusService.cs",
+    "line": 9,
+    "text": "public interface IFileStatusService"
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/IFileStatusService.cs",
+    "line": 12,
+    "text": "Task<ApiResponse<List<FileStatusDto>>> GetAllowedStatusTransitionsAsync(int fileId);"
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/IFileStatusService.cs",
+    "line": 13,
+    "text": "Task<ApiResponse<List<FileStatusDto>>> GetFileStatusesAsync();"
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/ILookupService.cs",
+    "line": 11,
+    "text": "Task<ApiResponse<List<LookupDto>>> GetFileStatusesAsync();"
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/IReportService.cs",
+    "line": 32,
+    "text": "Task<ApiResponse<PagedResult<FileStatusRow>>> GetFileStatusReportAsync(ReportFilter filter);"
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/IReportService.cs",
+    "line": 33,
+    "text": "Task<byte[]> ExportFileStatusReportAsync(ReportFilter filter, string format = \"excel\");"
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/IRetirementFileService.cs",
+    "line": 8,
+    "text": "/// القراءة → IFileQueryService | الحالات → IFileStatusService"
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/IUnitOfWork.cs",
+    "line": 125,
+    "text": "IRepository<FileStatus> FileStatuses { get; }"
+  },
+  {
+    "path": "PensionMS.Core/Interfaces/IWorkflowEngine.cs",
+    "line": 10,
+    "text": "/// يوجّه الملف إلى المحطة التالية وينشئ مهمة معلقة (PendingTask)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/HR/EmploymentStatusConfiguration.cs",
+    "line": 28,
+    "text": "new EmploymentStatus { EmploymentStatusID = 4, Code = \"SUSPENDED\", Name = \"موقوف عن العمل\", IsActive = false, IsInService = false, CreatedAt = seedDate },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Lookups/FileStatusConfiguration.cs",
+    "line": 7,
+    "text": "public class FileStatusConfiguration : IEntityTypeConfiguration<FileStatus>"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Lookups/FileStatusConfiguration.cs",
+    "line": 9,
+    "text": "public void Configure(EntityTypeBuilder<FileStatus> builder)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Lookups/FileStatusConfiguration.cs",
+    "line": 18,
+    "text": "new FileStatus { StatusID = 1, StatusName = \"جديد\", StatusColor = \"outline\", CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc) },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Lookups/FileStatusConfiguration.cs",
+    "line": 19,
+    "text": "new FileStatus { StatusID = 2, StatusName = \"نشط\", StatusColor = \"success\", CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc) },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Lookups/FileStatusConfiguration.cs",
+    "line": 20,
+    "text": "new FileStatus { StatusID = 3, StatusName = \"موقوف\", StatusColor = \"destructive\", CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc) },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Lookups/FileStatusConfiguration.cs",
+    "line": 21,
+    "text": "new FileStatus { StatusID = 4, StatusName = \"مغلق\", StatusColor = \"secondary\", CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc) },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Lookups/FileStatusConfiguration.cs",
+    "line": 22,
+    "text": "new FileStatus { StatusID = 5, StatusName = \"ناقص\", StatusColor = \"warning\", CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc) },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Lookups/FileStatusConfiguration.cs",
+    "line": 23,
+    "text": "new FileStatus { StatusID = 6, StatusName = \"معلق\", StatusColor = \"warning\", CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc) },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Lookups/FileStatusConfiguration.cs",
+    "line": 24,
+    "text": "new FileStatus { StatusID = 7, StatusName = \"تحت المراجعة\", StatusColor = \"info\", CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc) },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Lookups/FileStatusConfiguration.cs",
+    "line": 25,
+    "text": "new FileStatus { StatusID = 8, StatusName = \"مرفوض\", StatusColor = \"destructive\", CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc) }"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Security/PermissionConfiguration.cs",
+    "line": 82,
+    "text": "new Permission { PermissionId = 35, Code = \"MissingDocument.View\",       Description = \"عرض الوثائق الناقصة\",          Category = \"MissingDocument\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Security/PermissionConfiguration.cs",
+    "line": 83,
+    "text": "new Permission { PermissionId = 36, Code = \"MissingDocument.Manage\",     Description = \"إدارة الوثائق الناقصة\",        Category = \"MissingDocument\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Security/PermissionConfiguration.cs",
+    "line": 84,
+    "text": "new Permission { PermissionId = 61, Code = \"MissingDocument.Edit\",       Description = \"تعديل وثيقة ناقصة\",            Category = \"MissingDocument\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Security/PermissionConfiguration.cs",
+    "line": 85,
+    "text": "new Permission { PermissionId = 86, Code = \"MissingDocument.Add\",        Description = \"إضافة وثيقة ناقصة\",           Category = \"MissingDocument\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/Security/PermissionConfiguration.cs",
+    "line": 86,
+    "text": "new Permission { PermissionId = 87, Code = \"MissingDocument.Delete\",     Description = \"حذف وثيقة ناقصة\",             Category = \"MissingDocument\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/System/SystemTableConfiguration.cs",
+    "line": 25,
+    "text": "new SystemTable { TableID = 8,  TableNameEn = \"MissingDocuments\",        TableNameAr = \"الوثائق الناقصة\",       CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc) },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Configurations/System/SystemTableConfiguration.cs",
+    "line": 50,
+    "text": "new SystemTable { TableID = 33, TableNameEn = \"FileStatuses\",            TableNameAr = \"حالات الملفات\",         CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc) },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/PensionDbContext.cs",
+    "line": 122,
+    "text": "public DbSet<FileStatus> FileStatuses => Set<FileStatus>();"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Seeders/ChartOfAccountsSeeder.cs",
+    "line": 184,
+    "text": "(\"1652\", \"الأمانات الموقوفة\", \"Debit\", 4, 1, true, \"165\"),"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Seeders/ChartOfAccountsSeeder.cs",
+    "line": 230,
+    "text": "(\"1835\", \"شيكات مرفوضة\", \"Debit\", 4, 1, true, \"183\"),"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Data/Seeders/ChartOfAccountsSeeder.cs",
+    "line": 273,
+    "text": "(\"2623\", \"تأمينات للمناقصات\", \"Credit\", 4, 2, true, \"262\"),"
+  },
+  {
+    "path": "PensionMS.Infrastructure/DependencyInjection/PensionServiceCollectionExtensions.cs",
+    "line": 18,
+    "text": "services.AddScoped<IFileStatusService, FileStatusService>();"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Helpers/PensionFileAccess.cs",
+    "line": 19,
+    "text": "public static bool Editable(RetirementFile file) => file.StatusID != FileStatusConstants.Closed &&"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Helpers/PensionFileAccess.cs",
+    "line": 20,
+    "text": "file.StatusID != FileStatusConstants.Suspended && file.StatusID != FileStatusConstants.Rejected;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Jobs/ExpiredPledgesJob.cs",
+    "line": 40,
+    "text": "var fileStatusService = scope.ServiceProvider.GetRequiredService<IFileStatusService>();"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Jobs/ExpiredPledgesJob.cs",
+    "line": 42,
+    "text": "await fileStatusService.ProcessExpiredPledgesAsync();"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Reporting/Exporters/RetirementFileReportExporter.cs",
+    "line": 19,
+    "text": "var headers = new[] { \"م\", \"رقم الملف\", \"المتقاعد\", \"الرقم العسكري\", \"الرتبة\", \"الفرع\", \"الجنس\", \"الحالة الاجتماعية\", \"تاريخ التقاعد\", \"حالة الملفات\", \"مراجع\", \"مستندات ناقصة\" };"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Reporting/Exporters/UploaderStatsReportExporter.cs",
+    "line": 24,
+    "text": "new[] { \"#\", \"المستخدم\", \"إجمالي الملفات\", \"مكتملة\", \"قيد المعالجة\", \"مرفوضة\", \"آخر إدخال\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Reporting/ReportRegistry.cs",
+    "line": 214,
+    "text": "Name = \"FileStatus\","
+  },
+  {
+    "path": "PensionMS.Infrastructure/Reporting/ReportRegistry.cs",
+    "line": 225,
+    "text": "new ReportColumn { Key = \"MissingDocsCount\", Label = \"مستندات ناقصة\", Type = ReportColumnType.Number, Width = 25 }"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Reporting/ReportRegistry.cs",
+    "line": 324,
+    "text": "NameAr = \"المستندات الناقصة\","
+  },
+  {
+    "path": "PensionMS.Infrastructure/Reporting/ReportRegistry.cs",
+    "line": 333,
+    "text": "new ReportColumn { Key = \"MissingDocsList\", Label = \"المستندات الناقصة\", Width = 80 },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Reporting/ReportRegistry.cs",
+    "line": 343,
+    "text": "NameAr = \"المستندات الناقصة حسب الشخص\","
+  },
+  {
+    "path": "PensionMS.Infrastructure/Reporting/ReportRegistry.cs",
+    "line": 356,
+    "text": "new ReportColumn { Key = \"MissingDocsList\", Label = \"المستندات الناقصة\", Width = 80 },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Reporting/ReportRegistry.cs",
+    "line": 429,
+    "text": "NameAr = \"الموافقات المعلقة\","
+  },
+  {
+    "path": "PensionMS.Infrastructure/Repositories/UnitOfWork.cs",
+    "line": 249,
+    "text": "private IRepository<FileStatus>? _fileStatuses;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Repositories/UnitOfWork.cs",
+    "line": 250,
+    "text": "public IRepository<FileStatus> FileStatuses => _fileStatuses ??= new Repository<FileStatus>(_context);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Administration/LookupService.cs",
+    "line": 79,
+    "text": "public async Task<ApiResponse<List<LookupDto>>> GetFileStatusesAsync()"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Administration/LookupService.cs",
+    "line": 81,
+    "text": "await _unitOfWork.FileStatuses.Query()"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Audit/SnapshotService.cs",
+    "line": 47,
+    "text": "file.StatusID,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Audit/SnapshotService.cs",
+    "line": 48,
+    "text": "StatusName = file.Status?.StatusName,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Audit/SnapshotService.cs",
+    "line": 59,
+    "text": "file.StatusReason,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentExemptionService.cs",
+    "line": 49,
+    "text": "return ApiResponse<DocumentExemptionDto>.Fail(\"يجب اختيار وثيقة ناقصة واحدة على الأقل للإعفاء\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentExemptionService.cs",
+    "line": 51,
+    "text": "// 1. التحقق من وجود الوثائق الناقصة"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentExemptionService.cs",
+    "line": 76,
+    "text": "// 3. ربط جميع الوثائق الناقصة بالإعفاء وتحديث حالتها"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentPledgeService.cs",
+    "line": 57,
+    "text": "return ApiResponse<DocumentPledgeDto>.Fail(\"يجب اختيار وثيقة ناقصة واحدة على الأقل\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentPledgeService.cs",
+    "line": 59,
+    "text": "// 1. التحقق من جميع الوثائق الناقصة"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentPledgeService.cs",
+    "line": 69,
+    "text": "return ApiResponse<DocumentPledgeDto>.Fail(\"بعض الوثائق الناقصة غير موجودة أو ليست بحالة Pending\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentPledgeService.cs",
+    "line": 87,
+    "text": "// 3. ربط جميع الوثائق الناقصة بالتعهد وتحديث حالتها"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentPledgeService.cs",
+    "line": 109,
+    "text": "return ApiResponse<DocumentPledgeDto>.Success(MapToDto(created), $\"تم إنشاء التعهد وربطه بـ {missingDocs.Count} وثيقة ناقصة\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/DocumentPledgeService.cs",
+    "line": 141,
+    "text": "return ApiResponse<bool>.Fail(\"لا يمكن تعليم التعهد كمستوفى لوجود وثائق ناقصة مرتبطة به لم يتم رفعها بعد\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+    "line": 102,
+    "text": "return ApiResponse<MissingDocumentDto>.Fail(\"الوثيقة الناقصة غير موجودة\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+    "line": 131,
+    "text": "return ApiResponse<MissingDocumentDto>.Fail(\"توجد وثيقة ناقصة من نفس النوع ونفس الكيان مطلوبة حالياً لهذا الملف\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+    "line": 148,
+    "text": "_logger.LogInformation(\"تم إنشاء وثيقة ناقصة جديدة بنجاح (ID: {DocId}) للملف {FileId} بواسطة المستخدم {UserId}\","
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+    "line": 165,
+    "text": "return ApiResponse<MissingDocumentDto>.Success(docDto, \"تم تسجيل الوثيقة الناقصة\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+    "line": 174,
+    "text": "return ApiResponse<bool>.Fail(\"الوثيقة الناقصة غير موجودة\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+    "line": 177,
+    "text": "return ApiResponse<bool>.Fail(\"الوثيقة الناقصة مُسلّمة مسبقاً\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+    "line": 188,
+    "text": "_logger.LogInformation(\"تم تعليم الوثيقة الناقصة {DocId} كمسلّمة للمستخدم {UserId}\", id, userId);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+    "line": 199,
+    "text": "return ApiResponse<bool>.Fail(\"الوثيقة الناقصة غير موجودة\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+    "line": 202,
+    "text": "return ApiResponse<bool>.Fail(\"لا يمكن حذف وثيقة ناقصة مرتبطة بتعهد. يجب إلغاء التعهد أولاً.\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+    "line": 205,
+    "text": "return ApiResponse<bool>.Fail(\"لا يمكن حذف وثيقة ناقصة معفاة. يجب إلغاء الإعفاء أولاً.\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+    "line": 212,
+    "text": "_logger.LogInformation(\"تم حذف الوثيقة الناقصة {DocId} للملف {FileId} بواسطة المستخدم {UserId}\", id, doc.FileID, userId);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Documents/MissingDocumentService.cs",
+    "line": 214,
+    "text": "return ApiResponse<bool>.Success(true, \"تم حذف سجل الوثيقة الناقصة\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Investment/InvestmentDocumentValidationService.cs",
+    "line": 88,
+    "text": ": $\"لا يمكن تغيير الحالة: {missingDocs.Count} وثيقة ناقصة، {expiredDocs.Count} وثيقة منتهية الصلاحية.\";"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/PayrollGenerationService.cs",
+    "line": 34,
+    "text": ".Where(f => f.StatusID == FileStatusConstants.Active && !f.IsDeleted)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/PayrollGenerationService.cs",
+    "line": 100,
+    "text": "result.SkippedItems.Add(new SkippedItemDto { FileNumber = fileNumber, RetireeFullName = retireeName, Reason = \"الملف موقوف\" });"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/PayrollGenerationService.cs",
+    "line": 133,
+    "text": "invalid = \"يوجد وكيل معطل أو مرفوض أو وكالة غير سارية\";"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/PayrollGenerationService.cs",
+    "line": 147,
+    "text": "invalid = \"يوجد مستحق موقوف أو متوفى أو قيد المراجعة\";"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/SalaryPaymentBatchService.cs",
+    "line": 498,
+    "text": "hasSuspension ? \"موقوف\" : \"نشط\", item.PaymentBook?.BookNumber,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Payroll/SalaryPaymentBatchService.cs",
+    "line": 753,
+    "text": "SalaryStatus = (i.RetirementFile?.PensionSuspensions.Any(s => s.Status == SuspensionStatusConstants.Active && !s.IsDeleted) ?? false) ? \"موقوف\" : \"نشط\""
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+    "line": 95,
+    "text": "// ── فحص حالة المتقاعد: إذا كان حياً → المستحق يُضاف موقوفاً ──"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+    "line": 153,
+    "text": "StopReason            = retireeIsAlive ? \"المتقاعد على قيد الحياة — الاستحقاق معلق\" : \"قيد فحص الأهلية والنواقص\","
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/EntitledPersonService.cs",
+    "line": 417,
+    "text": "return ApiResponse<bool>.Fail(\"المستحق موقوف مسبقاً\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Beneficiaries/GuardianService.cs",
+    "line": 43,
+    "text": "f.StatusID != FileStatusConstants.Closed && f.StatusID != FileStatusConstants.Suspended && f.StatusID != FileStatusConstants.Rejected);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/EntitlementEngine.cs",
+    "line": 30,
+    "text": "return ApiResponse<bool>.Fail(\"المستحق قيد المراجعة أو مرفوض\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/EntitlementEngine.cs",
+    "line": 78,
+    "text": "return ApiResponse<bool>.Success(true, \"المستحق قيد المراجعة أو مرفوض — لا يمكن إعادة التقييم\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/EntitlementEngine.cs",
+    "line": 83,
+    "text": "// 1. إذا كان المتقاعد على قيد الحياة → يبقى معلقاً (موقوفاً)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/EntitlementEngine.cs",
+    "line": 90,
+    "text": "ep.StopReason = \"المتقاعد على قيد الحياة — الاستحقاق معلق\";"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/EntitlementEngine.cs",
+    "line": 183,
+    "text": "ep.StopReason = $\"بيانات/وثائق ناقصة: {string.Join(\"، \", issues)}\";"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/PensionSuspensionService.cs",
+    "line": 101,
+    "text": "var oldStatusID = file.StatusID; // Capture old status BEFORE changing it"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/PensionSuspensionService.cs",
+    "line": 102,
+    "text": "file.PreviousStatusID = file.StatusID; // Save for restoration later"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/PensionSuspensionService.cs",
+    "line": 103,
+    "text": "file.StatusID = FileStatusConstants.Suspended;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/PensionSuspensionService.cs",
+    "line": 104,
+    "text": "file.StatusReason = $\"إيقاف: {dto.SuspensionReason}\";"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/PensionSuspensionService.cs",
+    "line": 114,
+    "text": "NewStatusID = FileStatusConstants.Suspended,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/PensionSuspensionService.cs",
+    "line": 167,
+    "text": "var oldStatusId = file.StatusID;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/PensionSuspensionService.cs",
+    "line": 168,
+    "text": "file.StatusID = file.PreviousStatusID ?? FileStatusConstants.Active;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/PensionSuspensionService.cs",
+    "line": 170,
+    "text": "file.StatusReason = $\"إنهاء إيقاف: {dto.EndReason}\";"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Entitlements/PensionSuspensionService.cs",
+    "line": 180,
+    "text": "NewStatusID = FileStatusConstants.Active,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/ComplianceEngine.cs",
+    "line": 103,
+    "text": "// صلاحية الوثيقة للاكتمال: ليست مرفوضة الفحص وليست منتهية الصلاحية"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 203,
+    "text": "FileStatusName = f.Status != null ? f.Status.StatusName : null,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 256,
+    "text": "FileStatusName = f.Status != null ? f.Status.StatusName : null,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 309,
+    "text": "// حساب البيانات الناقصة"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 330,
+    "text": "FileStatusName = f.Status != null ? f.Status.StatusName : null,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 361,
+    "text": "var allStatuses = await _unitOfWork.FileStatuses.Query()"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 414,
+    "text": "var allStatuses = await _unitOfWork.FileStatuses.Query()"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 471,
+    "text": "{ 8, \"الوثائق الناقصة\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 758,
+    "text": ".Where(f => !f.IsDeleted && f.StatusID != FileStatusConstants.Active);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 789,
+    "text": "FileStatusName = f.Status != null ? f.Status.StatusName : null,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 827,
+    "text": ".Where(f => !f.IsDeleted && f.StatusID != FileStatusConstants.Closed);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 848,
+    "text": "FileStatusName = f.Status.StatusName,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 898,
+    "text": "StatusID = file.StatusID,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 899,
+    "text": "FileStatusName = file.FileStatusName,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 902,
+    "text": "IsIncomplete = file.StatusID == FileStatusConstants.Incomplete || allMissingCount > 0"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 919,
+    "text": ".Where(f => !f.IsDeleted && f.StatusID != FileStatusConstants.Closed);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 1105,
+    "text": "f.StatusID == FileStatusConstants.Active ||"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 1106,
+    "text": "f.StatusID == FileStatusConstants.Closed),"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 1108,
+    "text": "f.StatusID == FileStatusConstants.New ||"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 1109,
+    "text": "f.StatusID == FileStatusConstants.UnderReview ||"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 1110,
+    "text": "f.StatusID == FileStatusConstants.Pending),"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 1112,
+    "text": "f.StatusID == FileStatusConstants.Rejected),"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileQueryService.cs",
+    "line": 1171,
+    "text": "FileStatusName = f.Status != null ? f.Status.StatusName : null,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 32,
+    "text": "FileStatusName = f.Status!.StatusName,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 177,
+    "text": "// الملفات الموقوفة أو المغلقة أو المرفوضة لا تعود إلى المراجعة تلقائياً"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 178,
+    "text": "if (file.StatusID == FileStatusConstants.Suspended"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 179,
+    "text": "|| file.StatusID == FileStatusConstants.Closed"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 180,
+    "text": "|| file.StatusID == FileStatusConstants.Rejected)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 182,
+    "text": "return ApiResponse<bool>.Fail(\"لا يمكن طلب مراجعة لملف بحالة موقوف أو مغلق أو مرفوض\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 188,
+    "text": "// تحميل البنود الحالية مرة واحدة: الكل لمنع التكرار مع قرارات سابقة، والمعلقة للحذف/التحديث فقط"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 202,
+    "text": "// داخل دورة معلقة فقدنا الحد بعد تصفيره: نشتقه من أقدم تدقيق مغطى بدل السقوط لإعادة بناء كاملة"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 236,
+    "text": "if (file.StatusID.HasValue && file.StatusID != FileStatusConstants.UnderReview)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 238,
+    "text": "file.PreviousStatusID = file.StatusID;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 240,
+    "text": "file.StatusID = FileStatusConstants.UnderReview;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 349,
+    "text": "// مطابقة تفاضلية بالمفتاح الطبيعي AuditLogID: نفس الحالة النهائية المعلقة دون هدم وإعادة بناء"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 350,
+    "text": "// البنود المعتمدة/المرفوضة تمنع إنشاء مكرر معلق لنفس التدقيق، وقراراتها لا تمس"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 372,
+    "text": "// تحديث محتوى البند المعلق عند تغير عرضه فقط؛ القرار وتاريخ الإنشاء والهوية تحفظ"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 555,
+    "text": "// تعليم الكيان بأنه مرفوض"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 597,
+    "text": "file.StatusID = file.PreviousStatusID.Value;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 600,
+    "text": "else if (file.StatusID == FileStatusConstants.UnderReview)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 603,
+    "text": "file.StatusID = FileStatusConstants.Active;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 608,
+    "text": "// فيه مرفوض: تعيين حالة الرفض"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 609,
+    "text": "file.StatusID = FileStatusConstants.Rejected;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 738,
+    "text": "return ApiResponse<bool>.Fail(\"الكيان غير موجود أو غير مرفوض\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 752,
+    "text": "return ApiResponse<bool>.Fail(\"الكيان غير موجود أو غير مرفوض\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 766,
+    "text": "return ApiResponse<bool>.Fail(\"الكيان غير موجود أو غير مرفوض\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 780,
+    "text": "return ApiResponse<bool>.Fail(\"الكيان غير موجود أو غير مرفوض\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 789,
+    "text": "return ApiResponse<bool>.Fail(\"الكيان غير موجود أو غير مرفوض\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 798,
+    "text": "return ApiResponse<bool>.Fail(\"الكيان غير موجود أو غير مرفوض\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 986,
+    "text": "\"MissingDocumentsCount\" => \"عدد الوثائق الناقصة\","
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 987,
+    "text": "\"MissingDataCount\" => \"عدد البيانات الناقصة\","
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 1026,
+    "text": "var fileStatuses = await _unitOfWork.FileStatuses.Query().AsNoTracking()"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 1028,
+    "text": "lookups[\"StatusID\"] = fileStatuses;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 1176,
+    "text": "\"عدد الوثائق الناقصة\" => \"MissingDocumentsCount\","
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileReviewService.cs",
+    "line": 1177,
+    "text": "\"عدد البيانات الناقصة\" => \"MissingDataCount\","
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 15,
+    "text": "public class FileStatusService : IFileStatusService"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 25,
+    "text": "public FileStatusService("
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 53,
+    "text": "var allowedTransitions = GetAllowedTransitions(file.StatusID ?? 0);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 55,
+    "text": "return ApiResponse<bool>.Fail($\"لا يمكن الانتقال من الحالة {file.StatusID} إلى {newStatusId}\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 57,
+    "text": "// ── Gate: منع تغيير الحالة أثناء المراجعة المعلقة (إلا إلى UnderReview) ──"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 58,
+    "text": "if (file.ReviewStatus == FileReviewStatus.PendingReview && newStatusId != FileStatusConstants.UnderReview)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 59,
+    "text": "return ApiResponse<bool>.Fail(\"لا يمكن تغيير حالة الملفات أثناء وجود مراجعة معلقة. يجب إكمال المراجعة أولاً.\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 64,
+    "text": "FileStatusConstants.UnderReview => SoDAction.Approve,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 65,
+    "text": "FileStatusConstants.Active => SoDAction.Activate,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 79,
+    "text": "case FileStatusConstants.Active: // نشط — شروط التفعيل المعززة"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 95,
+    "text": "// فحص الوثائق الناقصة (يدوياً + تلقائياً)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 137,
+    "text": "\"لا يمكن تفعيل الملف مع وجود وثائق ناقصة. يجب تسوية جميع النواقص بتعهدات فعّالة أو إعفاء.\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 143,
+    "text": "case FileStatusConstants.Closed: // مغلق — auto-set ClosedDate"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 153,
+    "text": "OldStatusID = file.StatusID,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 161,
+    "text": "file.StatusID = newStatusId;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 162,
+    "text": "file.StatusReason = reason;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 187,
+    "text": "var isRejected = newStatusId == FileStatusConstants.Rejected;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 207,
+    "text": "public async Task<ApiResponse<List<FileStatusDto>>> GetAllowedStatusTransitionsAsync(int fileId)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 211,
+    "text": "return ApiResponse<List<FileStatusDto>>.Fail(\"الملف غير موجود\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 213,
+    "text": "var currentStatusId = file.StatusID ?? 0;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 216,
+    "text": "allowedTransitions.RemoveWhere(statusId => statusId != FileStatusConstants.UnderReview);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 219,
+    "text": "return ApiResponse<List<FileStatusDto>>.Success(new List<FileStatusDto>());"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 221,
+    "text": "var allStatuses = await _unitOfWork.FileStatuses.Query()"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 227,
+    "text": ".Select(s => new FileStatusDto"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 230,
+    "text": "StatusName = s.StatusID == FileStatusConstants.UnderReview"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 237,
+    "text": "return ApiResponse<List<FileStatusDto>>.Success(statuses);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 240,
+    "text": "public async Task<ApiResponse<List<FileStatusDto>>> GetFileStatusesAsync()"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 244,
+    "text": "FileStatusConstants.UnderReview,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 245,
+    "text": "FileStatusConstants.Active,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 246,
+    "text": "FileStatusConstants.Suspended,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 247,
+    "text": "FileStatusConstants.Closed"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 250,
+    "text": "var allStatuses = await _unitOfWork.FileStatuses.Query()"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 256,
+    "text": ".Select(s => new FileStatusDto"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 259,
+    "text": "StatusName = s.StatusID == FileStatusConstants.UnderReview"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 266,
+    "text": "return ApiResponse<List<FileStatusDto>>.Success(statuses);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 287,
+    "text": "&& p.RetirementFile.StatusID == FileStatusConstants.Active"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 322,
+    "text": "// تحديث حالة الملفات إلى موقوف"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 323,
+    "text": "var oldStatus = file.StatusID;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 324,
+    "text": "file.StatusID = FileStatusConstants.Suspended;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 325,
+    "text": "file.StatusReason = \"انتهاء مدة تعهد تقديم الوثائق — إيقاف تلقائي\";"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 335,
+    "text": "NewStatusID = FileStatusConstants.Suspended,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 381,
+    "text": "FileStatusConstants.New         => new() { FileStatusConstants.UnderReview, FileStatusConstants.Pending, FileStatusConstants.Active, FileStatusConstants.Incomplete, FileStatusConstants.Rejected },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 382,
+    "text": "FileStatusConstants.UnderReview => new() { FileStatusConstants.Active, FileStatusConstants.Pending, FileStatusConstants.Incomplete, FileStatusConstants.Rejected, FileStatusConstants.Suspended },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 383,
+    "text": "FileStatusConstants.Pending     => new() { FileStatusConstants.Active, FileStatusConstants.UnderReview, FileStatusConstants.Incomplete, FileStatusConstants.Rejected },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 384,
+    "text": "FileStatusConstants.Incomplete  => new() { FileStatusConstants.UnderReview, FileStatusConstants.Active, FileStatusConstants.Pending, FileStatusConstants.Rejected },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 385,
+    "text": "FileStatusConstants.Active      => new() { FileStatusConstants.Suspended, FileStatusConstants.Closed, FileStatusConstants.Incomplete },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 386,
+    "text": "FileStatusConstants.Suspended   => new() { FileStatusConstants.Active, FileStatusConstants.Closed, FileStatusConstants.Incomplete },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 387,
+    "text": "FileStatusConstants.Rejected    => new() { FileStatusConstants.UnderReview, FileStatusConstants.Closed }, // Allow re-review or final closure"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/FileStatusService.cs",
+    "line": 388,
+    "text": "FileStatusConstants.Closed      => new(),  // Terminal — no further transitions"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileCompleteness.cs",
+    "line": 20,
+    "text": "/// حساب عدد وقائمة البيانات الناقصة للملف ولجميع الكيانات (متقاعد، وكلاء، أوصياء، مستحقون) بشكل كامل وبدون استثناء"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileDtoMapper.cs",
+    "line": 33,
+    "text": "FileStatusName = f.Status?.StatusID == FileStatusConstants.UnderReview"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 68,
+    "text": "&& f.StatusID != FileStatusConstants.Closed);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 201,
+    "text": "StatusID = FileStatusConstants.New,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 386,
+    "text": "// حساب البيانات الناقصة للملف الجديد"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 428,
+    "text": "if (file.StatusID == FileStatusConstants.Closed)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 451,
+    "text": "var oldFileStatus = file.StatusID;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 452,
+    "text": "file.StatusID = FileStatusConstants.Suspended;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 453,
+    "text": "file.StatusReason = \"وفاة المتقاعد — إيقاف مؤقت لاستكمال إجراءات الورثة\";"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 463,
+    "text": "OldStatusID = oldFileStatus,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 464,
+    "text": "NewStatusID = FileStatusConstants.Suspended,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 625,
+    "text": "if (file.StatusID == FileStatusConstants.Closed)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 636,
+    "text": "var oldFileStatus = file.StatusID;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 647,
+    "text": "file.StatusID = FileStatusConstants.UnderReview;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 648,
+    "text": "file.PreviousStatusID = FileStatusConstants.Suspended;"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 651,
+    "text": "file.StatusReason = \"تصحيح حالة حياة المتقاعد — الصرف موقوف حتى المراجعة والاعتماد: \" + dto.Reason.Trim();"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 656,
+    "text": "if (oldFileStatus != FileStatusConstants.UnderReview)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 661,
+    "text": "OldStatusID = oldFileStatus,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 662,
+    "text": "NewStatusID = FileStatusConstants.UnderReview,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 677,
+    "text": "person.StopReason = \"المتقاعد على قيد الحياة — الاستحقاق معلق\";"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 731,
+    "text": "JsonSerializer.Serialize(new { IsAlive = oldIsAlive, DeathDate = oldDeathDate, FileStatusID = oldFileStatus }),"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 732,
+    "text": "JsonSerializer.Serialize(new { IsAlive = true, DeathDate = (DateOnly?)null, FileStatusID = file.StatusID, Reason = dto.Reason.Trim() }),"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 765,
+    "text": "\"تم تصحيح حالة المتقاعد وإحالة الملف للمراجعة مع إبقاء الصرف موقوفاً\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 807,
+    "text": "if (file.StatusID == FileStatusConstants.Closed)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 830,
+    "text": "// تغيير حالة الملف يتم عبر IFileStatusService، وليس عبر تحديث بيانات الملف."
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 971,
+    "text": "// حساب البيانات الناقصة"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 1053,
+    "text": "if (file.StatusID == FileStatusConstants.Active ||"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 1054,
+    "text": "file.StatusID == FileStatusConstants.Suspended ||"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 1055,
+    "text": "file.StatusID == FileStatusConstants.Closed)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/RetirementFileService.cs",
+    "line": 1057,
+    "text": "return ApiResponse<bool>.Fail(\"لا يمكن حذف هذا الملف في حالته الحالية (نشط/موقوف/مغلق)\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/WorkflowEngine.cs",
+    "line": 26,
+    "text": "// إكمال المهام المعلقة السابقة"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/WorkflowEngine.cs",
+    "line": 43,
+    "text": "if (file.StatusID == FileStatusConstants.New ||"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/WorkflowEngine.cs",
+    "line": 44,
+    "text": "file.StatusID == FileStatusConstants.Incomplete ||"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/WorkflowEngine.cs",
+    "line": 45,
+    "text": "file.StatusID == FileStatusConstants.Pending)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Pension/Files/WorkflowEngine.cs",
+    "line": 50,
+    "text": "else if (file.StatusID == FileStatusConstants.UnderReview)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 32,
+    "text": "var activeFiles = allFiles.Count(f => f.StatusID == FileStatusConstants.Active || f.StatusID == FileStatusConstants.New);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 33,
+    "text": "var suspendedFiles = allFiles.Count(f => f.StatusID == FileStatusConstants.Suspended);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 34,
+    "text": "var closedFiles = allFiles.Count(f => f.StatusID == FileStatusConstants.Closed);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 35,
+    "text": "var newFiles = allFiles.Count(f => f.StatusID == FileStatusConstants.New);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 36,
+    "text": "var underReviewFiles = allFiles.Count(f => f.StatusID == FileStatusConstants.UnderReview || f.StatusID == FileStatusConstants.Pending);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 59,
+    "text": "{ FileStatusConstants.New, \"#3b82f6\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 60,
+    "text": "{ FileStatusConstants.Active, \"#10b981\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 61,
+    "text": "{ FileStatusConstants.Suspended, \"#f59e0b\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 62,
+    "text": "{ FileStatusConstants.Closed, \"#6b7280\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 63,
+    "text": "{ FileStatusConstants.Incomplete, \"#f97316\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 64,
+    "text": "{ FileStatusConstants.Pending, \"#8b5cf6\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 65,
+    "text": "{ FileStatusConstants.UnderReview, \"#06b6d4\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 66,
+    "text": "{ FileStatusConstants.Rejected, \"#ef4444\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 69,
+    "text": "var statusDist = new List<FileStatusDistributionDto>();"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 72,
+    "text": "{ FileStatusConstants.New, \"جديد\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 73,
+    "text": "{ FileStatusConstants.Active, \"نشط\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 74,
+    "text": "{ FileStatusConstants.Suspended, \"موقوف\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 75,
+    "text": "{ FileStatusConstants.Closed, \"مغلق\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 76,
+    "text": "{ FileStatusConstants.Incomplete, \"ناقص\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 77,
+    "text": "{ FileStatusConstants.Pending, \"معلق\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 78,
+    "text": "{ FileStatusConstants.UnderReview, \"تحت المراجعة\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 79,
+    "text": "{ FileStatusConstants.Rejected, \"مرفوض\" },"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 85,
+    "text": "statusDist.Add(new FileStatusDistributionDto"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 164,
+    "text": "FileStatusDistribution = statusDist,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 188,
+    "text": "var activeFiles = allFiles.Count(f => f.StatusID == FileStatusConstants.Active || f.StatusID == FileStatusConstants.New);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 189,
+    "text": "var newFiles = allFiles.Count(f => f.StatusID == FileStatusConstants.New);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 190,
+    "text": "var underReviewFiles = allFiles.Count(f => f.StatusID == FileStatusConstants.UnderReview || f.StatusID == FileStatusConstants.Pending);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.Details.cs",
+    "line": 211,
+    "text": "NewFiles = monthFiles.Count(f => f.StatusID == FileStatusConstants.New)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.cs",
+    "line": 43,
+    "text": ".AsNoTracking().Where(f => !f.IsDeleted && (f.StatusID == FileStatusConstants.New || f.StatusID == FileStatusConstants.Active || f.StatusID == FileStatusConstants.Incomplete)).CountAsync();"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.cs",
+    "line": 46,
+    "text": ".AsNoTracking().Where(f => !f.IsDeleted && f.StatusID == FileStatusConstants.Suspended).CountAsync();"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DashboardService.cs",
+    "line": 49,
+    "text": ".AsNoTracking().Where(f => !f.IsDeleted && f.StatusID == FileStatusConstants.Closed).CountAsync();"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DiscrepancyService.cs",
+    "line": 180,
+    "text": "it.IsProcessed ? \"معالج\" : \"معلق\","
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DiscrepancyService.cs",
+    "line": 254,
+    "text": "table.Cell().Element(ContentStyle).Text(it.IsProcessed ? \"معالج\" : \"معلق\");"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DiscrepancyService.cs",
+    "line": 309,
+    "text": "FileStatusName = rf != null && rf.Status != null ? rf.Status.StatusName : null"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DiscrepancyService.cs",
+    "line": 335,
+    "text": "if (!string.IsNullOrEmpty(filter.FileStatus))"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DiscrepancyService.cs",
+    "line": 337,
+    "text": "if (filter.FileStatus == \"file_created\")"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DiscrepancyService.cs",
+    "line": 339,
+    "text": "else if (filter.FileStatus == \"processed_only\")"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/DiscrepancyService.cs",
+    "line": 341,
+    "text": "else if (filter.FileStatus == \"referral_only\")"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportDataService.cs",
+    "line": 100,
+    "text": "[\"ret-01\"] = async f => await GetPagedDataAsync<FileStatusRow>("
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportDataService.cs",
+    "line": 101,
+    "text": "_reportService.GetFileStatusReportAsync, f),"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Admin.cs",
+    "line": 230,
+    "text": "return _excelExporter.ExportRows(\"الموافقات المعلقة\", headers, rows,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Documents.cs",
+    "line": 20,
+    "text": "// ── الخطوة 1: جلب الملفات التي لها مستندات ناقصة مسجلة يدوياً ──"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Documents.cs",
+    "line": 192,
+    "text": "var headers = new[] { \"#\", \"رقم الملف\", \"اسم المتقاعد\", \"الرقم العسكري\", \"عدد النواقص\", \"المستندات الناقصة\", \"أقصى أيام التأخير\", \"رقم الهاتف\", \"رقم هاتف الوكيل\" };"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Documents.cs",
+    "line": 205,
+    "text": "return _excelExporter.ExportRows(\"المستندات الناقصة\", headers, rows,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Documents.cs",
+    "line": 214,
+    "text": "// ── الخطوة 1: جلب المستندات اليدوية الناقصة ──"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Documents.cs",
+    "line": 261,
+    "text": "// المستندات الناقصة للمتقاعد نفسه"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Documents.cs",
+    "line": 281,
+    "text": "// المستندات الناقصة للمستحقين (الورثة/المستفيدين)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Documents.cs",
+    "line": 304,
+    "text": "// المستندات الناقصة للأوصياء"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Documents.cs",
+    "line": 327,
+    "text": "// المستندات الناقصة للوكلاء"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Documents.cs",
+    "line": 382,
+    "text": "var headers = new[] { \"#\", \"رقم الملف\", \"اسم المتقاعد\", \"الرقم العسكري\", \"نوع الشخص\", \"اسم الشخص\", \"صلة القرابة\", \"رقم الهاتف\", \"عدد النواقص\", \"المستندات الناقصة\", \"أقصى أيام التأخير\" };"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Documents.cs",
+    "line": 397,
+    "text": "return _excelExporter.ExportRows(\" المستندات الناقصة حسب الشخص\", headers, rows,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Retirement.cs",
+    "line": 19,
+    "text": "public async Task<ApiResponse<PagedResult<FileStatusRow>>> GetFileStatusReportAsync(ReportFilter filter)"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Retirement.cs",
+    "line": 48,
+    "text": "var data = files.Select(f => new FileStatusRow"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Retirement.cs",
+    "line": 56,
+    "text": "DaysPending = f.StatusID == FileStatusConstants.New ? (int)(DateTime.UtcNow - f.CreatedAt).TotalDays : 0,"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Retirement.cs",
+    "line": 61,
+    "text": "return ApiResponse<PagedResult<FileStatusRow>>.Success(new PagedResult<FileStatusRow>"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Retirement.cs",
+    "line": 70,
+    "text": "public async Task<byte[]> ExportFileStatusReportAsync(ReportFilter filter, string format = \"excel\")"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Retirement.cs",
+    "line": 85,
+    "text": "var result = await GetFileStatusReportAsync(pagedFilter);"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/ReportService.Retirement.cs",
+    "line": 88,
+    "text": "var headers = new[] { \"#\", \"رقم الملف\", \"المتقاعد\", \"الرتبة\", \"الحالة\", \"الفرع\", \"أيام الانتظار\", \"مستندات ناقصة\", \"تاريخ الإنشاء\" };"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/RetirementFileReportService.cs",
+    "line": 64,
+    "text": "SuspendedCount = allItems.Count(x => x.StatusName != null && x.StatusName.Contains(\"معلق\")),"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/RetirementFileReportService.cs",
+    "line": 66,
+    "text": "IncompleteCount = allItems.Count(x => x.StatusName != null && x.StatusName.Contains(\"ناقص\")),"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/RetirementFileReportService.cs",
+    "line": 156,
+    "text": "rf.ReviewStatus == Core.Entities.FileReviewStatus.Rejected ? \"مرفوض\" : \"---\","
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Reporting/RetirementFileReportService.cs",
+    "line": 188,
+    "text": "query = query.Where(x => x.ReviewStatusName != null && x.ReviewStatusName.Contains(\"مرفوض\"));"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Security/ComplianceService.cs",
+    "line": 95,
+    "text": "// تمثيل مبسط للمهام المعلقة"
+  },
+  {
+    "path": "PensionMS.Infrastructure/Services/Settlements/SettlementService.cs",
+    "line": 573,
+    "text": "// بوابة الاعتماد: لا يُرحَّل قيد على أساس كشف لم يُستورد أو ناقص أو يحمل أخطاء مفتوحة."
+  },
+  {
+    "path": "ui/src/api/discrepancy.ts",
+    "line": 24,
+    "text": "fileStatusName?: string;"
+  },
+  {
+    "path": "ui/src/api/discrepancy.ts",
+    "line": 41,
+    "text": "fileStatus?: string;"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 104,
+    "text": "getFileStatus: (filter: ReportFilter) => api.get<ApiResponse<PagedResult<ReportDataRow>>>('/reports/retirement/file-status', { params: filter }).then(r => r.data),"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 105,
+    "text": "exportFileStatus: (filter: ReportFilter, format: \"excel\" | \"pdf\" = \"excel\") => exportReport('/reports/retirement/file-status/export', filter, undefined, format),"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 289,
+    "text": "{ key: 'missingDocumentsCount', label: 'مستندات ناقصة', type: 'number' },"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 301,
+    "text": "{ title: 'مستندات ناقصة', valueKey: 'missingDocsCount', color: 'red', format: 'number', variant: 'destructive', description: 'تتطلب إكمال', icon: 'AlertTriangle' },"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 310,
+    "text": "fetchData: (filter) => reportsApi.getFileStatus(filter),"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 311,
+    "text": "exportData: (filter, format) => reportsApi.exportFileStatus(filter, format),"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 319,
+    "text": "{ key: 'missingDocsCount', label: 'مستندات ناقصة', type: 'number' },"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 323,
+    "text": "{ type: 'histogram', title: 'توزيع المستندات الناقصة', dataKey: 'missingDocsCount' },"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 486,
+    "text": "name: 'المستندات الناقصة',"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 498,
+    "text": "{ key: 'missingDocsList', label: 'المستندات الناقصة' },"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 510,
+    "text": "{ title: 'إجمالي النواقص', valueKey: 'totalMissing', color: 'orange', format: 'number', variant: 'warning', description: 'مستندات ناقصة', icon: 'AlertTriangle' },"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 517,
+    "text": "name: 'المستندات الناقصة حسب المستفيد/الوارث',"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 520,
+    "text": "description: 'تتبع المستندات الناقصة لكل مستفيد أو ورثة في الملف',"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 533,
+    "text": "{ key: 'missingDocsList', label: 'المستندات الناقصة' },"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 543,
+    "text": "{ title: 'إجمالي النواقص', valueKey: 'totalMissing', color: 'red', format: 'number', variant: 'destructive', description: 'مستندات ناقصة', icon: 'AlertTriangle' },"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 643,
+    "text": "name: 'الموافقات المعلقة',"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 646,
+    "text": "description: 'تتبع سير الموافقات المعلقة',"
+  },
+  {
+    "path": "ui/src/api/reports.ts",
+    "line": 663,
+    "text": "{ title: 'إجمالي الطلبات', valueKey: 'totalCount', color: 'yellow', format: 'number', variant: 'warning', description: 'طلبات معلقة', icon: 'Clock' },"
+  },
+  {
+    "path": "ui/src/api/retirement.ts",
+    "line": 10,
+    "text": "FileStatus,"
+  },
+  {
+    "path": "ui/src/api/retirement.ts",
+    "line": 179,
+    "text": "api.get<ApiResponse<FileStatus[]>>(\"/file-statuses\").then(r => r.data.data),"
+  },
+  {
+    "path": "ui/src/api/retirement.ts",
+    "line": 182,
+    "text": "api.get<ApiResponse<FileStatus[]>>(`/retirement-files/${fileId}/allowed-statuses`).then(r => r.data.data),"
+  },
+  {
+    "path": "ui/src/api/retirement.ts",
+    "line": 319,
+    "text": "// الوثائق الناقصة — delegate to documentsApi"
+  },
+  {
+    "path": "ui/src/api/retirement.ts",
+    "line": 395,
+    "text": "updateFileStatus: (fileId: number, statusId: number, reason?: string) =>"
+  },
+  {
+    "path": "ui/src/components/common/RetirementFileReportViewer.tsx",
+    "line": 132,
+    "text": "row.statusName?.includes(\"معلق\") || row.statusName?.includes(\"ناقص\") ? \"warning\" :"
+  },
+  {
+    "path": "ui/src/components/common/RetirementFileReportViewer.tsx",
+    "line": 142,
+    "text": "header: \"مستندات ناقصة\","
+  },
+  {
+    "path": "ui/src/components/common/RetirementFileReportViewer.tsx",
+    "line": 241,
+    "text": "{ label: \"مرفوض\", value: \"3\" }"
+  },
+  {
+    "path": "ui/src/components/common/RetirementFileReportViewer.tsx",
+    "line": 313,
+    "text": "title=\"معلقة\""
+  },
+  {
+    "path": "ui/src/components/common/UploaderStatsView.tsx",
+    "line": 387,
+    "text": "header: \"مرفوضة\","
+  },
+  {
+    "path": "ui/src/components/common/UploaderStatsView.tsx",
+    "line": 454,
+    "text": "? <Badge variant=\"warning\" className=\"text-[10px]\">{row.missingDocumentsCount} ناقصة</Badge>"
+  },
+  {
+    "path": "ui/src/components/common/UploaderStatsView.tsx",
+    "line": 719,
+    "text": "title=\"مرفوضة\""
+  },
+  {
+    "path": "ui/src/components/common/UploaderStatsView.tsx",
+    "line": 868,
+    "text": "<th className=\"px-2 py-2 border-e border-black text-center font-extrabold\" style={{ width: \"10%\" }}>مرفوضة</th>"
+  },
+  {
+    "path": "ui/src/components/domain/admin/UserDialog.tsx",
+    "line": 289,
+    "text": "{ label: \"معلق (Suspended)\", value: \"Suspended\" }"
+  },
+  {
+    "path": "ui/src/components/domain/admin/permission-utils.ts",
+    "line": 24,
+    "text": "MissingDocument: \"الوثائق الناقصة\", PaymentBook: \"دفاتر الصرف\", Ministry: \"الإحالة إلى التقاعد\","
+  },
+  {
+    "path": "ui/src/components/domain/print/print.types.ts",
+    "line": 46,
+    "text": "fileStatusName?: string | null;"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/AddMissingDocumentDialog.tsx",
+    "line": 101,
+    "text": "title=\"إضافة وثائق ناقصة للملف\""
+  },
+  {
+    "path": "ui/src/components/domain/retirement/AddMissingDocumentDialog.tsx",
+    "line": 102,
+    "text": "description=\"اختر الوثائق غير المتوفرة في الملف التقاعدي حالياً لتعريفها كمتطلبات ناقصة\""
+  },
+  {
+    "path": "ui/src/components/domain/retirement/AddMissingDocumentDialog.tsx",
+    "line": 130,
+    "text": "{searchTerm ? \"لا توجد وثائق تطابق البحث\" : \"لا توجد وثائق إضافية متاحة للتسجيل كمتطلبات ناقصة\"}"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/AgentDialog.tsx",
+    "line": 578,
+    "text": "label: person.fullName + (person.isDeceased ? \" (متوفى)\" : person.isEligible === false ? \" (موقوف)\" : \"\"),"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/CorrectLifeStatusDialog.tsx",
+    "line": 75,
+    "text": "سيُمسح تاريخ الوفاة، ويُوقف استحقاق الورثة. سينتقل الملف للمراجعة ويبقى الصرف موقوفاً حتى الاعتماد، ولن تُعاد دفاتر الصرف الملغاة تلقائياً."
+  },
+  {
+    "path": "ui/src/components/domain/retirement/CreateFileWizard.tsx",
+    "line": 1304,
+    "text": "{existingFile.fileStatusName && <> — الحالة: {existingFile.fileStatusName}</>}"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/DataEntryView.tsx",
+    "line": 14,
+    "text": "import { FileStatusBadge } from \"@/components/domain/retirement/FileStatusBadge\";"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/DataEntryView.tsx",
+    "line": 36,
+    "text": "fileStatusName: string | null;"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/DataEntryView.tsx",
+    "line": 64,
+    "text": "const resolveStatusId = (file: RetirementFileListItem) => file.statusID"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/DataEntryView.tsx",
+    "line": 65,
+    "text": "?? statuses?.find((status) => status.statusName === file.fileStatusName)?.statusID;"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/DataEntryView.tsx",
+    "line": 134,
+    "text": "key: \"fileStatusName\","
+  },
+  {
+    "path": "ui/src/components/domain/retirement/DataEntryView.tsx",
+    "line": 138,
+    "text": "<FileStatusBadge statusId={resolveStatusId(row)} statusName={row.fileStatusName} />"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/DataEntryView.tsx",
+    "line": 210,
+    "text": "<h3 className=\"text-xl font-bold text-foreground mb-2\">عمل رائع! لا توجد ملفات معلقة</h3>"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/DocumentChecklistField.tsx",
+    "line": 31,
+    "text": "label = \"اختر الوثائق الناقصة\","
+  },
+  {
+    "path": "ui/src/components/domain/retirement/DocumentChecklistField.tsx",
+    "line": 32,
+    "text": "emptyMessage = \"لا توجد وثائق ناقصة متاحة لهذا الملف\","
+  },
+  {
+    "path": "ui/src/components/domain/retirement/DocumentReviewPanel.tsx",
+    "line": 108,
+    "text": "return <Badge variant=\"destructive\">مرفوضة</Badge>;"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/DocumentReviewPanel.tsx",
+    "line": 329,
+    "text": "{ value: \"3\", label: \"مرفوضة\" },"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/EntitledPersonDetails.tsx",
+    "line": 68,
+    "text": "{person.isEligible ? \"مستحق للصرف\" : \"موقوف\"}"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/EntitledPersonFormDialog.tsx",
+    "line": 559,
+    "text": "المتقاعد على قيد الحياة — سيُضاف الوريث بحالة <strong>موقوف</strong> حتى تسجيل وفاة المتقاعد."
+  },
+  {
+    "path": "ui/src/components/domain/retirement/ExemptionDialog.tsx",
+    "line": 80,
+    "text": "description=\"إسقاط المطالبة بوثيقة ناقصة بناءً على توجيه رسمي\""
+  },
+  {
+    "path": "ui/src/components/domain/retirement/FileReviewSidebar.tsx",
+    "line": 81,
+    "text": "getStatusColorClass(file.statusID)"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/FileReviewSidebar.tsx",
+    "line": 109,
+    "text": "<RecordStateBadge state={(file.statusID as any) || \"active\"} />"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/FileReviewSidebar.tsx",
+    "line": 143,
+    "text": "{missingDocsCount} وثائق ناقصة"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/FileStatusBadge.tsx",
+    "line": 15,
+    "text": "interface FileStatusBadgeProps {"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/FileStatusBadge.tsx",
+    "line": 21,
+    "text": "/** The files API returns statusID and fileStatusName, without a color field. */"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/FileStatusBadge.tsx",
+    "line": 22,
+    "text": "export function FileStatusBadge({ statusId, statusName, className }: FileStatusBadgeProps) {"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/MissingDocActionDialog.tsx",
+    "line": 142,
+    "text": "title=\"اتخاذ إجراء على وثيقة ناقصة\""
+  },
+  {
+    "path": "ui/src/components/domain/retirement/PersonDocCard.tsx",
+    "line": 86,
+    "text": "تعهد — {props.pledge.missingDocuments?.map((d) => d.documentTypeName).join(\", \") || \"وثائق معلقة\"}"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/PledgeDialog.tsx",
+    "line": 180,
+    "text": "description=\"الالتزام بإحضار الوثائق الناقصة خلال فترة زمنية محددة لضمان استمرار المعاملة\""
+  },
+  {
+    "path": "ui/src/components/domain/retirement/PledgeDialog.tsx",
+    "line": 199,
+    "text": "label=\"اختر الوثائق الناقصة\""
+  },
+  {
+    "path": "ui/src/components/domain/retirement/PledgeDialog.tsx",
+    "line": 200,
+    "text": "emptyMessage=\"لا توجد وثائق ناقصة متاحة لهذا الملف\""
+  },
+  {
+    "path": "ui/src/components/domain/retirement/RecipientsDialog.tsx",
+    "line": 32,
+    "text": "// حقول استكمال البيانات (للمستحقين الموقوفين)"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/RecipientsDialog.tsx",
+    "line": 190,
+    "text": "label: `${e.fullName} ${e.isEligible === false ? \"(موقوف - يتطلب استكمال)\" : \"\"}`"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/RecipientsDialog.tsx",
+    "line": 219,
+    "text": "{/* استكمال البيانات والوثائق للمستحقين الموقوفين */}"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/RecipientsDialog.tsx",
+    "line": 226,
+    "text": "<p className=\"text-[10px] sm:text-xs font-bold opacity-100\">المستحق المختار موقوف الصرف. يجب استكمال بياناته ووثائقه أدناه لإتمام التعيين.</p>"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/RecordDeathDialog.tsx",
+    "line": 98,
+    "text": "<li>سيتم فحص بيانات الورثة — المكتملون يُفعَّلون تلقائياً والناقصون يبقون موقوفين.</li>"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/RetirementFileCard.tsx",
+    "line": 3,
+    "text": "import { FileStatusBadge } from \"./FileStatusBadge\";"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/RetirementFileCard.tsx",
+    "line": 9,
+    "text": "fileStatusName: string | null;"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/RetirementFileCard.tsx",
+    "line": 19,
+    "text": "? `${file.missingDocumentsCount} ناقصة`"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/RetirementFileCard.tsx",
+    "line": 29,
+    "text": "<FileStatusBadge statusId={file.statusID} statusName={file.fileStatusName} className=\"shrink-0\" />"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/RetirementFileSidebar.tsx",
+    "line": 23,
+    "text": "fileStatusName?: string | null;"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/RetirementFileSidebar.tsx",
+    "line": 109,
+    "text": "getStatusColorClass(file.statusID)"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/ReviewItemCard.tsx",
+    "line": 122,
+    "text": "{isApproved ? \"معتمد\" : isRejected ? \"مرفوض\" : \"بانتظار المراجعة\"}"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/ReviewPanel.tsx",
+    "line": 87,
+    "text": "<Text variant=\"caption\">مرفوض</Text>"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/ViewEntitledPersonDialog.tsx",
+    "line": 301,
+    "text": "{missingDocs.length} ناقصة"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/sections/BasicInfoSection.tsx",
+    "line": 252,
+    "text": "<p className=\"font-bold text-sm\">تنبيه: وثائق وبيانات ناقصة</p>"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/sections/BasicInfoSection.tsx",
+    "line": 253,
+    "text": "<p className=\"text-xs\">يوجد {missingDocsCount} وثائق ناقصة مطلوب رفعها أو تغطيتها بتعهد</p>"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/sections/DocumentsSection.tsx",
+    "line": 129,
+    "text": "<TabsTrigger value=\"missing\">ناقصة ({missingCount})</TabsTrigger>"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/sections/DocumentsSection.tsx",
+    "line": 138,
+    "text": "وثائق ناقصة ({missingCount})"
+  },
+  {
+    "path": "ui/src/components/domain/retirement/sections/PeopleSection.tsx",
+    "line": 99,
+    "text": "status: p.isDeceased ? \"متوفى\" : p.isEligible ? \"مستحق\" : \"موقوف\","
+  },
+  {
+    "path": "ui/src/components/domain/retirement/sections/PeopleSection.tsx",
+    "line": 405,
+    "text": ": person.status === \"موقوف\" || person.status === \"معطل\""
+  },
+  {
+    "path": "ui/src/components/domain/retirement/sections/PeopleSection.tsx",
+    "line": 508,
+    "text": ": selectedPerson.status === \"موقوف\" || selectedPerson.status === \"معطل\" || selectedPerson.status === \"متوفى\""
+  },
+  {
+    "path": "ui/src/components/domain/retirement/sections/PeopleSection.tsx",
+    "line": 625,
+    "text": "وثائق ناقصة ({filteredDocs.missing.length})"
+  },
+  {
+    "path": "ui/src/components/domain/salaries/SalaryRecipientFormDialog.tsx",
+    "line": 90,
+    "text": "// تحديد البيانات والوثائق الناقصة للمستحق المختار"
+  },
+  {
+    "path": "ui/src/components/domain/salaries/SalaryRecipientFormDialog.tsx",
+    "line": 227,
+    "text": "label: `${e.fullName} ${!e.isEligible ? \"(موقوف - يتطلب استكمال)\" : \"\"}`"
+  },
+  {
+    "path": "ui/src/components/domain/salaries/SalaryRecipientFormDialog.tsx",
+    "line": 285,
+    "text": "{/* استكمال البيانات والوثائق للمستحقين الموقوفين */}"
+  },
+  {
+    "path": "ui/src/components/domain/salaries/SalaryRecipientFormDialog.tsx",
+    "line": 292,
+    "text": "<p className=\"text-[10px] sm:text-xs font-bold opacity-100\">المستحق المختار موقوف الصرف حالياً. يجب استكمال بياناته ووثائقه الإلزامية أدناه لإتمام التعيين.</p>"
+  },
+  {
+    "path": "ui/src/components/domain/suspensions/CreateSuspensionDialog.tsx",
+    "line": 73,
+    "text": "statusName: item.fileStatusName || item.statusName || \"\","
+  },
+  {
+    "path": "ui/src/components/domain/suspensions/CreateSuspensionDialog.tsx",
+    "line": 179,
+    "text": "<span className=\"mr-auto text-xs text-muted-foreground\">{file.statusName}</span>"
+  },
+  {
+    "path": "ui/src/components/layout/navigationData.tsx",
+    "line": 261,
+    "text": "label: \"مراجعة البيانات الناقصة\","
+  },
+  {
+    "path": "ui/src/components/layout/navigationData.tsx",
+    "line": 495,
+    "text": "label: \"المستندات الناقصة\","
+  },
+  {
+    "path": "ui/src/components/layout/navigationData.tsx",
+    "line": 527,
+    "text": "label: \"الموافقات المعلقة\","
+  },
+  {
+    "path": "ui/src/components/ui/AlertBanner.tsx",
+    "line": 8,
+    "text": "*       message=\"يوجد 3 وثائق ناقصة\""
+  },
+  {
+    "path": "ui/src/components/ui/RecordStateBadge.config.ts",
+    "line": 51,
+    "text": "label: \"موقوف\","
+  },
+  {
+    "path": "ui/src/components/ui/RecordStateBadge.config.ts",
+    "line": 56,
+    "text": "label: \"مرفوض\","
+  },
+  {
+    "path": "ui/src/constants/assets.ts",
+    "line": 29,
+    "text": "1: \"الرصيد المتناقص\","
+  },
+  {
+    "path": "ui/src/constants/index.ts",
+    "line": 66,
+    "text": "SUSPENDED: \"موقوف\","
+  },
+  {
+    "path": "ui/src/constants/index.ts",
+    "line": 245,
+    "text": "[PERSON_DOC_FILTER.MISSING]: \"ناقصة\","
+  },
+  {
+    "path": "ui/src/constants/retirement.ts",
+    "line": 3,
+    "text": "* القيم مطابقة لـ PensionMS.Core/Constants/FileStatusConstants.cs"
+  },
+  {
+    "path": "ui/src/constants/retirement.ts",
+    "line": 17,
+    "text": "export type FileStatusId = (typeof FILE_STATUS)[keyof typeof FILE_STATUS];"
+  },
+  {
+    "path": "ui/src/constants/statusConfigs.ts",
+    "line": 53,
+    "text": "\"مرفوض\": { label: \"مرفوض\", variant: \"danger\" },"
+  },
+  {
+    "path": "ui/src/hooks/queries/useFileDetailsQuery.ts",
+    "line": 19,
+    "text": "fileStatusName: string | null;"
+  },
+  {
+    "path": "ui/src/hooks/queries/useFileDetailsQuery.ts",
+    "line": 109,
+    "text": "fileStatusName: data.fileStatusName ?? d.FileStatusName,"
+  },
+  {
+    "path": "ui/src/hooks/useDocumentMutations.ts",
+    "line": 92,
+    "text": "* تأشير وثيقة ناقصة كمسلّمة."
+  },
+  {
+    "path": "ui/src/hooks/useDocumentMutations.ts",
+    "line": 114,
+    "text": "* إنشاء وثيقة ناقصة يدوياً."
+  },
+  {
+    "path": "ui/src/hooks/useDocumentMutations.ts",
+    "line": 133,
+    "text": "successMessage: \"تم إضافة الوثيقة الناقصة بنجاح\","
+  },
+  {
+    "path": "ui/src/hooks/useDocumentsQuery.ts",
+    "line": 9,
+    "text": "* جلب الوثائق + الناقصة + الأنواع — hook واحد."
+  },
+  {
+    "path": "ui/src/lib/bulkUploadDraft.ts",
+    "line": 43,
+    "text": "if (!files.length || (!needsFinalization && files.every((file) => file.status === \"success\"))) return null;"
+  },
+  {
+    "path": "ui/src/lib/fieldTranslations.ts",
+    "line": 36,
+    "text": "FileStatusID: \"حالة الملفات\","
+  },
+  {
+    "path": "ui/src/lib/fieldTranslations.ts",
+    "line": 71,
+    "text": "MissingDocumentsCount: \"الوثائق الناقصة\","
+  },
+  {
+    "path": "ui/src/lib/fieldTranslations.ts",
+    "line": 84,
+    "text": "* @example translateFieldName(\"FileStatusID\") // \"حالة الملفات\""
+  },
+  {
+    "path": "ui/src/lib/retirementFileForm.ts",
+    "line": 85,
+    "text": "fileStatusName: string | null;"
+  },
+  {
+    "path": "ui/src/lib/retirementFileForm.ts",
+    "line": 275,
+    "text": "return files.find((file) => file.statusID !== closedStatusId);"
+  },
+  {
+    "path": "ui/src/lib/utils.ts",
+    "line": 78,
+    "text": "case 3: return \"text-destructive\";         // موقوف"
+  },
+  {
+    "path": "ui/src/lib/utils.ts",
+    "line": 80,
+    "text": "case 5: return \"text-warning\";             // ناقص"
+  },
+  {
+    "path": "ui/src/lib/utils.ts",
+    "line": 81,
+    "text": "case 6: return \"text-warning\";             // معلق"
+  },
+  {
+    "path": "ui/src/lib/utils.ts",
+    "line": 83,
+    "text": "case 8: return \"text-destructive\";         // مرفوض"
+  },
+  {
+    "path": "ui/src/pages/DashboardPage.tsx",
+    "line": 219,
+    "text": "const fileStatusData = useMemo("
+  },
+  {
+    "path": "ui/src/pages/DashboardPage.tsx",
+    "line": 221,
+    "text": "(pensionStats?.fileStatusDistribution || [])"
+  },
+  {
+    "path": "ui/src/pages/DashboardPage.tsx",
+    "line": 229,
+    "text": "[pensionStats?.fileStatusDistribution]"
+  },
+  {
+    "path": "ui/src/pages/DashboardPage.tsx",
+    "line": 377,
+    "text": "data={fileStatusData}"
+  },
+  {
+    "path": "ui/src/pages/DashboardPage.tsx",
+    "line": 670,
+    "text": "<p className=\"text-caption text-muted-foreground\">تسويات معلقة</p>"
+  },
+  {
+    "path": "ui/src/pages/admin/AdminNotificationsPage.tsx",
+    "line": 148,
+    "text": "<StatCard title=\"معلق\" value={statsData?.pendingOutboxCount ?? 0} icon={<Mail className=\"h-5 w-5\" />} variant=\"warning\" loading={statsLoading} />"
+  },
+  {
+    "path": "ui/src/pages/admin/AdminNotificationsPage.tsx",
+    "line": 240,
+    "text": "<SelectItem value=\"Pending\">معلق</SelectItem>"
+  },
+  {
+    "path": "ui/src/pages/admin/AdminNotificationsPage.tsx",
+    "line": 259,
+    "text": "{ key: \"status\", header: \"الحالة\", render: (row) => <Badge variant={row.status === \"Sent\" ? \"success\" : row.status === \"Failed\" ? \"destructive\" : \"warning\"}>{row.status === \"Sent\" ? \"تم الإرسال\" : row.status === \"Failed\" ? \"فاشل\" : \"معلق\"}</Badge> },"
+  },
+  {
+    "path": "ui/src/pages/archive/ArchivePage.tsx",
+    "line": 214,
+    "text": "title=\"الملفات الناقصة\""
+  },
+  {
+    "path": "ui/src/pages/archive/ArchivePage.tsx",
+    "line": 221,
+    "text": "title=\"إجمالي الناقصات\""
+  },
+  {
+    "path": "ui/src/pages/archive/DocumentReviewArchivePage.tsx",
+    "line": 247,
+    "text": "return <Badge variant=\"destructive\">مرفوضة</Badge>;"
+  },
+  {
+    "path": "ui/src/pages/archive/DocumentReviewArchivePage.tsx",
+    "line": 402,
+    "text": "title=\"مرفوضة\""
+  },
+  {
+    "path": "ui/src/pages/archive/DocumentReviewArchivePage.tsx",
+    "line": 491,
+    "text": "{ value: \"3\", label: \"مرفوضة\" },"
+  },
+  {
+    "path": "ui/src/pages/archive/DocumentReviewArchivePage.tsx",
+    "line": 701,
+    "text": "{ value: \"3\", label: \"مرفوضة\" },"
+  },
+  {
+    "path": "ui/src/pages/compliance/ComplianceDashboardPage.tsx",
+    "line": 143,
+    "text": "<StatCard title=\"تجاوزات معلقة\" value={dashboard.pendingOverrides || dashboard.pendingOverrideReviews?.length || 0} icon={<Clock />} variant=\"amber\" />"
+  },
+  {
+    "path": "ui/src/pages/compliance/ComplianceDashboardPage.tsx",
+    "line": 170,
+    "text": "<Heading level=\"h2\" className=\"text-lg font-bold text-foreground mb-4\">تجاوزات الصلاحيات المعلقة</Heading>"
+  },
+  {
+    "path": "ui/src/pages/compliance/ComplianceDashboardPage.tsx",
+    "line": 172,
+    "text": "<Text variant=\"description\" className=\"text-center py-8\">لا توجد تجاوزات معلقة للمراجعة</Text>"
+  },
+  {
+    "path": "ui/src/pages/compliance/ComplianceDashboardPage.tsx",
+    "line": 197,
+    "text": "<Text variant=\"caption\" className=\"mt-1\">{branch.totalPendingTasks} مهمة معلقة</Text>"
+  },
+  {
+    "path": "ui/src/pages/documents/MissingDocsCompletionPage.tsx",
+    "line": 2,
+    "text": "* استكمال النواقص — صفحة مخصصة لتوثيق ورفع الوثائق الناقصة لملفات التقاعد."
+  },
+  {
+    "path": "ui/src/pages/documents/MissingDocsCompletionPage.tsx",
+    "line": 17,
+    "text": "import { FileStatusBadge } from \"@/components/domain/retirement/FileStatusBadge\";"
+  },
+  {
+    "path": "ui/src/pages/documents/MissingDocsCompletionPage.tsx",
+    "line": 39,
+    "text": "interface FileStatus {"
+  },
+  {
+    "path": "ui/src/pages/documents/MissingDocsCompletionPage.tsx",
+    "line": 50,
+    "text": "fileStatusName: string | null;"
+  },
+  {
+    "path": "ui/src/pages/documents/MissingDocsCompletionPage.tsx",
+    "line": 66,
+    "text": "{ value: \"missing\", label: \"ناقصة\" },"
+  },
+  {
+    "path": "ui/src/pages/documents/MissingDocsCompletionPage.tsx",
+    "line": 83,
+    "text": "const res = await api.get<{ data: FileStatus[] }>(\"/file-statuses\");"
+  },
+  {
+    "path": "ui/src/pages/documents/MissingDocsCompletionPage.tsx",
+    "line": 245,
+    "text": "key: \"fileStatusName\","
+  },
+  {
+    "path": "ui/src/pages/documents/MissingDocsCompletionPage.tsx",
+    "line": 249,
+    "text": "<FileStatusBadge statusId={row.statusID} statusName={row.fileStatusName} />"
+  },
+  {
+    "path": "ui/src/pages/documents/MissingDocsCompletionPage.tsx",
+    "line": 260,
+    "text": "? <Badge variant=\"warning\" className=\"text-xs\">{row.missingDocumentsCount} ناقصة</Badge>"
+  },
+  {
+    "path": "ui/src/pages/documents/MissingDocsCompletionPage.tsx",
+    "line": 298,
+    "text": "title=\"تقرير الوثائق الناقصة\""
+  },
+  {
+    "path": "ui/src/pages/documents/MissingDocsCompletionPage.tsx",
+    "line": 299,
+    "text": "aria-label=\"تقرير الوثائق الناقصة\""
+  },
+  {
+    "path": "ui/src/pages/documents/MissingDocsCompletionPage.tsx",
+    "line": 466,
+    "text": "<p className=\"text-xs text-muted-foreground\">ناقصة وثائق</p>"
+  },
+  {
+    "path": "ui/src/pages/documents/MissingDocsCompletionPage.tsx",
+    "line": 527,
+    "text": "? \"لا توجد ملفات ناقصة الوثائق\""
+  },
+  {
+    "path": "ui/src/pages/force/CodeBatchDetailsPage.tsx",
+    "line": 505,
+    "text": "{selectedIds.length === unprocessedItems.length ? \"إلغاء تحديد الكل\" : \"تحديد كافة المعلقين\"}"
+  },
+  {
+    "path": "ui/src/pages/hr/EmployeeDetailsPage.tsx",
+    "line": 333,
+    "text": "{row.status === LEAVE_STATUS.APPROVED ? \"مقبولة\" : row.status === LEAVE_STATUS.REJECTED ? \"مرفوضة\" : \"قيد المراجعة\"}"
+  },
+  {
+    "path": "ui/src/pages/hr/HrDashboardPage.tsx",
+    "line": 71,
+    "text": "description=\"طلبات معلقة قيد الانتظار\""
+  },
+  {
+    "path": "ui/src/pages/hr/HrDashboardPage.tsx",
+    "line": 125,
+    "text": "{leave.status === LEAVE_STATUS.APPROVED ? 'معتمد' : leave.status === LEAVE_STATUS.PENDING ? 'قيد الانتظار' : 'مرفوض'}"
+  },
+  {
+    "path": "ui/src/pages/hr/HrLeavesPage.tsx",
+    "line": 126,
+    "text": "\"Rejected\": { label: \"مرفوضة\", variant: \"danger\", icon: XCircle },"
+  },
+  {
+    "path": "ui/src/pages/hr/HrLeavesPage.tsx",
+    "line": 251,
+    "text": "{ label: \"مرفوضة\", value: LEAVE_STATUS.REJECTED },"
+  },
+  {
+    "path": "ui/src/pages/investment/InvestmentHub.tsx",
+    "line": 94,
+    "text": "title=\"اعتمادات معلقة\""
+  },
+  {
+    "path": "ui/src/pages/investment/InvestmentHub.tsx",
+    "line": 156,
+    "text": "<div className=\"py-12 text-center text-muted-foreground text-sm italic\">لا توجد طلبات معلقة حالياً</div>"
+  },
+  {
+    "path": "ui/src/pages/investment/InvestmentHub.tsx",
+    "line": 172,
+    "text": "{app.status === APPROVAL_STATUS.APPROVED ? 'معتمد' : app.status === APPROVAL_STATUS.PENDING ? 'قيد الانتظار' : 'مرفوض'}"
+  },
+  {
+    "path": "ui/src/pages/investment/tabs/ApprovalRequestsTab.tsx",
+    "line": 47,
+    "text": "case APPROVAL_STATUS.REJECTED: return <Badge variant=\"destructive\">مرفوض</Badge>;"
+  },
+  {
+    "path": "ui/src/pages/investment/tabs/ApprovalRequestsTab.tsx",
+    "line": 120,
+    "text": "description=\"متابعة الطلبات المعلقة التي تتطلب موافقة أصحاب الصلاحية\""
+  },
+  {
+    "path": "ui/src/pages/investment/tabs/ApprovalRequestsTab.tsx",
+    "line": 127,
+    "text": "emptyMessage=\"لا توجد طلبات اعتماد معلقة حالياً.\""
+  },
+  {
+    "path": "ui/src/pages/investment/tabs/PropertyDepreciationTab.tsx",
+    "line": 127,
+    "text": "description=\"تتبع تناقص القيمة الدفترية للأصل العقاري عبر السنوات المالية\""
+  },
+  {
+    "path": "ui/src/pages/ministry-approvals/ForceAnalyticsDashboard.tsx",
+    "line": 69,
+    "text": "title=\"الإحالات المعلقة\""
+  },
+  {
+    "path": "ui/src/pages/pension/DocumentReviewPage.tsx",
+    "line": 192,
+    "text": "header: \"الوثائق الناقصة\","
+  },
+  {
+    "path": "ui/src/pages/pension/DocumentReviewPage.tsx",
+    "line": 211,
+    "text": ": row.reviewStatusName === \"مرفوض\""
+  },
+  {
+    "path": "ui/src/pages/pension/DocumentReviewPage.tsx",
+    "line": 300,
+    "text": "title=\"مراجعة البيانات الناقصة\""
+  },
+  {
+    "path": "ui/src/pages/pension/DocumentReviewPage.tsx",
+    "line": 301,
+    "text": "description=\"فحص ورفع الوثائق الناقصة للملفات وتسجيل التعهدات والإعفاءات\""
+  },
+  {
+    "path": "ui/src/pages/pension/DocumentReviewPage.tsx",
+    "line": 332,
+    "text": "title=\"ملفات ناقصة\""
+  },
+  {
+    "path": "ui/src/pages/pension/DocumentReviewPage.tsx",
+    "line": 397,
+    "text": "<FormField label=\"الوثائق الناقصة المحددة\">"
+  },
+  {
+    "path": "ui/src/pages/pension/DocumentReviewPage.tsx",
+    "line": 470,
+    "text": "<FormField label=\"الوثائق الناقصة المحددة\">"
+  },
+  {
+    "path": "ui/src/pages/pension/EntitledPersonsPage.tsx",
+    "line": 308,
+    "text": ": \"موقوف\"}"
+  },
+  {
+    "path": "ui/src/pages/pension/EntitledPersonsPage.tsx",
+    "line": 452,
+    "text": "title=\"الموقوفون/المتوفون\""
+  },
+  {
+    "path": "ui/src/pages/pension/FileReviewListPage.tsx",
+    "line": 417,
+    "text": "return <Badge variant=\"danger\">مرفوض</Badge>;"
+  },
+  {
+    "path": "ui/src/pages/pension/FileReviewListPage.tsx",
+    "line": 555,
+    "text": "title=\"مرفوض\""
+  },
+  {
+    "path": "ui/src/pages/pension/FileReviewListPage.tsx",
+    "line": 579,
+    "text": "{ value: \"rejected\", label: \"مرفوض\" },"
+  },
+  {
+    "path": "ui/src/pages/pension/KashfReportsPage.tsx",
+    "line": 283,
+    "text": "{ label: \"معلق\", value: \"pending\" }"
+  },
+  {
+    "path": "ui/src/pages/pension/KashfReportsPage.tsx",
+    "line": 298,
+    "text": "value={filter.fileStatus || \"\"}"
+  },
+  {
+    "path": "ui/src/pages/pension/KashfReportsPage.tsx",
+    "line": 299,
+    "text": "onChange={(val) => handleFilterChange(\"fileStatus\", val)}"
+  },
+  {
+    "path": "ui/src/pages/pension/KashfReportsPage.tsx",
+    "line": 319,
+    "text": "title=\"المعلقة\""
+  },
+  {
+    "path": "ui/src/pages/pension/MinistryReferralsPage.tsx",
+    "line": 1106,
+    "text": "title=\"السجلات المعلقة\""
+  },
+  {
+    "path": "ui/src/pages/pension/MonthlySummariesPage.tsx",
+    "line": 63,
+    "text": "{row.status === \"Approved\" ? \"معتمد\" : row.status === \"Pending\" ? \"معلق\" : row.status}"
+  },
+  {
+    "path": "ui/src/pages/pension/PensionStatisticsPage.tsx",
+    "line": 26,
+    "text": "const fileStatusData = useMemo("
+  },
+  {
+    "path": "ui/src/pages/pension/PensionStatisticsPage.tsx",
+    "line": 28,
+    "text": "(stats?.fileStatusDistribution || []).map((item) => ({"
+  },
+  {
+    "path": "ui/src/pages/pension/PensionStatisticsPage.tsx",
+    "line": 33,
+    "text": "[stats?.fileStatusDistribution]"
+  },
+  {
+    "path": "ui/src/pages/pension/PensionStatisticsPage.tsx",
+    "line": 88,
+    "text": "title=\"ملفات موقوفة\""
+  },
+  {
+    "path": "ui/src/pages/pension/PensionStatisticsPage.tsx",
+    "line": 146,
+    "text": "data={fileStatusData}"
+  },
+  {
+    "path": "ui/src/pages/pension/PensionSuspensionsPage.tsx",
+    "line": 163,
+    "text": "render: (row: Suspension) => <Badge variant={row.status === \"Active\" ? \"warning\" : \"success\"}>{row.status === \"Active\" ? \"موقوف\" : \"نشط\"}</Badge>,"
+  },
+  {
+    "path": "ui/src/pages/pension/PensionSuspensionsPage.tsx",
+    "line": 218,
+    "text": "{ value: \"active\", label: \"موقوف\" },"
+  },
+  {
+    "path": "ui/src/pages/pension/PensionSuspensionsPage.tsx",
+    "line": 243,
+    "text": "<StatCard title=\"موقوف حالياً\" value={activeCount} icon={<PauseCircle className=\"w-5 h-5\" />} variant=\"warning\" loading={isLoading} />"
+  },
+  {
+    "path": "ui/src/pages/pension/PensionSuspensionsPage.tsx",
+    "line": 282,
+    "text": "<Badge variant={selected.status === \"Active\" ? \"warning\" : \"success\"}>{selected.status === \"Active\" ? \"موقوف\" : \"نشط\"}</Badge>"
+  },
+  {
+    "path": "ui/src/pages/pension/SalaryReconciliationPage.tsx",
+    "line": 84,
+    "text": "{row.status === \"Approved\" ? \"معتمد\" : row.status === \"Pending\" ? \"معلق\" : row.status}"
+  },
+  {
+    "path": "ui/src/pages/pension/SalaryReconciliationPage.tsx",
+    "line": 122,
+    "text": "{ value: \"Pending\", label: \"معلق\" },"
+  },
+  {
+    "path": "ui/src/pages/print/MissingDocumentsPrintPage.tsx",
+    "line": 64,
+    "text": "value: isUploaded ? \"✓ مرفوعة\" : \"✗ ناقصة\","
+  },
+  {
+    "path": "ui/src/pages/print/MissingDocumentsPrintPage.tsx",
+    "line": 76,
+    "text": "value: `${uploadedCount} مرفوعة / ${missingCount} ناقصة`,"
+  },
+  {
+    "path": "ui/src/pages/print/MissingDocumentsPrintPage.tsx",
+    "line": 122,
+    "text": "<li>الوثائق الناقصة: {[...missingByName.keys()].join(\"، \")}</li>"
+  },
+  {
+    "path": "ui/src/pages/print/PrintableRetirementFileReport.tsx",
+    "line": 23,
+    "text": "fileStatusName?: string | null;"
+  },
+  {
+    "path": "ui/src/pages/print/RetirementFilePrintPage.tsx",
+    "line": 112,
+    "text": "statusName: fileData.fileStatusName ?? null,"
+  },
+  {
+    "path": "ui/src/pages/print/SettlementDecisionPrint.tsx",
+    "line": 59,
+    "text": "{ label: \"غير مطابق (معلق)\", value: unmatchedCount, color: 'warning' as const },"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/FileReviewPage.tsx",
+    "line": 51,
+    "text": "await retirementApi.updateFileStatus(fileId, 2, \"اعتماد الملف\");"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/FileReviewPage.tsx",
+    "line": 61,
+    "text": "await retirementApi.updateFileStatus(fileId, 3, rejectReason || \"رفض الملف\");"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/FileReviewPage.tsx",
+    "line": 129,
+    "text": "statusID={file.statusID ?? null}"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/FileReviewPage.tsx",
+    "line": 130,
+    "text": "statusName={file.fileStatusName}"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFileDetailsPage.tsx",
+    "line": 186,
+    "text": "return retirementApi.updateFileStatus(fileId, values.newStatusID, values.reason);"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFileDetailsPage.tsx",
+    "line": 221,
+    "text": "getStatusColorClass(file.statusID)"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFileDetailsPage.tsx",
+    "line": 226,
+    "text": "<Badge variant={file.statusID === 2 ? \"success\" : file.statusID === 6 ? \"warning\" : \"outline\"} className=\"shrink-0 text-[9px] sm:text-xs\">"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFileDetailsPage.tsx",
+    "line": 227,
+    "text": "{file.fileStatusName}"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFileDetailsPage.tsx",
+    "line": 343,
+    "text": "<strong className=\"text-sm\">تنبيه: مستندات وبيانات ناقصة</strong>"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFileDetailsPage.tsx",
+    "line": 344,
+    "text": "<Text variant=\"body-sm\" className=\"sm:text-sm mt-0.5\">يوجد {file.missingDocumentsCount || 0} وثيقة ناقصة و {file.missingDataCount || 0} حقول بيانات غير مكتملة. يرجى المراجعة لاستكمالها.</Text>"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFileDetailsPage.tsx",
+    "line": 354,
+    "text": "<strong>الوثائق الناقصة:</strong> {file.missingDocumentsList.join(\"، \")}"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFileDetailsPage.tsx",
+    "line": 387,
+    "text": "currentStatusId={file.statusID}"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFileDetailsPage.tsx",
+    "line": 388,
+    "text": "currentStatusName={file.fileStatusName ?? undefined}"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFileReportsPage.tsx",
+    "line": 130,
+    "text": "const variant = status.includes(\"نشط\") ? \"success\" : status.includes(\"معلق\") || status.includes(\"ناقص\") ? \"warning\" : \"secondary\";"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFileReportsPage.tsx",
+    "line": 134,
+    "text": "{ key: \"missingDocumentsCount\", header: \"مستندات ناقصة\", accessor: (row) => row.missingDocumentsCount ?? 0, className: \"text-center font-bold\" },"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFileReportsPage.tsx",
+    "line": 177,
+    "text": "<StatCard title=\"الملفات المعلقة\" value={summary?.suspendedCount ?? 0} icon={<BarChart3 className=\"h-4 w-4\" />} variant=\"amber\" />"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFileReportsPage.tsx",
+    "line": 213,
+    "text": "options={[{ label: \"بانتظار المراجعة\", value: \"1\" }, { label: \"تمت المراجعة\", value: \"2\" }, { label: \"مرفوض\", value: \"3\" }]}"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFilesPage.tsx",
+    "line": 12,
+    "text": "import { FileStatusBadge } from \"@/components/domain/retirement/FileStatusBadge\";"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/RetirementFilesPage.tsx",
+    "line": 209,
+    "text": "<FileStatusBadge statusId={row.statusID} statusName={row.fileStatusName} />"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/AgentsTab.tsx",
+    "line": 175,
+    "text": "<Badge variant=\"destructive\" className=\"text-[10px] sm:text-xs h-5\">مرفوض</Badge>"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/AgentsTab.tsx",
+    "line": 301,
+    "text": "<Badge variant=\"destructive\" className=\"text-[8px] h-3.5 shrink-0\">مرفوض</Badge>"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/DocumentsTab.tsx",
+    "line": 369,
+    "text": "مرفوض"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/DocumentsTab.tsx",
+    "line": 583,
+    "text": "وثائق ناقصة ({missingDocs.length})"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/DocumentsTab.tsx",
+    "line": 712,
+    "text": "مرفوض"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/EntitledPersonsTab.tsx",
+    "line": 184,
+    "text": "<Badge variant=\"destructive\" className=\"text-[10px] sm:text-xs h-5\">مرفوض</Badge>"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/EntitledPersonsTab.tsx",
+    "line": 224,
+    "text": "{row.isEligible ? \"مستحق\" : \"موقوف\"}"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/EntitledPersonsTab.tsx",
+    "line": 375,
+    "text": "<Badge variant=\"destructive\" className=\"text-[8px] h-3.5 shrink-0\">مرفوض</Badge>"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/EntitledPersonsTab.tsx",
+    "line": 378,
+    "text": "<span className={cn(\"w-2 h-2 rounded-full shrink-0\", row.isEligible ? \"bg-emerald-500\" : \"bg-muted-foreground\")} title={row.isEligible ? \"مستحق\" : \"موقوف\"} />"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/GuardiansTab.tsx",
+    "line": 192,
+    "text": "<Badge variant=\"destructive\" className=\"text-[10px] sm:text-xs h-5\">مرفوض</Badge>"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/PaymentBooksTab.tsx",
+    "line": 230,
+    "text": "<Badge variant=\"destructive\" className=\"text-[10px] sm:text-xs h-4 leading-none px-1\">مرفوض</Badge>"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/PaymentBooksTab.tsx",
+    "line": 353,
+    "text": "<Badge variant=\"destructive\" className=\"text-[8px] h-3.5 shrink-0\">مرفوض</Badge>"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/ReviewTab.tsx",
+    "line": 72,
+    "text": "return retirementApi.updateFileStatus(fileId, newStatusId, notes);"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/ReviewTab.tsx",
+    "line": 279,
+    "text": "<strong className=\"text-sm\">تنبيه قبل الاعتماد: مستندات وبيانات ناقصة</strong>"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/ReviewTab.tsx",
+    "line": 280,
+    "text": "<Text variant=\"body\" className=\"mt-0.5\">يوجد {fileSummary.missingDocumentsCount || 0} وثيقة ناقصة و {fileSummary.missingDataCount || 0} حقول بيانات غير مكتملة في الملف.</Text>"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/ReviewTab.tsx",
+    "line": 428,
+    "text": "const statusBadge = isApproved ? \"معتمد\" : isPending ? \"بانتظار المراجعة\" : \"مرفوض\";"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/StatusTransitionsTab.tsx",
+    "line": 39,
+    "text": "[\"الوثائق الناقصة\", FileWarning],"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/SuspensionsTab.tsx",
+    "line": 88,
+    "text": "{row.status === SUSPENSION_STATUS.ACTIVE ? \"موقوف\" : \"مستأنف\"}"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/SuspensionsTab.tsx",
+    "line": 159,
+    "text": "<Heading level=\"h4\" className=\"font-bold text-rose-900\">الملف موقوف حالياً</Heading>"
+  },
+  {
+    "path": "ui/src/pages/retirement-files/tabs/SuspensionsTab.tsx",
+    "line": 174,
+    "text": "<span className={cn(\"w-2 h-2 rounded-full shrink-0\", item.status === SUSPENSION_STATUS.ACTIVE ? \"bg-red-500\" : \"bg-emerald-500\")} title={item.status === SUSPENSION_STATUS.ACTIVE ? \"موقوف\" : \"مستأنف\"} />"
+  },
+  {
+    "path": "ui/src/pages/review/FileReviewDetailPage.tsx",
+    "line": 558,
+    "text": "<p className=\"text-[10px] text-muted-foreground font-bold\">تطبيق القرار على ({stats.pending}) بند معلق</p>"
+  },
+  {
+    "path": "ui/src/pages/settlements/SettlementBatchDetailsPage.tsx",
+    "line": 438,
+    "text": "title=\"سجلات معلقة (تحتاج ربط)\""
+  },
+  {
+    "path": "ui/src/types/archive.ts",
+    "line": 175,
+    "text": "[REVIEW_STATUS.REJECTED]: \"مرفوضة\","
+  },
+  {
+    "path": "ui/src/types/pension.ts",
+    "line": 125,
+    "text": "/** إحصائيات الوثائق الناقصة */"
+  },
+  {
+    "path": "ui/src/types/pension.ts",
+    "line": 403,
+    "text": "fileStatusDistribution: FileStatusDistributionItem[];"
+  },
+  {
+    "path": "ui/src/types/pension.ts",
+    "line": 435,
+    "text": "export interface FileStatusDistributionItem {"
+  },
+  {
+    "path": "ui/src/types/pension.ts",
+    "line": 626,
+    "text": "MISSING_DATA: \"بيانات ناقصة\","
+  },
+  {
+    "path": "ui/src/types/retirement.ts",
+    "line": 13,
+    "text": "fileStatusName: string | null;"
+  },
+  {
+    "path": "ui/src/types/retirement.ts",
+    "line": 41,
+    "text": "fileStatusName: string | null;"
+  },
+  {
+    "path": "ui/src/types/retirement.ts",
+    "line": 119,
+    "text": "export interface FileStatus {"
+  }
+]

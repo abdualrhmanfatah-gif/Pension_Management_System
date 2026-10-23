@@ -4,6 +4,7 @@ namespace PensionMS.Core.DTOs.Agents;
 
 public class CreateAgentDto
 {
+    public int? AgencyScope { get; set; }
     public int FileID { get; set; }
     public int? EntitledID { get; set; }
     public string FullName { get; set; } = string.Empty;
@@ -21,6 +22,8 @@ public class CreateAgentDto
 
 public class UpdateAgentDto
 {
+    public int? AgencyScope { get; set; }
+    public bool UpdateEntitledScope { get; set; }
     public int? EntitledID { get; set; }
     public string FullName { get; set; } = string.Empty;
     public string NationalID { get; set; } = string.Empty;
@@ -42,6 +45,7 @@ public class UpdateAgentDto
 
 public class AgentDto
 {
+    public int? AgencyScope { get; set; }
     public int AgentID { get; set; }
     public int FileID { get; set; }
     public string FileNumber { get; set; } = string.Empty;
@@ -63,6 +67,8 @@ public class AgentDto
 
 public class AgentSearchResultDto
 {
+    public int? AgencyScope { get; set; }
+    public bool IsActive { get; set; }
     public int AgentID { get; set; }
     public string FullName { get; set; } = string.Empty;
     public string NationalID { get; set; } = string.Empty;

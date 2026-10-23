@@ -449,15 +449,19 @@ export function App() {
                         <Route path="/investment/settings" element={<InvestmentSettingsPage />} />
                       </Route>
 
+                      {/* ── مركز التقارير ── */}
+                      <Route element={<PermissionRoute anyPermission={["System.Admin", "Report.Pension.View", "Report.Financial.View", "Report.Entitlements.View", "Report.Documents.View", "Report.Admin.View"]} />}>
+                        <Route path="/reports/retirement-file-reports" element={<RetirementFileReportsPage />} />
+                        <Route path="/reports" element={<ReportsPage />} />
+                        <Route path="/reports/kashf" element={<KashfReportsPage />} />
+                        <Route path="/reports/:reportId" element={<ReportViewerPage />} />
+                      </Route>
+
                       {/* ── إدارة النظام ── */}
                       <Route element={<PermissionRoute permission="System.Admin" />}>
                         <Route path="/users" element={<Navigate to="/system-admin/users" replace />} />
                         <Route path="/system-admin/users" element={<UsersDirectoryPage />} />
                         <Route path="/admin" element={<AdminLandingPage />} />
-                        <Route path="/reports/retirement-file-reports" element={<RetirementFileReportsPage />} />
-                        <Route path="/reports" element={<ReportsPage />} />
-                        <Route path="/reports/kashf" element={<KashfReportsPage />} />
-                        <Route path="/reports/:reportId" element={<ReportViewerPage />} />
                         <Route path="/branches" element={<BranchesListPage />} />
                         <Route path="/banks" element={<BanksListPage />} />
                         <Route path="/ranks" element={<RanksListPage />} />

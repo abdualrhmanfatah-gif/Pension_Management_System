@@ -361,7 +361,7 @@ export function EditDocumentDialog({
                     ) : (
                         <Card className="border-dashed">
                             <CardContent className="flex flex-col items-center justify-center py-16 text-muted-foreground">
-                                <FileText className="h-12 w-12 mb-3 opacity-40" />
+                                <FileText className="h-12 w-12 mb-3 opacity-100" />
                                 <Text variant="body">لا توجد وثيقة مرفقة</Text>
                             </CardContent>
                         </Card>

@@ -1,5 +1,8 @@
 namespace PensionMS.Core.DTOs.Suspensions;
 
+/// <summary>نتيجة فحص موانع الصرف؛ لا تغني عن بقية فحوص تنفيذ العملية المالية.</summary>
+public sealed record PaymentHoldCheckDto(bool IsHeld, string? Reason, string SalaryStatus);
+
 /// <summary>
 /// DTO لعرض بيانات الإيقاف
 /// </summary>

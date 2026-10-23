@@ -6,9 +6,9 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { AlertTriangle, ArrowLeft, ArrowRight, Briefcase, FileUp,IdCard, MapPin, Save, Search, UserCheck } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, Briefcase, FileUp, IdCard, MapPin, Save, Search, UserCheck } from "lucide-react";
 
-import { useCallback, useEffect, useLayoutEffect, useRef,useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { createPortal } from "react-dom";
 
@@ -44,11 +44,12 @@ import {
 
     Textarea,
 
-    useConfirm} from "@/components/ui";
+    useConfirm
+} from "@/components/ui";
 
 import { DateInput } from "@/components/ui/Input";
 
-import { CLOSED_STATUS_ID, YEMEN_GOVERNORATES } from "@/constants/retirement";
+import { YEMEN_GOVERNORATES } from "@/constants/retirement";
 
 import { useApiMutation } from "@/hooks";
 
@@ -443,7 +444,7 @@ export function CreateFileWizard({ onSuccess, onCancel, onCreated, initialRetire
 
     }, [refetchPrefill, refetchEditFile, mode]);
 
-    /** حارس التحقق من وجود ملف نشط للمتقاعد. */
+    /** حارس التحقق من وجود ملف موجود للمتقاعد. */
 
     const checkExistingFile = useCallback(async (retireeId: number): Promise<{ active: ExistingFile | null; failed: boolean }> => {
 
@@ -451,7 +452,7 @@ export function CreateFileWizard({ onSuccess, onCancel, onCreated, initialRetire
 
             const res = await api.get<{ data: ExistingFile[] }>(`/retirement-files/by-retiree/${retireeId}`);
 
-            return { active: findActiveFile(res.data.data ?? [], CLOSED_STATUS_ID) ?? null, failed: false };
+            return { active: findActiveFile(res.data.data ?? []) ?? null, failed: false };
 
         } catch {
 
@@ -550,13 +551,10 @@ export function CreateFileWizard({ onSuccess, onCancel, onCreated, initialRetire
             setSearchingRetirees(true);
 
             try {
-
+                const normalizedSearch = normalizeArabicDigits(retireeSearch.trim());
                 const res = await api.get<{ data: { items: RetireeSearch[] } }>("/retirees", {
-
-                    params: { search: retireeSearch, page: 1, pageSize: 10 },
-
+                    params: { search: normalizedSearch, page: 1, pageSize: 10 },
                     signal: controller.signal,
-
                 });
 
                 if (controller.signal.aborted) return;
@@ -912,12 +910,12 @@ export function CreateFileWizard({ onSuccess, onCancel, onCreated, initialRetire
 
     }, [step, runValidation, prefillBlocked, createMutation, form, mode]);
 
-    /** Enter على متقاعد لديه ملف نشط: افتح تفاصيل الملف بدل إظهار خطأ منع المتابعة. */
+    /** Enter على متقاعد لديه ملف موجود: افتح تفاصيل الملف بدل إظهار خطأ منع المتابعة. */
     const openExistingFile = useCallback(() => {
 
         if (!existingFile) return;
 
-        // تدفق الإنشاء متروك: تُحذف المسودة لئلا تُستأنف مع تنبيه «ملف نشط» في المرة القادمة.
+        // تدفق الإنشاء متروك: تُحذف المسودة لئلا تُستأنف مع تنبيه «ملف موجود» في المرة القادمة.
         sessionStorage.removeItem(DRAFT_SESSION_KEY);
 
         onDirtyChange?.(false);
@@ -971,24 +969,30 @@ export function CreateFileWizard({ onSuccess, onCancel, onCreated, initialRetire
 
             const radioGroup = target?.closest<HTMLElement>('[role="radiogroup"]') ?? null;
 
-            // الأزرار والروابط و `<select>` تحتفظ بسلوك Enter الافتراضي
-            // (فتح قائمة الاختيار في `<select>`).
+            // الأزرار والروابط تحتفظ بسلوك Enter الافتراضي.
+            // SELECT مستثنى: نتولى انتقاله هنا عبر المنطق الموحد، إلا إذا كانت فارغة
+            // (يستدعي NativeSelect.onKeyDown الفتح natively حتى بعد إضافة preventDefault هنا).
             // RadioGroup مستثنى حتى نعامل المجموعة كحقل منطقي واحد.
             const keepsNativeEnter =
                 !radioGroup &&
                 !!target &&
                 (
                     target.tagName === "BUTTON" ||
-                    target.tagName === "SELECT" ||
                     target.tagName === "A" ||
                     target.getAttribute("role") === "button"
                 );
 
-            if (keepsNativeEnter) return;
+            // SELECT بقيمة محددة: نديره عبر السلسلة (الأولوية للمنطق أدناه).
+            // SELECT بلا قيمة: نتركه يفتح منتقي الاختيار natively عبر NativeSelect.onKeyDown.
+            const isEmptySelect =
+                target?.tagName === "SELECT" &&
+                !(target as HTMLSelectElement).value;
+
+            if (keepsNativeEnter || isEmptySelect) return;
 
             e.preventDefault();
 
-            // متقاعد لديه ملف نشط بالفعل: Enter ينقل إلى تفاصيل الملف، لا إلى الخطوة التالية.
+            // متقاعد لديه ملف موجود بالفعل: Enter ينقل إلى تفاصيل الملف، لا إلى الخطوة التالية.
             if (shouldOpenExistingFileOnEnter({ mode, step, existingFile })) {
                 openExistingFile();
                 return;
@@ -1036,24 +1040,22 @@ export function CreateFileWizard({ onSuccess, onCancel, onCreated, initialRetire
                 return;
             }
 
-            // لا حقل تالٍ داخل الخطوة: إن وُجد زر إجراء نهائي نضع المؤشر عليه
-            // (Enter مرة أخرى ينفّذه natively)، وإلا ننتقل بالخطوة أو نحفظ.
-            const finalAction = rootRef.current?.querySelector<HTMLElement>(
-                "[data-enter-chain-target]"
-            );
-
-            if (finalAction) {
-                finalAction.focus();
+            // لا حقل تالٍ داخل الخطوة.
+            // في الخطوة الأخيرة: نُركّز زر الحفظ ليعلم المستخدم أن Enter التالي سيحفظ.
+            // في أي خطوة أخرى: ننتقل مباشرةً بدون ضغطة Enter إضافية.
+            if (step === steps.length - 1) {
+                const finalAction = rootRef.current?.querySelector<HTMLElement>(
+                    "[data-enter-chain-target]"
+                );
+                if (finalAction) {
+                    finalAction.focus();
+                    return;
+                }
+                handleSubmit();
                 return;
             }
 
-            // آخر حقل في الخطوة: التحقق ثم الانتقال، أو الحفظ في آخر خطوة.
-            if (step < steps.length - 1) {
-                next();
-                return;
-            }
-
-            handleSubmit();
+            next();
         },
         [step, next, handleSubmit, focusFieldAt, mode, existingFile, openExistingFile],
     );
@@ -1109,7 +1111,7 @@ export function CreateFileWizard({ onSuccess, onCancel, onCreated, initialRetire
 
         <div ref={rootRef} className="flex flex-col h-full overflow-x-auto bg-background" tabIndex={-1} data-wizard-root>
 
-            <div className="shrink-0 py-3 px-4 border-b bg-muted/5">
+            <div className="shrink-0 px-3 py-3 sm:px-6 sm:py-4 bg-card rounded-t-2xl">
 
                 <Stepper steps={steps} activeStep={step} onStepClick={(i) => i < step && i >= firstStep && setStep(i)} />
 
@@ -1127,7 +1129,7 @@ export function CreateFileWizard({ onSuccess, onCancel, onCreated, initialRetire
 
                 {prefillError && (
 
-                    <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 flex items-start justify-between gap-3">
+                    <div className="rounded-lg border border-destructive bg-destructive/5 px-4 py-3 flex items-start justify-between gap-3">
 
                         <div className="flex items-start gap-2 text-sm text-destructive">
 
@@ -1155,191 +1157,187 @@ export function CreateFileWizard({ onSuccess, onCancel, onCreated, initialRetire
 
                 {step === 0 && mode === "create" && (
 
-                        <FormSection title="البحث واختيار المتقاعد" icon={UserCheck}>
+                    <FormSection>
 
-                            <div className="space-y-4">
+                        <div className="space-y-4">
 
-                                {!form.retireeID ? (
+                            {!form.retireeID ? (
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 dlg-gap items-end">
+                                <div className="max-w-2xl mx-auto w-full">
 
-                                        <div className="md:col-span-3 relative" ref={searchContainerRef}>
+                                        <FormField label="ابحث عن المتقاعد بالاسم أو الرقم الوطني" error={errors.retireeID}>
 
-                                            <FormField label="ابحث عن المتقاعد بالاسم أو الرقم الوطني" error={errors.retireeID}>
+                                            <div ref={searchContainerRef} className="relative">
 
-                                                <div className="relative">
+                                                <Search className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground z-10" />
 
-                                                    <Search className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground z-10" />
+                                                <Input
 
-                                                    <Input
+                                                    value={retireeSearch}
 
-                                                        value={retireeSearch}
+                                                    onChange={(e) => setRetireeSearch(e.target.value)}
 
-                                                        onChange={(e) => setRetireeSearch(e.target.value)}
+                                                    onKeyDown={handleSearchKeyDown}
 
-                                                        onKeyDown={handleSearchKeyDown}
+                                                    className="pe-10"
 
-                                                        className="pe-10"
+                                                    placeholder="أدخل اسم المتقاعد أو الرقم الوطني..."
 
-                                                        placeholder="أدخل اسم المتقاعد أو الرقم الوطني..."
+                                                    autoFocus
 
-                                                        autoFocus
+                                                />
 
-                                                    />
+                                            </div>
 
-                                                </div>
+                                        </FormField>
 
-                                            </FormField>
+                                        {showDropdown && dropdownPos && createPortal(
 
-                                            {showDropdown && dropdownPos && createPortal(
+                                            <div
 
-                                                <div
+                                                ref={dropdownRef}
 
-                                                    ref={dropdownRef}
+                                                className="fixed z-dialog rounded-lg border bg-card max-h-64 overflow-y-auto shadow-lg"
 
-                                                    className="fixed z-dialog rounded-lg border bg-card max-h-64 overflow-y-auto shadow-lg"
+                                                style={{ top: dropdownPos.top, left: dropdownPos.left, width: dropdownPos.width }}
 
-                                                    style={{ top: dropdownPos.top, left: dropdownPos.left, width: dropdownPos.width }}
+                                            >
 
-                                                >
+                                                {searchingRetirees && <div className="px-4 py-3 text-sm text-muted-foreground">جاري البحث...</div>}
 
-                                                    {searchingRetirees && <div className="px-4 py-3 text-sm text-muted-foreground">جاري البحث...</div>}
+                                                {retireeResults.map((r, i) => (
 
-                                                    {retireeResults.map((r, i) => (
+                                                    <Button
 
-                                                        <Button
+                                                        key={r.retireeID}
 
-                                                            key={r.retireeID}
+                                                        type="button"
 
-                                                            type="button"
+                                                        variant="ghost"
 
-                                                            variant="ghost"
+                                                        data-dropdown-item
 
-                                                            data-dropdown-item
+                                                        className={`w-full justify-start px-4 py-3 h-auto border-b border-border last:border-0 gap-3 ${i === highlightedIndex ? "bg-primary/10" : ""}`}
 
-                                                            className={`w-full justify-start px-4 py-3 h-auto border-b border-border/40 last:border-0 gap-3 ${i === highlightedIndex ? "bg-primary/10" : ""}`}
+                                                        onClick={() => selectRetiree(r)}
 
-                                                            onClick={() => selectRetiree(r)}
+                                                        onMouseEnter={() => setHighlightedIndex(i)}
 
-                                                            onMouseEnter={() => setHighlightedIndex(i)}
+                                                    >
 
-                                                        >
+                                                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs shrink-0">{r.fullName.charAt(0)}</div>
 
-                                                            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs shrink-0">{r.fullName.charAt(0)}</div>
+                                                        <div className="min-w-0 flex-1 text-start">
 
-                                                            <div className="min-w-0 flex-1 text-start">
+                                                            <div className="font-bold text-sm truncate">{r.fullName}</div>
 
-                                                                <div className="font-bold text-sm truncate">{r.fullName}</div>
+                                                            <div className="text-[10px] sm:text-xs text-muted-foreground flex gap-3">
 
-                                                                <div className="text-[10px] sm:text-xs text-muted-foreground flex gap-3">
+                                                                <span>الرقم الوطني: {r.nationalID}</span>
 
-                                                                    <span>الرقم الوطني: {r.nationalID}</span>
-
-                                                                    {r.militaryNumber && <span>الرقم العسكري: {r.militaryNumber}</span>}
-
-                                                                </div>
+                                                                {r.militaryNumber && <span>الرقم العسكري: {r.militaryNumber}</span>}
 
                                                             </div>
 
-                                                        </Button>
+                                                        </div>
 
-                                                    ))}
+                                                    </Button>
 
-                                                </div>,
+                                                ))}
 
-                                                document.body
+                                            </div>,
 
-                                            )}
+                                            document.body
 
-                                            {errors.retireeSearch && (
+                                        )}
 
-                                                <div className="text-sm text-destructive font-medium bg-destructive/5 border border-destructive/20 rounded-lg px-4 py-2.5 flex items-center gap-2 animate-in fade-in slide-in-from-top-1">
+                                        {errors.retireeSearch && (
 
-                                                    <span className="text-destructive/70">⚠️</span> {errors.retireeSearch}
+                                            <div className="text-sm text-destructive font-medium bg-destructive/5 border border-destructive rounded-lg px-4 py-2.5 flex items-center gap-2 animate-in fade-in slide-in-from-top-1">
 
-                                                </div>
+                                                <span className="text-destructive">⚠️</span> {errors.retireeSearch}
 
-                                            )}
+                                            </div>
+
+                                        )}
+
+                                </div>
+
+                            ) : (
+
+                                <>
+
+                                    <div className="flex items-center justify-between rounded-lg border border-emerald-200 px-4 py-3 bg-emerald-50/50 flex-wrap gap-2">
+
+                                        <div className="flex items-center gap-3">
+
+                                            <div className="w-8 h-8 rounded bg-emerald-100 flex items-center justify-center text-emerald-600"><UserCheck className="w-4 h-4" /></div>
+
+                                            <Text variant="body" className="font-bold text-emerald-700">{form.retireeDisplayName}</Text>
 
                                         </div>
+
+                                        <Button type="button" variant="ghost" size="sm" className="h-11 text-xs" onClick={() => { patchForm((f) => ({ ...f, retireeID: 0, retireeDisplayName: "" })); setExistingFile(null); setExistingCheckFailed(false); }}>تغيير</Button>
 
                                     </div>
 
-                                ) : (
+                                    {checkingExistingFile && (
 
-                                    <>
+                                        <Text variant="caption">جاري التحقق من الملفات السابقة...</Text>
 
-                                        <div className="flex items-center justify-between rounded-lg border border-emerald-200 px-4 py-3 bg-emerald-50/50 flex-wrap gap-2">
+                                    )}
 
-                                            <div className="flex items-center gap-3">
+                                    {existingFile && (
 
-                                                <div className="w-8 h-8 rounded bg-emerald-100 flex items-center justify-center text-emerald-600"><UserCheck className="w-4 h-4" /></div>
+                                        <div className="rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 flex items-start gap-3 animate-in fade-in slide-in-from-top-1">
 
-                                                <Text variant="body" className="font-bold text-emerald-700">{form.retireeDisplayName}</Text>
+                                            <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+
+                                            <div className="text-sm text-amber-800">
+
+                                                <Text variant="body" className="font-bold">هذا المتقاعد لديه ملف موجود بالفعل</Text>
+
+                                                <Text variant="body" className="mt-0.5">
+
+                                                    رقم الملف: <span className="font-mono font-semibold">{existingFile.fileNumber}</span>
+
+                                                    {existingFile.fileStatusName && <> — الحالة: {existingFile.fileStatusName}</>}
+
+                                                </Text>
+
+                                                <Text variant="caption" className="mt-1 text-amber-700">لا يمكن فتح ملف جديد لمتقاعد لديه ملف غير مغلق.</Text>
 
                                             </div>
-
-                                            <Button type="button" variant="ghost" size="sm" className="h-11 text-xs" onClick={() => { patchForm((f) => ({ ...f, retireeID: 0, retireeDisplayName: "" })); setExistingFile(null); setExistingCheckFailed(false); }}>تغيير</Button>
 
                                         </div>
 
-                                        {checkingExistingFile && (
+                                    )}
 
-                                            <Text variant="caption">جاري التحقق من الملفات السابقة...</Text>
+                                    {existingCheckFailed && (
 
-                                        )}
+                                        <div className="rounded-lg border border-destructive bg-destructive/5 px-4 py-3 flex items-start gap-3 animate-in fade-in slide-in-from-top-1">
 
-                                        {existingFile && (
+                                            <AlertTriangle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
 
-                                            <div className="rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 flex items-start gap-3 animate-in fade-in slide-in-from-top-1">
+                                            <div className="text-sm text-destructive">
 
-                                                <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                                                <Text variant="body" className="font-bold">تعذّر التحقق من ملفات المتقاعد</Text>
 
-                                                <div className="text-sm text-amber-800">
-
-                                                    <Text variant="body" className="font-bold">هذا المتقاعد لديه ملف نشط بالفعل</Text>
-
-                                                    <Text variant="body" className="mt-0.5">
-
-                                                        رقم الملف: <span className="font-mono font-semibold">{existingFile.fileNumber}</span>
-
-                                                        {existingFile.fileStatusName && <> — الحالة: {existingFile.fileStatusName}</>}
-
-                                                    </Text>
-
-                                                    <Text variant="caption" className="mt-1 text-amber-700">لا يمكن فتح ملف جديد لمتقاعد لديه ملف غير مغلق.</Text>
-
-                                                </div>
+                                                <Text variant="caption" className="mt-1 block">أعد اختيار المتقاعد للمحاولة مرة أخرى قبل المتابعة.</Text>
 
                                             </div>
 
-                                        )}
+                                        </div>
 
-                                        {existingCheckFailed && (
+                                    )}
 
-                                            <div className="rounded-lg border border-destructive/40 bg-destructive/5 px-4 py-3 flex items-start gap-3 animate-in fade-in slide-in-from-top-1">
+                                </>
 
-                                                <AlertTriangle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
+                            )}
 
-                                                <div className="text-sm text-destructive">
+                        </div>
 
-                                                    <Text variant="body" className="font-bold">تعذّر التحقق من ملفات المتقاعد</Text>
-
-                                                    <Text variant="caption" className="mt-1 block">أعد اختيار المتقاعد للمحاولة مرة أخرى قبل المتابعة.</Text>
-
-                                                </div>
-
-                                            </div>
-
-                                        )}
-
-                                    </>
-
-                                )}
-
-                            </div>
-
-                        </FormSection>
+                    </FormSection>
 
                 )}
 
@@ -1436,15 +1434,15 @@ export function CreateFileWizard({ onSuccess, onCancel, onCreated, initialRetire
 
                             {!form.isAlive && mode === "create" && (
 
-                                <div className="pb-4 border-b border-border/50 mb-4 animate-in fade-in slide-in-from-top-1">
+                                <div className="pb-4 border-b border-border mb-4 animate-in fade-in slide-in-from-top-1">
 
                                     <div className="max-w-sm">
 
-                                            <FormField label="تاريخ الوفاة" required error={errors.deathDate}>
+                                        <FormField label="تاريخ الوفاة" required error={errors.deathDate}>
 
-                                                <DateInput data-enter-advance value={form.deathDate} onChange={(val) => patchForm((f) => ({ ...f, deathDate: val || "" }))} />
+                                            <DateInput data-enter-advance value={form.deathDate} onChange={(val) => patchForm((f) => ({ ...f, deathDate: val || "" }))} />
 
-                                            </FormField>
+                                        </FormField>
 
 
                                     </div>
@@ -1485,7 +1483,7 @@ export function CreateFileWizard({ onSuccess, onCancel, onCreated, initialRetire
 
                                 <FormField label="تاريخ الميلاد" required={form.isAlive} error={errors.birthDate}>
 
-                                   <DateInput value={form.birthDate} onChange={(val) => patchForm((f) => ({ ...f, birthDate: val || "" }))} />
+                                    <DateInput value={form.birthDate} onChange={(val) => patchForm((f) => ({ ...f, birthDate: val || "" }))} />
 
                                 </FormField>
 
@@ -1603,7 +1601,7 @@ export function CreateFileWizard({ onSuccess, onCancel, onCreated, initialRetire
 
                                 <FormField label="المدينة"><Input value={form.city} onChange={(e) => patchForm((f) => ({ ...f, city: e.target.value }))} placeholder="المدينة" /></FormField>
 
-                                <FormField label="رقم الهاتف" error={errors.phone}><Input value={form.phone} onChange={(e) => patchForm((f) => ({ ...f, phone: normalizeArabicDigits(e.target.value).replace(/\D/g, "") }))} placeholder="7xxxxxxx" maxLength={9} /></FormField>
+                                <FormField label="رقم الهاتف" error={errors.phone}><Input value={form.phone} onChange={(e) => patchForm((f) => ({ ...f, phone: e.target.value }))} placeholder="7xxxxxxx" /></FormField>
 
                                 <div className="md:col-span-2 lg:col-span-3"><FormField label="العنوان التفصيلي"><Input value={form.address} onChange={(e) => patchForm((f) => ({ ...f, address: e.target.value }))} placeholder="العنوان بالكامل..." /></FormField></div>
 
@@ -1649,7 +1647,7 @@ export function CreateFileWizard({ onSuccess, onCancel, onCreated, initialRetire
 
             </div>
 
-            <div className="shrink-0 border-t bg-background z-30" style={{ padding: 'var(--dlg-footer-py) var(--dlg-body-px)' }}>
+            <div className="shrink-0 bg-background z-30" style={{ padding: 'var(--dlg-footer-py) var(--dlg-body-px)' }}>
 
                 <div className="flex items-center justify-between gap-3 w-full">
 

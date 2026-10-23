@@ -151,7 +151,10 @@ public class FixedAssetService : IFixedAssetService
         return ApiResponse<List<AssetCategoryDto>>.Success(categories);
     }
 
-    public async Task<ApiResponse<FixedAssetDto>> CreateAsync(CreateFixedAssetDto dto, int userId)
+    public Task<ApiResponse<FixedAssetDto>> CreateAsync(CreateFixedAssetDto dto, int userId) =>
+        UnitOfWorkTransaction.ExecuteAsync(_unitOfWork, () => CreateCoreAsync(dto, userId));
+
+    private async Task<ApiResponse<FixedAssetDto>> CreateCoreAsync(CreateFixedAssetDto dto, int userId)
     {
         // توليد رقم الأصل
         var assetNumberResponse = await GenerateAssetNumberAsync(dto.AssetTypeID);
@@ -272,7 +275,6 @@ public class FixedAssetService : IFixedAssetService
 
         await _dbContext.SaveChangesAsync();
 
-        await _auditService.LogAsync(userId, "", "Create", "FixedAsset", asset.AssetID, null, System.Text.Json.JsonSerializer.Serialize(dto));
 
         // إنشاء القيد المحاسبي: مدين حساب الأصل / دائن الخزينة
         if (!dto.SkipJournalEntry && assetAccountId > 0 && acquiredCost > 0)
@@ -280,9 +282,6 @@ public class FixedAssetService : IFixedAssetService
             var periodId = await _journalEntry.GetPeriodIdForDateAsync(dto.PurchaseDate);
             if (periodId <= 0)
             {
-                // حذف الأصل المُنشأ لأن القيد لا يمكن إنشاؤه
-                _dbContext.FixedAssets.Remove(asset);
-                await _dbContext.SaveChangesAsync();
                 return ApiResponse<FixedAssetDto>.Fail($"لا توجد فترة مالية مفتوحة بتاريخ الشراء ({dto.PurchaseDate:yyyy-MM-dd}). أنشئ السنة المالية أولاً.");
             }
 
@@ -292,8 +291,6 @@ public class FixedAssetService : IFixedAssetService
 
             if (treasuryAccount == null)
             {
-                _dbContext.FixedAssets.Remove(asset);
-                await _dbContext.SaveChangesAsync();
                 return ApiResponse<FixedAssetDto>.Fail("حساب الخزينة الرئيسية (1811) غير موجود في الدليل المحاسبي.");
             }
 
@@ -312,8 +309,11 @@ public class FixedAssetService : IFixedAssetService
                     new() { AccountID = treasuryAccount.AccountID, Debit = 0, Credit = acquiredCost, Description = "الخزينة الرئيسية" }
                 }
             }, userId);
+            if (!journalResult.IsSuccess)
+                return ApiResponse<FixedAssetDto>.Fail(journalResult.Message ?? "فشل إنشاء قيد الأصل");
         }
 
+        await _auditService.LogAsync(userId, "", "Create", "FixedAsset", asset.AssetID, null, System.Text.Json.JsonSerializer.Serialize(dto));
         return await GetByIdAsync(asset.AssetID);
     }
 
@@ -368,7 +368,6 @@ public class FixedAssetService : IFixedAssetService
         asset.UpdatedAt = DateTime.UtcNow;
         asset.UpdatedByUserID = userId;
 
-        _unitOfWork.FixedAssets.Update(asset);
         await _unitOfWork.SaveChangesAsync();
 
         // تحديث التفاصيل
@@ -396,7 +395,9 @@ public class FixedAssetService : IFixedAssetService
         if (hasActiveCustody)
             return ApiResponse<bool>.Fail("لا يمكن حذف الأصل لوجود عهد نشطة مرتبطة به");
 
-        _unitOfWork.FixedAssets.Delete(asset);
+        asset.IsDeleted = true;
+        asset.DeletedAt = DateTime.UtcNow;
+        asset.DeletedByUserID = userId;
         await _unitOfWork.SaveChangesAsync();
 
         await _auditService.LogAsync(userId, "", "Delete", "FixedAsset", id, null, null);
@@ -454,10 +455,18 @@ public class FixedAssetService : IFixedAssetService
 
     public async Task<ApiResponse<bool>> RunYearlyDepreciationAsync(int year, int userId)
     {
+        if (year is < 1 or > 9999)
+            return ApiResponse<bool>.Fail("السنة غير صالحة");
         var assets = await _dbContext.FixedAssets
             .Where(a => a.Status == AssetStatus.Active
                 && a.DepreciationRate > 0)
             .ToListAsync();
+
+        var existingPeriods = (await _dbContext.DepreciationSchedules
+            .AsNoTracking()
+            .Where(d => d.PeriodYear == year)
+            .Select(d => new { d.AssetID, d.PeriodMonth })
+            .ToListAsync()).Select(d => (d.AssetID, d.PeriodMonth)).ToHashSet();
 
         int totalRecords = 0;
         int monthsProcessed = 0;
@@ -468,10 +477,10 @@ public class FixedAssetService : IFixedAssetService
 
             foreach (var asset in assets)
             {
-                // التحقق من عدم وجود هلاك لهذا الشهر مسبقاً
-                var exists = await _dbContext.DepreciationSchedules
-                    .AnyAsync(d => d.AssetID == asset.AssetID && d.PeriodYear == year && d.PeriodMonth == month);
-                if (exists) continue;
+                if (year < asset.InServiceDate.Year
+                    || year == asset.InServiceDate.Year && month < asset.InServiceDate.Month)
+                    continue;
+                if (existingPeriods.Contains((asset.AssetID, month))) continue;
 
                 // حساب الهلاك الشهري = (التكلفة - القيمة المتبقية) × (النسبة ÷ 100) ÷ 12
                 var depreciableAmount = asset.AcquiredCost - asset.SalvageValue;
@@ -889,47 +898,18 @@ public class FixedAssetService : IFixedAssetService
         };
     }
 
-    public async Task<ApiResponse<int>> ResetCategoriesAsync()
-    {
-        // 1. حذف جداول التفاصيل المرتبطة بالأصول
-        var vehicleDetails = await _dbContext.AssetVehicleDetails.ToListAsync();
-        _dbContext.AssetVehicleDetails.RemoveRange(vehicleDetails);
-
-        var itDetails = await _dbContext.AssetITDetails.ToListAsync();
-        _dbContext.AssetITDetails.RemoveRange(itDetails);
-
-        var buildingDetails = await _dbContext.AssetBuildingDetails.ToListAsync();
-        _dbContext.AssetBuildingDetails.RemoveRange(buildingDetails);
-
-        var landDetails = await _dbContext.AssetLandDetails.ToListAsync();
-        _dbContext.AssetLandDetails.RemoveRange(landDetails);
-
-        var furnitureDetails = await _dbContext.AssetFurnitureDetails.ToListAsync();
-        _dbContext.AssetFurnitureDetails.RemoveRange(furnitureDetails);
-
-        // 2. حذف جدولة الإهلاك
-        var schedules = await _dbContext.DepreciationSchedules.ToListAsync();
-        _dbContext.DepreciationSchedules.RemoveRange(schedules);
-
-        // 3. حذف عناصر الحراسة المرتبطة بالأصول
-        var custodies = await _dbContext.InventoryCustodies.ToListAsync();
-        _dbContext.InventoryCustodies.RemoveRange(custodies);
-
-        // 4. حذف الأصول
-        var assets = await _dbContext.FixedAssets.ToListAsync();
-        _dbContext.FixedAssets.RemoveRange(assets);
-
-        // 5. حذف التصنيفات
-        var categories = await _dbContext.FixedAssetCategories.ToListAsync();
-        _dbContext.FixedAssetCategories.RemoveRange(categories);
-
-        await _dbContext.SaveChangesAsync();
-
-        // 6. إعادة إنشاء التصنيفات بالحسابات الصحيحة
-        await FixedAssetCategorySeeder.SeedAsync(_dbContext);
-
-        return ApiResponse<int>.Success(categories.Count, $"تم حذف {assets.Count} أصل و {categories.Count} تصنيف وإعادة تهيئتها");
-    }
+    public Task<ApiResponse<int>> ResetCategoriesAsync() =>
+        UnitOfWorkTransaction.ExecuteAsync(_unitOfWork, async () =>
+        {
+            // Historical assets retain their category, details and depreciation records.
+            if (await _dbContext.FixedAssets.IgnoreQueryFilters().AnyAsync())
+                return ApiResponse<int>.Fail("لا يمكن إعادة تهيئة التصنيفات لوجود أصول حالية أو تاريخية؛ عدّل التصنيفات القائمة.");
+            var categories = await _dbContext.FixedAssetCategories.ToListAsync();
+            _dbContext.FixedAssetCategories.RemoveRange(categories);
+            await _dbContext.SaveChangesAsync();
+            await FixedAssetCategorySeeder.SeedAsync(_dbContext);
+            return ApiResponse<int>.Success(categories.Count, "تمت إعادة تهيئة التصنيفات");
+        });
 
     public async Task<ApiResponse<AssetCategoryDto>> CreateCategoryAsync(CreateAssetCategoryDto dto, int userId)
     {
@@ -984,7 +964,7 @@ public class FixedAssetService : IFixedAssetService
             .FirstOrDefaultAsync(c => c.CategoryID == id);
         if (entity == null)
             return ApiResponse<bool>.Fail("التصنيف غير موجود");
-        if (entity.Assets.Count > 0)
+        if (await _dbContext.FixedAssets.IgnoreQueryFilters().AnyAsync(a => a.CategoryID == id))
             return ApiResponse<bool>.Fail("لا يمكن حذف تصنيف مرتبط بأصول");
 
         _dbContext.FixedAssetCategories.Remove(entity);

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/Button";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { Dialog, DialogContent, DialogDescription,DialogHeader, DialogTitle } from "@/components/ui/Dialog";
 import { combineScannedPages } from "@/lib/scanned-document";
 import { cn } from "@/lib/utils";
@@ -14,8 +15,8 @@ import { ImageCropperDialog } from "./ImageCropperDialog";
 export interface FileUploaderProps {
     /** قيمة الملف الحالي */
     value?: File | string | null;
-    /** callback عند تغيير الملف */
-    onChange?: (file: File | null) => void;
+    /** callback عند تغيير الملف؛ يمكن إرجاع false عند رفض إضافته */
+    onChange?: (file: File | null) => void | boolean;
     /** Label للمكون */
     label?: string;
     /** هل الحقل إلزامي */
@@ -30,6 +31,8 @@ export interface FileUploaderProps {
     showPreview?: boolean;
     /** هل يتم تفعيل الكاميرا */
     enableCamera?: boolean;
+    /** سؤال المستخدم عن تصوير مرفق آخر بعد قبول الصورة */
+    allowContinuousCapture?: boolean;
     /** هل يتم تفعيل الماسح الضوئي */
     enableScanner?: boolean;
     /** إعدادات الماسح الضوئي */
@@ -230,6 +233,7 @@ export function FileUploader({
     hint,
     showPreview = true,
     enableCamera = true,
+    allowContinuousCapture = false,
     enableScanner = true,
     scannerConfig: userScannerConfig,
     size = "md",
@@ -254,6 +258,7 @@ export function FileUploader({
 
     // Camera state
     const [cameraOpen, setCameraOpen] = useState(false);
+    const [continueCaptureOpen, setContinueCaptureOpen] = useState(false);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [cropOpen, setCropOpen] = useState(false);
     const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
@@ -335,6 +340,7 @@ export function FileUploader({
                 return;
             }
             // فتح crop يدوي مباشر بدون auto-scan
+            cropCompletedRef.current = false;
             setPendingCropFile(file);
             setCropOpen(true);
         }
@@ -404,6 +410,7 @@ export function FileUploader({
                         );
                         handleCloseCamera();
                         // فتح crop يدوي مباشر بدون auto-scan
+                        cropCompletedRef.current = false;
                         setPendingCropFile(file);
                         setCropOpen(true);
                     }
@@ -720,7 +727,7 @@ export function FileUploader({
             <div
                 className={cn(
                     "relative border-2 border-dashed rounded-lg transition-all flex-1 flex flex-col items-center justify-center",
-                    "hover:border-primary/50 hover:bg-primary/5",
+                    "hover:border-primary hover:bg-primary/5",
                     hasFile && "border-primary bg-primary/5",
                     error && "border-destructive",
                     disabled && "opacity-50 cursor-not-allowed",
@@ -748,7 +755,7 @@ export function FileUploader({
                                     e.stopPropagation();
                                     setPreviewOpen(true);
                                 }}
-                                className="max-h-16 sm:max-h-20 max-w-[90%] rounded object-contain mb-1 cursor-pointer hover:opacity-80 transition-opacity"
+                                className="max-h-16 sm:max-h-20 max-w-[90%] rounded object-contain mb-1 cursor-pointer hover:opacity-100 transition-opacity"
                             />
                         ) : isPdf ? (
                             <div className="p-2 bg-red-100 rounded-lg mb-1">
@@ -849,7 +856,7 @@ export function FileUploader({
                                                 loading={scanning}
                                                 className={cn(
                                                     "min-h-[40px] px-3 text-xs sm:text-sm relative z-10",
-                                                    !scannerAvailable && "opacity-60"
+                                                    !scannerAvailable && "opacity-100"
                                                 )}
                                                 title={scannerAvailable ? "مسح ضوئي لورقة واحدة" : scannerProblem ? `الماسح غير متاح: ${SCANNER_PROBLEM_MESSAGES[scannerProblem]}` : "الماسح غير متاح - تأكد من تشغيل Scanner Agent"}
                                             >
@@ -869,7 +876,7 @@ export function FileUploader({
                                                 loading={scanning}
                                                 className={cn(
                                                     "min-h-[40px] px-3 text-xs sm:text-sm relative z-10 border-primary text-primary hover:bg-primary/10",
-                                                    !scannerAvailable && "opacity-60"
+                                                    !scannerAvailable && "opacity-100"
                                                 )}
                                                 title={scannerAvailable ? "سحب أكثر من ورقة (ADF)" : scannerProblem ? `الماسح غير متاح: ${SCANNER_PROBLEM_MESSAGES[scannerProblem]}` : "الماسح غير متاح - تأكد من تشغيل Scanner Agent"}
                                             >
@@ -888,8 +895,8 @@ export function FileUploader({
                                                 disabled={disabled || scanning}
                                                 loading={scanning}
                                                 className={cn(
-                                                    "min-h-[40px] px-3 text-xs sm:text-sm relative z-10 border-blue-500/50 text-blue-600 hover:bg-blue-500/10",
-                                                    !scannerAvailable && "opacity-60"
+                                                    "min-h-[40px] px-3 text-xs sm:text-sm relative z-10 border-blue-500 text-blue-600 hover:bg-blue-500/10",
+                                                    !scannerAvailable && "opacity-100"
                                                 )}
                                                 title={scannerAvailable ? "مسح صورة شخصية (4×6 سم)" : scannerProblem ? `الماسح غير متاح: ${SCANNER_PROBLEM_MESSAGES[scannerProblem]}` : "الماسح غير متاح"}
                                             >
@@ -1034,23 +1041,50 @@ export function FileUploader({
             <ImageCropperDialog
                 open={cropOpen}
                 imageFile={pendingCropFile || value!}
-                onClose={() => {
-                    // إذا تم إغلاق نافذة القص بدون إتمام وكان هذا ملفاً قيد الانتظار (من الكاميرا مثلا)، فلا نمرره لـ onChange بل نلغيه
+                onClose={async () => {
+                    // إذا كان هناك التقاط جديد، يتم اعتماد الصورة الأصلية بدلاً من تجاهلها عند إلغاء القص
+                    const originalFile = pendingCropFile && !cropCompletedRef.current ? pendingCropFile : null;
+                    cropCompletedRef.current = true;
                     setPendingCropFile(null);
-                    cropCompletedRef.current = false;
                     setCropOpen(false);
+
+                    if (originalFile) {
+                        try {
+                            const validated = await validateFinalFile(originalFile);
+                            const accepted = onChange?.(validated);
+                            if (allowContinuousCapture && onChange && accepted !== false) {
+                                setContinueCaptureOpen(true);
+                            }
+                        } catch (err) {
+                            const message = err instanceof Error ? err.message : "فشل اعتماد الصورة";
+                            toast.error(message);
+                        }
+                    }
+
                 }}
                 onCrop={async (croppedFile) => {
-                    // م40: إعادة فحص accept/size على ناتج القص قبل التسليم
-                    try {
-                        const validated = await validateFinalFile(croppedFile);
-                        onChange?.(validated);
-                    } catch (err: unknown) {
-                        toast.error(err instanceof Error ? err.message : "خطأ في نتيجة القص");
+                    // م40: إعادة فحص accept/size على ناتج القص قبل التسليم.
+                    // الرمي يُبقي محرر القص مفتوحًا ويعرض ImageCropperDialog الرسالة.
+                    const validated = await validateFinalFile(croppedFile);
+                    cropCompletedRef.current = true;
+                    const accepted = onChange?.(validated);
+                    if (pendingCropFile && allowContinuousCapture && onChange && accepted !== false) {
+                        setContinueCaptureOpen(true);
                     }
                     setPendingCropFile(null);
-                    cropCompletedRef.current = true;
-                    setCropOpen(false);
+                }}
+            />
+            <ConfirmDialog
+                open={continueCaptureOpen}
+                onOpenChange={setContinueCaptureOpen}
+                title="هل تريد مواصلة التصوير؟"
+                description="تمت إضافة الصورة إلى قائمة المرفقات. هل تريد تصوير مرفق آخر؟"
+                confirmLabel="تصوير مرفق آخر"
+                cancelLabel="إنهاء التصوير"
+                variant="info"
+                onConfirm={() => {
+                    setContinueCaptureOpen(false);
+                    handleOpenCamera();
                 }}
             />
         </div>

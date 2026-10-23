@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ChevronDown, Eye, Filter, User, X } from "lucide-react";
+import { Eye, FileText, User, X } from "lucide-react";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -9,25 +9,28 @@ import { lookupApi } from "@/api/pension";
 import { retirementApi } from "@/api/retirement";
 import { SearchDialog } from "@/components/common/SearchDialog";
 import { DataEntryView } from "@/components/domain/retirement/DataEntryView";
-import { DocumentUploadView } from "@/components/domain/retirement/DocumentUploadView";
+import { FileStatusBadge } from "@/components/domain/retirement/FileStatusBadge";
+import { RetirementFileCard } from "@/components/domain/retirement/RetirementFileCard";
 import { RetirementFileDialog } from "@/components/domain/retirement/RetirementFileDialog";
 import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
     Badge,
     Button,
     CrudPageLayout,
     type CustomColumnDef,
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+    NativeSelect,
+    Skeleton,
 } from "@/components/ui";
 import { VIEW_MODE } from "@/constants";
 import { queryKeys } from "@/constants/queryKeys";
 import { useCreateFileIntent } from "@/constants/shortcuts";
 import { useCreateShortcut,useCrudState, useRoleBasedUI } from "@/hooks";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
-import { cn, getStatusColorClass } from "@/lib/utils";
+import { retirementFileCardClassName } from "@/lib/retirementFileCard";
+import { MissingDocsCompletionPage } from "@/pages/documents/MissingDocsCompletionPage";
 import { useHasPermission } from "@/stores/authStore";
 import type { RetirementFileListItem } from "@/types/retirement";
 
@@ -73,7 +76,6 @@ export function RetirementFilesPage() {
     const [rankId, setRankId] = useState<string>("");
     const [gender, setGender] = useState<string>("");
     const [governorate, setGovernorate] = useState<string>("");
-    const [filtersOpen, setFiltersOpen] = useState<boolean>(false);
 
     const filters = useMemo(() => ({
         statusId: statusId ? Number(statusId) : undefined,
@@ -155,7 +157,7 @@ export function RetirementFilesPage() {
 
     const onSearchChange = React.useCallback((val: string) => {
         setSearch(val);
-    }, []);
+    }, [setSearch]);
 
     const pagination = React.useMemo(() => filesData ? {
         page: filesData.page,
@@ -182,10 +184,7 @@ export function RetirementFilesPage() {
             render: (row) => (
                 <div className="flex flex-col text-start">
                     <span 
-                        className={cn(
-                            "font-bold text-sm flex items-center gap-1.5",
-                            getStatusColorClass(row.statusID)
-                        )}
+                        className="font-bold text-sm flex items-center gap-1.5 text-foreground"
                     >
                         <User className="w-3.5 h-3.5 text-muted-foreground" /> {row.retireeFullName}
                     </span>
@@ -207,18 +206,9 @@ export function RetirementFilesPage() {
             header: "الحالة",
             render: (row) => (
                 <div className="flex items-center gap-2">
-                    <Badge
-                        variant={
-                            row.fileStatusName?.includes("نشط") ? "success" :
-                            row.fileStatusName?.includes("معلق") || row.fileStatusName?.includes("ناقص") ? "warning" :
-                            "outline"
-                        }
-                        className="font-bold"
-                    >
-                        {row.fileStatusName}
-                    </Badge>
+                    <FileStatusBadge statusId={row.statusID} statusName={row.fileStatusName} />
                     {row.reviewStatus === 1 && (
-                        <Badge variant="warning" className="font-bold animate-pulse">
+                        <Badge variant="warning" className="font-bold">
                             مراجعة
                         </Badge>
                     )}
@@ -283,15 +273,48 @@ export function RetirementFilesPage() {
         }
     }, [focusedIndex]);
 
+    const filterFields = (
+        <div className="grid grid-cols-2 gap-2 lg:grid-cols-5">
+            <NativeSelect label="حالة الملف" value={statusId} onChange={setStatusId}
+                options={[{ value: "", label: "جميع الحالات" }, ...(statuses ?? []).map(s => ({ value: String(s.statusID), label: s.statusName }))]} />
+            <NativeSelect label="الفئة" value={categoryId} onChange={setCategoryId}
+                options={[{ value: "", label: "جميع الفئات" }, ...(categories ?? []).map(c => ({ value: String(c.id), label: c.name }))]} />
+            <NativeSelect label="الرتبة" value={rankId} onChange={setRankId}
+                options={[{ value: "", label: "جميع الرتب" }, ...(ranks ?? []).map(r => ({ value: String(r.rankID), label: r.rankName }))]} />
+            <NativeSelect label="الجنس" value={gender} onChange={setGender}
+                options={[{ value: "", label: "الكل" }, ...GENDER_OPTIONS.map(g => ({ value: String(g.id), label: g.name }))]} />
+            <div className="col-span-2 lg:col-span-1">
+                <NativeSelect label="المحافظة" value={governorate} onChange={setGovernorate}
+                    options={[{ value: "", label: "جميع المحافظات" }, ...(governorates ?? []).map(g => ({ value: g.name, label: g.name }))]} />
+            </div>
+        </div>
+    );
+    const clearFiltersButton = hasActiveFilters ? (
+        <Button variant="ghost" size="sm" onClick={clearFilters} className="text-destructive">
+            <X className="h-4 w-4" aria-hidden="true" />مسح الفلاتر
+        </Button>
+    ) : null;
+
     // معالجة العرض حسب الصلاحية
     if (roles.primaryViewMode === VIEW_MODE.DATA_ENTRY) return <DataEntryView />;
-    if (roles.primaryViewMode === VIEW_MODE.DOCUMENT_UPLOADER) return <DocumentUploadView />;
+    if (roles.primaryViewMode === VIEW_MODE.DOCUMENT_UPLOADER) return <MissingDocsCompletionPage />;
 
     return (
-        <div className="space-y-6">
+        <div className="min-w-0">
             <CrudPageLayout
+                density="compact"
                 title="ملفات التقاعد"
-                description={`${filesData?.totalCount || 0} ملف تقاعد مسجل في النظام`}
+                titleSuffix={
+                    isLoading ? (
+                        <Skeleton className="h-6 w-16 rounded-full" />
+                    ) : (
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-0.5 text-sm font-bold text-primary tabular-nums">
+                            <FileText className="w-3.5 h-3.5" aria-hidden="true" />
+                            {(filesData?.totalCount || 0).toLocaleString("en-US")}
+                        </span>
+                    )
+                }
+                description="ملفات تقاعد مسجلة في النظام"
                 createLabel="فتح ملف جديد"
                 onCreateClick={canCreate ? crud.openCreate : undefined}
                 columns={columns}
@@ -299,6 +322,8 @@ export function RetirementFilesPage() {
                 loading={isLoading}
                 searchable
                 searchInHeader
+                searchLabel="البحث عن ملف"
+                searchPlaceholder="الاسم أو الرقم العسكري أو رقم الملف"
                 onSearchChange={onSearchChange}
                 searchValue={search}
                 onSearchKeyDown={handleSearchKeyDown}
@@ -307,188 +332,49 @@ export function RetirementFilesPage() {
                 onRowClick={(row) => navigate(`/files/${row.fileID}`)}
                 pagination={pagination}
                 emptyMessage="لم يتم العثور على أي ملفات تقاعد."
-                headerActions={
-                    <SearchDialog
-                        value={search}
-                        onSelect={(val) => { setSearch(val); setPage(1); }}
-                        queryKey={["retirement-files", "dialog-search"]}
-                        fetchFn={(term) => retirementApi.getFiles({ page: 1, pageSize: 100, search: term || undefined })}
-                        getName={(f) => f.retireeFullName}
-                        getSubtitle={(f) => f.fileNumber}
-                        title="بحث بالاسم"
-                        placeholder="اكتب اسم المتقاعد أو رقم الملف..."
-                        hideTrigger
-                    />
-                }
+                rowKey={(row) => row.fileID}
+                mobileScrollMode="page"
+                rowClassName={retirementFileCardClassName}
                 renderMobileCard={(item) => (
-                    <div className="p-3 space-y-1.5">
-                        <div className="flex items-center justify-between">
-                            <span className="font-mono font-black text-primary text-xs">{item.fileNumber}</span>
-                            <Badge
-                                variant={
-                                    item.fileStatusName?.includes("نشط") ? "success" :
-                                    item.fileStatusName?.includes("معلق") || item.fileStatusName?.includes("ناقص") ? "warning" :
-                                    "outline"
-                                }
-                                className="text-[8px] h-3.5 font-bold"
-                            >
-                                {item.fileStatusName}
-                            </Badge>
-                        </div>
-                        <div className="flex items-center gap-1 flex-wrap">
-                            <span className={cn("font-bold text-xs flex items-center gap-1", getStatusColorClass(item.statusID))}>
-                                <User className="w-3 h-3 text-muted-foreground" /> {item.retireeFullName}
-                            </span>
-                            <span className="text-[10px] text-muted-foreground">— {item.rankName}</span>
-                        </div>
-                        <div className="flex items-center justify-between text-[10px] text-muted-foreground">
-                            <span>الرقم العسكري: <span className="font-mono font-bold text-primary">{item.militaryNumber || "—"}</span></span>
-                            {item.reviewStatus === 1 && (
-                                <Badge variant="warning" className="text-[8px] h-3.5 animate-pulse">مراجعة</Badge>
-                            )}
-                        </div>
-                        <div className="flex justify-end">
-                            <Button size="sm" variant="ghost" className="min-h-[28px] h-7 text-[10px] px-2 gap-1 text-primary" onClick={() => navigate(`/files/${item.fileID}`)}>
-                                <Eye className="w-3 h-3" /> عرض الملف
-                            </Button>
-                        </div>
-                    </div>
+                    <RetirementFileCard file={item}>
+                        {(item.militaryNumber || item.rankName || item.reviewStatus === 1) && (
+                            <div className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
+                                {item.militaryNumber && <p className="shrink-0 whitespace-nowrap">العسكري: <bdi dir="ltr" className="font-mono font-semibold text-foreground">{item.militaryNumber}</bdi></p>}
+                                {item.rankName && <p className="min-w-0 flex-1 truncate" title={item.rankName}>{item.rankName}</p>}
+                                {item.reviewStatus === 1 && <Badge variant="warning" className="shrink-0">مراجعة</Badge>}
+                            </div>
+                        )}
+                    </RetirementFileCard>
                 )}
             >
-                {/* ── Filters Bar ───────────────────────────────── */}
-                <div className="rounded-2xl border border-border/70 bg-card/50 p-3 sm:p-4 space-y-3">
-                    <div className="flex items-center justify-between flex-wrap gap-2">
-                        <button
-                            type="button"
-                            onClick={() => setFiltersOpen((v) => !v)}
-                            className="flex items-center gap-2 text-sm font-semibold text-foreground/80 hover:text-foreground transition-colors"
-                            aria-expanded={filtersOpen}
-                            aria-controls="filters-grid"
-                        >
-                            <Filter className="w-4 h-4" />
-                            <span>الفلاتر</span>
-                            {hasActiveFilters && (
-                                <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-primary/15 text-primary text-xs font-bold">
-                                    {[statusId, categoryId, rankId, gender, governorate].filter(Boolean).length}
-                                </span>
-                            )}
-                            <ChevronDown
-                                className={cn(
-                                    "w-4 h-4 text-muted-foreground transition-transform duration-200",
-                                    filtersOpen && "rotate-180"
-                                )}
-                            />
-                        </button>
-                        {hasActiveFilters && (
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={clearFilters}
-                                className="h-8 gap-1.5 text-destructive hover:text-destructive"
-                            >
-                                <X className="w-3.5 h-3.5" />
-                                مسح الفلاتر
-                            </Button>
-                        )}
-                    </div>
-
-                    <div
-                        id="filters-grid"
-                        className={cn(
-                            "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3",
-                            !filtersOpen && "hidden"
-                        )}
-                    >
-                        {/* الحالة */}
-                        <div className="space-y-1.5">
-                            <label className="label-filter">الحالة</label>
-                            <Select value={statusId || "all"} onValueChange={(v) => setStatusId(v === "all" ? "" : v)}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="جميع الحالات" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">جميع الحالات</SelectItem>
-                                    {statuses?.map((s) => (
-                                        <SelectItem key={s.statusID} value={s.statusID.toString()}>
-                                            {s.statusName}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        {/* الفئة */}
-                        <div className="space-y-1.5">
-                            <label className="label-filter">الفئة</label>
-                            <Select value={categoryId || "all"} onValueChange={(v) => setCategoryId(v === "all" ? "" : v)}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="جميع الفئات" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">جميع الفئات</SelectItem>
-                                    {categories?.map((c) => (
-                                        <SelectItem key={c.id} value={c.id.toString()}>
-                                            {c.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        {/* الرتبة */}
-                        <div className="space-y-1.5">
-                            <label className="label-filter">الرتبة</label>
-                            <Select value={rankId || "all"} onValueChange={(v) => setRankId(v === "all" ? "" : v)}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="جميع الرتب" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">جميع الرتب</SelectItem>
-                                    {ranks?.map((r) => (
-                                        <SelectItem key={r.rankID} value={r.rankID.toString()}>
-                                            {r.rankName}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        {/* الجنس */}
-                        <div className="space-y-1.5">
-                            <label className="label-filter">الجنس</label>
-                            <Select value={gender || "all"} onValueChange={(v) => setGender(v === "all" ? "" : v)}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="الكل" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">الكل</SelectItem>
-                                    {GENDER_OPTIONS.map((g) => (
-                                        <SelectItem key={g.id} value={g.id.toString()}>
-                                            {g.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        {/* المحافظة */}
-                        <div className="space-y-1.5">
-                            <label className="label-filter">المحافظة</label>
-                            <Select value={governorate || "all"} onValueChange={(v) => setGovernorate(v === "all" ? "" : v)}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="جميع المحافظات" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">جميع المحافظات</SelectItem>
-                                    {governorates?.map((g) => (
-                                        <SelectItem key={g.id} value={g.name}>
-                                            {g.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-                    </div>
+                <SearchDialog
+                    value={search}
+                    onSelect={(val) => { setSearch(val); setPage(1); }}
+                    queryKey={["retirement-files", "dialog-search"]}
+                    fetchFn={(term) => retirementApi.getFiles({ page: 1, pageSize: 100, search: term || undefined })}
+                    getName={(f) => f.retireeFullName}
+                    getSubtitle={(f) => f.fileNumber}
+                    title="بحث بالاسم"
+                    placeholder="اكتب الرقم العسكري أو اسم المتقاعد..."
+                    hideTrigger
+                />
+                <Accordion type="single" collapsible className="sm:hidden">
+                    <AccordionItem value="file-filters" className="border-0">
+                        <AccordionTrigger density="compact">
+                            <span className="flex items-center gap-2">
+                                الفلاتر
+                                {hasActiveFilters && <Badge variant="secondary">{[statusId, categoryId, rankId, gender, governorate].filter(Boolean).length} مفعّل</Badge>}
+                            </span>
+                        </AccordionTrigger>
+                        <AccordionContent className="space-y-1 pb-0">
+                            {filterFields}
+                            {clearFiltersButton}
+                        </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
+                <div className="hidden space-y-1 sm:block">
+                    {filterFields}
+                    {clearFiltersButton}
                 </div>
 
                 <RetirementFileDialog

@@ -175,7 +175,7 @@ export function ViewEntitledPersonDialog({
                         <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                             <Button 
                                 variant="outline" 
-                                className="rounded-xl font-bold h-11 px-6 border-muted-foreground/20 hover:bg-muted/50 transition-all w-full sm:w-auto"
+                                className="rounded-xl font-bold h-11 px-6 border-muted-foreground hover:bg-muted/50 transition-all w-full sm:w-auto"
                                 onClick={() => onOpenChange(false)}
                             >
                                 إغلاق النافذة
@@ -183,7 +183,7 @@ export function ViewEntitledPersonDialog({
                             {canEdit && (
                                 <Button 
                                     variant="secondary" 
-                                    className="gap-2 rounded-xl font-bold h-11 px-6 border border-primary/10 transition-all w-full sm:w-auto" 
+                                    className="gap-2 rounded-xl font-bold h-11 px-6 border border-primary transition-all w-full sm:w-auto" 
                                     onClick={() => setEditOpen(true)}
                                 >
                                     <Edit3 className="w-4 h-4 shrink-0" /> استكمال وتصحيح البيانات
@@ -222,7 +222,7 @@ export function ViewEntitledPersonDialog({
 
                             {/* Documents Grid Section */}
                             <div className="bg-card border rounded-2xl lg:rounded-[2rem] p-4 lg:p-6 space-y-4 lg:space-y-5">
-                                <Heading level="h3" className="text-base lg:text-xl font-black flex items-center gap-2 lg:gap-3 text-primary border-b border-primary/5 pb-3">
+                                <Heading level="h3" className="text-base lg:text-xl font-black flex items-center gap-2 lg:gap-3 text-primary border-b border-primary pb-3">
                                     <FileText className="w-5 h-5 lg:w-6 lg:h-6 shrink-0" /> 
                                     الوثائق المرفقة 
                                     <Badge variant="secondary" className="ms-auto rounded-full px-3 lg:px-4 text-xs">{entitledDocuments.length}</Badge>
@@ -230,12 +230,12 @@ export function ViewEntitledPersonDialog({
                                 
                                 {loadingDocuments ? (
                                     <div className="text-center py-12 flex flex-col items-center gap-3">
-                                        <div className="w-10 h-10 border-4 border-primary/10 border-t-primary rounded-full animate-spin" />
+                                        <div className="w-10 h-10 border-4 border-primary border-t-primary rounded-full animate-spin" />
                                         <p className="text-sm font-bold text-muted-foreground">جاري تحميل الأرشيف...</p>
                                     </div>
                                 ) : entitledDocuments.length === 0 ? (
                                     <div className="text-center py-12 bg-muted/20 rounded-2xl border-2 border-dashed">
-                                        <FileText className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
+                                        <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
                                         <p className="text-sm text-muted-foreground font-bold italic">لا توجد وثائق مؤرشفة لهذا المستحق</p>
                                     </div>
                                 ) : (
@@ -244,13 +244,13 @@ export function ViewEntitledPersonDialog({
                                             const docUrl = getDocumentUrl(doc.filePath);
                                             const isPdf = doc.fileName?.toLowerCase().endsWith('.pdf');
                                             return (
-                                                <div key={doc.documentID} className="border-2 border-transparent bg-muted/30 hover:bg-white hover:border-primary/20 rounded-3xl p-5 transition-all group overflow-hidden relative">
+                                                <div key={doc.documentID} className="border-2 border-transparent bg-muted/30 hover:bg-white hover:border-primary rounded-3xl p-5 transition-all group overflow-hidden relative">
                                                     <div className="flex items-center justify-between mb-4">
                                                         <div className="flex items-center gap-3">
                                                             <div className="p-2 bg-primary/10 rounded-xl text-primary">
                                                                 <FileText className="w-5 h-5" />
                                                             </div>
-                                                            <h4 className="font-black text-sm text-foreground/90 truncate max-w-[160px] sm:max-w-[250px]">{doc.documentTypeName}</h4>
+                                                            <h4 className="font-black text-sm text-foreground truncate max-w-[160px] sm:max-w-[250px]">{doc.documentTypeName}</h4>
                                                         </div>
                                                         <p className="text-[10px] sm:text-xs font-black text-muted-foreground bg-white px-2 py-1 rounded-full">
                                                             {formatDate(doc.createdAt)}
@@ -290,8 +290,8 @@ export function ViewEntitledPersonDialog({
 
                         {/* Sidebar: Missing Documents */}
                         <div className="lg:col-span-1 h-full">
-                            <div className="bg-card border-2 border-muted/30 rounded-2xl lg:rounded-[2.5rem] flex flex-col h-full overflow-hidden lg:sticky lg:top-4">
-                                <div className="p-4 lg:p-6 border-b border-muted/30 space-y-1.5 bg-primary/[0.02]">
+                            <div className="bg-card border-2 border-muted rounded-2xl lg:rounded-[2.5rem] flex flex-col h-full overflow-hidden lg:sticky lg:top-4">
+                                <div className="p-4 lg:p-6 border-b border-muted space-y-1.5 bg-primary/[0.02]">
                                     <div className="flex items-center justify-between">
                                         <h4 className="text-xs lg:text-sm font-black text-foreground flex items-center gap-2">
                                             <Upload className="w-4 h-4 text-primary shrink-0" /> قائمة النواقص
@@ -302,24 +302,24 @@ export function ViewEntitledPersonDialog({
                                             </Badge>
                                         )}
                                     </div>
-                                    <p className="text-[10px] sm:text-xs text-muted-foreground font-bold tracking-tight opacity-70">التدقيق والمطابقة القانونية للمستندات</p>
+                                    <p className="text-[10px] sm:text-xs text-muted-foreground font-bold tracking-tight opacity-100">التدقيق والمطابقة القانونية للمستندات</p>
                                 </div>
                                 
                                 <div className="p-3 lg:p-4 flex-1 space-y-2 lg:space-y-3 overflow-y-auto max-h-[40vh] lg:max-h-[600px] custom-scrollbar">
                                     {isMissingLoading ? (
-                                        <div className="text-center py-12"><div className="w-8 h-8 border-4 border-primary/10 border-t-primary rounded-full animate-spin mx-auto mb-3" /><p className="text-xs font-black text-muted-foreground">جاري جرد الملف...</p></div>
+                                        <div className="text-center py-12"><div className="w-8 h-8 border-4 border-primary border-t-primary rounded-full animate-spin mx-auto mb-3" /><p className="text-xs font-black text-muted-foreground">جاري جرد الملف...</p></div>
                                     ) : missingDocs.length === 0 ? (
-                                        <div className="text-center py-16 opacity-80 group">
+                                        <div className="text-center py-16 opacity-100 group">
                                             <div className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-[2rem] flex items-center justify-center border-2 border-emerald-100 mx-auto mb-4 group-hover:scale-110 transition-transform duration-500"><CheckCircle2 className="w-8 h-8" /></div>
                                             <p className="text-sm font-black text-emerald-800">الملف مكتمل قانونياً</p>
-                                            <p className="text-[10px] sm:text-xs text-emerald-600/60 mt-1 font-bold">تم استيفاء جميع المتطلبات</p>
+                                            <p className="text-[10px] sm:text-xs text-emerald-600 mt-1 font-bold">تم استيفاء جميع المتطلبات</p>
                                         </div>
                                     ) : (
                                         missingDocs.map((md, idx) => (
-                                            <div key={idx} className="group relative bg-muted/20 border-2 border-transparent hover:border-primary/20 hover:bg-white p-3 lg:p-4 rounded-2xl lg:rounded-3xl transition-all">
+                                            <div key={idx} className="group relative bg-muted/20 border-2 border-transparent hover:border-primary hover:bg-white p-3 lg:p-4 rounded-2xl lg:rounded-3xl transition-all">
                                                 <div className="flex justify-between items-center gap-3">
                                                     <div className="space-y-1.5 min-w-0">
-                                                        <p className="text-xs font-black text-foreground/90 truncate" title={md.documentTypeName}>{md.documentTypeName}</p>
+                                                        <p className="text-xs font-black text-foreground truncate" title={md.documentTypeName}>{md.documentTypeName}</p>
                                                         <div className="flex items-center gap-2">
                                                             <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${md.isRequired !== false ? 'bg-destructive/10 text-destructive' : 'bg-muted text-muted-foreground'}`}>
                                                                 {md.isRequired !== false ? 'مطلب إلزامي' : 'مطلب تكميلي'}
@@ -331,7 +331,7 @@ export function ViewEntitledPersonDialog({
                                                             size="icon" 
                                                             variant="secondary" 
                                                             aria-label="رفع وثيقة"
-                                                            className="h-9 w-9 rounded-2xl shrink-0 text-primary bg-white border border-primary/10 hover:bg-primary hover:text-white transition-all scale-90 group-hover:scale-100" 
+                                                            className="h-9 w-9 rounded-2xl shrink-0 text-primary bg-white border border-primary hover:bg-primary hover:text-white transition-all scale-90 group-hover:scale-100" 
                                                             onClick={() => { setUploadTypeId(md.documentTypeID); setUploadOpen(true); }}
                                                         >
                                                             <Upload className="w-4 h-4" />
@@ -343,9 +343,9 @@ export function ViewEntitledPersonDialog({
                                     )}
                                 </div>
 
-                                <div className="p-3 lg:p-5 bg-primary/[0.03] border-t border-muted/50 mt-auto">
+                                <div className="p-3 lg:p-5 bg-primary/[0.03] border-t border-muted mt-auto">
                                     <div className="flex items-start gap-3">
-                                        <MapPin className="w-4 h-4 text-primary/40 shrink-0 mt-0.5" />
+                                        <MapPin className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                                         <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed font-bold tracking-tight">
                                             ترفع الوثائق إلى الأرشيف المركزي وتخضع للمراجعة والتدقيق قبل الاعتماد النهائي لحالة الصرف.
                                         </p>

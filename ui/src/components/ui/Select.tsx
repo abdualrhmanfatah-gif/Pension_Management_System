@@ -31,10 +31,10 @@ const SelectTrigger = React.forwardRef<
             dir="rtl"
             aria-label={!label ? (typeof children === 'string' ? children : undefined) : undefined}
             className={cn(
-                "flex h-11 sm:h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm",
+                "flex h-11 sm:h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm text-[hsl(var(--select-foreground))]",
                 "placeholder:text-muted-foreground",
                 "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1",
-                "disabled:cursor-not-allowed disabled:opacity-50",
+                "disabled:cursor-not-allowed disabled:bg-muted",
                 "[&>span]:line-clamp-1",
                 error && "border-destructive focus:ring-destructive",
                 className
@@ -43,7 +43,7 @@ const SelectTrigger = React.forwardRef<
         >
             {children}
             <SelectPrimitive.Icon asChild>
-                <ChevronDown className="h-4 w-4 opacity-50" />
+                <ChevronDown className="h-4 w-4" />
             </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
         {error && (
@@ -96,7 +96,7 @@ const SelectContent = React.forwardRef<
             ref={ref}
             dir={dir}
             className={cn(
-                "relative z-dropdown max-h-72 min-w-[8rem] overflow-hidden rounded-lg border bg-popover text-popover-foreground",
+                "relative z-dropdown max-h-72 min-w-[8rem] overflow-hidden rounded-lg border bg-popover text-[hsl(var(--select-foreground))]",
                 "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
                 "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
                 "data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2",
@@ -147,8 +147,8 @@ const SelectItem = React.forwardRef<
         ref={ref}
         className={cn(
             "relative flex w-full cursor-default select-none items-center rounded-md py-2 ps-8 pe-2 text-sm outline-none",
-            "focus:bg-accent focus:text-accent-foreground",
-            "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+            "focus:bg-accent focus:text-[hsl(var(--select-foreground))]",
+            "data-[disabled]:pointer-events-none data-[disabled]:bg-muted",
             className
         )}
         {...props}

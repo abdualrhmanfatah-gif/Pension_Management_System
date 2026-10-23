@@ -157,7 +157,7 @@ export function SubledgerReport({ fromDate: propFromDate, toDate: propToDate, ex
                 </tr>
               ) : (
                 data.entries.map((entry: SubledgerReportLineDto, i) => (
-                  <tr key={i} className="border-t border-border/50 hover:bg-muted/20">
+                  <tr key={i} className="border-t border-border hover:bg-muted/20">
                     <td className="p-2 text-xs">{new Date(entry.entryDate).toLocaleDateString("ar-SA")}</td>
                     <td className="p-2 font-mono text-xs ltr" dir="ltr">{entry.entryNumber}</td>
                     <td className="p-2 text-xs">{entry.accountCode} - {entry.accountName}</td>

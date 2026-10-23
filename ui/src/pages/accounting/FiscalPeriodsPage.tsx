@@ -102,7 +102,7 @@ export function FiscalPeriodsPage() {
 
       {/* Active period notice */}
       {activePeriod && (
-        <div className="bg-emerald-500/5 border border-emerald-500/20 text-emerald-800 px-4 py-3 rounded-xl text-sm">
+        <div className="bg-emerald-500/5 border border-emerald-500 text-emerald-800 px-4 py-3 rounded-xl text-sm">
           الفترة النشطة حالياً: <strong>{activePeriod.periodName}</strong> —
           من {new Date(activePeriod.startDate).toLocaleDateString("ar-SA")}
           إلى {new Date(activePeriod.endDate).toLocaleDateString("ar-SA")}

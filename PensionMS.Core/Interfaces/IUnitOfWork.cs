@@ -211,11 +211,20 @@ public interface IUnitOfWork : IDisposable
     // ═══════════════════════════════════════
     // TRANSACTION MANAGEMENT
     // ═══════════════════════════════════════
+    /// <summary>Flushes tracked changes. Inside a transaction it does not commit that transaction.</summary>
     Task<int> SaveChangesAsync();
     bool HasActiveTransaction { get; }
     Task BeginTransactionAsync();
     /// <summary>Serializes review changes for one file until the active transaction ends.</summary>
     Task LockFileReviewAsync(int fileId);
+    /// <summary>Serializes changes to a salary batch until the active transaction ends.</summary>
+    Task LockSalaryBatchAsync(int batchId);
+    /// <summary>Prevents two batches accruing the same monthly pension concurrently.</summary>
+    Task LockPayrollPeriodAsync(DateTime month);
+    /// <summary>يحجز الاستحقاقات المالية للمتقاعد داخل معاملة نشطة لمنع تكرار الإنشاء المتزامن.</summary>
+    Task LockRetireeEntitlementsAsync(int retireeId);
+    /// <summary>Only the transaction owner commits. Does not implicitly call SaveChanges.</summary>
     Task CommitAsync();
+    /// <summary>Only the transaction owner rolls back. Discard the operation context after failure; tracked values are not restored.</summary>
     Task RollbackAsync();
 }

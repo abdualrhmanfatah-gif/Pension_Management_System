@@ -31,14 +31,14 @@
 ┌─────────────────────────────────────────────────────────────┐
 │                   SERVICE LAYER                             │
 │  ┌──────────────────────────────────────────────────────┐   │
-│  │  Business Logic Services (~50 implementations)       │   │
+│  │  Domain Services (99 C# source files)                │   │
 │  │  ┌────────────────┐ ┌────────────────┐ ┌──────────┐  │   │
 │  │  │RetirementFile  │ │EntitledPerson  │ │Settlement│  │   │
-│  │  │Service (2609L) │ │Service (760L)  │ │Service   │  │   │
+│  │  │Commands       │ │Service        │ │Service   │  │   │
 │  │  └────────────────┘ └────────────────┘ └──────────┘  │   │
 │  │  ┌────────────────┐ ┌────────────────┐ ┌──────────┐  │   │
 │  │  │FileReview      │ │SalaryPayment   │ │Financial │  │   │
-│  │  │Service (1065L) │ │BatchService    │ │Entitlement│  │   │
+│  │  │Service        │ │BatchService    │ │Entitlement│  │   │
 │  │  └────────────────┘ └────────────────┘ └──────────┘  │   │
 │  │  ┌────────────────────────────────────────────────┐   │   │
 │  │  │  Engines: Compliance | Entitlement | Workflow  │   │   │
@@ -82,7 +82,7 @@
 |-----------|-------|---------|
 | Controllers | ~80 | REST API endpoints, HTTP method routing |
 | Middleware | 4 | JWT auth, request logging, error handling, CORS |
-| DI Configuration | 1 | Service registration in `Program.cs` |
+| DI Configuration | 18 files | Explicit domain registrations in Infrastructure/DependencyInjection, invoked from Program.cs |
 | SignalR Hub | 1 | Real-time notifications to connected clients |
 
 **Key Responsibilities:**
@@ -107,10 +107,9 @@
 
 | Component | Count | Purpose |
 |-----------|-------|---------|
-| Service Implementations | ~50 | Business logic execution |
-| Interface Definitions | ~90 | Contracts (in Core) |
+| Service Source Files | 99 | Domain directories, partial report files and internal helpers |
+| Interface Definition Files | 97 | Contracts in Core/Interfaces |
 | Background Jobs | 2 | Expired pledges, outbox processor |
-| SoD Guards | 3 | Separation of duties enforcement |
 | Engines | 3 | Compliance, entitlement calculation, workflow |
 | ScopedPermissionResolver | 1 | Runtime permission resolution |
 
@@ -121,7 +120,32 @@
 - File review workflow orchestration
 - Financial calculation engines
 - Background task processing
-- Separation of duties validation
+- Action permission and business-state validation
+
+#### تنظيم الخدمات حسب المجال
+
+توجد خدمات التقاعد في `Services/Pension/RetirementFile` و`Beneficiaries` و`Entitlements`، وخدمات صرف المعاش في `Services/Payroll` والتسويات في `Services/Settlements`. تبقى المحاسبة وHR والاستثمار والمخزون والأصول وبوابة المواطن في مجلداتها المتخصصة.
+
+تجتمع الخدمات المشتركة في `Documents` و`Security/SoD` و`Audit` و`Notifications` و`Administration`. جذر `Services` لا يحتوي ملفات تنفيذ مباشرة، والـ namespaces تطابق مسارات المجلدات.
+
+| المسؤولية | التنفيذ | العقد |
+|---|---|---|
+| تعديل ملفات التقاعد والوفاة وتصحيح الحالة الحياتية | `Pension/RetirementFile/RetirementFileService` | `IRetirementFileService` |
+| قراءة الملفات والبحث والإحصاءات وسجلات التغيير | `Pension/RetirementFile/FileQueryService` | `IFileQueryService` |
+| تغيير الحالة وعرض الانتقالات ومعالجة التعهدات | `Pension/RetirementFile/FileStatusService` | `IFileStatusService` |
+| بيانات تقرير ملفات التقاعد وملخصه | `Reporting/RetirementFileReportService` | `IRetirementFileReportService` |
+
+تشترك القراءة والتعديل في مساعدي `RetirementFileDtoMapper` و`RetirementFileCompletenessEvaluator` الداخليين، دون اعتماد خدمة القراءة على خدمة التعديل. خدمات بيانات التقارير داخل `Services/Reporting`؛ أدوات Excel/PDF داخل `Reporting/Exporters` وتعريفات التقارير داخل `Reporting/ReportRegistry.cs`.
+
+جميع عقود الخدمات في Core، بما فيها عقود بيانات التقارير والتصدير المحاسبي والمعاملات البنكية وعميل الإشعارات. `NotificationHub` داخل `Services/Notifications`، وربطه على `/hubs/notifications` يبقى في API.
+
+يستدعي Program.cs الدالة `AddPensionInfrastructureServices()` التي تجمع التسجيلات اليدوية للمجالات. إعدادات DbContext وJWT والسياسات وMiddleware وSignalR وValidators تبقى في API؛ لا يوجد تسجيل خدمات عبر assembly scanning. Registry وأدوات التصدير Singleton وخدمات البيانات والأعمال Scoped، وقواعد SoD المتعددة تحافظ على ترتيبها.
+
+داخل `Jobs` يوجد معالجا الخلفية المسجلان `ExpiredPledgesJob` و`NotificationOutboxProcessor`. `PledgeExpiryCheckerService` موجود لكنه غير مسجل. خدمات المواطن الأربع غير المفعلة تبقى غير مسجلة؛ المسجل هو SMS وOTP.
+
+`FileStatusService` تطبق مصفوفة دورة الحياة عند تغيير الحالة وعرض الانتقالات، وتمنع الانتقال من Closed. أثناء المراجعة المعلقة تقتصر قائمة الانتقالات على UnderReview إن كان انتقالًا مسموحًا من الحالة الحالية. شروط الاستحقاق المالي ودفتر الصرف والمستلم والتعهدات وSoD تظل مفحوصة عند التنفيذ؛ قائمة الانتقالات ليست ضمانًا لاستيفاء هذه الشروط.
+
+خريطة النقل وسجل التنفيذ في [خطة تنظيم الخدمات](../plan/services-reorganization-plan.md).
 
 ### 2.3 Domain Layer (PensionMS.Core)
 
@@ -167,7 +191,7 @@ Core (Domain) ← Infrastructure ← API (Presentation)
 
 ### 3.2 Repository Pattern (via EF Core)
 
-EF Core DbContext acts as the repository. No explicit repository interfaces — services interact with DbContext directly for query composition, while business operations go through service interfaces.
+خدمات الأعمال تستخدم `IUnitOfWork` و`IRepository<T>` للوصول إلى البيانات؛ ينفذ Infrastructure المستودعات باستخدام EF Core. بعض الخدمات التقنية مثل Workflow وSnapshot تستخدم DbContext مباشرة داخل Infrastructure، وتبقى هذه الاستثناءات ظاهرة دون تغيير سلوكها أثناء تنظيم المجلدات.
 
 ### 3.3 State Machine Pattern
 
@@ -183,17 +207,9 @@ New → PendingReview → UnderReview → Approved
 
 Implemented via `FileStatusService` with guard conditions.
 
-### 3.4 Separation of Duties (SoD) Guards
+### 3.4 صلاحية الإجراء
 
-Three guards enforce dual-control on sensitive operations:
-
-| Guard | Scope |
-|-------|-------|
-| `SettlementSoDGuard` | Settlement creation vs approval |
-| `SalaryBatchSoDGuard` | Salary batch creation vs approval |
-| `EntitlementSoDGuard` | Entitlement calculation vs disbursement |
-
-**Rule:** The person who creates a record cannot approve it.
+منذ قرار 2026-10-20، لا يُشترط اختلاف منفذ الاعتماد عن منشئ السجل أو محرره. تحمي سياسات API كل إجراء بصلاحيته، ويجوز للمستخدم تنفيذ الإدخال والاعتماد إذا امتلك الصلاحيتين. أُزيلت خدمات وقواعد فصل المهام وتسجيلاتها من DI. تبقى فحوص حالة البيانات ونطاق الفرع وإيقافات الصرف والتدقيق مستقلة عن هذا القرار؛ انظر [Security.md](Security.md).
 
 ### 3.5 Outbox Pattern
 
@@ -225,9 +241,13 @@ Request → JWT Validation → Role Extraction → Permission Resolution → Con
 ```
 
 - JWT tokens contain user ID, username, role, branch ID
-- Permissions resolved via `ScopedPermissionResolver`
-- Branch-scoped data access (users only see their branch's data)
-- Permission tiers: Branch → Regional → National
+- Permissions and their branch scopes are resolved per operation by `ScopedPermissionResolver` from active explicit role assignments; personal revocation overrides grants.
+- `ICurrentUserContext` supplies authenticated identity only. `IAccessiblePensionRepository` binds that identity and the operation permission to an immutable `IPensionDataQuery`; its ownership predicates run in SQL before paging and aggregation.
+- A user's read and write scopes may differ. A branch request filter narrows the allowed scope. Home branch and JWT role claims cannot grant central access.
+- The retiree identity registry remains shared; associated pension files, documents and financial rows use the permission's allowed branches. Shared retiree edits require coverage of every linked file.
+- Global administration and unpartitioned settlement/payroll workflows require an explicit central scope. Unsupported ownership is denied for branch-restricted queries.
+- Legacy `PensionFileAccess`, `BranchScopeProvider` and `ReportingQueries` were removed. Expired pledges use the dedicated `IExpiredPledgeProcessor` background capability.
+- See [Security.md](Security.md) and [the rollout plan](../plan/branch-access-unification-plan.md) for assignment semantics, transfer rules and the SQL preparation required before deployment.
 
 ### 4.2 Audit Trail
 
@@ -261,7 +281,7 @@ SignalR hub for:
 ### 5.1 File Creation Flow
 
 ```
-User → API Controller → RetirementFileService → DbContext → Database
+User → API Controller → Service Interface → IUnitOfWork / Repository → DbContext → Database
   │                                                │
   │                                                ↓
   │                                          FileSnapshot (audit)

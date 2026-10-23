@@ -1,0 +1,13 @@
+PASS control: normal upload refreshes actual document IDs once and reports success
+PASS control: failed finalization can be retried without uploading successful documents again
+PASS control: a scope-matching duplicate response recovers its ID and finalizes it
+PASS distinct content with the same filename and size must be accepted
+PASS adding another file must prevent automatic close and loss of pending files
+PASS cancel followed by removing remaining files must still allow finalization of successful uploads
+PASS closing a pending batch must ask for confirmation only once
+PASS closing a completed batch must not ask about unsaved changes
+PASS owner lookup must not silently succeed when all three owner endpoints fail
+PASS owner lookup failures block uploads and expose a retry action
+PASS finalization must not report complete success when the server skipped the uploaded document
+PASS a canceled old run must not reset uploads in a reopened dialog
+PASS an already queued auto-close must recheck pending files

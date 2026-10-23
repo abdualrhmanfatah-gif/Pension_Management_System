@@ -1,0 +1,84 @@
+{
+  "exact": [
+    {
+      "sha256": "1431ec6e48e69d0be46b272cb32b81be59b831bfff9b5cd8af342a94089ff1ee",
+      "bytes": 76904,
+      "files": [
+        "PensionMS.API/wwwroot/notification-sound.mp3",
+        "ui/public/notification-sound.mp3"
+      ]
+    },
+    {
+      "sha256": "4c4b6a3be1314ab86138bef4314dde022e600960d8689a2c8f8631802d20dab6",
+      "bytes": 8,
+      "files": [
+        "PensionMS.API/wwwroot/uploads/documents/0cb20eaa-bf09-4c0b-a6dd-df6af398a96c_t_doc_probe.png",
+        "PensionMS.API/wwwroot/uploads/documents/6ebbf9fb-c00e-4e8f-af68-371f4fba0af8_t_doc_probe.png",
+        "PensionMS.API/wwwroot/uploads/documents/b351b7d0-0f40-45bd-b6b3-05c8147e5a8a_t_doc_probe.png",
+        "PensionMS.API/wwwroot/uploads/documents/b85aa5a0-a405-4f42-bef4-8d818cf56d10_t_doc_probe.png"
+      ]
+    },
+    {
+      "sha256": "4b4b9d6a8c8ef199918b41b2eeeffd925024ead92c4ae07b96064e4b7a2c82bd",
+      "bytes": 340954,
+      "files": [
+        "PensionMS.API/wwwroot/uploads/documents/a41a8f15-fe88-4844-a441-d8df6f407edf_BalanceSheet-2026-09-18.pdf",
+        "PensionMS.API/wwwroot/uploads/documents/ffb85fbd-c590-4483-b5ef-cdaefea4cc3a_BalanceSheet-2026-09-18.pdf"
+      ]
+    },
+    {
+      "sha256": "595d10078d27e6a30a35c1ef4e0381906aed13fabcbe8d3c566731654dd85cd7",
+      "bytes": 1966535,
+      "files": [
+        "PensionMS.API/wwwroot/uploads/photos/488397ba280240fc9951418ce2addee2.jpg",
+        "PensionMS.API/wwwroot/uploads/photos/90d95eed9f8f44df97897bb4a328d91a.jpg"
+      ]
+    }
+  ],
+  "normalized": [],
+  "similar": [
+    {
+      "files": [
+        "ui/src/components/domain/retirement/DocumentProcessDialog.tsx",
+        "ui/src/pages/retirement-files/DocumentProcessPage.tsx"
+      ],
+      "common": 256,
+      "blocks": [
+        407,
+        403
+      ],
+      "dice": 63.21,
+      "contained": 63.52
+    }
+  ],
+  "exactFunctionClones": [
+    [
+      {
+        "file": "ui/src/components/domain/retirement/DocumentProcessDialog.tsx",
+        "name": "rotateImage",
+        "line": 94,
+        "signature": "d6500e85db0dcc36135eeca4fa69edc7b415392ecc68f7f9a8d5e8ac51030ab1"
+      },
+      {
+        "file": "ui/src/pages/retirement-files/DocumentProcessPage.tsx",
+        "name": "rotateImage",
+        "line": 96,
+        "signature": "d6500e85db0dcc36135eeca4fa69edc7b415392ecc68f7f9a8d5e8ac51030ab1"
+      }
+    ],
+    [
+      {
+        "file": "ui/src/components/domain/retirement/DocumentProcessDialog.tsx",
+        "name": "renderExportCanvas",
+        "line": 116,
+        "signature": "e350fcdd3a7d0240ca8e5cf11d302f48ec4edf21dda7b9d61fa4e0b3e9b1ed75"
+      },
+      {
+        "file": "ui/src/pages/retirement-files/DocumentProcessPage.tsx",
+        "name": "renderExportCanvas",
+        "line": 114,
+        "signature": "e350fcdd3a7d0240ca8e5cf11d302f48ec4edf21dda7b9d61fa4e0b3e9b1ed75"
+      }
+    ]
+  ]
+}

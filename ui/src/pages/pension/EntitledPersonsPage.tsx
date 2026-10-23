@@ -29,6 +29,7 @@ import {
     SelectTrigger,
     SelectValue,
     StatCard,
+    yemenPhoneSchema,
 } from "@/components/ui";
 import { queryKeys } from "@/constants/queryKeys";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
@@ -39,7 +40,7 @@ const addSchema = z.object({
     nationalID: z.string().min(1, "الرقم الوطني مطلوب"),
     relationshipID: z.string().min(1, "صلة القرابة مطلوبة"),
     birthDate: z.string().optional(),
-    phone: z.string().optional(),
+    phone: yemenPhoneSchema.optional().or(z.literal("")),
 });
 
 const editSchema = z.object({
@@ -47,7 +48,7 @@ const editSchema = z.object({
     nationalID: z.string().min(1, "الرقم الوطني مطلوب"),
     relationshipID: z.string().min(1, "صلة القرابة مطلوبة"),
     birthDate: z.string().optional(),
-    phone: z.string().optional(),
+    phone: yemenPhoneSchema.optional().or(z.literal("")),
 });
 
 const stopSchema = z.object({

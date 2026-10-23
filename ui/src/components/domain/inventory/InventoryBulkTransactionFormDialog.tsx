@@ -194,7 +194,7 @@ export function InventoryBulkTransactionFormDialog({ open, onOpenChange, onSaved
                             </div>
                             {fields.length > 1 && (
                                 <Button variant="ghost" size="icon" onClick={() => remove(index)}
-                                    className="mt-6 text-destructive hover:text-destructive/80 min-h-[44px] min-w-[44px]">
+                                    className="mt-6 text-destructive hover:text-destructive min-h-[44px] min-w-[44px]">
                                     <Trash2 className="w-4 h-4" />
                                 </Button>
                             )}

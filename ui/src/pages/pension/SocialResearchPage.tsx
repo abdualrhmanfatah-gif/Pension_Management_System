@@ -31,6 +31,7 @@ import {
     Input,
     NativeSelect,
     StatCard,
+    yemenPhoneSchema,
 } from "@/components/ui";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
 import type {
@@ -39,7 +40,7 @@ import type {
 } from "@/types/pension";
 
 const updateSchema = z.object({
-    phone: z.string().optional(),
+    phone: yemenPhoneSchema.optional().or(z.literal("")),
     governorate: z.string().optional(),
     city: z.string().optional(),
 });

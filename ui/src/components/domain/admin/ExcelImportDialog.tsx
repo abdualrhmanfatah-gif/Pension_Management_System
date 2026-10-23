@@ -97,7 +97,7 @@ export function ExcelImportDialog({ open, onOpenChange, onImported, batchId }: P
             <div className="space-y-4">
                 <FormSection title="اختيار ملف البيانات" icon={FileSpreadsheet}>
                     <div
-                        className={`border-2 border-dashed rounded-2xl p-10 text-center transition-all cursor-pointer relative group ${file ? "border-primary bg-primary/5" : "border-border/60 hover:border-primary/50 hover:bg-muted/30"
+                        className={`border-2 border-dashed rounded-2xl p-10 text-center transition-all cursor-pointer relative group ${file ? "border-primary bg-primary/5" : "border-border hover:border-primary hover:bg-muted/30"
                             }`}
                         role="button"
                         tabIndex={0}
@@ -169,7 +169,7 @@ export function ExcelImportDialog({ open, onOpenChange, onImported, batchId }: P
                 </FormSection>
 
                 {error && (
-                    <div className="rounded-2xl bg-destructive/10 border border-destructive/20 p-4 flex items-start gap-3 animate-in fade-in slide-in-from-top-2">
+                    <div className="rounded-2xl bg-destructive/10 border border-destructive p-4 flex items-start gap-3 animate-in fade-in slide-in-from-top-2">
                         <div className="p-1.5 bg-destructive/10 rounded-lg">
                             <X className="w-4 h-4 text-destructive" />
                         </div>

@@ -3,6 +3,8 @@ import type { ApiResponse } from "@/types/api";
 import api from "./axios";
 
 export interface SalaryRecipientDto {
+    effectiveEntitledID?: number | null;
+    entitledPersonName?: string | null;
     recipientID: number;
     fileID: number;
     fileNumber: string;
@@ -20,6 +22,7 @@ export interface SalaryRecipientDto {
     createdAt: string;
     updatedAt?: string | null;
     pendingReviewStatus?: number;
+    sharePercent?: number | null;
 }
 
 export interface CreateSalaryRecipientDto {
@@ -37,6 +40,8 @@ export interface CreateSalaryRecipientDto {
     birthDate?: string;
     socialStatusID?: number;
     healthStatusID?: number;
+    sharePercent?: number;
+    entitledAmount?: number;
 }
 
 export interface EndSalaryRecipientDto {
@@ -54,7 +59,7 @@ export const salaryRecipientApi = {
     create: (data: CreateSalaryRecipientDto) => {
         const formData = new FormData();
         formData.append("fileID", data.fileID.toString());
-        formData.append("startDate", data.startDate + "T00:00:00.000Z");
+        formData.append("startDate", data.startDate + "T00:00:00+03:00");
         if (data.retireeID) formData.append("retireeID", data.retireeID.toString());
         if (data.agentID) formData.append("agentID", data.agentID.toString());
         if (data.entitledID) formData.append("entitledID", data.entitledID.toString());
@@ -65,9 +70,11 @@ export const salaryRecipientApi = {
         
         // Append data completion fields
         if (data.nationalID) formData.append("nationalID", data.nationalID);
-        if (data.birthDate) formData.append("birthDate", data.birthDate + "T00:00:00.000Z");
+        if (data.birthDate) formData.append("birthDate", data.birthDate);
         if (data.socialStatusID) formData.append("socialStatusID", data.socialStatusID.toString());
         if (data.healthStatusID) formData.append("healthStatusID", data.healthStatusID.toString());
+        if (data.sharePercent !== undefined) formData.append("sharePercent", data.sharePercent.toString());
+        if (data.entitledAmount !== undefined) formData.append("entitledAmount", data.entitledAmount.toString());
 
         return api.post<ApiResponse<SalaryRecipientDto>>("/salary-recipients", formData, {
             headers: { "Content-Type": "multipart/form-data" }

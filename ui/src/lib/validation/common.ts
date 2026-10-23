@@ -1,13 +1,15 @@
 import { z } from "zod";
 
-// هاتف يمني: موبايل (7 + 8 أرقام = 9) أو أرضي (1-5 + 7-8 أرقام = 8-9)
-export const YEMEN_PHONE_REGEX = /^(7\d{8}|[1-5]\d{7,8})$/;
+// هاتف يمني: موبايل (7 + 8 أرقام = 9) أو أرضي (0 + 7 أرقام = 8)
+export const YEMEN_PHONE_REGEX = /^(7\d{8}|0\d{7})$/;
+
+export const PHONE_ERROR_MESSAGE = "رقم الهاتف غير صحيح (موبايل: 7XXXXXXXX / أرضي: 0XXXXXXX)";
 
 export const yemenPhoneSchema = z.string()
   .trim()
   .min(8, "رقم الهاتف يجب أن يكون 8 أو 9 أرقام")
   .max(9, "رقم الهاتف يجب أن يكون 8 أو 9 أرقام")
-  .regex(YEMEN_PHONE_REGEX, "رقم الهاتف غير صحيح (موبايل: 7XXXXXXXX / أرضي: 1-5XXXXXXX)");
+  .regex(YEMEN_PHONE_REGEX, PHONE_ERROR_MESSAGE);
 
 export const nationalIdSchema = z.string()
   .trim()

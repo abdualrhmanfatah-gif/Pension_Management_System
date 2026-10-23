@@ -141,7 +141,7 @@ export function LiabilitiesReport({ fiscalYearId, asOfDate: propAsOfDate, extern
               ) : (
                 <div className="space-y-2">
                   {classified.currentLiabilities.map((item: BalanceSheetSectionDto) => (
-                    <div key={item.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                    <div key={item.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{item.accountCode}</span>
                         <span className="text-sm mr-2">{item.accountName}</span>
@@ -165,7 +165,7 @@ export function LiabilitiesReport({ fiscalYearId, asOfDate: propAsOfDate, extern
               ) : (
                 <div className="space-y-2">
                   {classified.nonCurrentLiabilities.map((item: BalanceSheetSectionDto) => (
-                    <div key={item.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                    <div key={item.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{item.accountCode}</span>
                         <span className="text-sm mr-2">{item.accountName}</span>
@@ -187,7 +187,7 @@ export function LiabilitiesReport({ fiscalYearId, asOfDate: propAsOfDate, extern
               <div className="p-4">
                 <div className="space-y-2">
                   {classified.otherLiabilities.map((item: BalanceSheetSectionDto) => (
-                    <div key={item.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                    <div key={item.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{item.accountCode}</span>
                         <span className="text-sm mr-2">{item.accountName}</span>

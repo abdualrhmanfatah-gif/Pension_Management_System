@@ -167,7 +167,7 @@ export function YearOverYearReport({ fiscalYearId, externalFilters, hideInternal
               </tr>
             </thead>
             <tbody>
-              <tr className="border-t border-border/50 bg-emerald-50/50 dark:bg-emerald-950/20">
+              <tr className="border-t border-border bg-emerald-50/50 dark:bg-emerald-950/20">
                 <td className="p-3 font-medium">إجمالي الإيرادات</td>
                 <td className="p-3">{formatCurrency(income1.totalRevenue)}</td>
                 <td className="p-3">{formatCurrency(income2.totalRevenue)}</td>
@@ -178,7 +178,7 @@ export function YearOverYearReport({ fiscalYearId, externalFilters, hideInternal
                   {revenueChange >= 0 ? "+" : ""}{revenueChange.toFixed(1)}%
                 </td>
               </tr>
-              <tr className="border-t border-border/50 bg-red-50/50 dark:bg-red-950/20">
+              <tr className="border-t border-border bg-red-50/50 dark:bg-red-950/20">
                 <td className="p-3 font-medium">إجمالي المصروفات</td>
                 <td className="p-3">{formatCurrency(income1.totalExpenses)}</td>
                 <td className="p-3">{formatCurrency(income2.totalExpenses)}</td>
@@ -189,7 +189,7 @@ export function YearOverYearReport({ fiscalYearId, externalFilters, hideInternal
                   {expenseChange >= 0 ? "+" : ""}{expenseChange.toFixed(1)}%
                 </td>
               </tr>
-              <tr className="border-t border-border/50 font-bold">
+              <tr className="border-t border-border font-bold">
                 <td className="p-3">صافي الدخل</td>
                 <td className={`p-3 ${income1.netIncome >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"}`}>
                   {formatCurrency(income1.netIncome)}

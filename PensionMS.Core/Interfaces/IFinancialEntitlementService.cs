@@ -24,9 +24,12 @@ public interface IFinancialEntitlementService
     Task<ApiResponse<FinancialEntitlementDto>> GetByIdAsync(int id);
 
     /// <summary>
-    /// إنشاء استحقاق مالي جديد (ينهي الساري تلقائياً)
+    /// يسجل معاش كشف الإحالة من تاريخ التقاعد ثم يطبق التسويات بترتيب تاريخ القرار،
+    /// وينهي كل استحقاق قبل التالي بيوم دون تكرار السجلات المطابقة أو إعادة فتح المنتهي.
     /// </summary>
     Task<ApiResponse<FinancialEntitlementDto>> CreateAsync(CreateFinancialEntitlementDto dto, int userId);
+    /// <summary>يجهز استحقاقات الملف من تاريخ التقاعد ثم تواريخ قرارات التسوية، ويعيد معاش ورتبة يوم الفتح داخل معاملة المستدعي.</summary>
+    Task<ApiResponse<FinancialEntitlementDto>> CreateForFileAsync(int fileId, int userId);
 
     /// <summary>
     /// إنهاء استحقاق مالي

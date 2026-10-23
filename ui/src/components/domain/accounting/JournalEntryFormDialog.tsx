@@ -301,7 +301,7 @@ export function JournalEntryFormDialog({ open, onOpenChange }: JournalEntryFormD
               </thead>
               <tbody>
                 {lines.map((line, idx) => (
-                  <tr key={line.key} className="border-t border-border/50">
+                  <tr key={line.key} className="border-t border-border">
                     <td className="p-1.5 text-xs text-muted-foreground text-center">{idx + 1}</td>
                     <td className="p-1.5">
                       <NativeSelect

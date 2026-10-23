@@ -1,5 +1,6 @@
+using PensionMS.Testing;
+using PensionMS.Infrastructure.Services.Pension.RetirementFile;
 using System.Linq.Expressions;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using PensionMS.Core.Constants;
@@ -7,7 +8,6 @@ using PensionMS.Core.DTOs.EntitledPersons;
 using PensionMS.Core.DTOs.RetirementFiles;
 using PensionMS.Core.Entities;
 using PensionMS.Core.Interfaces;
-using PensionMS.Infrastructure.Services;
 using Xunit;
 
 namespace PensionMS.Tests.Services;
@@ -15,41 +15,25 @@ namespace PensionMS.Tests.Services;
 public class RetirementFileServiceTests
 {
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-    private readonly Mock<IWebHostEnvironment> _envMock;
-    private readonly Mock<ISoDGuard> _sodGuardMock;
-    private readonly Mock<IWorkflowEngine> _workflowMock;
-    private readonly Mock<IRiskScoringService> _riskMock;
     private readonly Mock<IImmutableAuditService> _auditMock;
-    private readonly Mock<ISnapshotService> _snapshotMock;
     private readonly RetirementFileService _service;
+    private readonly Mock<IMissingDocumentService> _missingService = new();
 
     public RetirementFileServiceTests()
     {
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _envMock = new Mock<IWebHostEnvironment>();
-        _sodGuardMock = new Mock<ISoDGuard>();
-        _workflowMock = new Mock<IWorkflowEngine>();
-        _riskMock = new Mock<IRiskScoringService>();
         _auditMock = new Mock<IImmutableAuditService>();
-        _snapshotMock = new Mock<ISnapshotService>();
 
         _service = new RetirementFileService(
             _unitOfWorkMock.Object, 
-            _envMock.Object, 
-            _sodGuardMock.Object,
-            _workflowMock.Object,
-            _riskMock.Object,
             _auditMock.Object,
-            _snapshotMock.Object,
-            Mock.Of<IComplianceEngine>(),
-            Mock.Of<IMissingDocumentService>(),
+            _missingService.Object,
             Mock.Of<IDocumentService>(),
-            Mock.Of<IFileStorageService>(),
-            Mock.Of<IBranchScopeProvider>(),
+            TestPensionAccess.All(_unitOfWorkMock.Object),
             Mock.Of<IEntitledPersonService>(),
             Mock.Of<INotificationService>(),
             Mock.Of<IFileReviewService>(),
-            Microsoft.Extensions.Logging.Abstractions.NullLogger<RetirementFileService>.Instance);
+            Microsoft.Extensions.Logging.Abstractions.NullLogger<RetirementFileService>.Instance, Mock.Of<IRetireeService>(), Mock.Of<IFinancialEntitlementService>(), Mock.Of<IPensionSuspensionService>());
     }
 
     [Fact]
@@ -68,16 +52,27 @@ public class RetirementFileServiceTests
     }
 
     [Fact]
-    public async Task ChangeStatusAsync_CannotActivateBeforeLifeCorrectionReviewIsApproved()
+    public async Task UpdateAsync_RejectsBranchChangeBeforeSaving()
     {
-        var file = new RetirementFile { FileID = 7, StatusID = FileStatusConstants.UnderReview,
-            ReviewStatus = FileReviewStatus.PendingReview };
+        var file = new RetirementFile { FileID = 7, RetireeID = 42, PensionBranchID = 2,
+            Retiree = new Retiree { RetireeID = 42 } };
         SetupQuery(new[] { file }, u => u.RetirementFiles);
-
-        var result = await _service.ChangeStatusAsync(7, FileStatusConstants.Active, "تفعيل", 1);
-
+        var result = await _service.UpdateAsync(7, new UpdateRetirementFileDto { BranchID = 3 }, 1);
         Assert.False(result.IsSuccess);
-        Assert.Equal(FileStatusConstants.UnderReview, file.StatusID);
+        Assert.Equal("لا يمكن تغيير فرع الملف بعد إنشائه", result.Message);
+        Assert.Equal(2, file.PensionBranchID);
+        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(), Times.Never);
+    }
+
+    [Fact]
+    public async Task UpdateAsync_RejectsIndependentRankChangeBeforeSaving()
+    {
+        var file = new RetirementFile { FileID = 7, RetireeID = 42, RankID = 1,
+            Retiree = new Retiree { RetireeID = 42 } };
+        SetupQuery(new[] { file }, u => u.RetirementFiles);
+        var result = await _service.UpdateAsync(7, new UpdateRetirementFileDto { RankID = 2 }, 1);
+        Assert.False(result.IsSuccess);
+        Assert.Equal(1, file.RankID);
         _unitOfWorkMock.Verify(u => u.SaveChangesAsync(), Times.Never);
     }
 
@@ -88,7 +83,7 @@ public class RetirementFileServiceTests
     {
         var retiree = new Retiree { RetireeID = 42, IsAlive = initiallyAlive, DeathDate = new DateOnly(2024, 3, 4), HealthStatusID = HealthStatusConstants.Deceased };
         var file = new RetirementFile { FileID = 7, RetireeID = 42, Retiree = retiree, PensionBranchID = 2,
-            StatusID = initiallyAlive ? FileStatusConstants.Active : FileStatusConstants.Suspended };
+            StatusID = initiallyAlive ? FileStatusConstants.Active : FileStatusConstants.Pending };
         var entitled = new EntitledPerson { EntitledID = 8, FileID = 7, IsActive = true };
         var recipient = new SalaryRecipient { RecipientID = 9, FileID = 7, EntitledID = 8, IsActive = true };
         var agent = new Agent { AgentID = 10, FileID = 7, EntitledID = 8, IsActive = true };
@@ -102,20 +97,17 @@ public class RetirementFileServiceTests
         SetupQuery(new[] { missing }, u => u.MissingDocuments);
         _unitOfWorkMock.Setup(u => u.Retirees).Returns(Mock.Of<IRepository<Retiree>>());
         _unitOfWorkMock.Setup(u => u.StatusTransitionLogs).Returns(Mock.Of<IRepository<StatusTransitionLog>>());
-        _envMock.Setup(e => e.EnvironmentName).Returns("Development");
-        _sodGuardMock.Setup(s => s.ValidateAsync(7, 1, SoDAction.Override)).ReturnsAsync(SoDResult.Ok());
         _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).ReturnsAsync(1);
         var review = new Mock<IFileReviewService>();
         review.Setup(r => r.RequestReviewAsync(7, 1, It.IsAny<DateTime?>()))
             .ReturnsAsync(PensionMS.Core.DTOs.Common.ApiResponse<bool>.Success(true));
-        var scoped = new Mock<IBranchScopeProvider>();
+        var scoped = new Mock<ITestBranchScope>();
         scoped.Setup(s => s.IsHQ()).Returns(true);
-        var service = new RetirementFileService(_unitOfWorkMock.Object, _envMock.Object, _sodGuardMock.Object,
-            _workflowMock.Object, _riskMock.Object, _auditMock.Object, _snapshotMock.Object,
-            Mock.Of<IComplianceEngine>(), Mock.Of<IMissingDocumentService>(), Mock.Of<IDocumentService>(),
-            Mock.Of<IFileStorageService>(), scoped.Object, Mock.Of<IEntitledPersonService>(),
+        var service = new RetirementFileService(_unitOfWorkMock.Object, _auditMock.Object,
+            _missingService.Object, Mock.Of<IDocumentService>(),
+            TestPensionAccess.From(_unitOfWorkMock.Object, scoped.Object), Mock.Of<IEntitledPersonService>(),
             Mock.Of<INotificationService>(), review.Object,
-            Microsoft.Extensions.Logging.Abstractions.NullLogger<RetirementFileService>.Instance);
+            Microsoft.Extensions.Logging.Abstractions.NullLogger<RetirementFileService>.Instance, Mock.Of<IRetireeService>(), Mock.Of<IFinancialEntitlementService>(), Mock.Of<IPensionSuspensionService>());
 
         var result = await service.CorrectRetireeLifeStatusAsync(7,
             new CorrectRetireeLifeStatusDto { Reason = "تصحيح إداري موثق", HealthStatusID = HealthStatusConstants.Healthy }, 1);
@@ -124,7 +116,7 @@ public class RetirementFileServiceTests
         Assert.True(retiree.IsAlive);
         Assert.Null(retiree.DeathDate);
         Assert.Equal(HealthStatusConstants.Healthy, retiree.HealthStatusID);
-        Assert.Equal(FileStatusConstants.UnderReview, file.StatusID);
+        Assert.Equal(FileStatusConstants.Pending, file.StatusID);
         Assert.False(entitled.IsActive);
         Assert.Equal(EntitledStopCodes.RetireeAlive, entitled.StopCode);
         Assert.False(recipient.IsActive);
@@ -136,8 +128,10 @@ public class RetirementFileServiceTests
             It.IsAny<string>(), It.IsAny<string>(), 2, It.IsAny<string?>(), It.IsAny<Guid?>()), Times.Once);
     }
 
-    [Fact]
-    public async Task HandleRetireeDeathAsync_SuspendsFileAndStopsRetireePayment()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task HandleRetireeDeathAsync_SuspendsFileAndStopsRetireePayment(bool failStaging)
     {
         var retiree = new Retiree { RetireeID = 42, IsAlive = true, BirthDate = new DateOnly(1960, 1, 1), HealthStatusID = HealthStatusConstants.Healthy };
         var file = new RetirementFile { FileID = 7, RetireeID = 42, Retiree = retiree, PensionBranchID = 2,
@@ -155,27 +149,34 @@ public class RetirementFileServiceTests
         missingRepo.Setup(r => r.Query()).Returns(new TestAsyncEnumerable<MissingDocument>(Array.Empty<MissingDocument>()));
         _unitOfWorkMock.Setup(u => u.MissingDocuments).Returns(missingRepo.Object);
         _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).ReturnsAsync(1);
-        _sodGuardMock.Setup(s => s.ValidateAsync(7, 1, SoDAction.Approve)).ReturnsAsync(SoDResult.Ok());
-        var scoped = new Mock<IBranchScopeProvider>();
+        var scoped = new Mock<ITestBranchScope>();
         scoped.Setup(s => s.IsHQ()).Returns(true);
-        var service = new RetirementFileService(_unitOfWorkMock.Object, _envMock.Object, _sodGuardMock.Object,
-            _workflowMock.Object, _riskMock.Object, _auditMock.Object, _snapshotMock.Object,
-            Mock.Of<IComplianceEngine>(), Mock.Of<IMissingDocumentService>(), Mock.Of<IDocumentService>(),
-            Mock.Of<IFileStorageService>(), scoped.Object, Mock.Of<IEntitledPersonService>(),
+        var service = new RetirementFileService(_unitOfWorkMock.Object, _auditMock.Object,
+            _missingService.Object, Mock.Of<IDocumentService>(),
+            TestPensionAccess.From(_unitOfWorkMock.Object, scoped.Object), Mock.Of<IEntitledPersonService>(),
             Mock.Of<INotificationService>(), Mock.Of<IFileReviewService>(),
-            Microsoft.Extensions.Logging.Abstractions.NullLogger<RetirementFileService>.Instance);
+            Microsoft.Extensions.Logging.Abstractions.NullLogger<RetirementFileService>.Instance, Mock.Of<IRetireeService>(), Mock.Of<IFinancialEntitlementService>(), Mock.Of<IPensionSuspensionService>());
 
         var deathDate = new DateOnly(2024, 3, 4);
+        if (failStaging)
+        {
+            _missingService.Setup(m => m.StageRequiredAsync(7, 1)).ThrowsAsync(new InvalidOperationException("تعذر تسجيل النواقص"));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => service.HandleRetireeDeathAsync(7, deathDate, 1));
+            _unitOfWorkMock.Verify(u => u.RollbackAsync(), Times.Once);
+            _unitOfWorkMock.Verify(u => u.CommitAsync(), Times.Never);
+            return;
+        }
         var result = await service.HandleRetireeDeathAsync(7, deathDate, 1);
 
         Assert.True(result.IsSuccess);
         Assert.False(retiree.IsAlive);
         Assert.Equal(deathDate, retiree.DeathDate);
         Assert.Equal(HealthStatusConstants.Deceased, retiree.HealthStatusID);
-        Assert.Equal(FileStatusConstants.Suspended, file.StatusID);
+        Assert.Equal(FileStatusConstants.Pending, file.StatusID);
         Assert.False(recipient.IsActive);
         Assert.Equal(PaymentBookStatus.Cancelled, book.Status);
-        missingRepo.Verify(r => r.AddAsync(It.IsAny<MissingDocument>()), Times.Exactly(2));
+        _missingService.Verify(m => m.StageRequiredAsync(7, 1), Times.Once);
+        missingRepo.Verify(r => r.AddAsync(It.IsAny<MissingDocument>()), Times.Never);
         _unitOfWorkMock.Verify(u => u.CommitAsync(), Times.Once);
     }
 
@@ -187,69 +188,6 @@ public class RetirementFileServiceTests
         _unitOfWorkMock.Setup(repository).Returns(repo.Object);
     }
 
-    [Fact]
-    public async Task GetAllowedStatusTransitionsAsync_FileNotFound_ReturnsFail()
-    {
-        // Arrange
-        _unitOfWorkMock.Setup(u => u.RetirementFiles.GetByIdAsync(It.IsAny<int>()))
-            .ReturnsAsync((RetirementFile?)null);
-
-        // Act
-        var result = await _service.GetAllowedStatusTransitionsAsync(99);
-
-        // Assert
-        Assert.False(result.IsSuccess);
-        Assert.Equal("الملف غير موجود", result.Message);
-    }
-
-    [Fact]
-    public async Task GetAllowedStatusTransitionsAsync_UnderReview_ReturnsActiveAndPending()
-    {
-        // Arrange
-        var fileId = 1;
-        var file = new RetirementFile { FileID = fileId, StatusID = FileStatusConstants.UnderReview };
-        
-        _unitOfWorkMock.Setup(u => u.RetirementFiles.GetByIdAsync(fileId))
-            .ReturnsAsync(file);
-
-        var statuses = new List<FileStatus>
-        {
-            new FileStatus { StatusID = FileStatusConstants.Active, StatusName = "نشط" },
-            new FileStatus { StatusID = FileStatusConstants.Pending, StatusName = "معلق" },
-            new FileStatus { StatusID = FileStatusConstants.Suspended, StatusName = "موقوف" }
-        }.AsQueryable();
-
-        var queryableMock = new TestAsyncEnumerable<FileStatus>(statuses);
-
-        var statusRepoMock = new Mock<IRepository<FileStatus>>();
-        statusRepoMock.Setup(r => r.Query()).Returns(queryableMock);
-        _unitOfWorkMock.Setup(u => u.FileStatuses).Returns(statusRepoMock.Object);
-
-        // Act
-        var result = await _service.GetAllowedStatusTransitionsAsync(fileId);
-
-        // Assert
-        Assert.True(result.IsSuccess);
-        Assert.NotNull(result.Data);
-        Assert.Equal(2, result.Data.Count);
-        Assert.Contains(result.Data, s => s.StatusID == FileStatusConstants.Active);
-        Assert.Contains(result.Data, s => s.StatusID == FileStatusConstants.Pending);
-    }
-
-    [Fact]
-    public async Task AssignEmployeeAsync_FileNotFound_ReturnsFail()
-    {
-        // Arrange
-        _unitOfWorkMock.Setup(u => u.RetirementFiles.GetByIdAsync(It.IsAny<int>()))
-            .ReturnsAsync((RetirementFile?)null);
-
-        // Act
-        var result = await _service.AssignEmployeeAsync(1, 100, 10);
-
-        // Assert
-        Assert.False(result.IsSuccess);
-        Assert.Equal("الملف غير موجود", result.Message);
-    }
 }
 
 // Helper classes to mock EF Core IQueryable async extensions (e.g., ToListAsync, FirstOrDefaultAsync)

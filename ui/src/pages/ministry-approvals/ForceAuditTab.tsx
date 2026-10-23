@@ -31,7 +31,7 @@ function StatusTransition({ oldStatus, newStatus }: { oldStatus?: string; newSta
     return (
         <span className="text-xs text-muted-foreground">
             <span className="text-amber-600 font-medium">{oldStatus || "—"}</span>
-            <span className="mx-1.5 text-muted-foreground/50">→</span>
+            <span className="mx-1.5 text-muted-foreground">→</span>
             <span className="text-emerald-600 font-medium">{newStatus || "—"}</span>
         </span>
     );

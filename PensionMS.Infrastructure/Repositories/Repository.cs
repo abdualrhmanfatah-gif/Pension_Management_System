@@ -36,12 +36,6 @@ public class Repository<T> : IRepository<T> where T : class
     public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
         => await _dbSet.FirstOrDefaultAsync(predicate);
 
-    public async Task<IEnumerable<T>> GetPagedAsync(int page, int pageSize)
-        => await _dbSet.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-
-    public async Task<IEnumerable<T>> GetPagedAsync(Expression<Func<T, bool>> predicate, int page, int pageSize)
-        => await _dbSet.Where(predicate).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-
     public async Task<int> CountAsync()
         => await _dbSet.CountAsync();
 
@@ -61,10 +55,23 @@ public class Repository<T> : IRepository<T> where T : class
         => _dbSet.Update(entity);
 
     public void Delete(T entity)
-        => _dbSet.Remove(entity);
+    {
+        RejectSoftDeletable(entity);
+        _dbSet.Remove(entity);
+    }
 
     public void DeleteRange(IEnumerable<T> entities)
-        => _dbSet.RemoveRange(entities);
+    {
+        var items = entities.ToList();
+        foreach (var entity in items) RejectSoftDeletable(entity);
+        _dbSet.RemoveRange(items);
+    }
+
+    private static void RejectSoftDeletable(T entity)
+    {
+        if (entity is ISoftDeletable)
+            throw new InvalidOperationException("الكيان يدعم الحذف المنطقي؛ يجب تحديث حقول الحذف بدلاً من حذفه فعلياً");
+    }
 
     public IQueryable<T> Query()
         => _dbSet.AsQueryable();
@@ -75,6 +82,8 @@ public class Repository<T> : IRepository<T> where T : class
         int limit,
         Expression<Func<T, int>> orderByKeySelector)
     {
+        if (limit <= 0 || limit == int.MaxValue)
+            throw new ArgumentOutOfRangeException(nameof(limit), "حجم الصفحة غير صالح");
         var query = predicate != null ? _dbSet.Where(predicate) : _dbSet.AsQueryable();
 
         if (cursor.HasValue)

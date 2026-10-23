@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<meta charset="utf-8">
+<title>اختبارات قبول إصلاح الإشعارات</title>
+<body><div id="review-root"></div><pre id="results"></pre>
+<script type="module">
+import '/src/index.css';
+import React, { act, StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { MemoryRouter, useLocation } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HubConnectionBuilder } from '@microsoft/signalr';
+import { toast } from 'sonner';
+import { FloatingNotification } from '/src/components/notifications/FloatingNotification.tsx';
+import { NotificationProvider } from '/src/components/providers/NotificationProvider.tsx';
+import { useNotificationsList, useUnreadCount } from '/src/hooks/useNotifications.ts';
+import { useNotificationStore } from '/src/stores/useNotificationStore.ts';
+import { useAuthStore } from '/src/stores/authStore.ts';
+import { notificationsApi } from '/src/api/notifications.ts';
+
+// Real components, hooks and query cancellation; synthetic transports and business data.
+window.IS_REACT_ACT_ENVIRONMENT = true;
+const host = document.getElementById('review-root');
+const results = [];
+const check = (id, expected, actual) => results.push({ id, expected, actual,
+  passes: JSON.stringify(expected) === JSON.stringify(actual) });
+const fixture = (id, userID = 1) => ({ notificationID: id, userID,
+  title: `إشعار اختبار ${id}`, message: 'تم إنشاء الملف بنجاح. بيانات اختبار محلية.', category: 'WORKFLOW',
+  priority: 1, isRead: false, createdAt: new Date().toISOString(), actionUrl: `/files/${id}` });
+const store = () => useNotificationStore.getState();
+const account = id => useAuthStore.setState({ user: id === null ? null : {
+  id, fullName: `اختبار ${id}`, username: `test${id}`, role: 'TEST'
+}, token: id === null ? null : 'synthetic-review-token' });
+let root, client, rafId = 0, now = performance.now(), callbacks = new Map();
+window.requestAnimationFrame = cb => { callbacks.set(++rafId, cb); return rafId; };
+window.cancelAnimationFrame = id => callbacks.delete(id);
+async function frame(delta) {
+  now += delta; const pending = [...callbacks.values()]; callbacks.clear();
+  await act(async () => pending.forEach(cb => cb(now)));
+}
+async function frames(count, delta = 100) { for (let i = 0; i < count; i++) await frame(delta); }
+async function settle() { await act(async () => { await new Promise(r => setTimeout(r, 30)); }); }
+async function mount(child, useProvider = false, strict = false) {
+  callbacks.clear(); now = performance.now();
+  client = new QueryClient({ defaultOptions: { queries: { retry: false, refetchOnWindowFocus: false } } });
+  const tree = React.createElement(QueryClientProvider, { client },
+    React.createElement(MemoryRouter, {}, useProvider ? React.createElement(NotificationProvider, {}, child) : child));
+  root = createRoot(host);
+  await act(async () => root.render(strict ? React.createElement(StrictMode, {}, tree) : tree));
+  await settle();
+}
+async function unmount() { await act(async () => root.unmount()); client.clear(); }
+const cards = () => host.querySelectorAll('h4').length;
+const progress = () => host.querySelector('[style*="width:"]')?.style.width ?? null;
+const floating = () => React.createElement(FloatingNotification);
+const connections = [];
+HubConnectionBuilder.prototype.build = function () {
+  const handlers = new Map();
+  const connection = { handlers, state: 'Disconnected', stopped: false,
+    on(name, handler) { handlers.set(name, handler); },
+    onreconnecting(handler) { this.reconnecting = handler; },
+    onreconnected(handler) { this.reconnected = handler; },
+    onclose(handler) { this.closed = handler; },
+    async start() { this.state = 'Connected'; },
+    async stop() { this.state = 'Disconnected'; this.stopped = true; },
+  };
+  connections.push(connection); return connection;
+};
+let plays = 0, pauses = 0, rejectAudio = null;
+window.Audio = class {
+  currentTime = 0;
+  play() { plays++; return rejectAudio === 'defer' ? new Promise((_, reject) => { rejectAudio = reject; }) : Promise.resolve(); }
+  pause() { pauses++; }
+};
+const nativeInterval = window.setInterval;
+const nativeClearInterval = window.clearInterval;
+const intervals = new Map();
+window.setInterval = (cb, delay, ...args) => {
+  const id = nativeInterval(cb, delay, ...args); intervals.set(id, { cb, delay }); return id;
+};
+window.clearInterval = id => { intervals.delete(id); nativeClearInterval(id); };
+let calls = 0, readIds = [], resolveB;
+notificationsApi.getAll = async () => {
+  calls++;
+  const id = useAuthStore.getState().user?.id;
+  if (id === 2) return new Promise(resolve => { resolveB = resolve; });
+  return { isSuccess: true, data: { items: [fixture(10, id)], totalCount: 1 } };
+};
+notificationsApi.getUnreadCount = async () => { calls++; return { isSuccess: true, data: 1 }; };
+notificationsApi.markAsRead = async id => { readIds.push(id); return { isSuccess: true, data: true }; };
+notificationsApi.markAllAsRead = async () => ({ isSuccess: true, data: true });
+function Probe() {
+  const query = useNotificationsList();
+  useUnreadCount();
+  window.queryProbe = { userId: useAuthStore(s => s.user?.id),
+    itemOwner: query.data?.data?.items?.[0]?.userID ?? null, isPlaceholderData: query.isPlaceholderData };
+  window.route = useLocation().pathname;
+  return null;
+}
+const withProbe = () => React.createElement(React.Fragment, {}, React.createElement(Probe), floating());
+window.runNotificationReview = async () => {
+  results.length = 0; localStorage.setItem('notification_sound', 'false');
+  store().reset(); account(1); store().bindUser(1);
+  await mount(withProbe());
+  check('loaded_history_does_not_popup', 0, cards());
+  await act(async () => store().enqueueToast(fixture(2)));
+  await frames(10);
+  check('timer_progress_decreases', true, parseFloat(progress()) < 100);
+  await act(async () => host.querySelector('article').dispatchEvent(new MouseEvent('mouseover', { bubbles: true })));
+  const pausedWidth = progress(); await frames(90);
+  check('hover_pauses_timer', pausedWidth, progress());
+  await act(async () => host.querySelector('article').dispatchEvent(new MouseEvent('mouseout', { bubbles: true, relatedTarget: document.body })));
+  await frames(80);
+  check('timer_removes_card_after_resume', 0, cards());
+  await unmount();
+
+  store().reset(); store().bindUser(1);
+  await mount(floating());
+  await act(async () => [3, 4, 5, 6].forEach(id => store().enqueueToast(fixture(id))));
+  check('four_events_three_visible_one_pending', { visible: 3, pending: 1 },
+    { visible: cards(), pending: store().toastQueue.length - cards() });
+  await act(async () => host.querySelector('button[aria-label="إخفاء الإشعار"]').click());
+  check('dismiss_shows_next_queued_card', { visible: 3, pending: 0 },
+    { visible: cards(), pending: store().toastQueue.length - cards() });
+  await unmount();
+
+  store().reset(); account(1);
+  await mount(withProbe(), true);
+  const oldConnection = connections.at(-1);
+  let invalidations = 0;
+  const invalidate = client.invalidateQueries.bind(client);
+  client.invalidateQueries = (...args) => { invalidations++; return invalidate(...args); };
+  await act(async () => oldConnection.reconnected('synthetic-reconnected'));
+  check('reconnect_invalidates_queries', true, invalidations > 0);
+  await act(async () => oldConnection.reconnecting());
+  await settle();
+  const beforePoll = calls;
+  await act(async () => [...intervals.values()].filter(x => x.delay === 30000).forEach(x => x.cb()));
+  await settle();
+  check('disconnected_polling_recovers_history_and_count', true, calls >= beforePoll + 2);
+  await act(async () => oldConnection.reconnected('synthetic-reconnected'));
+  await settle();
+  check('connected_stops_fallback_polling', 0, [...intervals.values()].filter(x => x.delay === 30000).length);
+
+  localStorage.setItem('notification_sound', 'true');
+  const beforeToasts = toast.getHistory().length, beforePlays = plays;
+  await act(async () => {
+    oldConnection.handlers.get('ReceiveNotification')(fixture(11));
+    oldConnection.handlers.get('ReceiveNotification')(fixture(11));
+  });
+  check('notification_has_no_duplicate_sonner_surface', 0, toast.getHistory().length - beforeToasts);
+  check('duplicate_delivery_one_card_and_one_sound', { cards: 1, sounds: 1 }, { cards: cards(), sounds: plays - beforePlays });
+  await act(async () => store().dequeueToast(11));
+  await act(async () => oldConnection.handlers.get('ReceiveNotification')(fixture(11)));
+  check('dismissed_notification_does_not_replay', { cards: 0, sounds: 1 }, { cards: cards(), sounds: plays - beforePlays });
+  await act(async () => oldConnection.handlers.get('ReceiveNotification')(fixture(13)));
+  await act(async () => host.querySelector('button[aria-label^="فتح الإشعار"]').click());
+  check('floating_open_marks_read_and_uses_server_destination', { route: '/files/13', read: true }, { route: window.route, read: readIds.includes(13) });
+
+  await act(async () => account(2)); await settle();
+  check('switch_account_no_previous_history', null, window.queryProbe.itemOwner);
+  check('switch_account_clears_previous_cache', 0, client.getQueryCache().findAll({ queryKey: ['notifications', 'user', 1] }).length);
+  await act(async () => oldConnection.handlers.get('ReceiveNotification')(fixture(12, 1)));
+  check('old_connection_callback_rejected', 0, store().toastQueue.length);
+  await act(async () => resolveB({ isSuccess: true, data: { items: [fixture(20, 2)], totalCount: 1 } }));
+  await settle();
+  check('new_account_loads_its_own_history', 2, window.queryProbe.itemOwner);
+  await act(async () => connections.at(-1).handlers.get('ReceiveNotification')(fixture(21, 2)));
+  await act(async () => account(null));
+  check('logout_clears_cards_queue_and_audio', { cards: 0, pending: 0, paused: true },
+    { cards: cards(), pending: store().toastQueue.length, paused: pauses > 0 });
+  await unmount();
+
+  account(1); store().reset();
+  await mount(withProbe(), true, true);
+  check('strictmode_leaves_only_one_active_connection', 1, connections.filter(c => !c.stopped).length);
+  await act(async () => connections.at(-1).handlers.get('ReceiveNotification')(fixture(22)));
+  const oldRejectState = rejectAudio;
+  rejectAudio = 'defer';
+  await act(async () => connections.at(-1).handlers.get('ReceiveNotification')(fixture(23)));
+  const rejectOldPlay = rejectAudio;
+  await act(async () => account(null));
+  await act(async () => rejectOldPlay(new DOMException('fixture', 'NotAllowedError')));
+  const playsAfterLogout = plays;
+  await act(async () => document.dispatchEvent(new MouseEvent('click', { bubbles: true })));
+  check('late_audio_rejection_cannot_rearm_after_logout', playsAfterLogout, plays);
+  rejectAudio = oldRejectState;
+  check('strictmode_logout_clears_cards', 0, cards());
+  await unmount(); localStorage.setItem('notification_sound', 'false');
+  document.getElementById('results').textContent = JSON.stringify(results, null, 2);
+  return results;
+};
+window.showNotificationPreview = async () => {
+  account(1); store().reset(); store().bindUser(1);
+  await mount(floating());
+  await act(async () => store().enqueueToast({ ...fixture(49), title: 'إنشاء ملف تقاعد جديد', message: 'تم إنشاء الملف رقم (04984-2026) بنجاح.' }));
+};
+</script>
+</body>
+</html>

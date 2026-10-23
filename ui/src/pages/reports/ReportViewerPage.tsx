@@ -145,7 +145,7 @@ export function ReportViewerPage() {
     });
 
     /* ── جلب ملخص الإحصائيات ── */
-    const { data: summaryData } = useQuery({
+    const { data: summaryData, isPending: isSummaryPending, isError: isSummaryError, refetch: refetchSummary } = useQuery({
         queryKey: ['report-summary', reportId, filters],
         queryFn: async () => {
             if (!reportConfig?.fetchSummary) return null;
@@ -161,6 +161,11 @@ export function ReportViewerPage() {
     const handleFilterChange = useCallback((key: string, value: string | number | boolean | null | undefined) => {
         setFilters((prev) => ({ ...prev, [key]: value }));
     }, []);
+
+    const handleRefresh = useCallback(() => {
+        void refetch();
+        if (reportConfig?.fetchSummary) void refetchSummary();
+    }, [refetch, refetchSummary, reportConfig]);
 
     const handleExport = useCallback((format: "excel" | "pdf" = "excel") => {
         if (reportConfig) exportReport(reportConfig.id, filters, format);
@@ -211,7 +216,7 @@ export function ReportViewerPage() {
     ], [reportConfig]);
 
     const emptyIcon = useMemo(() => (
-        <FileText className="w-12 h-12 opacity-20 text-muted-foreground" />
+        <FileText className="w-12 h-12 opacity-100 text-muted-foreground" />
     ), []);
 
     /* ── حماية إضافية قبل الرسم ── */
@@ -316,7 +321,7 @@ export function ReportViewerPage() {
                             filters={reportConfig.filters}
                             values={filters}
                             onChange={handleFilterChange}
-                            onApply={() => refetch()}
+                            onApply={handleRefresh}
                         />
                     </div>
 
@@ -327,7 +332,14 @@ export function ReportViewerPage() {
                                 cards={reportConfig.summaryCards}
                                 data={data}
                                 summaryData={summaryData ?? undefined}
+                                loading={!!reportConfig.fetchSummary && isSummaryPending}
+                                error={!!reportConfig.fetchSummary && isSummaryError}
                             />
+                            {reportConfig.fetchSummary && isSummaryError && (
+                                <p role="alert" className="text-sm text-destructive">
+                                    تعذر تحميل الإجماليات. اضغط «تحديث التقرير» لإعادة المحاولة.
+                                </p>
+                            )}
                         </div>
                     )}
 
@@ -395,7 +407,7 @@ export function ReportViewerPage() {
                                         {entitledPersons.map((person: EntitledPersonSummary) => (
                                             <div
                                                 key={person.entitledID}
-                                                className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border/50 hover:bg-muted/50 transition-colors"
+                                                className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border hover:bg-muted/50 transition-colors"
                                             >
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">

@@ -117,9 +117,9 @@ export function PortfolioDetailPage() {
                 
                 <TabsContent value="finance" className="mt-0 outline-none">
                     <div className="bg-card border rounded-2xl p-4 sm:p-8 lg:p-16 text-center text-muted-foreground border-dashed">
-                        <TrendingUp className="w-12 h-12 mx-auto mb-4 opacity-20" />
+                        <TrendingUp className="w-12 h-12 mx-auto mb-4 opacity-100" />
                         <p className="text-lg font-bold">التحليل المالي والتدفقات</p>
-                        <p className="text-sm font-medium opacity-70">سيتم تفعيل الرسوم البيانية التفصيلية للمحفظة قريباً.</p>
+                        <p className="text-sm font-medium opacity-100">سيتم تفعيل الرسوم البيانية التفصيلية للمحفظة قريباً.</p>
                     </div>
                 </TabsContent>
                 

@@ -131,7 +131,7 @@ export function SystemSettingsPage() {
 
             {/* Create Form */}
             {showCreate && (
-                <Card className="p-4 space-y-3 border-primary/30">
+                <Card className="p-4 space-y-3 border-primary">
                     <div className="flex items-center justify-between">
                         <Heading level="h3" className="font-semibold text-sm">إنشاء إعداد جديد</Heading>
                         <Button variant="ghost" size="sm" onClick={() => setShowCreate(false)} aria-label="إلغاء"><X className="w-4 h-4" /></Button>
@@ -167,7 +167,7 @@ export function SystemSettingsPage() {
             {loading ? (
                 <div className="py-16"><Loader text="جاري تحميل الإعدادات..." /></div>
             ) : settingsError ? (
-                <div className="border-2 border-destructive/20 rounded-xl py-16 text-center text-destructive">تعذر تحميل الإعدادات</div>
+                <div className="border-2 border-destructive rounded-xl py-16 text-center text-destructive">تعذر تحميل الإعدادات</div>
             ) : Object.keys(grouped).length === 0 ? (
                 <div className="border-2 border-dashed rounded-xl py-16 text-center text-muted-foreground">لا توجد إعدادات</div>
             ) : (

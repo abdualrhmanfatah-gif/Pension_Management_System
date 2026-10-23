@@ -66,7 +66,7 @@ export const ReportLineChart: React.FC<ReportLineChartProps> = ({
   }, [lines]);
 
   return (
-    <Card className={cn("h-full border border-border/60 shadow-sm transition-shadow hover:shadow-md", className)}>
+    <Card className={cn("h-full border border-border shadow-sm transition-shadow hover:shadow-md", className)}>
       {title && (
         <CardHeader className="pb-0 pt-1 px-3 space-y-0">
           <CardTitle className="text-sm font-bold text-foreground">{title}</CardTitle>

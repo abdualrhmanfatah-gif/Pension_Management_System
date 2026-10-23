@@ -147,7 +147,7 @@ export function BankFormDialog({ open, onOpenChange, onSaved, bank }: Props) {
                 </FormSection>
 
                 <FormSection title="الحالة الإدارية" icon={Activity}>
-                    <div className="flex items-center gap-3 p-4 bg-muted/30 rounded-2xl border border-border/40">
+                    <div className="flex items-center gap-3 p-4 bg-muted/30 rounded-2xl border border-border">
                         <input
                             type="checkbox"
                             id="bank-active-check"

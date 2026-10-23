@@ -8,5 +8,6 @@ export * from "./useDocumentBlob";
 export * from "./useDocumentMutations";
 export * from "./useDocumentsQuery";
 export * from "./useFileEntitiesQuery";
+export * from "./useRecordNavigation";
 export * from "./useRoleBasedUI";
 export { useCreateShortcut, useDialogKeyboard } from "@/constants/shortcuts";

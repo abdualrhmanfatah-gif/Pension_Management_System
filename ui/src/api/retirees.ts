@@ -26,6 +26,7 @@ export interface RetireeFilters {
     rankId?: number;
     gender?: number;
     governorate?: string;
+    isProcessed?: boolean;
 }
 
 export const retireeApi = {

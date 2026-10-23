@@ -2,6 +2,13 @@ using PensionMS.Core.Interfaces;
 
 namespace PensionMS.Core.Entities;
 
+public enum AgentScope
+{
+    Retiree = 1,
+    AllEntitled = 2,
+    SpecificEntitled = 3
+}
+
 /// <summary>
 /// الوكلاء
 /// </summary>
@@ -16,6 +23,8 @@ public class Agent : ISoftDeletable
     /// المستحق المرتبط — NULL = وكيل عام للملف
     /// </summary>
     public int? EntitledID { get; set; }
+    // Null preserves the scope of agencies registered before explicit scope selection.
+    public AgentScope? AgencyScope { get; set; }
     public virtual EntitledPerson? EntitledPerson { get; set; }
 
     public string FullName { get; set; } = string.Empty;

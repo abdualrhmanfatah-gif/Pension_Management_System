@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import type { SettlementItemDto } from "@/api/settlements";
 import { settlementApi } from "@/api/settlements";
 import { LinkRetireeDialog } from "@/components/domain/settlements/LinkRetireeDialog";
-import { Breadcrumb,Button, CrudPageLayout, EmptyState, Loader, PageLayout, StatCard, useConfirm } from "@/components/ui";
+import { Button, CrudPageLayout, EmptyState, Loader, PageLayout, StatCard, useConfirm } from "@/components/ui";
 import { AlertBanner } from "@/components/ui/AlertBanner";
 import { useApiMutation } from "@/hooks";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
@@ -159,8 +159,9 @@ export function SettlementBatchDetailsPage() {
         } finally {
             setIsGeneratingFailures(false);
             if (fileInputRef.current) fileInputRef.current.value = "";
+            queryClient.invalidateQueries({ queryKey: ["settlement-decision", id] });
         }
-    }, [id, toast]);
+    }, [id, queryClient, toast]);
 
     const handleDelete = async () => {
         if (!(await confirm({ title: "تأكيد الإجراء", description: "هل أنت متأكد من حذف هذا القرار وجميع بنوده؟", variant: "danger" }))) return;
@@ -228,7 +229,9 @@ export function SettlementBatchDetailsPage() {
             header: "",
             render: (row: SettlementItemDto) => (
                 <div className="flex items-center gap-2">
-                    {!row.retireeID && (
+                    {row.retireeID ? (
+                        <span className="text-xs text-success">الاستحقاق مُنشأ</span>
+                    ) : (
                         <Button
                             variant="secondary"
                             size="sm"
@@ -306,13 +309,6 @@ export function SettlementBatchDetailsPage() {
 
     return (
         <PageLayout className="p-4 sm:p-6">
-            <Breadcrumb 
-                items={[
-                    { label: "قائمة التسويات", href: "/settlements" },
-                    { label: `قرار رقم ${dec.decisionNumber}` }
-                ]} 
-            />
-
             <CrudPageLayout<SettlementItemDto>
                 title={`قرار تسوية رقم ${dec.decisionNumber}`}
                 description={`تاريخ القرار: ${formatDate(dec.decisionDate)} • النوع: ${dec.decisionType || "تسوية رتب"}`}
@@ -412,7 +408,7 @@ export function SettlementBatchDetailsPage() {
                                 <Button 
                                     variant="outline" 
                                     size="sm" 
-                                    className="gap-2 border-warning/30 hover:bg-warning/10 text-warning"
+                                    className="gap-2 border-warning hover:bg-warning/10 text-warning"
                                     onClick={() => fileInputRef.current?.click()}
                                     loading={isGeneratingFailures}
                                 >
@@ -460,6 +456,7 @@ export function SettlementBatchDetailsPage() {
                 }}
                 item={selectedItemToLink}
                 onLinked={() => {
+                    queryClient.invalidateQueries({ queryKey: ["settlement-decision", id] });
                     queryClient.invalidateQueries({ queryKey: ["settlement-decision-items", id] });
                 }}
             />

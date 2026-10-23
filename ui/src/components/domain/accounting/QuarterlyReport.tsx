@@ -4,10 +4,6 @@ import { useCallback,useEffect, useState } from "react";
 import { fiscalYearsApi, quartersApi,reportsApi } from "@/api/accounting";
 import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
 import { ReportBarChart, ReportPieChart } from "@/components/common/charts";
-import {
-altRowFill,
-autoFitColumns,
-  buildReportFooter, buildReportHeader,   createWorkbook, exportWorkbook, styleDataCell, } from "@/components/domain/print/excel.utils";
 import { Card } from "@/components/ui/Card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/Select";
 import { chartColors } from "@/lib/chartColors";
@@ -17,7 +13,7 @@ import type { FiscalYearSummaryDto, QuarterDto } from "@/types/accounting";
 
 interface QuarterlyReportProps {
   fiscalYearId?: number;
-  externalFilters?: { quarter?: number };
+  externalFilters?: { quarterId?: number };
   hideInternalControls?: boolean;
 }
 
@@ -47,14 +43,14 @@ export function QuarterlyReport({ fiscalYearId, externalFilters, hideInternalCon
   }, [fiscalYears, fiscalYearId]);
 
   useEffect(() => {
-    if (externalFilters?.quarter && quarters) {
-      const match = quarters.find((q: QuarterDto) => q.quarterNumber === externalFilters.quarter);
+    if (externalFilters?.quarterId && quarters) {
+      const match = quarters.find((q: QuarterDto) => q.quarterID === externalFilters.quarterId);
       if (match) setSelectedQuarterId(match.quarterID);
     } else if (quarters && quarters.length > 0 && !selectedQuarterId) {
       const openQ = quarters.find((q: QuarterDto) => !q.isClosed);
       setSelectedQuarterId(openQ?.quarterID ?? quarters[quarters.length - 1].quarterID);
     }
-  }, [quarters]);
+  }, [externalFilters?.quarterId, quarters, selectedQuarterId]);
 
   const selectedQuarter = quarters?.find((q: QuarterDto) => q.quarterID === selectedQuarterId);
 
@@ -71,43 +67,6 @@ export function QuarterlyReport({ fiscalYearId, externalFilters, hideInternalCon
     window.open(`/reports/quarterly/print?${params.toString()}`, "_blank");
   }, [selectedYearId, selectedQuarterId]);
 
-  const handleExportExcel = useCallback(async () => {
-    if (!data) return;
-    const { ws } = createWorkbook("التقرير الفصلي");
-    autoFitColumns(ws, { 1: 30, 2: 20 });
-    const dataStartRow = await buildReportHeader(ws, "التقرير الفصلي", 2, [
-      { label: "الفصل", value: selectedQuarter?.quarterName || "" },
-    ]);
-
-    let row = dataStartRow;
-    const writeSection = (title: string, lines: { accountName: string; amount: number }[], total: number) => {
-      ws.getRow(row).getCell(1).value = title;
-      styleDataCell(ws.getRow(row).getCell(1), { bold: true });
-      row++;
-      lines.forEach((line, i) => {
-        ws.getRow(row).getCell(1).value = line.accountName;
-        ws.getRow(row).getCell(2).value = line.amount;
-        styleDataCell(ws.getRow(row).getCell(2), { numFmt: "#,##0" });
-        altRowFill(ws.getRow(row).getCell(1), i);
-        altRowFill(ws.getRow(row).getCell(2), i);
-        row++;
-      });
-      ws.getRow(row).getCell(1).value = `إجمالي ${title}`;
-      ws.getRow(row).getCell(2).value = total;
-      styleDataCell(ws.getRow(row).getCell(1), { bold: true });
-      styleDataCell(ws.getRow(row).getCell(2), { numFmt: "#,##0", bold: true });
-      row++;
-    };
-
-    writeSection("الإيرادات", data.revenues, data.totalRevenue);
-    writeSection("المصروفات", data.expenses, data.totalExpenses);
-    ws.getRow(row).getCell(1).value = "صافي الدخل";
-    ws.getRow(row).getCell(2).value = data.netIncome;
-    styleDataCell(ws.getRow(row).getCell(1), { bold: true });
-    styleDataCell(ws.getRow(row).getCell(2), { numFmt: "#,##0", bold: true });
-    buildReportFooter(ws, 2);
-    await exportWorkbook(ws.workbook, `التقرير_الفصلي_${selectedQuarter?.quarterName || ""}`);
-  }, [data, selectedQuarter]);
 
   const customKPIs = data ? [
     { label: 'إجمالي الإيرادات', value: formatCurrency(data.totalRevenue), color: 'success' },
@@ -189,7 +148,7 @@ export function QuarterlyReport({ fiscalYearId, externalFilters, hideInternalCon
   const renderLines = (lines: { accountCode: string; accountName: string; amount: number; accountLevel: number }[]) => {
     return lines.map((line, i) => (
       <div key={i} className={cn(
-        "flex justify-between px-3 py-1.5 border-t border-border/30 text-sm",
+        "flex justify-between px-3 py-1.5 border-t border-border text-sm",
         line.accountLevel <= 1 && "font-medium bg-muted/20",
         line.accountLevel === 2 && "pr-6",
         line.accountLevel >= 3 && "pr-10 text-xs"
@@ -208,9 +167,7 @@ export function QuarterlyReport({ fiscalYearId, externalFilters, hideInternalCon
       customKPIs={customKPIs}
       filterBar={filterBar}
       chartContent={chartContent}
-      onPrint={hideInternalControls ? undefined : (data ? handlePrint : undefined)}
-      onExport={hideInternalControls ? undefined : (data ? handleExportExcel : undefined)}
-    >
+      onPrint={hideInternalControls ? undefined : (data ? handlePrint : undefined)}    >
       {selectedQuarter && (
         <div className="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-2 rounded-xl text-sm flex justify-between mb-4">
           <span>

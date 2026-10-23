@@ -48,7 +48,7 @@ export function FileReviewPage() {
 
     const approveMutation = useApiMutation(
         async () => {
-            await retirementApi.updateFileStatus(fileId, 2, "اعتماد الملف");
+            await retirementApi.approveReview(fileId);
         },
         {
             invalidateKeys: [["retirement-file", fileId], ["review-items", fileId]],
@@ -58,11 +58,11 @@ export function FileReviewPage() {
 
     const rejectMutation = useApiMutation(
         async () => {
-            await retirementApi.updateFileStatus(fileId, 3, rejectReason || "رفض الملف");
+            await retirementApi.rejectReview(fileId, rejectReason);
         },
         {
             invalidateKeys: [["retirement-file", fileId], ["review-items", fileId]],
-            successMessage: "تم رفض الملف بنجاح",
+            successMessage: "رُفضت المراجعة؛ يبقى الملف معلقًا والصرف موقوفًا",
             onSuccess: () => {
                 setRejectDialogOpen(false);
                 setRejectReason("");

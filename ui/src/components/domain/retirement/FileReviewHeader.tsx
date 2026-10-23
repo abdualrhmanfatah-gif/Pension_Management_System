@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { PermissionGate } from "@/components/auth/PermissionGate";
 import { Button, Text } from "@/components/ui";
 import { Badge } from "@/components/ui";
-import { RecordStateBadge } from "@/components/ui";
+import { retirementFileStatusName } from "@/constants/retirement";
 
 interface FileReviewHeaderProps {
     fileId: number;
@@ -50,7 +50,7 @@ export function FileReviewHeader({
                 <div>
                     <div className="flex items-center gap-2">
                         <span className="text-lg font-bold">ملف رقم {fileNumber}</span>
-                        {statusID && <RecordStateBadge state={statusID as any} />}
+                        {statusID && <Badge variant="outline">{retirementFileStatusName(statusID)}</Badge>}
                     </div>
                     <Text variant="description">{retireeName}</Text>
                 </div>

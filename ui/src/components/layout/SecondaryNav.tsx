@@ -133,7 +133,7 @@ export const SecondaryNav = memo(function SecondaryNav() {
     <div
       dir="rtl"
       className={cn(
-        "sticky top-14 z-40 hidden lg:flex items-center h-10 border-b border-border/30 bg-background px-4 print:hidden"
+        "sticky top-14 z-40 hidden lg:flex items-center h-10 border-b border-border bg-background px-4 print:hidden"
       )}
     >
       <nav className="flex items-center gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

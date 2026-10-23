@@ -78,8 +78,8 @@ export interface BulkDeleteDto {
 }
 
 export const notificationsApi = {
-  getAll: (page = 1, pageSize = 20, category?: string) => 
-    api.get<ApiResponse<PagedResult<NotificationDto>>>('/notifications', { params: { page, pageSize, category } }).then(r => r.data),
+  getAll: (page = 1, pageSize = 20, category?: string, signal?: AbortSignal) => 
+    api.get<ApiResponse<PagedResult<NotificationDto>>>('/notifications', { params: { page, pageSize, category }, signal }).then(r => r.data),
 
   getAttachments: (notificationId: number) =>
     api.get<ApiResponse<NotificationAttachmentDto[]>>(`/notifications/${notificationId}/attachments`)
@@ -91,14 +91,42 @@ export const notificationsApi = {
         throw err;
       }),
     
-  getUnreadCount: () => 
-    api.get<ApiResponse<number>>('/notifications/unread-count').then(r => r.data),
+  getUnreadCount: (signal?: AbortSignal) => 
+    api.get<ApiResponse<number>>('/notifications/unread-count', { signal }).then(r => r.data),
     
   markAsRead: (id: number) => 
     api.put<ApiResponse<boolean>>(`/notifications/${id}/read`).then(r => r.data),
     
   markAllAsRead: () => 
     api.put<ApiResponse<boolean>>('/notifications/read-all').then(r => r.data),
+
+  /**
+   * تنزيل مرفق عبر مسار الملكية (NF1.3).
+   * المصادقة عبر Axios — لا رمز في URL، رابط Blob مؤقت يُلغي بعد الاستخدام.
+   */
+  downloadAttachment: async (notificationId: number, attachmentId: number, fileName: string) => {
+    try {
+      const response = await api.get<Blob>(
+        `/notifications/${notificationId}/attachments/${attachmentId}/download`,
+        { responseType: 'blob' }
+      );
+      const blobUrl = URL.createObjectURL(response.data);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+      const axiosErr = err as { response?: { data?: { message?: string }; status?: number } };
+      const message = axiosErr?.response?.data?.message
+        || (axiosErr?.response?.status === 403 && 'غير مصرح بتنزيل هذا المرفق')
+        || (axiosErr?.response?.status === 404 && 'المرفق غير موجود')
+        || 'تعذر تنزيل المرفق';
+      throw new Error(message);
+    }
+  },
 
   // Admin endpoints
   admin: {

@@ -185,7 +185,7 @@ export function DocumentViewerDialog({
                         </div>
                     ) : (
                         <div className="flex flex-col items-center justify-center gap-3 text-muted-foreground">
-                            <FileWarning className="h-10 w-10 text-destructive/70" />
+                            <FileWarning className="h-10 w-10 text-destructive" />
                             <div className="text-center">
                                 <p className="font-medium text-foreground">مسار الملف غير متاح</p>
                                 <p className="text-sm mt-0.5">

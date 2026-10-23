@@ -144,7 +144,7 @@ export function CreateSettlementDecisionDialog({ open, onOpenChange, onSaved }: 
         >
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
                 {lastImportResult?.hasFailures && (
-                    <div className="col-span-full bg-destructive/10 border border-destructive/20 rounded-lg p-4 mb-4 flex flex-col gap-3">
+                    <div className="col-span-full bg-destructive/10 border border-destructive rounded-lg p-4 mb-4 flex flex-col gap-3">
                         <div className="flex items-start gap-3">
                             <AlertCircle className="w-5 h-5 text-destructive mt-0.5 shrink-0" />
                             <Text variant="label" className="text-destructive leading-relaxed">
@@ -155,7 +155,7 @@ export function CreateSettlementDecisionDialog({ open, onOpenChange, onSaved }: 
                             type="button" 
                             variant="outline" 
                             size="sm" 
-                            className="w-fit gap-2 border-destructive/30 hover:bg-destructive/10 text-destructive"
+                            className="w-fit gap-2 border-destructive hover:bg-destructive/10 text-destructive"
                             onClick={downloadErrorReport}
                         >
                             <Download className="w-4 h-4" />

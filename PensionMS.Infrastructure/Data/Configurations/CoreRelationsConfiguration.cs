@@ -32,6 +32,7 @@ public class EntitledPersonConfiguration : IEntityTypeConfiguration<EntitledPers
     public void Configure(EntityTypeBuilder<EntitledPerson> builder)
     {
         builder.HasKey(e => e.EntitledID);
+        builder.HasIndex(e => e.FileID).HasDatabaseName("IX_EntitledPersons_FileID");
 
         builder.Property(e => e.FullName).HasMaxLength(200);
         builder.Property(e => e.NationalID).HasMaxLength(20);
@@ -117,6 +118,9 @@ public class AgentConfiguration : IEntityTypeConfiguration<Agent>
         builder.Property(e => e.NationalID).HasMaxLength(20);
         builder.Property(e => e.Phone).HasMaxLength(20);
         builder.Property(e => e.AgencyNumber).HasMaxLength(100).IsRequired(false);
+        builder.Property(e => e.AgencyScope).HasConversion<int>();
+        builder.ToTable(t => t.HasCheckConstraint("CK_Agents_AgencyScope",
+            "[AgencyScope] IS NULL OR ([AgencyScope] IN (1, 2) AND [EntitledID] IS NULL) OR ([AgencyScope] = 3 AND [EntitledID] IS NOT NULL AND [EntitledID] > 0)"));
 
         builder.Property(e => e.PendingReviewStatus)
             .HasConversion<int>()
@@ -126,7 +130,9 @@ public class AgentConfiguration : IEntityTypeConfiguration<Agent>
 
         builder.HasOne(a => a.EntitledPerson).WithMany(e => e.Agents).HasForeignKey(a => a.EntitledID).OnDelete(DeleteBehavior.Restrict);
 
-        // وكيل واحد لكل نطاق: نفس FileID + نفس EntitledID (NULL ≠ NULL في SQL → القيد يُفرض بالخدمة)
+        builder.HasIndex(e => e.FileID).IsUnique()
+            .HasDatabaseName("UX_Agents_ActiveGeneral")
+            .HasFilter("[IsDeleted] = 0 AND [IsActive] = 1 AND [EntitledID] IS NULL");
         builder.HasIndex(e => new { e.FileID, e.EntitledID })
                .IsUnique()
                .HasFilter("[IsDeleted] = 0 AND [IsActive] = 1 AND [EntitledID] IS NOT NULL");

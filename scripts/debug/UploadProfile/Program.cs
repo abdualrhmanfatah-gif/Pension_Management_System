@@ -1,3 +1,8 @@
+using PensionMS.Infrastructure.Services.Pension.Entitlements;
+using PensionMS.Infrastructure.Services.Pension.RetirementFile;
+using PensionMS.Infrastructure.Services.Audit;
+using PensionMS.Infrastructure.Services.Documents;
+using PensionMS.Infrastructure.Services.Security;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Reflection;
@@ -18,7 +23,6 @@ using PensionMS.Core.Entities;
 using PensionMS.Core.Interfaces;
 using PensionMS.Infrastructure.Data;
 using PensionMS.Infrastructure.Repositories;
-using PensionMS.Infrastructure.Services;
 
 // Diagnostic harness: real services + SQL + audit interceptor, ALWAYS rollback.
 // Never prints configuration, credentials, personal data, or SQL parameter values.
@@ -39,6 +43,8 @@ http.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new[] {
     new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
     new Claim("BranchId", branchId.ToString()), new Claim("IsHQ", Arg("--hq", "false"))
 }, "diagnostic"));
+http.HttpContext.SetEndpoint(new Microsoft.AspNetCore.Http.Endpoint(_ => Task.CompletedTask,
+    new Microsoft.AspNetCore.Http.EndpointMetadataCollection(new Microsoft.AspNetCore.Authorization.AuthorizeAttribute("File.Documents.Upload")), "upload diagnostic"));
 var metrics = new Measurements();
 DbContextOptions<PensionDbContext> Options() => new DbContextOptionsBuilder<PensionDbContext>()
     .UseSqlServer(connection, sql => sql.UseCompatibilityLevel(120).CommandTimeout(30))
@@ -121,16 +127,17 @@ try
             // All DB services and the audit interceptor share THIS transaction/context.
             var unit = MeasuredProxy<IUnitOfWork>.Wrap(new UnitOfWork(db), "uow", metrics);
             var entitlement = new EntitlementEngine(unit);
+            var access = new AccessiblePensionRepository(unit, new CurrentUserContext(http), new ScopedPermissionResolver(db), http);
             var missing = new MissingDocumentService(unit, entitlement, new DiagnosticLogger<MissingDocumentService>(metrics));
-            var compliance = MeasuredProxy<IComplianceEngine>.Wrap(new ComplianceEngine(unit, missing), "compliance", metrics);
-            var review = MeasuredProxy<IFileReviewService>.Wrap(new FileReviewService(unit), "review", metrics);
+            var compliance = MeasuredProxy<IRetirementFileDocumentComplianceService>.Wrap(new RetirementFileDocumentComplianceService(unit, missing, access), "compliance", metrics);
+            var review = MeasuredProxy<IFileReviewService>.Wrap(new FileReviewService(unit, access, missing), "review", metrics);
             var audit = MeasuredProxy<IImmutableAuditService>.Wrap(new ImmutableAuditService(db), "immutableAudit", metrics);
             var storageConfig = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string,string?> {
                 ["FileStorage:UploadsFolder"] = "uploads", ["FileStorage:BaseUrl"] = ""
             }).Build();
             var storage = MeasuredProxy<IFileStorageService>.Wrap(new LocalFileStorageService(new DiagnosticEnvironment(tempRoot), storageConfig), "storage", metrics);
             var service = new DocumentService(unit, storage, compliance, entitlement, review,
-                new BranchScopeProvider(http), audit, new DiagnosticLogger<DocumentService>(metrics));
+                access, audit, new DiagnosticLogger<DocumentService>(metrics), missing);
             metrics.Clear();
             var batchSize = Math.Max(1, int.Parse(Arg("--batch", "1")));
             if (batchSize > 12) throw new Exception("Batch limit is 1..12.");

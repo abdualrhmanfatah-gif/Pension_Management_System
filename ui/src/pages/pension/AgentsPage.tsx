@@ -12,6 +12,8 @@ import {
     StatCard,
 } from "@/components/ui";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
+import { agentScopeLabel } from "@/lib/agentScope";
+import { formatYemenDate } from "@/lib/date";
 import { getPhotoUrl, resolvePersonalPhotoPath } from "@/lib/utils";
 import type { AgentSearchResult } from "@/types/retirement";
 
@@ -28,7 +30,7 @@ export function AgentsPage() {
         enabled: debouncedValue.length > 1,
     });
 
-    const activeCount = agents.filter((a) => !a.agencyEndDate).length;
+    const activeCount = agents.filter((a) => a.isActive).length;
 
     const columns = [
         {
@@ -48,6 +50,11 @@ export function AgentsPage() {
             ),
         },
         {
+            key: "agencyScope",
+            header: "الوكالة عن",
+            render: (row: AgentSearchResult) => <span className="text-sm">{agentScopeLabel(row)}</span>,
+        },
+        {
             key: "nationalID",
             header: "الرقم الوطني",
             render: (row: AgentSearchResult) => <span className="text-sm font-mono">{row.nationalID || "—"}</span>,
@@ -62,7 +69,7 @@ export function AgentsPage() {
             header: "تاريخ الوكالة",
             render: (row: AgentSearchResult) => (
                 <span className="text-sm">
-                    {row.agencyDate ? new Date(row.agencyDate).toLocaleDateString("ar-SA") : "—"}
+                    {row.agencyDate ? formatYemenDate(row.agencyDate) : "—"}
                 </span>
             ),
         },
@@ -92,8 +99,8 @@ export function AgentsPage() {
             key: "isActive",
             header: "الحالة",
             render: (row: AgentSearchResult) => (
-                <Badge variant={!row.agencyEndDate ? "success" : "destructive"}>
-                    {!row.agencyEndDate ? "نشط" : "غير نشط"}
+                <Badge variant={row.isActive ? "success" : "destructive"}>
+                    {row.isActive ? "نشط" : "غير نشط"}
                 </Badge>
             ),
         },

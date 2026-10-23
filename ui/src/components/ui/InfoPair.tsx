@@ -28,12 +28,12 @@ function InfoPair({ label, value, icon, dir, className, layout = "column", mono 
         return (
             <div
                 className={cn(
-                    "flex justify-between items-center flex-wrap gap-2 text-base border-b border-muted/50 py-3 last:border-0 last:pb-0",
+                    "flex justify-between items-center flex-wrap gap-2 text-base border-b border-muted py-3 last:border-0 last:pb-0",
                     className
                 )}
             >
                 <div className="flex items-center gap-2">
-                    {icon && <span className="text-muted-foreground/60">{icon}</span>}
+                    {icon && <span className="text-muted-foreground">{icon}</span>}
                     <span className="text-muted-foreground font-medium">{label}</span>
                 </div>
                 <span
@@ -50,7 +50,7 @@ function InfoPair({ label, value, icon, dir, className, layout = "column", mono 
     return (
         <div className={cn(className)}>
             <div className="flex items-center gap-1.5 mb-0.5">
-                {icon && <span className="text-muted-foreground/60">{icon}</span>}
+                {icon && <span className="text-muted-foreground">{icon}</span>}
                 <p className="text-xs text-muted-foreground">{label}</p>
             </div>
             <p className={cn("text-sm font-medium", mono && "font-mono")} dir={dir}>

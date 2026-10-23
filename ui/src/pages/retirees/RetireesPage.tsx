@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ChevronDown, Eye, FileText, Filter, FolderPlus, Printer, Trash2, Users, X } from "lucide-react";
+import { Eye, FileText, FolderPlus, MoreHorizontal, Printer, Trash2, Users, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,12 +8,14 @@ import { lookupApi } from "@/api/pension";
 import { retireeApi, type RetireeFilters, type RetireeListItem } from "@/api/retirees";
 import { SearchDialog } from "@/components/common/SearchDialog";
 import { CreateFileWizard } from "@/components/domain/retirement/CreateFileWizard";
-import { Badge, BaseFormDialog, Button, CrudPageLayout, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui";
+import { Badge, BaseFormDialog, Button, CrudPageLayout, Skeleton } from "@/components/ui";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/Accordion";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/DropdownMenu";
+import { NativeSelect } from "@/components/ui/NativeSelect";
 import { queryKeys } from "@/constants/queryKeys";
 import { useApiMutation,useCrudState } from "@/hooks";
 import { useConfirm } from "@/hooks/useConfirm";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
-import { cn } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
 
 // ─── Page ──────────────────────────────────────────────
@@ -38,7 +40,6 @@ export function RetireesPage() {
     const [rankId, setRankId] = useState<string>("");
     const [gender, setGender] = useState<string>("");
     const [governorate, setGovernorate] = useState<string>("");
-    const [filtersOpen, setFiltersOpen] = useState<boolean>(false);
 
     const filters: RetireeFilters = useMemo(() => ({
         categoryId: categoryId ? Number(categoryId) : undefined,
@@ -107,6 +108,17 @@ export function RetireesPage() {
     const retirees = retireesData?.items || [];
     const totalCount = retireesData?.totalCount || 0;
 
+    const handleDelete = async (row: RetireeListItem) => {
+        const confirmed = await confirm({
+            title: "حذف متقاعد",
+            description: `هل أنت متأكد من حذف المتقاعد ${row.fullName}؟`,
+            confirmLabel: "حذف",
+            cancelLabel: "إلغاء",
+            variant: "danger",
+        });
+        if (confirmed) deleteMutation.mutate(row.retireeID);
+    };
+
     const columns = [
         {
             key: "fullName",
@@ -141,11 +153,19 @@ export function RetireesPage() {
             ),
         },
         {
-            key: "phone",
-            header: "الهاتف",
+            key: "rankName",
+            header: "الرتبة",
             render: (row: RetireeListItem) => (
-                <span className="text-sm text-muted-foreground">{row.phone || "—"}</span>
+                <span className="text-sm">{row.rankName || "—"}</span>
             ),
+        },
+        {
+            key: "category",
+            header: "الفئة",
+            render: (row: RetireeListItem) => {
+                const name = categories?.find((c) => c.id === row.categoryId)?.name;
+                return <span className="text-sm">{name || "—"}</span>;
+            },
         },
         {
             key: "status",
@@ -157,13 +177,6 @@ export function RetireesPage() {
             ),
         },
         {
-            key: "fileCount",
-            header: "الملفات",
-            render: (row: RetireeListItem) => (
-                <span className="text-sm font-medium">{row.fileCount}</span>
-            ),
-        },
-        {
             key: "actions",
             header: "",
             render: (row: RetireeListItem) => (
@@ -172,19 +185,12 @@ export function RetireesPage() {
                         <Button
                             variant="ghost-action"
                             size="sm"
+                            className="text-destructive hover:text-destructive hover:bg-destructive/10 dark:hover:bg-destructive/20"
                             title="حذف المتقاعد"
-                            onClick={async (e) => {
+                            aria-label="حذف المتقاعد"
+                            onClick={(e) => {
                                 e.stopPropagation();
-                                const confirmed = await confirm({
-                                    title: "حذف متقاعد",
-                                    description: `هل أنت متأكد من حذف المتقاعد ${row.fullName}؟`,
-                                    confirmLabel: "حذف",
-                                    cancelLabel: "إلغاء",
-                                    variant: "danger"
-                                });
-                                if (confirmed) {
-                                    deleteMutation.mutate(row.retireeID);
-                                }
+                                void handleDelete(row);
                             }}
                         >
                             <Trash2 className="w-4 h-4" />
@@ -195,6 +201,7 @@ export function RetireesPage() {
                             variant="ghost-action"
                             size="sm"
                             title="طباعة المباينة"
+                            aria-label="طباعة المباينة"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 navigate(`/retirees/${row.retireeID}/statement`);
@@ -218,7 +225,11 @@ export function RetireesPage() {
                                 </Button>
                             )}
                             {canViewDetails && (
-                                <Button variant="ghost-action" size="sm" onClick={() => navigate(`/retirees/${row.retireeID}`)}>
+                                <Button
+                                    variant="ghost-action"
+                                    size="sm"
+                                    onClick={() => navigate(`/retirees/${row.retireeID}`)}
+                                >
                                     <Eye className="w-4 h-4 ms-1" />
                                     التفاصيل
                                 </Button>
@@ -243,6 +254,7 @@ export function RetireesPage() {
                                     size="sm"
                                     onClick={() => navigate(`/retirees/${row.retireeID}`)}
                                     title="عرض تفاصيل المتقاعد"
+                                    aria-label="عرض تفاصيل المتقاعد"
                                 >
                                     <Eye className="w-4 h-4" />
                                 </Button>
@@ -253,6 +265,132 @@ export function RetireesPage() {
             ),
         },
     ];
+
+    const renderMobileCard = (row: RetireeListItem) => {
+        const categoryName = categories?.find((category) => category.id === row.categoryId)?.name;
+        return (
+            <div className="space-y-2 p-2.5">
+                <div className="flex items-start gap-2">
+                    <h2 className="min-w-0 flex-1 break-words text-base font-bold leading-relaxed text-foreground">
+                        {row.fullName}
+                    </h2>
+                    <Badge variant={row.isAlive ? "success" : "secondary"} className="shrink-0">
+                        {row.isAlive ? "على قيد الحياة" : "متوفى"}
+                    </Badge>
+                </div>
+                <div className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
+                    <p className="shrink-0 whitespace-nowrap">
+                        العسكري: <bdi dir="ltr" className="font-mono font-semibold text-foreground">{row.militaryNumber || "—"}</bdi>
+                    </p>
+                    <p className="min-w-0 flex-1 truncate" title={`الرقم الوطني: ${row.nationalID || "غير معبأ"}`}>
+                        الوطني: <bdi dir="ltr" className="font-mono text-foreground">{row.nationalID || "غير معبأ"}</bdi>
+                    </p>
+                </div>
+                {(row.rankName || categoryName) && (
+                    <p className="truncate text-xs text-muted-foreground" title={[row.rankName, categoryName].filter(Boolean).join(" · ")}>
+                        {[row.rankName, categoryName].filter(Boolean).join(" · ")}
+                    </p>
+                )}
+                {(canViewDetails || canCreateFile || canViewFiles || canDelete) && (
+                    <div className="flex items-center gap-2">
+                        {row.fileCount === 0 && canCreateFile && (
+                            <Button variant="default" size="sm" className="min-w-0 flex-1" onClick={() => crud.openEdit(row)}>
+                                <FolderPlus className="h-4 w-4 shrink-0" aria-hidden="true" />
+                                إنشاء ملف
+                            </Button>
+                        )}
+                        {canViewDetails && (
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="min-w-0 flex-1"
+                                onClick={() => navigate(`/retirees/${row.retireeID}/statement`)}
+                            >
+                                <Printer className="h-4 w-4 shrink-0" aria-hidden="true" />
+                                طباعة المباينة
+                            </Button>
+                        )}
+                        {(canViewDetails || (row.fileID && canViewFiles) || canDelete) && (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="outline" size="icon" className="shrink-0" aria-label="إجراءات المتقاعد" title="المزيد">
+                                        <MoreHorizontal className="h-4 w-4" aria-hidden="true" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    {canViewDetails && (
+                                        <DropdownMenuItem onSelect={() => navigate(`/retirees/${row.retireeID}`)}>
+                                            <Eye className="h-4 w-4" aria-hidden="true" />
+                                            تفاصيل المتقاعد
+                                        </DropdownMenuItem>
+                                    )}
+                                    {row.fileID && canViewFiles && (
+                                        <DropdownMenuItem onSelect={() => navigate(`/files/${row.fileID}`)}>
+                                            <FileText className="h-4 w-4" aria-hidden="true" />
+                                            عرض ملف التقاعد
+                                        </DropdownMenuItem>
+                                    )}
+                                    {canDelete && (
+                                        <DropdownMenuItem className="text-destructive" onSelect={() => { void handleDelete(row); }}>
+                                            <Trash2 className="h-4 w-4" aria-hidden="true" />
+                                            حذف المتقاعد
+                                        </DropdownMenuItem>
+                                    )}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        )}
+                    </div>
+                )}
+            </div>
+        );
+    };
+
+    const filterFields = (
+        <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
+            <NativeSelect
+                label="الفئة"
+                value={categoryId}
+                onChange={setCategoryId}
+                options={[
+                    { value: "", label: "جميع الفئات" },
+                    ...(categories ?? []).map((category) => ({ value: String(category.id), label: category.name })),
+                ]}
+            />
+            <NativeSelect
+                label="الرتبة"
+                value={rankId}
+                onChange={setRankId}
+                options={[
+                    { value: "", label: "جميع الرتب" },
+                    ...(ranks ?? []).map((rank) => ({ value: String(rank.rankID), label: rank.rankName })),
+                ]}
+            />
+            <NativeSelect
+                label="الجنس"
+                value={gender}
+                onChange={setGender}
+                options={[
+                    { value: "", label: "الكل" },
+                    ...GENDER_OPTIONS.map((option) => ({ value: String(option.id), label: option.name })),
+                ]}
+            />
+            <NativeSelect
+                label="المحافظة"
+                value={governorate}
+                onChange={setGovernorate}
+                options={[
+                    { value: "", label: "جميع المحافظات" },
+                    ...(governorates ?? []).map((option) => ({ value: option.name, label: option.name })),
+                ]}
+            />
+        </div>
+    );
+    const clearFiltersButton = hasActiveFilters ? (
+        <Button variant="ghost" size="sm" onClick={clearFilters} className="text-destructive">
+            <X className="h-4 w-4" aria-hidden="true" />
+            مسح الفلاتر
+        </Button>
+    ) : null;
 
     // ── Keyboard Navigation ────────────────────────────
     const handleSearchKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -296,18 +434,36 @@ export function RetireesPage() {
 
     return (
         <CrudPageLayout
+            density="compact"
             title="المتقاعدون"
+            titleSuffix={
+                isLoading ? (
+                    <Skeleton className="h-6 w-16 rounded-full" />
+                ) : (
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-0.5 text-sm font-bold text-primary tabular-nums">
+                        <Users className="w-3.5 h-3.5" aria-hidden="true" />
+                        {totalCount.toLocaleString("en-US")}
+                    </span>
+                )
+            }
             description="سجل المتقاعدين مع إمكانية البحث والمباينة"
             columns={columns}
             data={retirees}
             loading={isLoading}
             searchable
             searchInHeader
+            searchLabel="البحث عن متقاعد"
+            searchPlaceholder="الاسم أو الرقم العسكري"
             onSearchChange={(val) => setSearch(val)}
             searchValue={search}
             onSearchKeyDown={handleSearchKeyDown}
             searchInputRef={searchInputRef}
             focusedRowIndex={focusedIndex}
+            renderMobileCard={renderMobileCard}
+            mobileScrollMode="page"
+            rowClassName={(row) => row.isAlive
+                ? "max-sm:bg-[color:color-mix(in_srgb,hsl(var(--gov-success))_8%,hsl(var(--card)))]"
+                : "max-sm:bg-muted"}
             onRowClick={(row) => { if (row.fileID) navigate(`/files/${row.fileID}`); else navigate(`/retirees/${row.retireeID}`); }}
             headerActions={
                 <SearchDialog
@@ -330,134 +486,25 @@ export function RetireesPage() {
                 onPageChange: (p) => setPage(p)
             }}
         >
-            {/* ── Filters Bar ───────────────────────────────── */}
-            <div className="rounded-2xl border border-border/70 bg-card/50 p-3 sm:p-4 space-y-3">
-                <div className="flex items-center justify-between flex-wrap gap-2">
-                    <button
-                        type="button"
-                        onClick={() => setFiltersOpen((v) => !v)}
-                        className="flex items-center gap-2 text-sm font-semibold text-foreground/80 hover:text-foreground transition-colors"
-                        aria-expanded={filtersOpen}
-                        aria-controls="filters-grid"
-                    >
-                        <Filter className="w-4 h-4" />
-                        <span>الفلاتر</span>
-                        {hasActiveFilters && (
-                            <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-primary/15 text-primary text-xs font-bold">
-                                {[categoryId, rankId, gender, governorate].filter(Boolean).length}
-                            </span>
-                        )}
-                        <ChevronDown
-                            className={cn(
-                                "w-4 h-4 text-muted-foreground transition-transform duration-200",
-                                filtersOpen && "rotate-180"
+            <Accordion type="single" collapsible className="sm:hidden">
+                <AccordionItem value="retiree-filters" className="border-0">
+                    <AccordionTrigger density="compact">
+                        <span className="flex items-center gap-2">
+                            الفلاتر
+                            {hasActiveFilters && (
+                                <Badge variant="secondary">{[categoryId, rankId, gender, governorate].filter(Boolean).length} مفعّل</Badge>
                             )}
-                        />
-                    </button>
-                    {hasActiveFilters && (
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={clearFilters}
-                            className="h-8 gap-1.5 text-destructive hover:text-destructive"
-                        >
-                            <X className="w-3.5 h-3.5" />
-                            مسح الفلاتر
-                        </Button>
-                    )}
-                </div>
-
-                <div
-                    id="filters-grid"
-                    className={cn(
-                        "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3",
-                        !filtersOpen && "hidden"
-                    )}
-                >
-                    {/* الفئة */}
-                    <div className="space-y-1.5">
-                        <label className="label-filter">الفئة</label>
-                        <Select
-                            value={categoryId || "all"}
-                            onValueChange={(v) => setCategoryId(v === "all" ? "" : v)}
-                        >
-                            <SelectTrigger>
-                                <SelectValue placeholder="جميع الفئات" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">جميع الفئات</SelectItem>
-                                {categories?.map((c) => (
-                                    <SelectItem key={c.id} value={c.id.toString()}>
-                                        {c.name}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    {/* الرتبة */}
-                    <div className="space-y-1.5">
-                        <label className="label-filter">الرتبة</label>
-                        <Select
-                            value={rankId || "all"}
-                            onValueChange={(v) => setRankId(v === "all" ? "" : v)}
-                        >
-                            <SelectTrigger>
-                                <SelectValue placeholder="جميع الرتب" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">جميع الرتب</SelectItem>
-                                {ranks?.map((r) => (
-                                    <SelectItem key={r.rankID} value={r.rankID.toString()}>
-                                        {r.rankName}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    {/* الجنس */}
-                    <div className="space-y-1.5">
-                        <label className="label-filter">الجنس</label>
-                        <Select
-                            value={gender || "all"}
-                            onValueChange={(v) => setGender(v === "all" ? "" : v)}
-                        >
-                            <SelectTrigger>
-                                <SelectValue placeholder="الكل" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">الكل</SelectItem>
-                                {GENDER_OPTIONS.map((g) => (
-                                    <SelectItem key={g.id} value={g.id.toString()}>
-                                        {g.name}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    {/* المحافظة */}
-                    <div className="space-y-1.5">
-                        <label className="label-filter">المحافظة</label>
-                        <Select
-                            value={governorate || "all"}
-                            onValueChange={(v) => setGovernorate(v === "all" ? "" : v)}
-                        >
-                            <SelectTrigger>
-                                <SelectValue placeholder="جميع المحافظات" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">جميع المحافظات</SelectItem>
-                                {governorates?.map((g) => (
-                                    <SelectItem key={g.id} value={g.name}>
-                                        {g.name}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-                </div>
+                        </span>
+                    </AccordionTrigger>
+                    <AccordionContent className="space-y-1 pb-0">
+                        {filterFields}
+                        {clearFiltersButton}
+                    </AccordionContent>
+                </AccordionItem>
+            </Accordion>
+            <div className="hidden space-y-1 sm:block">
+           
+                {filterFields}
             </div>
             <BaseFormDialog
                 open={crud.isFormOpen}

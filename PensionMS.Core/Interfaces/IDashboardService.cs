@@ -7,4 +7,7 @@ namespace PensionMS.Core.Interfaces;
 public interface IDashboardService
 {
     Task<ApiResponse<DashboardStatsDto>> GetStatsAsync();
+    Task<ApiResponse<PensionStatisticsDto>> GetPensionStatisticsAsync();
+    Task<ApiResponse<PerformanceStatisticsDto>> GetPerformanceStatisticsAsync();
+    Task<ApiResponse<List<RecentActivityDto>>> GetRecentActivitiesAsync();
 }

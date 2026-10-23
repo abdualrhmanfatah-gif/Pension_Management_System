@@ -1,0 +1,679 @@
+ M .gitignore
+ M AGENTS.md
+ M PensionMS.API/Controllers/AccountingController.cs
+ M PensionMS.API/Controllers/AdminNotificationsController.cs
+ M PensionMS.API/Controllers/AgentsController.cs
+ M PensionMS.API/Controllers/BankTransactionsController.cs
+ M PensionMS.API/Controllers/DashboardController.cs
+ M PensionMS.API/Controllers/FilesController.cs
+ M PensionMS.API/Controllers/MinistryApprovalsController.cs
+ M PensionMS.API/Controllers/NotificationsController.cs
+ M PensionMS.API/Controllers/ReportsController.cs
+ M PensionMS.API/Controllers/RetireesController.cs
+ M PensionMS.API/Controllers/RetirementFilesController.cs
+ M PensionMS.API/Controllers/StocktakeController.cs
+ M PensionMS.API/Middleware/ExceptionHandlingMiddleware.cs
+ M PensionMS.API/Program.cs
+ M PensionMS.API/Validators/Validators.cs
+ M PensionMS.Core/DTOs/Agents/AgentDtos.cs
+ M PensionMS.Core/DTOs/Ministry/MinistryApprovalDtos.cs
+ M PensionMS.Core/DTOs/Reports/ReportDtos.cs
+ M PensionMS.Core/DTOs/Reports/ReportFilterDtos.cs
+ M PensionMS.Core/DTOs/Retirees/RetireeDtos.cs
+ M PensionMS.Core/DTOs/RetirementFiles/RetirementFileDtos.cs
+ M PensionMS.Core/DTOs/SalaryRecipients/SalaryRecipientDtos.cs
+ M PensionMS.Core/Entities/Agent.cs
+ M PensionMS.Core/Interfaces/IAdminNotificationService.cs
+ M PensionMS.Core/Interfaces/IAgentService.cs
+ D PensionMS.Core/Interfaces/IAuditAndSnapshotServices.cs
+ M PensionMS.Core/Interfaces/IDashboardService.cs
+ M PensionMS.Core/Interfaces/IMinistryApprovalService.cs
+ M PensionMS.Core/Interfaces/INotificationService.cs
+ M PensionMS.Core/Interfaces/IPayrollGenerationService.cs
+ M PensionMS.Core/Interfaces/IReportService.cs
+ M PensionMS.Core/Interfaces/IRepository.cs
+ M PensionMS.Core/Interfaces/IRetirementFileService.cs
+ M PensionMS.Core/Interfaces/IUnitOfWork.cs
+ M PensionMS.Core/Interfaces/IUserService.cs
+ M PensionMS.Infrastructure/Data/Configurations/CoreRelationsConfiguration.cs
+ M PensionMS.Infrastructure/Data/Configurations/System/SystemCoreConfiguration.cs
+ D PensionMS.Infrastructure/Reporting/AccountingExportService.cs
+ D PensionMS.Infrastructure/Reporting/ExcelReportExporter.cs
+ D PensionMS.Infrastructure/Reporting/PdfReportExporter.cs
+ D PensionMS.Infrastructure/Reporting/ReportDataService.cs
+ M PensionMS.Infrastructure/Reporting/ReportRegistry.cs
+ M PensionMS.Infrastructure/Repositories/Repository.cs
+ M PensionMS.Infrastructure/Repositories/SettlementRepository.cs
+ M PensionMS.Infrastructure/Repositories/UnitOfWork.cs
+ M PensionMS.Infrastructure/Services/Accounting/BankTransactionService.cs
+ M PensionMS.Infrastructure/Services/Accounting/JournalEntryService.cs
+ M PensionMS.Infrastructure/Services/Accounting/VoucherService.cs
+ D PensionMS.Infrastructure/Services/AchievementObstacleService.cs
+ D PensionMS.Infrastructure/Services/AdminNotificationService.cs
+ D PensionMS.Infrastructure/Services/AdminSettingsService.cs
+ D PensionMS.Infrastructure/Services/Aes256EncryptionService.cs
+ D PensionMS.Infrastructure/Services/AgentService.cs
+ M PensionMS.Infrastructure/Services/Assets/FixedAssetService.cs
+ D PensionMS.Infrastructure/Services/AuditLogService.cs
+ D PensionMS.Infrastructure/Services/AuthService.cs
+ D PensionMS.Infrastructure/Services/BankService.cs
+ D PensionMS.Infrastructure/Services/BranchScopeProvider.cs
+ D PensionMS.Infrastructure/Services/BranchService.cs
+ D PensionMS.Infrastructure/Services/ComplianceEngine.cs
+ D PensionMS.Infrastructure/Services/ComplianceService.cs
+ D PensionMS.Infrastructure/Services/DashboardService.cs
+ D PensionMS.Infrastructure/Services/DiscrepancyService.cs
+ D PensionMS.Infrastructure/Services/DocumentExemptionService.cs
+ D PensionMS.Infrastructure/Services/DocumentPledgeService.cs
+ D PensionMS.Infrastructure/Services/DocumentService.cs
+ D PensionMS.Infrastructure/Services/DocumentTypeService.cs
+ D PensionMS.Infrastructure/Services/EntitledPersonService.cs
+ D PensionMS.Infrastructure/Services/EntitlementEngine.cs
+ D PensionMS.Infrastructure/Services/FileNoteService.cs
+ D PensionMS.Infrastructure/Services/FileReviewService.cs
+ D PensionMS.Infrastructure/Services/FileStatusService.cs
+ D PensionMS.Infrastructure/Services/FinancialEntitlementService.cs
+ D PensionMS.Infrastructure/Services/GuardianService.cs
+ M PensionMS.Infrastructure/Services/HR/HrAttendanceService.cs
+ D PensionMS.Infrastructure/Services/INotificationClient.cs
+ D PensionMS.Infrastructure/Services/ImmutableAuditService.cs
+ M PensionMS.Infrastructure/Services/Inventory/InventoryCustodyService.cs
+ M PensionMS.Infrastructure/Services/Inventory/InventoryItemService.cs
+ M PensionMS.Infrastructure/Services/Inventory/SimpleStocktakeService.cs
+ M PensionMS.Infrastructure/Services/Investment/InvestmentLeasingService.cs
+ D PensionMS.Infrastructure/Services/InvestmentDocumentValidationService.cs
+ D PensionMS.Infrastructure/Services/LocalFileStorageService.cs
+ D PensionMS.Infrastructure/Services/LoginHistoryService.cs
+ D PensionMS.Infrastructure/Services/LookupService.cs
+ D PensionMS.Infrastructure/Services/MinistryApprovalService.cs
+ D PensionMS.Infrastructure/Services/MissingDocumentService.cs
+ D PensionMS.Infrastructure/Services/NotificationHub.cs
+ D PensionMS.Infrastructure/Services/NotificationOutboxProcessor.cs
+ D PensionMS.Infrastructure/Services/NotificationService.cs
+ D PensionMS.Infrastructure/Services/NotificationService.cs.backup
+ D PensionMS.Infrastructure/Services/PaymentBookService.cs
+ D PensionMS.Infrastructure/Services/PayrollGenerationService.cs
+ D PensionMS.Infrastructure/Services/PensionSuspensionService.cs
+ D PensionMS.Infrastructure/Services/PermissionService.cs
+ D PensionMS.Infrastructure/Services/PledgeExpiryCheckerService.cs
+ D PensionMS.Infrastructure/Services/RankService.cs
+ D PensionMS.Infrastructure/Services/ReportService.Admin.cs
+ D PensionMS.Infrastructure/Services/ReportService.Documents.cs
+ D PensionMS.Infrastructure/Services/ReportService.Financial.cs
+ D PensionMS.Infrastructure/Services/ReportService.Investment.cs
+ D PensionMS.Infrastructure/Services/ReportService.Retirement.cs
+ D PensionMS.Infrastructure/Services/ReportService.cs
+ D PensionMS.Infrastructure/Services/RetireeService.cs
+ D PensionMS.Infrastructure/Services/RetirementFileService.cs
+ D PensionMS.Infrastructure/Services/RiskScoringService.cs
+ D PensionMS.Infrastructure/Services/SalaryPaymentBatchService.cs
+ D PensionMS.Infrastructure/Services/SalaryRecipientService.cs
+ D PensionMS.Infrastructure/Services/ScopedPermissionResolver.cs
+ D PensionMS.Infrastructure/Services/SettlementService.cs
+ D PensionMS.Infrastructure/Services/SnapshotService.cs
+ D PensionMS.Infrastructure/Services/SoDGuardService.cs
+ D PensionMS.Infrastructure/Services/SoDRules/SoDRules.cs
+ D PensionMS.Infrastructure/Services/UserService.cs
+ D PensionMS.Infrastructure/Services/WorkflowEngine.cs
+ M PensionMS.Tests/Diagnostics/DocumentUploadWaitDiagnostics.cs
+ M PensionMS.Tests/Services/ComplianceEngineTests.cs
+ M PensionMS.Tests/Services/DocumentBatchUploadTests.cs
+ M PensionMS.Tests/Services/DocumentServiceTests.cs
+ M PensionMS.Tests/Services/FileReviewIncrementalTests.cs
+ M PensionMS.Tests/Services/FileReviewServiceTests.cs
+ M PensionMS.Tests/Services/LocalFileStorageServiceTests.cs
+ M PensionMS.Tests/Services/RetireeLifeStatusTests.cs
+ M PensionMS.Tests/Services/RetirementFileServiceTests.cs
+ M docs/API.md
+ M docs/Architecture.md
+ M docs/design-token-audit.md
+ D plan/m0-baseline-lint.txt
+ D plan/m1-lint.txt
+ M scripts/debug/UploadProfile/Program.cs
+ M ui/package-lock.json
+ M ui/package.json
+ M ui/src/App.tsx
+ M ui/src/api/accounting.ts
+ M ui/src/api/ministry.ts
+ M ui/src/api/notifications.ts
+ M ui/src/api/reports.ts
+ M ui/src/api/retirees.ts
+ M ui/src/api/retirement.ts
+ M ui/src/api/salary-recipients.ts
+ M ui/src/components/common/FilterBar.tsx
+ M ui/src/components/common/ReportCard.tsx
+ M ui/src/components/common/ReportFilters.tsx
+ M ui/src/components/common/ReviewFilePreview.tsx
+ M ui/src/components/common/SearchDialog.tsx
+ M ui/src/components/common/UnifiedRetireeStatement.tsx
+ M ui/src/components/common/UploaderStatsView.tsx
+ M ui/src/components/common/charts/ReportBarChart.tsx
+ M ui/src/components/common/charts/ReportLineChart.tsx
+ M ui/src/components/common/charts/ReportPieChart.tsx
+ M ui/src/components/common/charts/ReportSummaryCards.tsx
+ M ui/src/components/common/dashboards/DashboardHeader.tsx
+ M ui/src/components/domain/accounting/AccountStatementReport.tsx
+ M ui/src/components/domain/accounting/BalanceSheetReport.tsx
+ M ui/src/components/domain/accounting/BudgetReport.tsx
+ M ui/src/components/domain/accounting/BudgetReportView.tsx
+ M ui/src/components/domain/accounting/CashFlowReport.tsx
+ M ui/src/components/domain/accounting/CostCenterReport.tsx
+ M ui/src/components/domain/accounting/CumulativePnLReport.tsx
+ M ui/src/components/domain/accounting/CurrentOperationsReport.tsx
+ M ui/src/components/domain/accounting/DepreciationReport.tsx
+ M ui/src/components/domain/accounting/FixedAssetsReport.tsx
+ M ui/src/components/domain/accounting/GeneralLedgerReport.tsx
+ M ui/src/components/domain/accounting/IncomeStatementReport.tsx
+ M ui/src/components/domain/accounting/JournalEntryFormDialog.tsx
+ M ui/src/components/domain/accounting/JournalEntryViewDialog.tsx
+ M ui/src/components/domain/accounting/JournalRegisterReport.tsx
+ M ui/src/components/domain/accounting/LiabilitiesReport.tsx
+ M ui/src/components/domain/accounting/ProvisionsReport.tsx
+ M ui/src/components/domain/accounting/QuarterlyReport.tsx
+ M ui/src/components/domain/accounting/SubledgerReport.tsx
+ M ui/src/components/domain/accounting/TrialBalanceReport.tsx
+ M ui/src/components/domain/accounting/VoucherPrintDialog.tsx
+ M ui/src/components/domain/accounting/VoucherViewDialog.tsx
+ M ui/src/components/domain/accounting/YearOverYearReport.tsx
+ M ui/src/components/domain/admin/BankFormDialog.tsx
+ M ui/src/components/domain/admin/BranchDialog.tsx
+ M ui/src/components/domain/admin/DocumentTypeDialog.tsx
+ M ui/src/components/domain/admin/ExcelImportDialog.tsx
+ M ui/src/components/domain/admin/RankFormDialog.tsx
+ M ui/src/components/domain/admin/RolePermissionsDialog.tsx
+ M ui/src/components/domain/admin/SendNotificationDialog.tsx
+ M ui/src/components/domain/admin/UserPermissionsDialog.tsx
+ M ui/src/components/domain/assets/AssetCategoryFormDialog.tsx
+ M ui/src/components/domain/force/AddReferralItemDialog.tsx
+ M ui/src/components/domain/hr/DepartmentDialog.tsx
+ M ui/src/components/domain/hr/JobTitleDialog.tsx
+ M ui/src/components/domain/hr/SectionDialog.tsx
+ M ui/src/components/domain/inventory/InventoryBulkTransactionFormDialog.tsx
+ M ui/src/components/domain/investment/TenantDialog.tsx
+ M ui/src/components/domain/investment/WorkOrderDialog.tsx
+ D ui/src/components/domain/print/excel.utils.ts
+ M ui/src/components/domain/print/reportHeader.shared.ts
+ M ui/src/components/domain/retirement/AddMissingDocumentDialog.tsx
+ M ui/src/components/domain/retirement/AgentDialog.tsx
+ M ui/src/components/domain/retirement/BulkUploadDialog.tsx
+ M ui/src/components/domain/retirement/CreateFileWizard.tsx
+ M ui/src/components/domain/retirement/DataEntryView.tsx
+ M ui/src/components/domain/retirement/DocumentChecklistField.tsx
+ M ui/src/components/domain/retirement/DocumentReviewPanel.tsx
+ D ui/src/components/domain/retirement/DocumentUploadView.tsx
+ M ui/src/components/domain/retirement/DocumentViewerDialog.tsx
+ M ui/src/components/domain/retirement/EditDocumentDialog.tsx
+ M ui/src/components/domain/retirement/EntitledPersonDetails.tsx
+ M ui/src/components/domain/retirement/EntitledPersonFormDialog.tsx
+ M ui/src/components/domain/retirement/FileReviewSidebar.tsx
+ M ui/src/components/domain/retirement/FulfillPledgeDialog.tsx
+ M ui/src/components/domain/retirement/GuardianDialog.tsx
+ M ui/src/components/domain/retirement/MissingDocActionDialog.tsx
+ M ui/src/components/domain/retirement/PaymentBookDialog.tsx
+ M ui/src/components/domain/retirement/PersonDocCard.tsx
+ M ui/src/components/domain/retirement/PledgeDialog.tsx
+ M ui/src/components/domain/retirement/RecipientsDialog.tsx
+ M ui/src/components/domain/retirement/RetirementFileSidebar.tsx
+ M ui/src/components/domain/retirement/ReviewItemCard.tsx
+ M ui/src/components/domain/retirement/StatusUpdateDialog.tsx
+ M ui/src/components/domain/retirement/ViewAgentDialog.tsx
+ M ui/src/components/domain/retirement/ViewEntitledPersonDialog.tsx
+ M ui/src/components/domain/retirement/index.ts
+ M ui/src/components/domain/retirement/sections/BasicInfoSection.tsx
+ M ui/src/components/domain/retirement/sections/DocumentsSection.tsx
+ M ui/src/components/domain/retirement/sections/FinancialSection.tsx
+ M ui/src/components/domain/retirement/sections/HistorySection.tsx
+ M ui/src/components/domain/retirement/sections/PeopleSection.tsx
+ M ui/src/components/domain/salaries/RecipientsTab.tsx
+ M ui/src/components/domain/salaries/SalaryRecipientFormDialog.tsx
+ M ui/src/components/domain/salaries/SalaryRecipientViewerDialog.tsx
+ M ui/src/components/domain/settlements/CreateSettlementDecisionDialog.tsx
+ M ui/src/components/domain/settlements/LinkRetireeDialog.tsx
+ M ui/src/components/domain/suspensions/CreateSuspensionDialog.tsx
+ M ui/src/components/layout/DetailLayout.tsx
+ M ui/src/components/layout/NavDropdown.tsx
+ M ui/src/components/layout/NotificationBell.tsx
+ M ui/src/components/layout/SecondaryNav.tsx
+ M ui/src/components/layout/Sidebar.tsx
+ M ui/src/components/layout/TopNav.tsx
+ M ui/src/components/layout/navigationData.tsx
+ M ui/src/components/notifications/FloatingNotification.tsx
+ M ui/src/components/providers/NotificationProvider.tsx
+ D ui/src/components/providers/useSignalR.ts
+ M ui/src/components/ui/Accordion.tsx
+ M ui/src/components/ui/AlertBanner.tsx
+ M ui/src/components/ui/AlertDialog.tsx
+ M ui/src/components/ui/AuditTimeline.tsx
+ M ui/src/components/ui/BaseFormDialog.tsx
+ M ui/src/components/ui/Breadcrumb.tsx
+ M ui/src/components/ui/CrudPageLayout.tsx
+ M ui/src/components/ui/DataTable.tsx
+ M ui/src/components/ui/Dialog.tsx
+ M ui/src/components/ui/EditableImage.tsx
+ M ui/src/components/ui/EmptyState.tsx
+ M ui/src/components/ui/ErrorAlert.tsx
+ M ui/src/components/ui/ErrorState.tsx
+ M ui/src/components/ui/FileUploader.tsx
+ M ui/src/components/ui/FormDialogFooter.tsx
+ M ui/src/components/ui/FormField.tsx
+ M ui/src/components/ui/FormSection.tsx
+ M ui/src/components/ui/ImageCropperDialog.tsx
+ M ui/src/components/ui/InfoPair.tsx
+ M ui/src/components/ui/Input.tsx
+ M ui/src/components/ui/Loader.tsx
+ M ui/src/components/ui/LoadingIndicator.tsx
+ M ui/src/components/ui/NativeSelect.tsx
+ M ui/src/components/ui/NoteBox.tsx
+ M ui/src/components/ui/Select.tsx
+ M ui/src/components/ui/Sheet.tsx
+ M ui/src/components/ui/Slider.tsx
+ M ui/src/components/ui/StatCard.tsx
+ M ui/src/components/ui/Stepper.tsx
+ M ui/src/components/ui/SummaryCard.tsx
+ M ui/src/components/ui/TabbedFormSection.tsx
+ M ui/src/components/ui/buttonVariants.ts
+ M ui/src/components/ui/chart.tsx
+ M ui/src/components/ui/index.ts
+ M ui/src/constants/queryKeys.ts
+ M ui/src/constants/shortcuts.ts
+ M ui/src/hooks/index.ts
+ M ui/src/index.css
+ D ui/src/lib/cpu-processor.test.ts
+ D ui/src/lib/crop-region.test.ts
+ D ui/src/lib/date.test.ts
+ M ui/src/lib/date.ts
+ M ui/src/lib/enterFocus.ts
+ D ui/src/lib/homography.test.ts
+ M ui/src/lib/retirementFileForm.ts
+ M ui/src/lib/validation/common.ts
+ M ui/src/lib/validation/index.ts
+ M ui/src/pages/DashboardPage.tsx
+ M ui/src/pages/accounting/AccountingDashboardPage.tsx
+ M ui/src/pages/accounting/CashFlowPage.tsx
+ M ui/src/pages/accounting/ChartOfAccountsPage.tsx
+ M ui/src/pages/accounting/CostCentersPage.tsx
+ M ui/src/pages/accounting/FiscalPeriodsPage.tsx
+ M ui/src/pages/accounting/InitialOpeningBalancesPage.tsx
+ M ui/src/pages/accounting/JournalEntryDetailsPage.tsx
+ M ui/src/pages/accounting/QuarterDetailsPage.tsx
+ M ui/src/pages/accounting/QuartersPage.tsx
+ M ui/src/pages/accounting/ReportsPage.tsx
+ M ui/src/pages/achievements/AchievementObstacleDetailPage.tsx
+ M ui/src/pages/achievements/AchievementObstaclesPage.tsx
+ M ui/src/pages/admin/AdminLandingPage.tsx
+ M ui/src/pages/admin/AuditLogsPage.tsx
+ M ui/src/pages/admin/LoginHistoryPage.tsx
+ M ui/src/pages/admin/SystemSettingsPage.tsx
+ M ui/src/pages/assets/AssetDetailPage.tsx
+ M ui/src/pages/auth/ChangePasswordPage.tsx
+ M ui/src/pages/auth/LoginPage.tsx
+ M ui/src/pages/compliance/ComplianceDashboardPage.tsx
+ M ui/src/pages/correspondence/CorrespondenceDetailsPage.tsx
+ M ui/src/pages/director/DirectorOfficePage.tsx
+ M ui/src/pages/documents/MissingDocsCompletionPage.tsx
+ M ui/src/pages/force/CodeBatchDetailsPage.tsx
+ M ui/src/pages/hr/EmployeeDetailsPage.tsx
+ M ui/src/pages/hr/EmployeesPage.tsx
+ M ui/src/pages/hr/HrDashboardPage.tsx
+ M ui/src/pages/hr/HrDocumentsPage.tsx
+ M ui/src/pages/hr/HrReferenceDataPage.tsx
+ M ui/src/pages/inventory/InventoryTransactionDetailsPage.tsx
+ M ui/src/pages/inventory/InventoryTransactionsPage.tsx
+ M ui/src/pages/investment/InvestmentHub.tsx
+ M ui/src/pages/investment/MaintenanceDetailsPage.tsx
+ M ui/src/pages/investment/MaintenancePage.tsx
+ M ui/src/pages/investment/PortfolioDetailPage.tsx
+ M ui/src/pages/investment/ProjectDetailPage.tsx
+ M ui/src/pages/investment/PropertyDetailPage.tsx
+ M ui/src/pages/investment/tabs/PropertyActivityLogTab.tsx
+ M ui/src/pages/investment/tabs/PropertyMaintenanceTab.tsx
+ M ui/src/pages/ministry-approvals/ForceAuditTab.tsx
+ M ui/src/pages/ministry-approvals/ReconciliationTab.tsx
+ M ui/src/pages/notifications/NotificationsPage.tsx
+ M ui/src/pages/pension/AgentsPage.tsx
+ M ui/src/pages/pension/AnnualBookReviewPage.tsx
+ M ui/src/pages/pension/EntitledPersonsPage.tsx
+ M ui/src/pages/pension/FileReviewListPage.tsx
+ M ui/src/pages/pension/FinancialEntitlementsPage.tsx
+ M ui/src/pages/pension/MinistryReferralsPage.tsx
+ M ui/src/pages/pension/MinistrySearchPage.tsx
+ M ui/src/pages/pension/PensionSuspensionsPage.tsx
+ M ui/src/pages/pension/SocialResearchPage.tsx
+ M ui/src/pages/print/PaymentBookPrint.tsx
+ M ui/src/pages/print/PrintableEmployeeReport.tsx
+ M ui/src/pages/print/PrintableRetirementFileReport.tsx
+ M ui/src/pages/print/SettlementDecisionPrint.tsx
+ M ui/src/pages/reports/ReportViewerPage.tsx
+ M ui/src/pages/reports/ReportsPage.tsx
+ M ui/src/pages/retirees/RetireeDetailsPage.tsx
+ M ui/src/pages/retirees/RetireesPage.tsx
+ M ui/src/pages/retirement-files/FileWorkflowManager.tsx
+ M ui/src/pages/retirement-files/RetirementFileDetailsPage.tsx
+ M ui/src/pages/retirement-files/RetirementFilesPage.tsx
+ M ui/src/pages/retirement-files/tabs/AgentsTab.tsx
+ M ui/src/pages/retirement-files/tabs/DocumentsTab.tsx
+ M ui/src/pages/retirement-files/tabs/EntitledPersonsTab.tsx
+ M ui/src/pages/retirement-files/tabs/FinancialEntitlementsTab.tsx
+ M ui/src/pages/retirement-files/tabs/GuardiansTab.tsx
+ M ui/src/pages/retirement-files/tabs/NotesTab.tsx
+ M ui/src/pages/retirement-files/tabs/PaymentBooksTab.tsx
+ M ui/src/pages/retirement-files/tabs/PledgesAndExemptionsTab.tsx
+ M ui/src/pages/retirement-files/tabs/RecipientsTab.tsx
+ M ui/src/pages/retirement-files/tabs/ReviewTab.tsx
+ M ui/src/pages/retirement-files/tabs/SalaryPaymentsTab.tsx
+ M ui/src/pages/retirement-files/tabs/SettlementsTab.tsx
+ M ui/src/pages/retirement-files/tabs/StatusTransitionsTab.tsx
+ M ui/src/pages/retirement-files/tabs/SuspensionsTab.tsx
+ M ui/src/pages/review/FileReviewDetailPage.tsx
+ M ui/src/pages/settlements/SettlementBatchDetailsPage.tsx
+ M ui/src/pages/suspensions/SuspensionsPage.tsx
+ M ui/src/stores/useNotificationStore.ts
+ M ui/src/types/retirement.ts
+ M ui/src/types/salary-recipients.ts
+ M ui/tailwind.config.js
+ M ui/tests/retirementFileForm.test.ts
+ M ui/vite.config.ts
+?? .agent/
+?? .agents/skills/impeccable/
+?? .claude/
+?? .codex/
+?? .gemini/
+?? .opencode/
+?? .playwright-mcp/
+?? PensionMS.API/Files/
+?? PensionMS.API/Middleware/UploadsMiddleware.cs
+?? PensionMS.API/Security/ActiveUserValidation.cs
+?? PensionMS.API/wwwroot/uploads/photos/
+?? PensionMS.Core/Exceptions/BranchScopeAccessException.cs
+?? PensionMS.Core/Interfaces/Accounting/IBankTransactionService.cs
+?? PensionMS.Core/Interfaces/IImmutableAuditService.cs
+?? PensionMS.Core/Interfaces/ISnapshotService.cs
+?? PensionMS.Core/Interfaces/Notifications/
+?? PensionMS.Core/Interfaces/Reporting/
+?? PensionMS.Infrastructure/Data/UnitOfWorkTransaction.cs
+?? PensionMS.Infrastructure/DependencyInjection/
+?? PensionMS.Infrastructure/Helpers/PensionFileAccess.cs
+?? PensionMS.Infrastructure/Helpers/RecipientScope.cs
+?? PensionMS.Infrastructure/Jobs/NotificationOutboxProcessor.cs
+?? PensionMS.Infrastructure/Jobs/PledgeExpiryCheckerService.cs
+?? PensionMS.Infrastructure/Properties/
+?? PensionMS.Infrastructure/Reporting/Exporters/
+?? PensionMS.Infrastructure/Repositories/SettlementMilitaryNumber.cs
+?? PensionMS.Infrastructure/Services/Accounting/BankService.cs
+?? PensionMS.Infrastructure/Services/Administration/
+?? PensionMS.Infrastructure/Services/Audit/
+?? PensionMS.Infrastructure/Services/Documents/
+?? PensionMS.Infrastructure/Services/Investment/InvestmentDocumentValidationService.cs
+?? PensionMS.Infrastructure/Services/Notifications/
+?? PensionMS.Infrastructure/Services/Payroll/
+?? PensionMS.Infrastructure/Services/Pension/
+?? PensionMS.Infrastructure/Services/Reporting/
+?? PensionMS.Infrastructure/Services/Security/
+?? PensionMS.Infrastructure/Services/Settlements/
+?? PensionMS.IntegrationTests/
+?? PensionMS.Tests/DependencyInjectionTests.cs
+?? PensionMS.Tests/RepositoryContractTests.cs
+?? PensionMS.Tests/Services/ActiveRetireesSummaryTests.cs
+?? PensionMS.Tests/Services/AdminNotificationServiceTests.cs
+?? PensionMS.Tests/Services/AgentFeatureTests.cs
+?? PensionMS.Tests/Services/ExcelReportExporterTests.cs
+?? PensionMS.Tests/Services/FileQueryServiceTests.cs
+?? PensionMS.Tests/Services/FileStatusServiceTests.cs
+?? PensionMS.Tests/Services/LookupServiceTests.cs
+?? PensionMS.Tests/Services/MinistryApprovalManualItemTests.cs
+?? PensionMS.Tests/Services/MinistryApprovalServiceTests.cs
+?? PensionMS.Tests/Services/NotificationOutboxProcessorTests.cs
+?? PensionMS.Tests/Services/NotificationServiceTests.cs
+?? PensionMS.Tests/Services/ReportExportGuardTests.cs
+?? PensionMS.Tests/Services/ReportingBranchScopeTests.cs
+?? PensionMS.Tests/Services/RetirementFileReportExporterTests.cs
+?? PensionMS.Tests/Services/SalaryImportIdentityTests.cs
+?? PensionMS.Tests/Services/SettlementBatchFinancialSafetyTests.cs
+?? PensionMS.Tests/Services/SettlementFinancialEligibilityTests.cs
+?? PensionMS.Tests/Services/SettlementServiceFactory.cs
+?? PensionMS.Tests/Services/SettlementsReportTests.cs
+?? PensionMS.Tests/Services/SharedExcelReportTemplateTests.cs
+?? PensionMS.Tests/Services/SupplementalReportExportTests.cs
+?? docs/agent-entitled-person-feature-report.md
+?? docs/audits/code-duplicates-unused-files-2026-10-18.md
+?? docs/audits/database-access-remediation-results.md
+?? docs/audits/notification-mechanism-audit.md
+?? docs/audits/notification-remediation-results.md
+?? docs/audits/notification-remediation-review.md
+?? docs/audits/ui-transparency-inventory.md
+?? docs/audits/ui-transparency-remediation.md
+?? plan/agent-entitled-person-completion-plan.md
+?? plan/architecture-camera-batch-scan.md
+?? plan/bulk-upload-retention-1280-dark.png
+?? plan/bulk-upload-retention-1280-light.png
+?? plan/bulk-upload-retention-360-dark.png
+?? plan/bulk-upload-retention-360-light.png
+?? plan/bulk-upload-retention-browser-results.json
+?? plan/bulk-upload-retention-lint-after.json
+?? plan/bulk-upload-retention-lint-before.json
+?? plan/code-cleanup-2026-10-20/
+?? plan/database-access-remediation-plan.md
+?? plan/database-remediation-api-build.txt
+?? plan/database-remediation-domain-test-output.txt
+?? plan/database-remediation-eligibility-tests.txt
+?? plan/database-remediation-http-finance-tests.txt
+?? plan/database-remediation-integration-build.txt
+?? plan/database-remediation-sql-test-output.txt
+?? plan/database-remediation-test-output.txt
+?? plan/datatable-refinement-1280-dark.png
+?? plan/datatable-refinement-1280-light.png
+?? plan/datatable-refinement-360-dark.png
+?? plan/datatable-refinement-360-light.png
+?? plan/datatable-refinement-browser-results.json
+?? plan/datatable-refinement-browser.js
+?? plan/datatable-refinement-build.txt
+?? plan/datatable-refinement-lint-after.json
+?? plan/datatable-refinement-lint-before.json
+?? plan/datatable-refinement-tests.txt
+?? plan/documents-card-1280-dark.png
+?? plan/documents-card-1280-light.png
+?? plan/documents-card-360-dark-expanded.png
+?? plan/documents-card-360-dark.png
+?? plan/documents-card-360-light-expanded.png
+?? plan/documents-card-360-light.png
+?? plan/documents-card-browser-results.json
+?? plan/documents-card-build.txt
+?? plan/documents-card-lint-after.txt
+?? plan/documents-card-lint-before.txt
+?? plan/documents-card-lint-comparison.json
+?? plan/documents-card-tests.txt
+?? plan/documents-status-browser-results.json
+?? plan/documents-status-build.txt
+?? plan/documents-status-green.txt
+?? plan/documents-status-lint-after.txt
+?? plan/documents-status-lint-before.txt
+?? plan/documents-status-lint-comparison.json
+?? plan/documents-status-red.txt
+?? plan/documents-status-repro-before.json
+?? plan/documents-status-repro.json
+?? plan/documents-ui-1280-dark.png
+?? plan/documents-ui-1280-light.png
+?? plan/documents-ui-360-dark.png
+?? plan/documents-ui-360-light.png
+?? plan/documents-ui-browser-results.json
+?? plan/documents-ui-build.txt
+?? plan/documents-ui-lint-after.txt
+?? plan/documents-ui-lint-before.txt
+?? plan/documents-ui-lint-comparison.json
+?? plan/documents-ui-targeted-lint.txt
+?? plan/documents-ui-tests.txt
+?? plan/feature-context-camera-batch-scan.md
+?? plan/feature-context-notification-remediation.md
+?? plan/file-audit-2026-10-18/
+?? plan/file-audit-2026-10-20/
+?? plan/foreground-opacity-build.txt
+?? plan/foreground-opacity-lint-after.json
+?? plan/foreground-opacity-lint-before.json
+?? plan/foreground-opacity-tests.txt
+?? plan/nf0-backend-tests-full.txt
+?? plan/nf0-backend-tests-run.txt
+?? plan/nf0-baseline.md
+?? plan/nf0-build-api.txt
+?? plan/nf0-build-tests.txt
+?? plan/nf0-git-snapshot.txt
+?? plan/nf0-ui-build.txt
+?? plan/nf0-ui-lint-before.txt
+?? plan/nf0-ui-test-after.txt
+?? plan/nf0-ui-test-before.txt
+?? plan/nf1-ui-lint-after.txt
+?? plan/nf1-ui-test-run.txt
+?? plan/nf2-lint-after.txt
+?? plan/notification-audit-backend-tests.txt
+?? plan/notification-audit-browser-results.json
+?? plan/notification-audit-isolated-tests.txt
+?? plan/notification-audit-ui-tests.txt
+?? plan/notification-fix-api-build.txt
+?? plan/notification-fix-backend-tests.txt
+?? plan/notification-fix-browser-results.json
+?? plan/notification-fix-http-tests.txt
+?? plan/notification-fix-lint-after.txt
+?? plan/notification-fix-lint-before.txt
+?? plan/notification-fix-lint-comparison.json
+?? plan/notification-fix-static-baseline.txt
+?? plan/notification-fix-targeted-lint.txt
+?? plan/notification-fix-ui-build.txt
+?? plan/notification-fix-ui-tests.txt
+?? plan/notification-remediation-plan.md
+?? plan/notification-review-api-build-isolated.txt
+?? plan/notification-review-api-build.txt
+?? plan/notification-review-backend-tests.txt
+?? plan/notification-review-browser-results.json
+?? plan/notification-review-failing-tests.txt
+?? plan/notification-review-lint-comparison.json
+?? plan/notification-review-lint.txt
+?? plan/notification-review-path-check.json
+?? plan/notification-review-ui-build.txt
+?? plan/notification-review-ui-tests.txt
+?? plan/payment-book-diagnosis-financial.json
+?? plan/payment-book-diagnosis-tab.json
+?? plan/payment-book-diagnosis.json
+?? plan/payment-book-fix-lint-before.json
+?? plan/referral-search-build.txt
+?? plan/referral-search-lint-after.json
+?? plan/referral-search-lint-before.json
+?? plan/referral-search-tests.txt
+?? plan/retirees-layout-1280-dark.png
+?? plan/retirees-layout-1280-light.png
+?? plan/retirees-layout-360-dark-expanded.png
+?? plan/retirees-layout-360-dark.png
+?? plan/retirees-layout-360-light-expanded.png
+?? plan/retirees-layout-360-light.png
+?? plan/retirees-layout-browser-results.json
+?? plan/retirees-layout-lint-after.txt
+?? plan/retirees-layout-lint-before.txt
+?? plan/retirees-layout-lint-comparison.json
+?? plan/retirees-layout-targeted-lint.txt
+?? plan/retirement-files-1280-dark.png
+?? plan/retirement-files-1280-light.png
+?? plan/retirement-files-360-dark-expanded.png
+?? plan/retirement-files-360-dark.png
+?? plan/retirement-files-360-light-expanded.png
+?? plan/retirement-files-360-light.png
+?? plan/retirement-files-browser-log.txt
+?? plan/retirement-files-browser-results.json
+?? plan/retirement-files-build.txt
+?? plan/retirement-files-lint-after.txt
+?? plan/retirement-files-lint-before.txt
+?? plan/retirement-files-lint-comparison.json
+?? plan/retirement-files-targeted-lint.txt
+?? plan/retirement-files-tests.txt
+?? plan/retirement-layout-failure.png
+?? plan/search-default-build.txt
+?? plan/search-default-final-mobile.png
+?? plan/search-default-lint-after.json
+?? plan/search-default-lint-before.json
+?? plan/search-default-tests.txt
+?? plan/search-input-1280-dark.png
+?? plan/search-input-1280-light.png
+?? plan/search-input-360-dark.png
+?? plan/search-input-360-light.png
+?? plan/search-input-before.png
+?? plan/search-input-build.txt
+?? plan/search-input-final-1280-dark.png
+?? plan/search-input-final-1280-light.png
+?? plan/search-input-final-360-dark.png
+?? plan/search-input-final-360-light.png
+?? plan/search-input-lint-after.json
+?? plan/search-input-lint-before.json
+?? plan/search-input-tests.txt
+?? plan/select-opacity-build.txt
+?? plan/select-opacity-lint-after.json
+?? plan/select-opacity-lint-before.json
+?? plan/select-opacity-tests.txt
+?? plan/select-text-build.txt
+?? plan/select-text-lint-after.json
+?? plan/select-text-lint-before.json
+?? plan/select-text-tests.txt
+?? plan/services-reorganization-map.json
+?? plan/services-reorganization-plan.md
+?? plan/transparency-inventory.json
+?? plan/transparency-opacity-scan.txt
+?? plan/transparency-raw-scan.txt
+?? plan/transparency-removal-1280-dark.png
+?? plan/transparency-removal-1280-light.png
+?? plan/transparency-removal-360-dark.png
+?? plan/transparency-removal-360-light.png
+?? plan/transparency-removal-before.json
+?? plan/transparency-removal-browser-results.json
+?? plan/transparency-removal-build.txt
+?? plan/transparency-removal-changes.json
+?? plan/transparency-removal-lint-after.json
+?? plan/transparency-removal-lint-before.json
+?? plan/transparency-removal-login.png
+?? plan/transparency-removal-tests.txt
+?? plan/transparency-removal-verification.json
+?? plan/transparency-removal.mjs
+?? plan/transparency-scan.mjs
+?? plan/transparency-shared-scan.txt
+?? plan/transparency-summary.json
+?? plan/uploader-created-date-backend-tests.txt
+?? plan/uploader-created-date-lint-after.txt
+?? plan/uploader-created-date-lint-before.txt
+?? plan/uploader-created-date-regression-before.txt
+?? plan/uploader-created-date-ui-build.txt
+?? plan/uploader-created-date-ui-tests.txt
+?? plan/uploader-last-created-regression-before.txt
+?? plan/verify-transparency-removal.mjs
+?? scripts/agent-entitled-completion.sql
+?? scripts/agent-entitled-preflight.sql
+?? scripts/agent-scope.sql
+?? scripts/db-access-indexes-apply.sql
+?? scripts/db-access-indexes-precheck.sql
+?? scripts/db-access-indexes-rollback.sql
+?? scripts/debug/NotificationAudit/
+?? tmp/
+?? ui/.debug-capture/
+?? ui/src/api/reportExport.ts
+?? ui/src/components/domain/retirement/CameraScanDialog.tsx
+?? ui/src/components/domain/retirement/EntitlementAmountField.tsx
+?? ui/src/components/domain/retirement/FileStatusBadge.tsx
+?? ui/src/components/domain/retirement/RetirementFileCard.tsx
+?? ui/src/components/domain/retirement/bulkUploadDuplicate.ts
+?? ui/src/components/ui/TabHeader.tsx
+?? ui/src/hooks/useCameraScanSession.ts
+?? ui/src/hooks/useNotifications.ts
+?? ui/src/hooks/useOpenNotification.ts
+?? ui/src/hooks/useRecordNavigation.ts
+?? ui/src/lib/agentScope.ts
+?? ui/src/lib/bulkUploadDraft.ts
+?? ui/src/lib/document-scanner/
+?? ui/src/lib/downloadFilename.ts
+?? ui/src/lib/notificationNavigation.ts
+?? ui/src/lib/retirementFileCard.ts
+?? ui/tests/agentScope.test.ts
+?? ui/tests/bulkUploadDialog.test.ts
+?? ui/tests/bulkUploadDraft.test.ts
+?? ui/tests/cpu-processor.test.ts
+?? ui/tests/crop-region.test.ts
+?? ui/tests/date.test.ts
+?? ui/tests/downloadFilename.test.ts
+?? ui/tests/helpers/
+?? ui/tests/homography.test.ts
+?? ui/tests/notificationDate.test.ts
+?? ui/tests/notifications.test.ts
+?? ui/tests/salaryRecipientScope.test.ts

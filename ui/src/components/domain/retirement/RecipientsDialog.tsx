@@ -14,6 +14,7 @@ import {
     FormSection,
     Input,
     NativeSelect} from "@/components/ui";
+import { todayYemen } from "@/lib/date";
 import type { LookupDto } from "@/types/retirement";
 
 // ─── Validation Schema ─────────────────────────────────
@@ -23,6 +24,7 @@ const recipientSchema = z.object({
         message: "نوع المستلم مطلوب",
     }),
     targetID: z.string().min(1, "يجب اختيار الشخص المستلم"),
+    coveredEntitledID: z.string().optional(),
 
     startDate: z.string().min(1, "تاريخ بدء الصرف مطلوب"),
     notes: z.string().trim().optional().or(z.literal("")),
@@ -34,6 +36,13 @@ const recipientSchema = z.object({
     healthStatusID: z.number().optional(),
     personalPhoto: z.instanceof(File).optional(),
     nationalIdImage: z.instanceof(File).optional(),
+    sharePercent: z.string().optional().refine(value => !value || (Number(value) > 0 && Number(value) <= 100), "أدخل نسبة أكبر من صفر ولا تتجاوز ١٠٠٪"),
+    entitledAmount: z.string().optional().refine(value => !value || Number(value) > 0, "أدخل مبلغاً أكبر من صفر"),
+}).refine(values => !(values.sharePercent && values.entitledAmount), {
+    message: "أدخل النسبة أو المبلغ، وليس كليهما",
+    path: ["entitledAmount"],
+}).refine(values => values.recipientType !== "guardian" || !!values.coveredEntitledID, {
+    message: "اختر المستحق الذي ينوب عنه الوصي", path: ["coveredEntitledID"],
 });
 
 export type RecipientFormValues = z.infer<typeof recipientSchema>;
@@ -80,8 +89,10 @@ export function RecipientsDialog({
             recipientType: "retiree",
             targetID: retireeId ? String(retireeId) : "",
 
-            startDate: new Date().toISOString().split('T')[0],
+            startDate: todayYemen(),
             notes: "",
+            sharePercent: "",
+            entitledAmount: "",
         }
     });
 
@@ -156,6 +167,8 @@ export function RecipientsDialog({
                                             setValue("birthDate", undefined);
                                             setValue("socialStatusID", undefined);
                                             setValue("healthStatusID", undefined);
+                                            setValue("sharePercent", "");
+                                            setValue("entitledAmount", "");
                                         }}
                                         autoFocus
                                     />
@@ -192,6 +205,15 @@ export function RecipientsDialog({
                             />
                         </FormField>
                     </div>
+                    {recipientType === "guardian" && (
+                        <FormField label="المستحق الذي ينوب عنه الوصي" required error={errors.coveredEntitledID?.message}>
+                            <Controller name="coveredEntitledID" control={control} render={({ field }) => (
+                                <NativeSelect value={field.value ?? ""} onChange={field.onChange}
+                                    options={lookups.entitleds.map(person => ({ value: String(person.id), label: person.fullName }))}
+                                    placeholder="اختر المستحق" />
+                            )} />
+                        </FormField>
+                    )}
                 </FormSection>
 
                 {/* استكمال البيانات والوثائق للمستحقين الموقوفين */}
@@ -201,7 +223,7 @@ export function RecipientsDialog({
                             <AlertTriangle className="w-5 h-5 flex-shrink-0" />
                             <div>
                                 <p className="text-sm font-black">تشديد متطلبات الصرف</p>
-                                <p className="text-[10px] sm:text-xs font-bold opacity-80">المستحق المختار موقوف الصرف. يجب استكمال بياناته ووثائقه أدناه لإتمام التعيين.</p>
+                                <p className="text-[10px] sm:text-xs font-bold opacity-100">المستحق المختار موقوف الصرف. يجب استكمال بياناته ووثائقه أدناه لإتمام التعيين.</p>
                             </div>
                         </div>
 
@@ -270,6 +292,25 @@ export function RecipientsDialog({
                 )}
 
                 <FormSection title="تفاصيل الاستحقاق المالي" icon={Percent}>
+                    {recipientType === "entitled" && (
+                        <div className="space-y-3 mb-4">
+                            <p className="text-sm text-muted-foreground">أدخل نسبة هذا المستلم أو مبلغه الشهري. إذا تركتهما فارغين تُستخدم حصة المستحق المحفوظة.</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <FormField label="نسبة الاستحقاق (%)" error={errors.sharePercent?.message}>
+                                    <Input type="number" min="0.01" max="100" step="0.01" inputMode="decimal"
+                                        {...register("sharePercent", { onChange: event => {
+                                            if (event.target.value) setValue("entitledAmount", "", { shouldDirty: true });
+                                        } })} placeholder="مثال: ٢٥" />
+                                </FormField>
+                                <FormField label="المبلغ الشهري (ريال)" error={errors.entitledAmount?.message}>
+                                    <Input type="number" min="0.01" step="0.01" inputMode="decimal"
+                                        {...register("entitledAmount", { onChange: event => {
+                                            if (event.target.value) setValue("sharePercent", "", { shouldDirty: true });
+                                        } })} placeholder="أو أدخل المبلغ" />
+                                </FormField>
+                            </div>
+                        </div>
+                    )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField label="تاريخ بدء الاستلام" required error={errors.startDate?.message}>
                             <Controller

@@ -147,7 +147,7 @@ export function AccountingDashboardPage() {
           {d?.monthlySummary && d.monthlySummary.length > 0 ? (
             <div className="space-y-3">
               {d.monthlySummary.map((m) => (
-                <div key={m.month} className="flex items-center justify-between py-2 border-b border-border/40 last:border-0">
+                <div key={m.month} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                   <span className="text-sm font-medium w-24">{m.month}</span>
                   <div className="flex gap-4 text-xs">
                     <span className="text-emerald-600">{formatCurrency(m.revenue)}</span>

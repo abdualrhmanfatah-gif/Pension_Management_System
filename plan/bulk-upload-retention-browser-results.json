@@ -1,0 +1,54 @@
+[
+  {
+    "name": "IndexedDB preserves bytes and filename",
+    "ok": true
+  },
+  {
+    "name": "different user and file are isolated",
+    "ok": true
+  },
+  {
+    "name": "expired batches are not restored",
+    "ok": true
+  },
+  {
+    "name": "expired files are physically deleted",
+    "ok": true
+  },
+  {
+    "name": "restored type and owner",
+    "ok": true
+  },
+  {
+    "name": "restored notes",
+    "ok": true
+  },
+  {
+    "name": "restoration does not extend TTL",
+    "ok": true
+  },
+  {
+    "name": "successful document ID retained",
+    "ok": true
+  },
+  {
+    "name": "offline disables upload",
+    "ok": true
+  },
+  {
+    "name": "reconnect waits for user action",
+    "ok": true
+  },
+  {
+    "name": "only unfinished file is uploaded",
+    "ok": true
+  },
+  {
+    "name": "finalization includes previous IDs",
+    "ok": true
+  },
+  {
+    "name": "completed batch removes local files",
+    "ok": true
+  }
+]

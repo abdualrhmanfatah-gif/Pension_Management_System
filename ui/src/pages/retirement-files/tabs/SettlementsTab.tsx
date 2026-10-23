@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { CheckCircle2, Gavel,XCircle } from "lucide-react";
+import { CheckCircle2, Gavel, Scale, XCircle } from "lucide-react";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { retirementApi } from "@/api/retirement";
 import type { SettlementItemDto } from "@/api/settlements";
-import { Button, CrudPageLayout, type CustomColumnDef } from "@/components/ui";
+import { Button, CrudPageLayout, type CustomColumnDef, TabHeader } from "@/components/ui";
 import { formatDate } from "@/lib/utils";
 
 interface SettlementsTabProps {
@@ -58,7 +58,7 @@ export function SettlementsTab({ retireeId }: SettlementsTabProps) {
             header: "المعالجة",
             render: (row) => (
                 <div className="text-start text-xs">
-                    <div className="text-muted-foreground line-through opacity-60">{row.currentRankName}</div>
+                    <div className="text-muted-foreground line-through opacity-100">{row.currentRankName}</div>
                     <div className="font-bold text-primary">{row.processedRankName}</div>
                 </div>
             )
@@ -94,13 +94,21 @@ export function SettlementsTab({ retireeId }: SettlementsTabProps) {
     ], [navigate]);
 
     return (
-        <CrudPageLayout
-            title="تسويات المعاش"
-            description="سجل القرارات والتسويات المالية التي خضع لها المتقاعد"
-            columns={columns}
-            data={items}
-            loading={isLoading}
-            emptyMessage="لا توجد تسويات مرتبطة بهذا المتقاعد."
-        />
+        <div className="space-y-2 md:space-y-4 animate-in fade-in duration-500 text-start">
+            <TabHeader
+                title="تسويات المعاش التقاعدي"
+                description="سجل القرارات والتسويات المالية التي خضع لها المتقاعد"
+                icon={Scale}
+            />
+
+            <CrudPageLayout
+                title="تسويات المعاش"
+                hideHeader={true}
+                columns={columns}
+                data={items}
+                loading={isLoading}
+                emptyMessage="لا توجد تسويات مرتبطة بهذا المتقاعد."
+            />
+        </div>
     );
 }

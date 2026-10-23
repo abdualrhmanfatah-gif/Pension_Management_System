@@ -1,0 +1,68 @@
+[
+  {
+    "id": "history_does_not_popup",
+    "expected": 0,
+    "actual": 0,
+    "passes": true
+  },
+  {
+    "id": "timer_removes_card_after_9_seconds",
+    "expected": 0,
+    "actual": 1,
+    "passes": false
+  },
+  {
+    "id": "timer_progress_decreases",
+    "expected": false,
+    "actual": true,
+    "passes": false
+  },
+  {
+    "id": "logout_clears_floating_card",
+    "expected": 0,
+    "actual": 0,
+    "passes": true
+  },
+  {
+    "id": "four_events_three_visible_one_pending",
+    "expected": {
+      "visible": 3,
+      "pending": 1
+    },
+    "actual": {
+      "visible": 3,
+      "pending": 0
+    },
+    "passes": false
+  },
+  {
+    "id": "reconnect_invalidates_queries",
+    "expected": true,
+    "actual": false,
+    "passes": false
+  },
+  {
+    "id": "duplicate_event_one_sonner",
+    "expected": 1,
+    "actual": 2,
+    "passes": false
+  },
+  {
+    "id": "switch_account_no_previous_history",
+    "expected": null,
+    "actual": 1,
+    "passes": false
+  },
+  {
+    "id": "switch_account_clears_previous_cache",
+    "expected": 0,
+    "actual": 1,
+    "passes": false
+  },
+  {
+    "id": "old_connection_callback_rejected",
+    "expected": 0,
+    "actual": 1,
+    "passes": false
+  }
+]

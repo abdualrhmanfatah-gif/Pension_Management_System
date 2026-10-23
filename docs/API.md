@@ -19,6 +19,40 @@
 
 ## 2. Authentication
 
+### نطاق الوصول إلى بيانات التقاعد
+
+يحدد الخادم نطاق كل عملية من المستخدم المصادق عليه والصلاحية وتعيينات أدواره النشطة. `BranchId` في الفلاتر يضيّق النطاق ولا يمنح فرعاً إضافياً. اسم الدور وفرع الحساب وJWT لا يمنحون مركزية. غياب النطاق يعيد 403؛ جلب سجل خارج النطاق عبر معرّفه يعامل كسجل غير متاح.
+سجل المتقاعدين التعريفي عام لحامل `Retiree.View`؛ الملفات والوثائق والبيانات المالية التابعة مقيدة بالفروع. `/uploads` و`/api/files` يطبّقان فحص ملكية الملف أيضاً.
+
+| Method | Endpoint | Permission and behavior |
+|--------|----------|-------------------------|
+| POST | `/api/retirement-files/{id}/transfer` | `File.Transfer` على فرعي المصدر والهدف؛ سبب لا يقل عن 10 أحرف؛ `rowVersion` حديثة؛ لا مراجعة معلقة |
+| PUT | `/api/Users/{id}/role-assignments` | `System.ManageUsers` بنطاق مركزي؛ يستبدل التعيينات النشطة مع حفظ التاريخ والتدقيق |
+
+طلب نقل الملف:
+
+```json
+{
+  "targetBranchID": 3,
+  "reason": "نقل الملف وفق القرار الإداري",
+  "rowVersion": "AAAAAAAAB9E="
+}
+```
+
+طلب تعيين الأدوار: لكل عنصر وضع واحد فقط: `branchId` أو `regionId` أو `isCentral: true`. القائمة الفارغة تسحب جميع التعيينات النشطة. تعديل فرع الحساب لا يغيّر هذه التعيينات تلقائياً.
+
+```json
+{
+  "assignments": [
+    { "roleId": 4, "branchId": 2 },
+    { "roleId": 6, "regionId": 5 }
+  ]
+}
+```
+
+`POST /api/retirement-files` يقبل `BranchID` اختيارياً لتحديد فرع إنشاء مسموح. عند غيابه يُستخدم فرع الحساب المسموح، أو الفرع الوحيد في النطاق. لا اختيار تلقائي لأول فرع فعّال. تغيير الفرع عبر تحديث الملف العادي مرفوض؛ استخدم مسار النقل.
+راجع [Security.md](Security.md) لقيود الدفعات المشتركة وتهيئة الحسابات قبل النشر.
+
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | `/api/auth/login` | Login, returns JWT + refresh token |
@@ -311,7 +345,9 @@ POST /api/auth/login
 | GET | `/batches/{id}/items` | Get items (paginated) |
 | GET | `/items/{itemId}` | Get item |
 | DELETE | `/batches/{id}` | Delete batch |
-| POST | `/batches/{id}/items` | Add manual item |
+| POST | `/batches/{id}/items` | Add manual item (allowed in any batch status; completed batches revert to «قيد المعالجة» while the new item is unprocessed) |
+| PUT | `/items/{itemId}` | Update manual item |
+| DELETE | `/items/{itemId}` | Delete manual item |
 | POST | `/items/{itemId}/process` | Process item |
 | GET | `/analytics/dashboard` | Dashboard stats |
 | GET | `/search` | Global search |

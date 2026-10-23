@@ -1,0 +1,42 @@
+{
+  "before": {
+    "errors": 296,
+    "warnings": 86
+  },
+  "after": {
+    "errors": 285,
+    "warnings": 84
+  },
+  "added": [
+    {
+      "file": "F:\\Projects\\Pension_Management_System\\ui\\src\\pages\\documents\\MissingDocsCompletionPage.tsx",
+      "line": 182,
+      "rule": "no-useless-escape",
+      "message": "Unnecessary escape character: \\/."
+    },
+    {
+      "file": "F:\\Projects\\Pension_Management_System\\ui\\src\\pages\\documents\\MissingDocsCompletionPage.tsx",
+      "line": 408,
+      "rule": "react-hooks/exhaustive-deps",
+      "message": "React Hook useCallback has a missing dependency: 'navigate'. Either include it or remove the dependency array."
+    },
+    {
+      "file": "F:\\Projects\\Pension_Management_System\\ui\\src\\pages\\pension\\MinistryReferralsPage.tsx",
+      "line": 165,
+      "rule": "react-hooks/exhaustive-deps",
+      "message": "The 'items' conditional could make the dependencies of useMemo Hook (at line 180) change on every render. To fix this, wrap the initialization of 'items' in its own useMemo() Hook."
+    },
+    {
+      "file": "F:\\Projects\\Pension_Management_System\\ui\\src\\pages\\pension\\MinistryReferralsPage.tsx",
+      "line": 165,
+      "rule": "react-hooks/exhaustive-deps",
+      "message": "The 'items' conditional could make the dependencies of useMemo Hook (at line 222) change on every render. To fix this, wrap the initialization of 'items' in its own useMemo() Hook."
+    },
+    {
+      "file": "F:\\Projects\\Pension_Management_System\\ui\\src\\pages\\retirees\\RetireesPage.tsx",
+      "line": 107,
+      "rule": "react-hooks/exhaustive-deps",
+      "message": "The 'retirees' logical expression could make the dependencies of useCallback Hook (at line 295) change on every render. To fix this, wrap the initialization of 'retirees' in its own useMemo() Hook."
+    }
+  ]
+}

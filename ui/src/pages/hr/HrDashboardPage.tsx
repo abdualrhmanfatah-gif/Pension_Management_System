@@ -46,7 +46,7 @@ export function HrDashboardPage() {
         icon={<LayoutDashboard className="h-6 w-6" />}
         actions={
           <>
-            <Button variant="outline" className="gap-2 border-primary/20 bg-primary/5 hover:bg-primary/10 " onClick={() => navigate("/hr/employees")}>
+            <Button variant="outline" className="gap-2 border-primary bg-primary/5 hover:bg-primary/10 " onClick={() => navigate("/hr/employees")}>
               <Users className="h-4 w-4" />
               دليل الموظفين
             </Button>
@@ -94,7 +94,7 @@ export function HrDashboardPage() {
               </div>
                <Heading level="h3" className="font-black text-lg">أحدث طلبات الإجازة</Heading>
             </div>
-            <Button variant="ghost" size="sm" className="text-primary hover:text-primary/10 gap-1 text-xs font-bold" onClick={() => navigate("/hr/leaves")}>
+            <Button variant="ghost" size="sm" className="text-primary hover:text-primary gap-1 text-xs font-bold" onClick={() => navigate("/hr/leaves")}>
               عرض الكل
               <ArrowUpRight className="h-3 w-3" />
             </Button>
@@ -105,12 +105,12 @@ export function HrDashboardPage() {
               Array(3).fill(0).map((_, i) => <Skeleton key={i} className="h-16 w-full rounded-xl" />)
             ) : leaves?.items.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-muted-foreground bg-muted/5 rounded-2xl border-2 border-dashed">
-                <CalendarDays className="h-10 w-10 opacity-10 mb-2" />
+                <CalendarDays className="h-10 w-10 opacity-100 mb-2" />
                 <p className="text-sm italic font-medium">لا توجد طلبات إجازة حالياً</p>
               </div>
             ) : (
               leaves?.items.map((leave: LeaveRequestListItemDto) => (
-                <div key={leave.leaveRequestID} className="flex items-center justify-between p-4 rounded-xl bg-background border border-border hover:border-primary/30 transition-all group ">
+                <div key={leave.leaveRequestID} className="flex items-center justify-between p-4 rounded-xl bg-background border border-border hover:border-primary transition-all group ">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black text-xs group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                       {leave.employeeFullName[0]}
@@ -157,7 +157,7 @@ export function HrDashboardPage() {
               />
             </div>
 
-            <div className="mt-8 p-4 rounded-2xl bg-primary/5 border border-primary/10 border-dashed">
+            <div className="mt-8 p-4 rounded-2xl bg-primary/5 border border-primary border-dashed">
               <p className="text-[10px] sm:text-xs font-black text-primary uppercase mb-1 flex items-center gap-1.5">
                 <span className="w-1 h-1 rounded-full bg-primary inline-block" /> نصيحة تقنية
               </p>
@@ -183,9 +183,9 @@ function QuickTask({ title, desc, icon, onClick }: { title: string, desc: string
     <Button
       variant="ghost"
       onClick={onClick}
-      className="w-full p-4 rounded-2xl bg-background border border-border flex items-center gap-4 hover:bg-primary/[0.02] hover:border-primary/30 text-start group "
+      className="w-full p-4 rounded-2xl bg-background border border-border flex items-center gap-4 hover:bg-primary/[0.02] hover:border-primary text-start group "
     >
-      <div className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center text-muted-foreground group-hover:text-primary group-hover:bg-primary/10 transition-all  border border-transparent group-hover:border-primary/10">
+      <div className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center text-muted-foreground group-hover:text-primary group-hover:bg-primary/10 transition-all  border border-transparent group-hover:border-primary">
         {icon}
       </div>
       <div>

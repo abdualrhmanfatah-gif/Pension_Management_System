@@ -1,0 +1,513 @@
+
+> ui@0.0.0 build
+> tsc -b && vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+src/components/domain/investment/TenantDialog.tsx (1:0): Module level directives cause errors when bundled, "use no memo" in "src/components/domain/investment/TenantDialog.tsx" was ignored.
+src/components/domain/retirement/PaymentBookDialog.tsx (1:0): Module level directives cause errors when bundled, "use no memo" in "src/components/domain/retirement/PaymentBookDialog.tsx" was ignored.
+src/components/domain/retirement/GuardianDialog.tsx (1:0): Module level directives cause errors when bundled, "use no memo" in "src/components/domain/retirement/GuardianDialog.tsx" was ignored.
+node_modules/@microsoft/signalr/dist/esm/Utils.js (190:0): A comment
+
+"/*#__PURE__*/"
+
+in "node_modules/@microsoft/signalr/dist/esm/Utils.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+node_modules/@microsoft/signalr/dist/esm/Utils.js (208:0): A comment
+
+"/*#__PURE__*/"
+
+in "node_modules/@microsoft/signalr/dist/esm/Utils.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+src/components/domain/retirement/MissingDocActionDialog.tsx (1:0): Module level directives cause errors when bundled, "use no memo" in "src/components/domain/retirement/MissingDocActionDialog.tsx" was ignored.
+src/components/domain/retirement/ExemptionDialog.tsx (1:0): Module level directives cause errors when bundled, "use no memo" in "src/components/domain/retirement/ExemptionDialog.tsx" was ignored.
+src/components/domain/retirement/FulfillPledgeDialog.tsx (1:0): Module level directives cause errors when bundled, "use no memo" in "src/components/domain/retirement/FulfillPledgeDialog.tsx" was ignored.
+src/components/domain/retirement/PledgeDialog.tsx (1:0): Module level directives cause errors when bundled, "use no memo" in "src/components/domain/retirement/PledgeDialog.tsx" was ignored.
+[plugin vite:resolve] Module "fs" has been externalized for browser compatibility, imported by "F:/Projects/Pension_Management_System/ui/node_modules/@techstark/opencv-js/dist/opencv.js". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.
+[plugin vite:resolve] Module "crypto" has been externalized for browser compatibility, imported by "F:/Projects/Pension_Management_System/ui/node_modules/@techstark/opencv-js/dist/opencv.js". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.
+✓ 4226 modules transformed.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/hr/HrUploadDocumentDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/hr/ServiceHistoryDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/hr/CreateEmployeeDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/hr/DepartmentDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/hr/JobTitleDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/hr/SectionDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/hr/LeaveRequestDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/hr/AttendanceDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/pages/correspondence/ExternalPartiesPage.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/admin/BranchDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/admin/RankFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/admin/DocumentTypeDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/admin/BankFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/admin/ExcelImportDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/pages/retirees/RetireesPage.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/CorrectLifeStatusDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/RecordDeathDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/StatusUpdateDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/sections/BasicInfoSection.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/RecipientsDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/settlements/LinkRetireeDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/EditDocumentDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/NoteDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/correspondence/CorrespondenceFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/UploadDocumentDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/PaymentBookDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/GuardianDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/AgentDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/EntitledPersonFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/salaries/CreateSalaryBatchDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/investment/PortfolioDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/investment/ProjectDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/investment/PropertyDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/investment/InvestmentPlanDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/investment/RiskAssessmentDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/investment/DepreciationDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/investment/UnitDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/investment/ValuationDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/investment/ContractDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/investment/MaintenanceRequestDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/investment/WorkOrderDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/investment/PaymentScheduleDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/pages/investment/tabs/TenantsTab.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/investment/TenantDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/pages/investment/MaintenancePage.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/investment/AddCostDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/investment/ApprovalRequestDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/investment/LookupDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/admin/RolePermissionsDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/admin/UserDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/admin/UserPermissionsDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/admin/SendNotificationDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/inventory/InventoryItemFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/assets/FixedAssetFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/inventory/InventoryCustodyFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/inventory/InventoryCustodyReturnDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/inventory/InventoryBulkTransactionFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/inventory/InventoryTransactionFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/assets/AssetCategoryFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/assets/DepreciationRunDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/pages/achievements/AchievementObstacleDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/suspensions/CreateSuspensionDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/pages/pension/SocialResearchPage.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/pages/pension/DocumentReviewPage.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/pages/pension/EntitledPersonsPage.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/pages/pension/SalaryReconciliationPage.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/pages/pension/PensionSuspensionsPage.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/pages/pension/MonthlySummariesPage.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/pages/pension/AnnualBookReviewPage.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/ViewAgentDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/pages/pension/GuardiansPage.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/pages/pension/SalaryRecipientsPage.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/pages/pension/FinancialEntitlementsPage.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/accounting/AccountFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/accounting/CostCenterFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/accounting/FiscalYearFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/accounting/JournalEntryReverseDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/accounting/VoucherFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/accounting/VoucherSetAccountDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/accounting/JournalEntryFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/accounting/JournalEntryPostDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/accounting/BudgetFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/AddMissingDocumentDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/BulkUploadDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/MissingDocActionDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/ReactivateEntitledPersonDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/StopEntitledPersonDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/ViewEntitledPersonDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/AddGuardianMinorDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/EndSuspensionDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/ExemptionDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/FulfillPledgeDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/retirement/PledgeDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+Export "BaseFormDialog" of module "src/components/ui/BaseFormDialog.tsx" was reexported through module "src/components/ui/index.ts" while both modules are dependencies of each other and will end up in different chunks by current Rollup settings. This scenario is not well supported at the moment as it will produce a circular dependency between chunks and will likely lead to broken execution order.
+Either change the import in "src/components/domain/salaries/SalaryRecipientFormDialog.tsx" to point directly to the exporting module or reconfigure "output.manualChunks" to ensure these modules end up in the same chunk.
+rendering chunks...
+computing gzip size...
+dist/index.html                                                      1.44 kB │ gzip:     0.68 kB
+dist/assets/perspective-warp.worker-GKTsF2H4.js                      6.28 kB
+dist/assets/inter-v20-latin-regular-C38fXH4l.woff2                  23.66 kB
+dist/assets/inter-v20-latin-900-D4nM5aha.woff2                      23.90 kB
+dist/assets/inter-v20-latin-500-Cerq10X2.woff2                      24.27 kB
+dist/assets/inter-v20-latin-700-Yt3aPRUw.woff2                      24.36 kB
+dist/assets/inter-v20-latin-800-BYj_oED-.woff2                      24.40 kB
+dist/assets/inter-v20-latin-600-LgqL8muc.woff2                      24.45 kB
+dist/assets/NotoKufiArabic-Bold-BH71Fs4F.woff2                      60.89 kB
+dist/assets/NotoKufiArabic-Regular-CkT54urL.woff2                   60.97 kB
+dist/assets/NotoKufiArabic-Thin-_76ZMTO6.woff2                      61.12 kB
+dist/assets/noto-sans-arabic-v33-arabic-regular-T0R3lCBb.woff2      61.24 kB
+dist/assets/noto-sans-arabic-v33-arabic-700-UDjglyRb.woff2          62.30 kB
+dist/assets/NotoKufiArabic-Black-tJjeLN9q.woff2                     62.40 kB
+dist/assets/NotoKufiArabic-ExtraLight-BtYdOahO.woff2                62.78 kB
+dist/assets/NotoKufiArabic-Light-_DGyWwnG.woff2                     62.90 kB
+dist/assets/noto-sans-arabic-v33-arabic-900-BLXnG-vg.woff2          63.31 kB
+dist/assets/NotoKufiArabic-ExtraBold-qibKec2W.woff2                 63.71 kB
+dist/assets/NotoKufiArabic-SemiBold-F1dl-by_.woff2                  64.80 kB
+dist/assets/NotoKufiArabic-Medium-CM8RN-Cu.woff2                    64.85 kB
+dist/assets/noto-sans-arabic-v33-arabic-500-_Z7q3KUb.woff2          65.49 kB
+dist/assets/noto-sans-arabic-v33-arabic-600-CNaQH9Lo.woff2          65.84 kB
+dist/assets/noto-sans-arabic-v33-arabic-800-BE_mDyfX.woff2          66.41 kB
+dist/assets/index-CDljdsMZ.css                                     177.35 kB │ gzip:    29.07 kB
+dist/assets/ranks-DVvgvTt7.js                                        0.22 kB │ gzip:     0.18 kB
+dist/assets/useEntitledPersonsQuery-C-bxpyBL.js                      0.22 kB │ gzip:     0.20 kB
+dist/assets/chartColors-CMNv8Nd4.js                                  0.24 kB │ gzip:     0.16 kB
+dist/assets/useDebouncedSearch-ZNmxiwAA.js                           0.27 kB │ gzip:     0.21 kB
+dist/assets/useGuardiansQuery-C_Owqtqo.js                            0.33 kB │ gzip:     0.23 kB
+dist/assets/assets-C3pe3n-g.js                                       0.34 kB │ gzip:     0.24 kB
+dist/assets/discrepancy-C9LiNmmE.js                                  0.44 kB │ gzip:     0.22 kB
+dist/assets/MissingDocsCompletionPage-DKXaNkQ1.js                    0.44 kB │ gzip:     0.28 kB
+dist/assets/PageLayout-B8wr3Kg2.js                                   0.48 kB │ gzip:     0.32 kB
+dist/assets/financial-entitlements-BDUnGgFN.js                       0.50 kB │ gzip:     0.24 kB
+dist/assets/retirees-Dg9VXKZV.js                                     0.53 kB │ gzip:     0.29 kB
+dist/assets/transactions-2QksX8aR.js                                 0.53 kB │ gzip:     0.25 kB
+dist/assets/InvestmentDocsViewerDialog-BJOQlL2e.js                   0.53 kB │ gzip:     0.38 kB
+dist/assets/useMissingDocumentsQuery-D5cNlnDq.js                     0.56 kB │ gzip:     0.36 kB
+dist/assets/LoadingIndicator-CTs4L8At.js                             0.59 kB │ gzip:     0.42 kB
+dist/assets/useDocumentBlob-BEekV5at.js                              0.62 kB │ gzip:     0.42 kB
+dist/assets/useCrudState-7vm8mC_v.js                                 0.70 kB │ gzip:     0.35 kB
+dist/assets/useRoleBasedUI-Bfj0cqBP.js                               0.72 kB │ gzip:     0.44 kB
+dist/assets/salaries-CizYKlyD.js                                     0.78 kB │ gzip:     0.36 kB
+dist/assets/budget-CAiFJP3B.js                                       0.81 kB │ gzip:     0.29 kB
+dist/assets/Breadcrumb-FUuARpco.js                                   0.82 kB │ gzip:     0.47 kB
+dist/assets/FileField-CmXI3O6A.js                                    0.84 kB │ gzip:     0.52 kB
+dist/assets/ErrorState-BdFTysZy.js                                   0.89 kB │ gzip:     0.52 kB
+dist/assets/RetirementFileDialog-BnARhZjg.js                         0.93 kB │ gzip:     0.54 kB
+dist/assets/SummaryCard-C9BOYZuN.js                                  0.94 kB │ gzip:     0.45 kB
+dist/assets/FormField-Hz7JDJhp.js                                    1.05 kB │ gzip:     0.58 kB
+dist/assets/InfoPair-Cdt-eCTb.js                                     1.08 kB │ gzip:     0.48 kB
+dist/assets/TabHeader-C8Tqg1jh.js                                    1.12 kB │ gzip:     0.59 kB
+dist/assets/stocktake-ChY__utF.js                                    1.19 kB │ gzip:     0.35 kB
+dist/assets/inventory-BYB92jfd.js                                    1.19 kB │ gzip:     0.49 kB
+dist/assets/DetailLayout-DndVbrFg.js                                 1.23 kB │ gzip:     0.56 kB
+dist/assets/NoteBox-5ayKcRrk.js                                      1.31 kB │ gzip:     0.62 kB
+dist/assets/fixedAssets-Dxbmx2Yn.js                                  1.38 kB │ gzip:     0.49 kB
+dist/assets/JournalEntryPostDialog-CusDSHp3.js                       1.41 kB │ gzip:     0.80 kB
+dist/assets/NoteDialog-BrxLTqgp.js                                   1.44 kB │ gzip:     0.82 kB
+dist/assets/date-DzAlBP4M.js                                         1.45 kB │ gzip:     0.73 kB
+dist/assets/salary-recipients-sHuto-r6.js                            1.47 kB │ gzip:     0.53 kB
+dist/assets/documents-DdEsvf9M.js                                    1.52 kB │ gzip:     0.51 kB
+dist/assets/settlements-DnaZsKKA.js                                  1.53 kB │ gzip:     0.50 kB
+dist/assets/RecordStateBadge-D-eRL7Ko.js                             1.58 kB │ gzip:     0.67 kB
+dist/assets/statusConfigs-CuSNvN6l.js                                1.59 kB │ gzip:     0.62 kB
+dist/assets/ministry-TnINgkk2.js                                     1.61 kB │ gzip:     0.58 kB
+dist/assets/DashboardHeader-D7_PEQZz.js                              1.62 kB │ gzip:     0.81 kB
+dist/assets/print.utils-sqBJQn-f.js                                  1.63 kB │ gzip:     0.69 kB
+dist/assets/CorrespondenceColumns-C6nqMYA5.js                        1.75 kB │ gzip:     0.66 kB
+dist/assets/pension-CFqkCBsf.js                                      1.87 kB │ gzip:     0.55 kB
+dist/assets/FormSection-DQIK_haE.js                                  1.89 kB │ gzip:     1.02 kB
+dist/assets/useConfirm-Da-pP1GU.js                                   1.91 kB │ gzip:     0.97 kB
+dist/assets/fieldTranslations-DQlCNWuo.js                            1.93 kB │ gzip:     0.91 kB
+dist/assets/PrintableReportTable-DzvL-TgN.js                         2.09 kB │ gzip:     0.97 kB
+dist/assets/queryKeys-DxC59tc9.js                                    2.14 kB │ gzip:     0.72 kB
+dist/assets/correspondence-Bkdh-RF_.js                               2.23 kB │ gzip:     0.86 kB
+dist/assets/ProjectsPage-IeA8uEV2.js                                 2.67 kB │ gzip:     1.33 kB
+dist/assets/EntitlementAmountField-CYfeevzP.js                       2.71 kB │ gzip:     1.46 kB
+dist/assets/ForceItemPrintPage-DPWZRN_S.js                           2.71 kB │ gzip:     1.34 kB
+dist/assets/SettlementsTab-C-DezhUt.js                               2.84 kB │ gzip:     1.23 kB
+dist/assets/EditableImage-VNzlbqbU.js                                2.94 kB │ gzip:     1.55 kB
+dist/assets/useFileDetailsQuery-Bgofvyqb.js                          2.95 kB │ gzip:     1.09 kB
+dist/assets/useApiMutation-BVzlPfK6.js                               3.00 kB │ gzip:     1.37 kB
+dist/assets/MissingDocumentsPrintPage-2tmsk6In.js                    3.03 kB │ gzip:     1.52 kB
+dist/assets/RetireeStatementPrint-4Iuky5Or.js                        3.05 kB │ gzip:     1.52 kB
+dist/assets/ReportsPage-CaeS5J7p.js                                  3.23 kB │ gzip:     1.49 kB
+dist/assets/PrintSignatureBlock-DtB4LuvO.js                          3.25 kB │ gzip:     1.16 kB
+dist/assets/WorkOrderDialog-CLpEstlj.js                              3.28 kB │ gzip:     1.42 kB
+dist/assets/archive-BXUk9DrX.js                                      3.33 kB │ gzip:     1.19 kB
+dist/assets/HrServiceHistoryPage-RLRmogIe.js                         3.37 kB │ gzip:     1.59 kB
+dist/assets/AttendanceDialog-B5Ei-CnD.js                             3.38 kB │ gzip:     1.56 kB
+dist/assets/AdminLandingPage-BClRhKH0.js                             3.45 kB │ gzip:     1.35 kB
+dist/assets/NotesTab-ClK0Tv6p.js                                     3.50 kB │ gzip:     1.68 kB
+dist/assets/PensionStatisticsPage-Bc_MZ4mB.js                        3.59 kB │ gzip:     1.27 kB
+dist/assets/SearchDialog-DWcvOMD7.js                                 3.62 kB │ gzip:     1.70 kB
+dist/assets/AlertBanner-PQxt8Hcd.js                                  3.64 kB │ gzip:     1.35 kB
+dist/assets/SalaryPaymentsTab-CrLMA1vm.js                            3.68 kB │ gzip:     1.47 kB
+dist/assets/PropertiesPage-CBxzFaMW.js                               3.71 kB │ gzip:     1.73 kB
+dist/assets/DiscrepancyPrintPage-iFjgMZLa.js                         3.91 kB │ gzip:     1.53 kB
+dist/assets/InventoryItemsPage-BrRhUB6u.js                           3.93 kB │ gzip:     1.73 kB
+dist/assets/AgentsPage-OzYtW3Hy.js                                   3.93 kB │ gzip:     1.67 kB
+dist/assets/AccountPage-CcYUwDKC.js                                  3.94 kB │ gzip:     1.40 kB
+dist/assets/HrDocumentsPage-UYn3m4O4.js                              3.99 kB │ gzip:     1.84 kB
+dist/assets/DocumentViewerDialog-CwDHZrgr.js                         4.14 kB │ gzip:     1.64 kB
+dist/assets/hr-B0Gwrsh2.js                                           4.20 kB │ gzip:     1.03 kB
+dist/assets/TenantDialog-PbXEh3CH.js                                 4.25 kB │ gzip:     1.87 kB
+dist/assets/MaintenancePage-DnMOVD2f.js                              4.26 kB │ gzip:     1.85 kB
+dist/assets/CostCentersPage-DefqMjb5.js                              4.32 kB │ gzip:     1.92 kB
+dist/assets/FixedAssetsPage-qxBF15ZR.js                              4.35 kB │ gzip:     1.85 kB
+dist/assets/MaintenanceRequestDialog-BiXV8v3m.js                     4.43 kB │ gzip:     1.98 kB
+dist/assets/SalaryBatchesPage-D_PoQnzx.js                            4.46 kB │ gzip:     2.15 kB
+dist/assets/InventoryItemFormDialog-BYBxufUn.js                      4.48 kB │ gzip:     1.74 kB
+dist/assets/StatCard-Co2SyzoK.js                                     4.52 kB │ gzip:     1.25 kB
+dist/assets/IncomingRegisterPage-iUogQCda.js                         4.77 kB │ gzip:     2.24 kB
+dist/assets/MonthlySummariesPage-CTlhZuLQ.js                         4.77 kB │ gzip:     1.66 kB
+dist/assets/OutgoingRegisterPage-CabbHj-j.js                         4.78 kB │ gzip:     2.25 kB
+dist/assets/CorrespondenceFormDialog-ChmrLoPM.js                     4.81 kB │ gzip:     1.84 kB
+dist/assets/MinistrySearchPage-CFt4sTgj.js                           4.84 kB │ gzip:     2.16 kB
+dist/assets/DirectorOfficePage-4JylLQrm.js                           5.02 kB │ gzip:     1.75 kB
+dist/assets/HrAttendancePage-B5fh3mGf.js                             5.09 kB │ gzip:     2.25 kB
+dist/assets/RanksListPage-qPklJdU4.js                                5.21 kB │ gzip:     2.20 kB
+dist/assets/InventoryWithdrawalOrderPrint-BIWy5Re3.js                5.26 kB │ gzip:     1.69 kB
+dist/assets/ProjectDialog-CfE_ymqg.js                                5.29 kB │ gzip:     2.04 kB
+dist/assets/LoginPage-BLVTX44E.js                                    5.35 kB │ gzip:     2.33 kB
+dist/assets/UploadDocumentDialog-CQ7dkzho.js                         5.36 kB │ gzip:     2.42 kB
+dist/assets/LoginHistoryPage-4tU4V1l7.js                             5.36 kB │ gzip:     2.18 kB
+dist/assets/ExternalPartiesPage-xsN661FS.js                          5.38 kB │ gzip:     2.32 kB
+dist/assets/accounting-DE4Bj1OG.js                                   5.52 kB │ gzip:     1.04 kB
+dist/assets/SalaryReconciliationPage-DolDUOdM.js                     5.67 kB │ gzip:     1.99 kB
+dist/assets/GuardiansPage-1lrwVc6s.js                                5.75 kB │ gzip:     2.13 kB
+dist/assets/excel.utils-Cbobt-dd.js                                  5.81 kB │ gzip:     2.17 kB
+dist/assets/FinancialEntitlementsPage-6W_4Az-O.js                    5.84 kB │ gzip:     2.15 kB
+dist/assets/JournalEntryDetailsPage-DM7BSO8k.js                      5.85 kB │ gzip:     2.03 kB
+dist/assets/SalaryRecipientsPage-DyCv3SZI.js                         5.87 kB │ gzip:     2.20 kB
+dist/assets/PropertyDialog-Bfo918D2.js                               6.00 kB │ gzip:     2.20 kB
+dist/assets/ReportFilters-CoaqFing.js                                6.08 kB │ gzip:     1.64 kB
+dist/assets/QuartersPage-BztbSV-S.js                                 6.08 kB │ gzip:     2.25 kB
+dist/assets/DocumentPledgePrint-dEWFOR0Z.js                          6.15 kB │ gzip:     2.11 kB
+dist/assets/TreasuryPage-BB8UsmCQ.js                                 6.19 kB │ gzip:     1.96 kB
+dist/assets/InvestmentHub-DCh26QpZ.js                                6.19 kB │ gzip:     2.23 kB
+dist/assets/DiscrepancyReportPage-BPd8WaVB.js                        6.26 kB │ gzip:     2.59 kB
+dist/assets/ComplianceDashboardPage-DowkS1ha.js                      6.27 kB │ gzip:     2.28 kB
+dist/assets/EmployeesPage-Qm3DDgzG.js                                6.32 kB │ gzip:     2.73 kB
+dist/assets/DocumentsSection-D81525gM.js                             6.40 kB │ gzip:     2.21 kB
+dist/assets/ChangePasswordPage-Dj64Nt69.js                           6.50 kB │ gzip:     2.12 kB
+dist/assets/BaseFormDialog-C3QMaREA.js                               6.51 kB │ gzip:     2.77 kB
+dist/assets/TenantDetailPage-_D73HZPJ.js                             6.54 kB │ gzip:     2.59 kB
+dist/assets/ArchivePage-DC7gbqoy.js                                  6.63 kB │ gzip:     2.38 kB
+dist/assets/InvestmentSettingsPage-CieVsEQo.js                       6.73 kB │ gzip:     2.64 kB
+dist/assets/retirement-DW39wl8a.js                                   6.84 kB │ gzip:     1.52 kB
+dist/assets/MinistryBatchesPage-DA8fwzC5.js                          6.91 kB │ gzip:     2.68 kB
+dist/assets/HrDashboardPage-UlHOIx9t.js                              7.00 kB │ gzip:     2.49 kB
+dist/assets/investment-CaLhR5AF.js                                   7.01 kB │ gzip:     1.16 kB
+dist/assets/RiskAssessmentsTab-GHVYApvY.js                           7.07 kB │ gzip:     2.86 kB
+dist/assets/SuspensionsTab-EKnjCJ8s.js                               7.10 kB │ gzip:     2.72 kB
+dist/assets/SystemSettingsPage-Pzl_VWTi.js                           7.19 kB │ gzip:     2.62 kB
+dist/assets/FinancialEntitlementsTab-CXS-c6B5.js                     7.23 kB │ gzip:     2.57 kB
+dist/assets/SettlementDecisionPrint-DOBk5NvF.js                      7.54 kB │ gzip:     2.51 kB
+dist/assets/InvestmentGovernancePage-hjRZz_mM.js                     7.64 kB │ gzip:     3.09 kB
+dist/assets/PortfoliosPage-DlbKCg7g.js                               7.69 kB │ gzip:     3.08 kB
+dist/assets/SalaryBatchDetailsPage-ChQGDOrx.js                       7.71 kB │ gzip:     3.09 kB
+dist/assets/BranchesListPage-B1MZeko-.js                             7.82 kB │ gzip:     2.98 kB
+dist/assets/BanksListPage-bAmzRiut.js                                7.97 kB │ gzip:     3.12 kB
+dist/assets/ViewAgentDialog-224rkYHN.js                              8.21 kB │ gzip:     2.36 kB
+dist/assets/GuardianDialog-C_b9tYv8.js                               8.22 kB │ gzip:     3.17 kB
+dist/assets/CashFlowPage-C3bMyRZ6.js                                 8.22 kB │ gzip:     1.84 kB
+dist/assets/DocumentReviewPage-BM5rqlqR.js                           8.43 kB │ gzip:     2.71 kB
+dist/assets/EmployeePrintPage-D27tRHHk.js                            8.48 kB │ gzip:     2.49 kB
+dist/assets/CornerEditor-OTyJtOhn.js                                 8.59 kB │ gzip:     3.48 kB
+dist/assets/CorrespondenceDetailsPage-1sapY95E.js                    8.59 kB │ gzip:     3.01 kB
+dist/assets/InvestmentDocumentsManager-DC0gWEFJ.js                   8.62 kB │ gzip:     3.13 kB
+dist/assets/AssetDetailPage-D-qKn8Tz.js                              8.79 kB │ gzip:     2.94 kB
+dist/assets/InventoryCustodyPage-s5uh1S_J.js                         8.84 kB │ gzip:     3.03 kB
+dist/assets/InventoryTransactionDetailsPage-CMDGhVOM.js              9.04 kB │ gzip:     2.57 kB
+dist/assets/KashfReportsPage-SoOBBz-c.js                             9.16 kB │ gzip:     3.02 kB
+dist/assets/SuspensionsPage-DjEswkL1.js                              9.28 kB │ gzip:     3.27 kB
+dist/assets/AgentsTab-CAr3rTst.js                                    9.45 kB │ gzip:     2.92 kB
+dist/assets/PortfolioDetailPage-BZfqb5E0.js                          9.51 kB │ gzip:     3.22 kB
+dist/assets/GuardiansTab-DHT6GyS1.js                                 9.63 kB │ gzip:     3.71 kB
+dist/assets/FileReviewListPage-QcQ5opvf.js                           9.80 kB │ gzip:     3.20 kB
+dist/assets/RetireesPage-CuDWf6FB.js                                 9.83 kB │ gzip:     3.55 kB
+dist/assets/SocialResearchPage-UBLSKC8E.js                          10.04 kB │ gzip:     3.27 kB
+dist/assets/PrintLayout-BNvoaeqT.js                                 10.07 kB │ gzip:     3.28 kB
+dist/assets/DepreciationRunPage-UDQl0G4Z.js                         10.17 kB │ gzip:     3.50 kB
+dist/assets/PensionSuspensionsPage-D70FCp8x.js                      10.35 kB │ gzip:     3.16 kB
+dist/assets/SettlementDecisionsPage-FnO0ati_.js                     10.45 kB │ gzip:     4.05 kB
+dist/assets/JournalEntryReverseDialog-GbRYT82e.js                   10.50 kB │ gzip:     3.28 kB
+dist/assets/HrLeavesPage-qdRXDrp0.js                                10.55 kB │ gzip:     3.78 kB
+dist/assets/DocumentTypesPage-BcJ5bTbe.js                           10.68 kB │ gzip:     3.80 kB
+dist/assets/ContractsTab-yIzuwvCs.js                                10.75 kB │ gzip:     3.93 kB
+dist/assets/LeasingPage-DBIyfE_2.js                                 10.94 kB │ gzip:     3.88 kB
+dist/assets/MaintenanceDetailsPage-Di9uQa2_.js                      11.01 kB │ gzip:     3.94 kB
+dist/assets/AssetCategoriesPage-CaA-BTlN.js                         11.02 kB │ gzip:     3.45 kB
+dist/assets/AuditLogsPage-C4gNFFF3.js                               11.13 kB │ gzip:     3.78 kB
+dist/assets/UnifiedRetireeStatement-DD76kFGt.js                     11.31 kB │ gzip:     2.52 kB
+dist/assets/AnnualBookReviewPage-BcbbPKfl.js                        11.41 kB │ gzip:     3.71 kB
+dist/assets/FiscalPeriodsPage-DylO0Zy-.js                           11.44 kB │ gzip:     3.60 kB
+dist/assets/RetirementFileReportsPage-CdOrM62W.js                   11.46 kB │ gzip:     3.70 kB
+dist/assets/PaymentCardsPage-CWvtsm0g.js                            11.66 kB │ gzip:     4.00 kB
+dist/assets/EntitledPersonFormDialog-BdreAqNz.js                    12.05 kB │ gzip:     4.27 kB
+dist/assets/EntitledPersonsPage-q6Bjbj-j.js                         12.31 kB │ gzip:     3.43 kB
+dist/assets/PaymentBookDialog-DXt87n86.js                           12.44 kB │ gzip:     4.17 kB
+dist/assets/PaymentBooksTab-D7mORyZw.js                             12.56 kB │ gzip:     3.92 kB
+dist/assets/ChartOfAccountsPage-BB5S6jtY.js                         12.68 kB │ gzip:     3.84 kB
+dist/assets/ProjectDetailPage-rvCaARKV.js                           12.93 kB │ gzip:     4.33 kB
+dist/assets/PrintablePaymentOrder-B3onKaAJ.js                       12.93 kB │ gzip:     4.04 kB
+dist/assets/StatusTransitionsTab-BgQ77Yt3.js                        13.28 kB │ gzip:     4.40 kB
+dist/assets/TrialBalanceReport-DbPWKIDS.js                          13.67 kB │ gzip:     3.92 kB
+dist/assets/RetirementFilePrintPage-CHdBzyPH.js                     14.26 kB │ gzip:     3.53 kB
+dist/assets/AchievementObstaclesPage-C2awjpWS.js                    14.52 kB │ gzip:     4.77 kB
+dist/assets/SettlementBatchDetailsPage-BnSFqLm7.js                  14.86 kB │ gzip:     5.21 kB
+dist/assets/DocumentProcessPage-DU7PaesT.js                         15.09 kB │ gzip:     5.12 kB
+dist/assets/AccountingDashboardPage-BG3J4HTk.js                     15.25 kB │ gzip:     4.71 kB
+dist/assets/DashboardPage-B9hw8QPm.js                               15.85 kB │ gzip:     3.97 kB
+dist/assets/AgentDialog-Biplyaob.js                                 16.02 kB │ gzip:     5.53 kB
+dist/assets/DocumentUploadView-9Sgb1FLD.js                          16.34 kB │ gzip:     4.73 kB
+dist/assets/vendor-qrcode-hIPJWFGh.js                               16.46 kB │ gzip:     6.16 kB
+dist/assets/CreateEmployeeDialog-BckDgyQ7.js                        16.48 kB │ gzip:     4.96 kB
+dist/assets/RetirementFilesPage-DDFu5tQu.js                         16.53 kB │ gzip:     5.34 kB
+dist/assets/StocktakePage-Dh3-9KyZ.js                               16.75 kB │ gzip:     4.15 kB
+dist/assets/RecipientsTab-DNjggi5w.js                               16.78 kB │ gzip:     5.37 kB
+dist/assets/ReviewTab-DYHNZtPj.js                                   16.90 kB │ gzip:     5.19 kB
+dist/assets/BudgetPage---acHoLo.js                                  16.93 kB │ gzip:     4.43 kB
+dist/assets/RetireeDetailsPage-C0ggg0i5.js                          17.44 kB │ gzip:     4.25 kB
+dist/assets/HrReferenceDataPage-C2oqrxLX.js                         17.46 kB │ gzip:     3.97 kB
+dist/assets/AdminNotificationsPage-B93SinCK.js                      18.13 kB │ gzip:     5.59 kB
+dist/assets/MinistryReferralsPage-DJ7lvL93.js                       18.27 kB │ gzip:     4.32 kB
+dist/assets/JournalEntriesPage-CpD11I8-.js                          18.68 kB │ gzip:     5.55 kB
+dist/assets/InventoryTransactionsPage-Bn7pxblK.js                   18.69 kB │ gzip:     5.04 kB
+dist/assets/PaymentBookPrint-BRl88h5G.js                            19.74 kB │ gzip:     6.00 kB
+dist/assets/FileReviewDetailPage-BC5c_5vm.js                        19.79 kB │ gzip:     6.34 kB
+dist/assets/InventoryDashboardPage-C5q2zPlg.js                      19.84 kB │ gzip:     4.27 kB
+dist/assets/EmployeeDetailsPage--_sNsYHb.js                         20.61 kB │ gzip:     6.49 kB
+dist/assets/CodeBatchDetailsPage-TRPsdR22.js                        22.05 kB │ gzip:     6.93 kB
+dist/assets/UploaderStatsPage-BphVZtc0.js                           22.28 kB │ gzip:     4.79 kB
+dist/assets/FileUploader-BdB_T-3h.js                                23.17 kB │ gzip:     8.33 kB
+dist/assets/DocumentReviewArchivePage-DzE5ocv5.js                   23.37 kB │ gzip:     5.85 kB
+dist/assets/ReportLineChart-D3n1IfBM.js                             24.41 kB │ gzip:     7.16 kB
+dist/assets/FixedAssetFormDialog-DJS99eqY.js                        25.39 kB │ gzip:     6.19 kB
+dist/assets/DocumentActions-DQ7v8cNw.js                             25.65 kB │ gzip:     8.24 kB
+dist/assets/AccountingReportPrintPage-DIe7N2Vp.js                   25.97 kB │ gzip:     6.34 kB
+dist/assets/InitialOpeningBalancesPage-D9kO2ONH.js                  26.07 kB │ gzip:     6.03 kB
+dist/assets/QuarterDetailsPage-D3L6AbZz.js                          26.20 kB │ gzip:     5.31 kB
+dist/assets/ReportViewerPage-TW458kxW.js                            26.86 kB │ gzip:     8.07 kB
+dist/assets/VoucherListPage-C08TpR_X.js                             27.73 kB │ gzip:     8.86 kB
+dist/assets/UsersDirectoryPage-DF89x3gM.js                          28.01 kB │ gzip:     8.17 kB
+dist/assets/ReportPieChart-xfOQjeja.js                              30.08 kB │ gzip:     8.83 kB
+dist/assets/PledgesAndExemptionsTab-BaaEmuiL.js                     31.41 kB │ gzip:     8.85 kB
+dist/assets/CreateFileWizard-oyyT_QPq.js                            31.55 kB │ gzip:     9.72 kB
+dist/assets/PropertyDetailPage-D7TPL9cr.js                          32.71 kB │ gzip:     8.49 kB
+dist/assets/EntitledPersonsTab-CD_jOgSM.js                          33.55 kB │ gzip:     8.73 kB
+dist/assets/NotificationsPage-CLxLsmwo.js                           36.46 kB │ gzip:    10.56 kB
+dist/assets/vendor-auth-DvjEGWJZ.js                                 37.56 kB │ gzip:    15.04 kB
+dist/assets/RetirementFileDetailsPage-RO0Cg1_9.js                   44.36 kB │ gzip:    12.81 kB
+dist/assets/reports-COeg467n.js                                     47.85 kB │ gzip:     8.44 kB
+dist/assets/DocumentsTab-DrEYlhLf.js                                68.11 kB │ gzip:    21.02 kB
+dist/assets/vendor-query-Cq8iM6z4.js                                71.91 kB │ gzip:    22.26 kB
+dist/assets/FileReviewPage-DUfcUFOw.js                              81.17 kB │ gzip:    20.23 kB
+dist/assets/vendor-ui-7CRx0e6v.js                                   87.14 kB │ gzip:    26.94 kB
+dist/assets/vendor-forms-SRCMIRbC.js                               100.15 kB │ gzip:    29.71 kB
+dist/assets/ReportsPage-X8MNaVqk.js                                111.15 kB │ gzip:    19.06 kB
+dist/assets/vendor-react-CDjI3SQo.js                               230.35 kB │ gzip:    73.76 kB
+dist/assets/ReportBarChart-u5YamirF.js                             302.12 kB │ gzip:    82.41 kB
+dist/assets/index-BTColirT.js                                      434.84 kB │ gzip:   180.05 kB
+dist/assets/index-B7VPu3WY.js                                      599.26 kB │ gzip:   179.29 kB
+dist/assets/exceljs.min-mC07HSUw.js                                936.60 kB │ gzip:   270.56 kB
+dist/assets/opencv-p6_rIeXA.js                                  15,514.63 kB │ gzip: 3,906.11 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 53.31s
+
+✨ [36m[vite-plugin-image-optimizer][39m - optimized images successfully: 
+[2mdist[22m/[94mDirector's Signature.png[39m   [90m[32m-22%[39m[90m   [39m [2m2.06 kB ⭢  1.61 kB[22m
+[2mdist[22m/[94mDirector's Signature.webp[39m  [90m[32m-3%[39m[90m    [39m [2m5.32 kB ⭢  5.18 kB[22m
+[2mdist[22m/[94mministry_header.webp[39m       [90m[32m-11%[39m[90m   [39m [2m3.15 kB ⭢  2.82 kB[22m
+[2mdist[22m/[94mfavicon.png[39m                [90m[32m-38%[39m[90m   [39m [2m2.81 kB ⭢  1.77 kB[22m
+[2mdist[22m/[94mministry_header.png[39m        [90m[32m-8%[39m[90m    [39m [2m2.65 kB ⭢  2.45 kB[22m
+[2mdist[22m/[94mbasmalah.webp[39m              [90m[32m-3%[39m[90m    [39m [2m10.16 kB ⭢  9.88 kB[22m
+[2mdist[22m/[94mrepublic_header.png[39m        [90m[32m-10%[39m[90m   [39m [2m2.34 kB ⭢  2.13 kB[22m
+[2mdist[22m/[94mbasmalah.png[39m               [90m[32m-16%[39m[90m   [39m [2m22.00 kB ⭢  18.58 kB[22m
+[2mdist[22m/[94mrepublic_header.webp[39m       [90m[32m-3%[39m[90m    [39m [2m4.17 kB ⭢  4.05 kB[22m
+[2mdist[22m/[94mStamp.png[39m                  [90m[32m-15%[39m[90m   [39m [2m24.75 kB ⭢  21.07 kB[22m
+[2mdist[22m/[94mpension-logo.png[39m           [90m[32m-14%[39m[90m   [39m [2m31.22 kB ⭢  27.00 kB[22m
+[2mdist[22m/[94myemen-republic-logo.png[39m    [90m[32m-18%[39m[90m   [39m [2m19.98 kB ⭢  16.58 kB[22m
+[2mdist[22m/[94mStamp.webp[39m                 [90m[32m-2%[39m[90m    [39m [2m31.20 kB ⭢  30.70 kB[22m
+[2mdist[22m/[94myemen-republic-logo.webp[39m   [90m[32m-3%[39m[90m    [39m [2m18.44 kB ⭢  18.02 kB[22m
+[2mdist[22m/[94mpension-logo.webp[39m          [90m[32m-4%[39m[90m    [39m [2m37.64 kB ⭢  36.44 kB[22m
+
+💰 total savings = [32m19.62kB[39m/[32m217.90kB[39m ≈ [32m9%[39m
+
+

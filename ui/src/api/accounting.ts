@@ -48,6 +48,7 @@ import type {
 import type { ApiResponse } from "@/types/api";
 
 import api from "./axios";
+import { exportReportFile } from "./reportExport";
 
 // ═══════════════════════════════════════════════════
 // CHART OF ACCOUNTS (دليل الحسابات)
@@ -158,6 +159,10 @@ export const periodsApi = {
 // ═══════════════════════════════════════════════════
 
 export const quartersApi = {
+  exportPeriods: (quarterId: number) =>
+    exportReportFile(`/accounting/quarters/${quarterId}/periods/export`, {}, "QuarterPeriods.xlsx"),
+  exportExpenses: (quarterId: number) =>
+    exportReportFile(`/accounting/quarters/${quarterId}/expenses/export`, {}, "QuarterExpenses.xlsx"),
   getAll: (fiscalYearId: number) =>
     api.get<ApiResponse<QuarterDto[]>>("/accounting/quarters", { params: { fiscalYearId } })
       .then((r) => r.data.data),
@@ -259,29 +264,35 @@ export const reportsApi = {
       .then((r) => r.data.data),
 
   // ── Export Functions ──
-  exportTrialBalance: (params: { periodId?: number; fromDate?: string; toDate?: string; format?: "excel" | "pdf" }) =>
-    api.get("/accounting/reports/trial-balance/export", { params, responseType: "blob" }),
+  exportTrialBalance: (params: { periodId?: number; fromDate?: string; toDate?: string; accountLevel?: number; format?: "excel" | "pdf" }) =>
+    exportReportFile("/accounting/reports/trial-balance/export", params, `TrialBalance.${params.format === "pdf" ? "pdf" : "xlsx"}`),
 
   exportBalanceSheet: (params: { asOfDate: string; format?: "excel" | "pdf" }) =>
-    api.get("/accounting/reports/balance-sheet/export", { params, responseType: "blob" }),
+    exportReportFile("/accounting/reports/balance-sheet/export", params, `BalanceSheet.${params.format === "pdf" ? "pdf" : "xlsx"}`),
 
   exportIncomeStatement: (params: { fiscalYearId: number; quarterId?: number; format?: "excel" | "pdf" }) =>
-    api.get("/accounting/reports/income-statement/export", { params, responseType: "blob" }),
+    exportReportFile("/accounting/reports/income-statement/export", params, `IncomeStatement.${params.format === "pdf" ? "pdf" : "xlsx"}`),
 
   exportGeneralLedger: (params: { accountId: number; periodId?: number; fromDate?: string; toDate?: string; format?: "excel" | "pdf" }) =>
-    api.get("/accounting/reports/general-ledger/export", { params, responseType: "blob" }),
+    exportReportFile("/accounting/reports/general-ledger/export", params, `GeneralLedger.${params.format === "pdf" ? "pdf" : "xlsx"}`),
 
   exportAccountStatement: (params: { accountId: number; fromDate: string; toDate: string; format?: "excel" | "pdf" }) =>
-    api.get("/accounting/reports/account-statement/export", { params, responseType: "blob" }),
+    exportReportFile("/accounting/reports/account-statement/export", params, `AccountStatement.${params.format === "pdf" ? "pdf" : "xlsx"}`),
 
   exportSubledger: (params: { accountId: number; fromDate?: string; toDate?: string; format?: "excel" | "pdf" }) =>
-    api.get("/accounting/reports/subledger/export", { params, responseType: "blob" }),
+    exportReportFile("/accounting/reports/subledger/export", params, `Subledger.${params.format === "pdf" ? "pdf" : "xlsx"}`),
 
   exportJournalRegister: (params: { fromDate: string; toDate: string; format?: "excel" | "pdf" }) =>
-    api.get("/accounting/reports/journal-register/export", { params, responseType: "blob" }),
+    exportReportFile("/accounting/reports/journal-register/export", params, `JournalRegister.${params.format === "pdf" ? "pdf" : "xlsx"}`),
 
   exportCashFlow: (params: { fiscalYearId: number; format?: "excel" | "pdf" }) =>
-    api.get("/accounting/reports/cash-flow/export", { params, responseType: "blob" }),
+    exportReportFile("/accounting/reports/cash-flow/export", params, `CashFlow.${params.format === "pdf" ? "pdf" : "xlsx"}`),
+
+  exportQuarterly: (params: { fiscalYearId: number; quarterId: number; format?: "excel" | "pdf" }) =>
+    exportReportFile("/accounting/reports/quarterly/export", params, `QuarterlyReport.${params.format === "pdf" ? "pdf" : "xlsx"}`),
+
+  exportBudget: (params: { fiscalYearId: number; format?: "excel" | "pdf" }) =>
+    exportReportFile("/accounting/reports/budget/export", params, `BudgetReport.${params.format === "pdf" ? "pdf" : "xlsx"}`),
 
   // ── التقارير المفقودة ──
   quarterlyReport: (params: { fiscalYearId?: number; quarterId?: number }) =>

@@ -362,7 +362,7 @@ export function SendNotificationDialog({
               name="userIds"
               control={form.control}
               render={({ field }) => (
-                <div className="max-h-60 overflow-y-auto border border-border/50 rounded-lg p-2">
+                <div className="max-h-60 overflow-y-auto border border-border rounded-lg p-2">
                   {users.map((u) => (
                     <label
                       key={u.userID}
@@ -400,12 +400,12 @@ export function SendNotificationDialog({
       {(sendType === "multi-user" || sendType === "user") && (
         <FormSection title="المرفقات" icon={Paperclip}>
           <div className="space-y-3">
-            <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-border/50 rounded-lg cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors">
+            <label className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary hover:bg-primary/5 transition-colors">
               <Upload className="w-8 h-8 text-muted-foreground mb-2" />
               <Text variant="description" className="text-center">
                 اسحب الملفات هنا أو انقر للاختيار
               </Text>
-              <Text variant="caption" className="text-muted-foreground/60 mt-1">
+              <Text variant="caption" className="text-muted-foreground mt-1">
                 يدعم: PDF, DOC, DOCX, XLS, XLSX, Images (أقصى 10 ميجابايت لكل
                 ملف)
               </Text>
@@ -427,7 +427,7 @@ export function SendNotificationDialog({
                   {attachments.map((file, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-2 px-3 py-2 bg-muted/50 border border-border/50 rounded-lg text-sm"
+                      className="flex items-center gap-2 px-3 py-2 bg-muted/50 border border-border rounded-lg text-sm"
                     >
                       <FileIcon className="w-4 h-4 text-muted-foreground" />
                       <span className="truncate max-w-[200px] sm:max-w-[300px] font-medium">

@@ -1,0 +1,8 @@
+{
+  "environment": "isolated browser context with mocked API; no live file mutations",
+  "scenario": "POST returns success but GET still returns New / no review",
+  "verdict": "FAIL: misleading success with unchanged New status",
+  "postCount": 1,
+  "toast": "أُرسل الملف للمراجعة؛ صرف المعاش موقوف حتى الاعتماد وزوال جميع الإيقافات",
+  "submitButtonStillVisible": true
+}

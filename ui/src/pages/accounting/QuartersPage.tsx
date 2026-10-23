@@ -211,7 +211,7 @@ export function QuartersPage() {
                       </thead>
                       <tbody>
                         {q.periods.map((period) => (
-                          <tr key={period.periodID} className="border-t border-border/50 hover:bg-muted/20">
+                          <tr key={period.periodID} className="border-t border-border hover:bg-muted/20">
                             <td className="p-3 font-medium">{period.periodName}</td>
                             <td className="p-3">{period.periodNumber}</td>
                             <td className="p-3 text-xs">
@@ -237,7 +237,7 @@ export function QuartersPage() {
 
           {/* Year-end close notice */}
           {allClosed && (
-            <div className="bg-emerald-500/5 border border-emerald-500/20 text-emerald-800 px-4 py-3 rounded-xl text-sm">
+            <div className="bg-emerald-500/5 border border-emerald-500 text-emerald-800 px-4 py-3 rounded-xl text-sm">
               جميع فصول السنة مغلقة — يمكن إقفال السنة المالية
             </div>
           )}

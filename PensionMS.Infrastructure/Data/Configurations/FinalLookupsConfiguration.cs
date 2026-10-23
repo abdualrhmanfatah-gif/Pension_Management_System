@@ -45,7 +45,7 @@ public class UserRoleAssignmentConfiguration : IEntityTypeConfiguration<UserRole
     public void Configure(EntityTypeBuilder<UserRoleAssignment> builder)
     {
         builder.HasKey(e => e.Id);
-        builder.HasIndex(ura => new { ura.UserId, ura.RoleId, ura.BranchId }).IsUnique().HasFilter("[IsActive] = 1");
+        builder.HasIndex(ura => new { ura.UserId, ura.RoleId, ura.BranchId, ura.RegionId }).IsUnique().HasFilter("[IsActive] = 1");
         
         builder.HasOne(ura => ura.User).WithMany(u => u.UserRoleAssignments).HasForeignKey(ura => ura.UserId);
         builder.HasOne(ura => ura.Role).WithMany(r => r.UserRoleAssignments).HasForeignKey(ura => ura.RoleId);

@@ -55,7 +55,7 @@ export function Stepper({
                   title={step.shortcut ? `${step.label} (${step.shortcut})` : undefined}
                   aria-keyshortcuts={step.shortcut}
                   className={cn(
-                    "flex items-center gap-3 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg p-1",
+                    "flex items-center gap-3 bg-transparent transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg p-1",
                     isClickable ? "cursor-pointer" : "cursor-default",
                     isClickable && !isActive && "hover:scale-105"
                   )}
@@ -63,14 +63,14 @@ export function Stepper({
                   {/* Circle */}
                   <div
                     className={cn(
-                      "relative w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold shrink-0 transition-all duration-300 shadow-sm",
+                      "relative w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold shrink-0 transition-all duration-300 shadow-sm",
                       isCompleted && "bg-emerald-500 text-white shadow-emerald-500/20",
                       isActive && "bg-primary text-primary-foreground shadow-primary/25 ring-4 ring-primary/10",
                       !isActive && !isCompleted && "bg-muted text-muted-foreground"
                     )}
                   >
                     {isCompleted ? (
-                      <Check className="w-5 h-5" />
+                      <Check className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
                     ) : step.icon ? (
                       step.icon
                     ) : (
@@ -86,16 +86,25 @@ export function Stepper({
                   <div className="text-start min-w-0 max-w-[150px]">
                     <p
                       className={cn(
-                        "text-[13px] font-semibold leading-snug transition-colors line-clamp-2",
+                        "text-xs sm:text-sm leading-snug transition-colors line-clamp-1 font-bold",
                         isActive && "text-primary",
                         isCompleted && "text-emerald-600 dark:text-emerald-400",
                         !isActive && !isCompleted && "text-muted-foreground"
                       )}
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                      }}
                     >
                       {step.label}
                     </p>
                     {step.description && (
-                      <p className="text-[10px] text-muted-foreground mt-0.5 leading-tight line-clamp-2">
+                      <p
+                        className="text-[11px] sm:text-xs leading-tight line-clamp-1"
+                        style={{
+                          fontFamily: 'var(--font-sans)',
+                          color: 'hsl(var(--muted-foreground))',
+                        }}
+                      >
                         {step.description}
                       </p>
                     )}
@@ -163,7 +172,13 @@ export function Stepper({
 
                 {/* Absolute Label - Prevents breaking flex alignment */}
                 {isActive && (
-                  <span className="absolute top-10 w-max max-w-[80px] text-[10px] font-semibold text-primary text-center leading-tight truncate">
+                  <span
+                    className="absolute top-10 text-xs w-max max-w-[80px] text-primary text-center leading-tight truncate"
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontWeight: 'var(--font-weight-semibold)',
+                    }}
+                  >
                     {step.label}
                   </span>
                 )}

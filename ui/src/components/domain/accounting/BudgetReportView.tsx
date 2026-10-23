@@ -4,10 +4,6 @@ import { useCallback } from "react";
 import { budgetApi } from "@/api/budget";
 import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
 import { ReportBarChart } from "@/components/common/charts";
-import {
-altRowFill,
-autoFitColumns,
-buildReportFooter, buildReportHeader, buildTableHeader,   buildTotalsRow,   createWorkbook, exportWorkbook, styleDataCell, } from "@/components/domain/print/excel.utils";
 import { Badge, Heading } from "@/components/ui";
 import { chartColors } from "@/lib/chartColors";
 import { formatCurrency } from "@/lib/utils";
@@ -31,44 +27,6 @@ export function BudgetReportView({ fiscalYearId, hideInternalControls }: BudgetR
     window.open(`/reports/budget/print?${params.toString()}`, "_blank");
   }, [fiscalYearId]);
 
-  const handleExportExcel = useCallback(async () => {
-    if (!data) return;
-    const { ws } = createWorkbook("تقرير الموازنة");
-    autoFitColumns(ws, { 1: 15, 2: 25, 3: 18, 4: 18, 5: 18, 6: 12, 7: 12 });
-    const dataStartRow = await buildReportHeader(ws, "تقرير الموازنة السنوي", 7, [
-      { label: "السنة المالية", value: data.yearName },
-    ]);
-
-    buildTableHeader(ws, dataStartRow, ["رقم الحساب", "الحساب", "المخطط", "الفعلي", "الفرق", "النسبة", "الحالة"]);
-
-    data.items?.forEach((item: any, i: number) => {
-      const r = ws.getRow(dataStartRow + 1 + i);
-      r.getCell(1).value = item.accountCode;
-      r.getCell(2).value = item.accountName;
-      r.getCell(3).value = item.plannedAmount;
-      r.getCell(4).value = item.actualAmount;
-      r.getCell(5).value = item.variance;
-      r.getCell(6).value = `${Math.abs(item.variancePercentage)}%`;
-      r.getCell(7).value = item.status;
-
-      [3, 4, 5].forEach(c => styleDataCell(r.getCell(c), { numFmt: "#,##0" }));
-      for (let c = 1; c <= 7; c++) altRowFill(r.getCell(c), i);
-    });
-
-    const totalRowNum = dataStartRow + 1 + (data.items?.length || 0);
-    buildTotalsRow(ws, totalRowNum, [
-      { value: "" },
-      { value: "الإجمالي" },
-      { value: data.totalPlanned, numFmt: "#,##0" },
-      { value: data.totalActual, numFmt: "#,##0" },
-      { value: data.totalVariance, numFmt: "#,##0" },
-      { value: `${Math.abs(data.totalVariancePercentage)}%` },
-      { value: "" },
-    ]);
-
-    buildReportFooter(ws, 7);
-    await exportWorkbook(ws.workbook, `تقرير_الموازنة_${data.yearName}`);
-  }, [data]);
 
   const customKPIs = data ? [
     { label: 'المخطط', value: formatCurrency(data.totalPlanned), color: 'primary' },
@@ -101,9 +59,7 @@ export function BudgetReportView({ fiscalYearId, hideInternalControls }: BudgetR
       isLoading={isLoading}
       customKPIs={customKPIs}
       chartContent={chartContent}
-      onPrint={hideInternalControls ? undefined : (data ? handlePrint : undefined)}
-      onExport={hideInternalControls ? undefined : (data ? handleExportExcel : undefined)}
-    >
+      onPrint={hideInternalControls ? undefined : (data ? handlePrint : undefined)}    >
       {error ? (
         <div className="text-destructive text-sm">فشل في تحميل تقرير الموازنة</div>
       ) : !data ? (
@@ -127,7 +83,7 @@ export function BudgetReportView({ fiscalYearId, hideInternalControls }: BudgetR
             </thead>
             <tbody>
               {data.items?.map((item: any) => (
-                <tr key={item.budgetItemID} className="border-t border-border/50 hover:bg-muted/20">
+                <tr key={item.budgetItemID} className="border-t border-border hover:bg-muted/20">
                   <td className="p-3 font-mono text-xs">{item.accountCode}</td>
                   <td className="p-3 font-medium">{item.accountName}</td>
                   <td className="p-3">{formatCurrency(item.plannedAmount)}</td>

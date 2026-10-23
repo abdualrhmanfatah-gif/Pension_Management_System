@@ -1,0 +1,13 @@
+{
+  "removed": 60,
+  "archived": 2,
+  "verifiedBackups": 73,
+  "tests": {
+    "ui": 136,
+    "backend": 273,
+    "http": 19
+  },
+  "newLintProblems": 0,
+  "browserVerification": "Stopped at user request",
+  "report": "docs/audits/code-cleanup-2026-10-20.md"
+}

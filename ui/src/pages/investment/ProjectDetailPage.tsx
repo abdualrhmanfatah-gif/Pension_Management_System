@@ -75,7 +75,7 @@ export function ProjectDetailPage() {
                         <Text variant="description" className="flex items-center gap-2 mt-1 font-medium">
                             <Briefcase className="w-3.5 h-3.5 text-muted-primary" />
                             <span>المحفظة: {project.portfolioName}</span>
-                            <span className="opacity-30">|</span>
+                            <span className="opacity-100">|</span>
                             <Building2 className="w-3.5 h-3.5 text-muted-primary" />
                             <span>النوع: {project.typeName}</span>
                         </Text>

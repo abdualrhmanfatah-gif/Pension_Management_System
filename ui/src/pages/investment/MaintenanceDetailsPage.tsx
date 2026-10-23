@@ -100,7 +100,7 @@ export function MaintenanceDetailsPage() {
                         </div>
                         <Text variant="description" className="flex items-center gap-1.5 mt-1 font-medium">
                             <MapPin className="w-4 h-4 text-muted-primary" /> {request.propertyName}
-                            {request.unitNumber && <span className="mx-1 opacity-30">|</span>}
+                            {request.unitNumber && <span className="mx-1 opacity-100">|</span>}
                             {request.unitNumber && <span>وحدة: {request.unitNumber}</span>}
                         </Text>
                     </div>
@@ -159,19 +159,19 @@ export function MaintenanceDetailsPage() {
                 </div>
 
                 <TabsContent value="details" className="mt-0 outline-none">
-                    <Card className="p-6  rounded-2xl border-border/60">
+                    <Card className="p-6  rounded-2xl border-border">
                         <Heading level="h3" className="text-sm font-black text-muted-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
                             <FileText className="w-4 h-4 text-primary" /> وصف المشكلة / الطلب
                         </Heading>
-                        <Text variant="body" className="leading-relaxed text-foreground/90 whitespace-pre-wrap">{request.description}</Text>
+                        <Text variant="body" className="leading-relaxed text-foreground whitespace-pre-wrap">{request.description}</Text>
                     </Card>
                 </TabsContent>
 
                 <TabsContent value="status" className="mt-0 outline-none">
                     <Card className="p-6 sm:p-16 text-center text-muted-foreground  rounded-2xl border-dashed">
-                        <History className="w-12 h-12 mx-auto mb-4 opacity-20" />
+                        <History className="w-12 h-12 mx-auto mb-4 opacity-100" />
                         <Text variant="body" className="text-lg font-bold">سجل الحالات والمتابعة</Text>
-                        <Text variant="label" className="opacity-70">سيتم عرض كافة التغييرات التي طرأت على هذا البلاغ قريباً.</Text>
+                        <Text variant="label" className="opacity-100">سيتم عرض كافة التغييرات التي طرأت على هذا البلاغ قريباً.</Text>
                     </Card>
                 </TabsContent>
 

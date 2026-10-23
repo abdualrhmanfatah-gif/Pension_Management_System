@@ -22,7 +22,7 @@ const getUrl = (p: string | null | undefined) => {
 export function PrintableEmployeeReport({ employee }: PrintableEmployeeReportProps) {
     const signatures = [
         { title: "حرره المختص", sub: "الاسم والتوقيع" },
-        { title: "ختم الإدارة العامة", sub: "الختم الرسمي", className: "opacity-30" },
+        { title: "ختم الإدارة العامة", sub: "الختم الرسمي", className: "opacity-100" },
         { title: "مدير إدارة الموارد البشرية", sub: "المصادقة والختم" },
     ];
 
@@ -47,7 +47,7 @@ export function PrintableEmployeeReport({ employee }: PrintableEmployeeReportPro
                                 onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder-user.png"; }}
                             />
                         ) : (
-                            <div className="w-16 h-20 border-2 border-black rounded bg-muted/50 text-muted-foreground/60">لا توجد</div>
+                            <div className="w-16 h-20 border-2 border-black rounded bg-muted/50 text-muted-foreground">لا توجد</div>
                         )}
                     </div>
                 </div>
@@ -208,7 +208,7 @@ export function PrintableEmployeeReport({ employee }: PrintableEmployeeReportPro
             <div className="flex-1" />
 
             {/* ═══ Signatures Block ═══ */}
-            <PrintSignatureBlock signatures={signatures} variant="default" className="mt-12 pt-4 border-t border-dashed border-black/10" />
+            <PrintSignatureBlock signatures={signatures} variant="default" className="mt-12 pt-4 border-t border-dashed border-black" />
         </div>
     );
 }

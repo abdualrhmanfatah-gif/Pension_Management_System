@@ -20,5 +20,5 @@ public interface IAdminNotificationService
     Task<ApiResponse<PagedResult<NotificationOutboxDto>>> GetOutboxAsync(int page = 1, int pageSize = 20, string? status = null);
     Task<ApiResponse<bool>> RetryOutboxAsync(long outboxId);
     Task<ApiResponse<bool>> DeleteNotificationAsync(long notificationId);
-    Task<ApiResponse<int>> BulkDeleteAsync(BulkDeleteDto dto);
+    Task<ApiResponse<int>> BulkDeleteAsync(BulkDeleteDto dto, int actorId = 0);
 }

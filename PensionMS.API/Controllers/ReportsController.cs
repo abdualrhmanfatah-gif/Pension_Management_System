@@ -1,3 +1,5 @@
+using PensionMS.Infrastructure.Reporting.Exporters;
+using PensionMS.Core.Interfaces.Reporting;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PensionMS.Core.Constants;
@@ -62,10 +64,10 @@ public class ReportsController : ControllerBase
     {
         byte[] bytes = reportId switch
         {
-            "basic-retirees" => await _reportService.ExportRetireesAsync(filter.Search),
-            "basic-retirement-files" => await _reportService.ExportRetirementFilesAsync(filter.StatusId),
-            "basic-entitled-persons" => await _reportService.ExportEntitledPersonsAsync(filter.StatusId),
-            "basic-users" => await _reportService.ExportUsersAsync(),
+            "basic-retirees" => await _reportService.ExportRetireesAsync(filter.Search, branchId: filter.BranchId),
+            "basic-retirement-files" => await _reportService.ExportRetirementFilesAsync(filter.StatusId, branchId: filter.BranchId),
+            "basic-entitled-persons" => await _reportService.ExportEntitledPersonsAsync(filter.StatusId, branchId: filter.BranchId),
+            "basic-users" => await _reportService.ExportUsersAsync(branchId: filter.BranchId),
             "inv-01" => await _reportService.ExportPortfolioPerformanceAsync(filter),
             "inv-02" => await _reportService.ExportOccupancyReportAsync(filter),
             "inv-03" => await _reportService.ExportRentCollectionAsync(filter),
@@ -206,6 +208,10 @@ public class ReportsController : ControllerBase
     [Authorize(Policy = "Report.Pension.View")]
     public async Task<IActionResult> GetActiveRetirees([FromQuery] ReportFilter filter) => (await _reportService.GetActiveRetireesAsync(filter)).ToActionResult();
 
+    [HttpGet("retirement/active-retirees/summary")]
+    [Authorize(Policy = "Report.Pension.View")]
+    public async Task<IActionResult> GetActiveRetireesSummary([FromQuery] ReportFilter filter) => (await _reportService.GetActiveRetireesSummaryAsync(filter)).ToActionResult();
+
     [HttpGet("retirement/active-retirees/export")]
     [Authorize(Policy = "Report.Pension.View")]
     public async Task<IActionResult> ExportActiveRetirees([FromQuery] ReportFilter filter, [FromQuery] string format = "excel")
@@ -234,6 +240,10 @@ public class ReportsController : ControllerBase
     [HttpGet("financial/settlements")]
     [Authorize(Policy = "Report.Financial.View")]
     public async Task<IActionResult> GetSettlementsReport([FromQuery] ReportFilter filter) => (await _reportService.GetSettlementsReportAsync(filter)).ToActionResult();
+
+    [HttpGet("financial/settlements/summary")]
+    [Authorize(Policy = "Report.Financial.View")]
+    public async Task<IActionResult> GetSettlementsSummary([FromQuery] ReportFilter filter) => (await _reportService.GetSettlementsSummaryAsync(filter)).ToActionResult();
 
     [HttpGet("financial/settlements/export")]
     [Authorize(Policy = "Report.Financial.View")]

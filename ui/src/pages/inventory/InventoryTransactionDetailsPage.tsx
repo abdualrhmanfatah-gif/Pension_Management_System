@@ -89,7 +89,7 @@ export function InventoryTransactionDetailsPage() {
 
                 {/* ─── Color Banner ─── */}
                 <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${gradient} p-6 sm:p-8 border`}>
-                    <div className={`absolute top-0 end-0 w-40 h-40 rounded-full blur-3xl opacity-20 ${accentColor}`} />
+                    <div className={`absolute top-0 end-0 w-40 h-40 rounded-full blur-3xl opacity-100 ${accentColor}`} />
                     <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                         <div className="flex items-start gap-4">
                             <div className={`p-3 rounded-xl ${accentColor} hidden sm:block`}>
@@ -120,7 +120,7 @@ export function InventoryTransactionDetailsPage() {
 
                 {/* ─── Quantity Stepper ─── */}
                 <Card className="overflow-hidden">
-                    <CardHeader className="bg-muted/20 border-b border-border/40 pb-3">
+                    <CardHeader className="bg-muted/20 border-b border-border pb-3">
                         <CardTitle className="flex items-center gap-2 text-sm font-bold text-muted-foreground">
                             <Package className="w-4 h-4" /> أثر الحركة على الكمية
                         </CardTitle>
@@ -134,8 +134,8 @@ export function InventoryTransactionDetailsPage() {
                                 </div>
                             </div>
                             <div className="flex flex-col items-center gap-1">
-                                <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground/40" />
-                                <span className="text-xs text-muted-foreground/60">—</span>
+                                <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground" />
+                                <span className="text-xs text-muted-foreground">—</span>
                             </div>
                             <div className="flex flex-col items-center gap-1.5">
                                 <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">التغيير</span>
@@ -156,12 +156,12 @@ export function InventoryTransactionDetailsPage() {
                                 </div>
                             </div>
                             <div className="flex flex-col items-center gap-1">
-                                <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground/40" />
-                                <span className="text-xs text-muted-foreground/60">—</span>
+                                <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground" />
+                                <span className="text-xs text-muted-foreground">—</span>
                             </div>
                             <div className="flex flex-col items-center gap-1.5">
                                 <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">بعد</span>
-                                <div className="w-20 h-16 sm:w-28 sm:h-20 rounded-xl bg-primary/5 border-2 border-primary/20 flex items-center justify-center">
+                                <div className="w-20 h-16 sm:w-28 sm:h-20 rounded-xl bg-primary/5 border-2 border-primary flex items-center justify-center">
                                     <span className="text-xl sm:text-3xl font-black text-primary">{transaction.newQuantity}</span>
                                 </div>
                             </div>
@@ -174,7 +174,7 @@ export function InventoryTransactionDetailsPage() {
 
                     {/* Financial Details */}
                     <Card>
-                        <CardHeader className="border-b border-border/40 pb-3">
+                        <CardHeader className="border-b border-border pb-3">
                             <CardTitle className="flex items-center gap-2 text-sm font-bold">
                                 <Receipt className="w-4 h-4 text-primary" /> المالية والمستندات
                             </CardTitle>
@@ -200,7 +200,7 @@ export function InventoryTransactionDetailsPage() {
 
                     {/* Transaction Metadata */}
                     <Card>
-                        <CardHeader className="border-b border-border/40 pb-3">
+                        <CardHeader className="border-b border-border pb-3">
                             <CardTitle className="flex items-center gap-2 text-sm font-bold">
                                 <User className="w-4 h-4 text-primary" /> معلومات الحركة
                             </CardTitle>
@@ -217,13 +217,13 @@ export function InventoryTransactionDetailsPage() {
                 {/* ─── Reason Card ─── */}
                 {transaction.reason && (
                     <Card>
-                        <CardHeader className="border-b border-border/40 pb-3">
+                        <CardHeader className="border-b border-border pb-3">
                             <CardTitle className="flex items-center gap-2 text-sm font-bold">
                                 <StickyNote className="w-4 h-4 text-primary" /> سبب الحركة
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-5">
-                            <div className="p-4 rounded-xl bg-muted/20 border border-border/50 text-sm leading-relaxed">
+                            <div className="p-4 rounded-xl bg-muted/20 border border-border text-sm leading-relaxed">
                                 {transaction.reason}
                             </div>
                         </CardContent>

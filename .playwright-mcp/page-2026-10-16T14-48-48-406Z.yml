@@ -1,0 +1,13 @@
+- generic [ref=f3e3]:
+  - generic [ref=f3e4]: "[plugin:vite:import-analysis] Failed to parse source for import analysis because the content contains invalid JS syntax. You may need to install appropriate plugins to handle the .js file format, or if it's an asset, add \"**/*.js\" to `assetsInclude` in your configuration."
+  - generic [ref=f3e5]: F:/Projects/Pension_Management_System/ui/.debug-capture/report-totals.html:36:0
+  - generic [ref=f3e6]: "27 | React.createElement(Routes, null, 28 | React.createElement(Route, { path: '/reports/:reportId', element: React.createElement(ReportViewerPag... 29 | ); | ^ 30 |"
+  - generic [ref=f3e7]: at TransformPluginContext._formatLog (file:///F:/Projects/Pension_Management_System/ui/node_modules/vite/dist/node/chunks/config.js:28999:43) at TransformPluginContext.error (file:///F:/Projects/Pension_Management_System/ui/node_modules/vite/dist/node/chunks/config.js:28996:14) at TransformPluginContext.transform (file:///F:/Projects/Pension_Management_System/ui/node_modules/vite/dist/node/chunks/config.js:27082:10) at process.processTicksAndRejections (node:internal/process/task_queues:104:5) at async EnvironmentPluginContainer.transform (file:///F:/Projects/Pension_Management_System/ui/node_modules/vite/dist/node/chunks/config.js:28797:14) at async loadAndTransform (file:///F:/Projects/Pension_Management_System/ui/node_modules/vite/dist/node/chunks/config.js:22670:26) at async viteTransformMiddleware (file:///F:/Projects/Pension_Management_System/ui/node_modules/vite/dist/node/chunks/config.js:24542:20)
+  - generic [ref=f3e8]:
+    - text: Click outside, press Esc key, or fix the code to dismiss.You can also disable this overlay by setting
+    - code [ref=f3e9]: server.hmr.overlay
+    - text: to
+    - code [ref=f3e10]: "false"
+    - text: in
+    - code [ref=f3e11]: vite.config.ts
+    - text: .

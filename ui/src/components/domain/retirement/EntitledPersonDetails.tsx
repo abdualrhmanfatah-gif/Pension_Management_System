@@ -36,8 +36,8 @@ export function EntitledPersonDetails({
 
     return (
         <div className="space-y-3 lg:space-y-4 text-start">
-            <div className="bg-gradient-to-l from-primary/5 to-primary/10 rounded-xl p-3 lg:p-5 border border-primary/20 relative overflow-hidden">
-                <div className="absolute top-0 end-0 p-8 opacity-[0.03] pointer-events-none">
+            <div className="bg-gradient-to-l from-primary/5 to-primary/10 rounded-xl p-3 lg:p-5 border border-primary relative overflow-hidden">
+                <div className="absolute top-0 end-0 p-8 opacity-100 pointer-events-none">
                     <UserCircle2 className="w-32 lg:w-48 h-32 lg:h-48 max-w-[40vw] sm:max-w-none" />
                 </div>
 
@@ -131,7 +131,7 @@ export function EntitledPersonDetails({
             {person.stopReason && (
                 <div className="bg-card border rounded-xl lg:rounded-lg p-3 lg:p-5 space-y-2 lg:space-y-3">
                     <Heading level="h3" className="text-sm lg:text-lg font-semibold flex items-center gap-2 text-primary border-b pb-2"><FileText className="w-4 h-4 lg:w-5 lg:h-5 shrink-0" /> مبررات الحالة</Heading>
-                    <div className="bg-card/80 p-2.5 lg:p-4 rounded-xl border border-muted/30 italic text-xs lg:text-sm font-bold text-foreground/80 leading-relaxed">"{person.stopReason}"</div>
+                    <div className="bg-card/80 p-2.5 lg:p-4 rounded-xl border border-muted italic text-xs lg:text-sm font-bold text-foreground leading-relaxed">"{person.stopReason}"</div>
                 </div>
             )}
         </div>

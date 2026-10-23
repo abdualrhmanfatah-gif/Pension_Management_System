@@ -44,7 +44,7 @@ export function ReportCard({ title, description, icon, onClick }: ReportCardProp
             onKeyDown={(e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
             role="button"
             tabIndex={0}
-            className="p-6 hover:border-primary/50 transition-all cursor-pointer group focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            className="p-6 hover:border-primary transition-all cursor-pointer group focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         >
             <div className="flex items-start gap-4">
                 <div className="p-3 bg-primary/10 text-primary rounded-xl group-hover:bg-primary group-hover:text-white transition-colors">

@@ -235,6 +235,14 @@ export const retirementApi = {
             headers: { "Content-Type": "multipart/form-data" }
         }).then(r => r.data),
 
+    uploadAgentPhoto: (id: number, photo: File) => {
+        const formData = new FormData();
+        formData.append("photo", photo);
+        return api.post<ApiResponse<string>>(`/agents/${id}/photo`, formData, {
+            headers: { "Content-Type": "multipart/form-data" }
+        }).then(r => r.data);
+    },
+
     // الورثة والمستحقون
     getEntitledPersonById: (id: number) =>
         api.get<ApiResponse<EntitledPersonSummary>>(`/entitled-persons/${id}`).then(r => r.data.data),
@@ -419,6 +427,9 @@ export const retirementApi = {
         api.post<ApiResponse<boolean>>(`/retirement-files/${fileId}/review/reject`, null, {
             params: { reason }
         }).then(r => r.data),
+
+    reinstateEntitlement: (fileId: number) =>
+        api.post<ApiResponse<boolean>>("/retirement-files/" + fileId + "/reinstate-entitlement").then(r => r.data),
 
     requestReview: (fileId: number) =>
         api.post<ApiResponse<boolean>>(`/retirement-files/${fileId}/request-review`).then(r => r.data),

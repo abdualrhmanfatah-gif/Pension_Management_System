@@ -186,9 +186,9 @@ export function FinancialEntitlementsPage() {
             {/* No search message */}
             {!activeSearch && (
                 <div className="text-center py-12 text-muted-foreground">
-                    <Receipt className="w-12 h-12 mx-auto mb-4 opacity-30" />
+                    <Receipt className="w-12 h-12 mx-auto mb-4 opacity-100" />
                     <p className="text-sm">أدخل كلمة للبحث في الاستحقاقات المالية</p>
-                    <p className="text-xs mt-1 opacity-60">رقم الملف، الرقم العسكري، الهاتف، اسم المتتقاعد، اسم الوكيل</p>
+                    <p className="text-xs mt-1 opacity-100">رقم الملف، الرقم العسكري، الهاتف، اسم المتتقاعد، اسم الوكيل</p>
                 </div>
             )}
 

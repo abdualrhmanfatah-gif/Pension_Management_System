@@ -1,10 +1,11 @@
+using PensionMS.Testing;
+using PensionMS.Infrastructure.Services.Documents;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using PensionMS.Core.Constants;
 using PensionMS.Core.DTOs.Documents;
 using PensionMS.Core.Entities;
 using PensionMS.Core.Interfaces;
-using PensionMS.Infrastructure.Services;
 
 namespace PensionMS.Tests.Services;
 
@@ -28,11 +29,13 @@ public class DocumentBatchUploadTests
     private sealed class Fixture
     {
         public readonly Mock<IUnitOfWork> Unit = new();
-        public readonly Mock<IComplianceEngine> Compliance = new();
+        public Mock<IMissingDocumentService> Compliance => MissingService;
         public readonly Mock<IFileReviewService> Review = new();
         public readonly Mock<IEntitlementEngine> Entitlement = new();
         public readonly Mock<IImmutableAuditService> Audit = new();
-        public readonly Mock<IBranchScopeProvider> Branch = new();
+        public readonly Mock<ITestBranchScope> Branch = new();
+        public readonly Mock<IMissingDocumentService> MissingService = new();
+        public readonly List<PensionMS.Core.DTOs.MissingDocuments.AutoDetectedMissingDocumentDto> Required = new();
         public readonly List<Document> Documents = new();
         public readonly List<MissingDocument> Missing = new();
         public readonly Mock<IRepository<Document>> DocsRepo;
@@ -46,6 +49,7 @@ public class DocumentBatchUploadTests
         public Fixture()
         {
             Branch.Setup(b => b.IsHQ()).Returns(true);
+            MissingService.Setup(m => m.GetRequiredPairsAsync(10)).ReturnsAsync(Required);
             DocsRepo = new Mock<IRepository<Document>>();
             DocsRepo.Setup(r => r.Query()).Returns(() => new TestAsyncEnumerable<Document>(Documents));
             DocsRepo.Setup(r => r.AddAsync(It.IsAny<Document>()))
@@ -65,9 +69,9 @@ public class DocumentBatchUploadTests
             storage.Setup(s => s.SaveFileAsync(It.IsAny<Stream>(), It.IsAny<string>(),
                     It.IsAny<string>(), It.IsAny<string[]>(), It.IsAny<long?>()))
                 .ReturnsAsync("documents/batch.png");
-            Service = new DocumentService(Unit.Object, storage.Object, Compliance.Object,
-                Entitlement.Object, Review.Object, Branch.Object, Audit.Object,
-                NullLogger<DocumentService>.Instance);
+            Service = new DocumentService(Unit.Object, storage.Object,
+                Entitlement.Object, Review.Object, TestPensionAccess.From(Unit.Object, Branch.Object), Audit.Object,
+                NullLogger<DocumentService>.Instance, MissingService.Object);
         }
 
         public void SeedDoc(int id, int typeId = 1) => Documents.Add(new Document
@@ -223,5 +227,67 @@ public class DocumentBatchUploadTests
         Assert.False(result.IsSuccess);
         f.Compliance.Verify(c => c.RefreshComplianceCacheAsync(It.IsAny<int>()), Times.Never);
         f.Review.Verify(r => r.RequestReviewAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<DateTime?>()), Times.Never);
+    }
+
+    [Theory]
+    [InlineData("valid", true)]
+    [InlineData("expires-today", true)]
+    [InlineData("expired", false)]
+    [InlineData("rejected", false)]
+    [InlineData("deleted", false)]
+    [InlineData("wrong-owner", false)]
+    [InlineData("file-owner", false)]
+    public async Task RefreshAfterUpload_FulfillsOnlyValidDocumentsForTheRequiredOwner(string scenario, bool fulfilled)
+    {
+        var f = new Fixture();
+        f.Required.Add(new() { DocumentTypeID = 1, RetireeID = 7 });
+        f.SeedDoc(1);
+        f.SeedMissing(1, 1);
+        var document = f.Documents[0];
+        document.RetireeID = scenario == "file-owner" ? null : scenario == "wrong-owner" ? 99 : 7;
+        document.ExpiryDate = PensionMS.Core.Time.YemenTime.Today.AddDays(scenario == "expired" ? -1 : 0);
+        document.PendingReviewStatus = scenario == "rejected" ? PendingReviewStatus.Rejected : PendingReviewStatus.None;
+        document.IsDeleted = scenario == "deleted";
+
+        var result = await f.Service.RefreshAfterUploadAsync(10, [1], 7);
+        Assert.True(result.IsSuccess, result.Message);
+        Assert.Equal(fulfilled ? 1 : 0, result.Data!.FulfilledMissingCount);
+        Assert.Equal(fulfilled ? MissingDocumentStatusConstants.Fulfilled : MissingDocumentStatusConstants.Pending, f.Missing[0].Status);
+    }
+
+    [Fact]
+    public async Task RefreshAfterUpload_FulfillsPledgedOwner_AndPreservesExemption()
+    {
+        var f = new Fixture();
+        f.Required.Add(new() { DocumentTypeID = 1, AgentID = 5 });
+        f.SeedDoc(1);
+        f.Documents[0].AgentID = 5;
+        f.Missing.Add(new MissingDocument { FileID = 10, DocumentTypeID = 1, AgentID = 5,
+            PledgeID = 8, Status = MissingDocumentStatusConstants.Pledged });
+        f.Missing.Add(new MissingDocument { FileID = 10, DocumentTypeID = 1, AgentID = 6,
+            ExemptionID = 9, Status = MissingDocumentStatusConstants.Exempted });
+        f.Unit.Setup(u => u.DocumentPledges).Returns(Mock.Of<IRepository<DocumentPledge>>());
+
+        var result = await f.Service.RefreshAfterUploadAsync(10, [1], 7);
+        Assert.True(result.IsSuccess, result.Message);
+        Assert.Equal(1, result.Data!.FulfilledMissingCount);
+        Assert.Equal(MissingDocumentStatusConstants.Fulfilled, f.Missing[0].Status);
+        Assert.NotNull(f.Missing[0].SubmittedAt);
+        Assert.Equal(8, f.Missing[0].PledgeID);
+        Assert.Equal(MissingDocumentStatusConstants.Exempted, f.Missing[1].Status);
+        Assert.Equal(9, f.Missing[1].ExemptionID);
+    }
+
+    [Fact]
+    public async Task UpdateExpiry_ReopensMissingDocumentWhenTheOnlyUploadExpires()
+    {
+        var f = new Fixture();
+        f.SeedDoc(1);
+        f.SeedMissing(1, 1);
+        f.Missing[0].Status = MissingDocumentStatusConstants.Fulfilled;
+        var result = await f.Service.UpdateAsync(1, new UpdateDocumentDto
+            { DocumentTypeID = 1, ExpiryDate = PensionMS.Core.Time.YemenTime.Today.AddDays(-1) }, 7);
+        Assert.True(result.IsSuccess, result.Message);
+        Assert.Equal(MissingDocumentStatusConstants.Pending, f.Missing[0].Status);
     }
 }

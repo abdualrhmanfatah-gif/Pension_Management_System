@@ -25,8 +25,19 @@ import {
 import { Skeleton } from "./Skeleton";
 
 const ROW_VIRTUALIZATION_THRESHOLD = 200;
-const ESTIMATED_ROW_HEIGHT = 56;
+const ESTIMATED_ROW_HEIGHT = 48;
 const MOBILE_CARD_ESTIMATED_HEIGHT = 90;
+const tableNumberFormatter = new Intl.NumberFormat("ar-YE");
+const paginationButtonClass = "h-11 w-11 min-h-11 min-w-11 shrink-0 rounded-md text-sm font-medium shadow-none transition-colors hover:scale-100 active:scale-100 hover:shadow-none motion-reduce:transition-none [@media(pointer:fine)]:h-9 [@media(pointer:fine)]:w-9 [@media(pointer:fine)]:min-h-9 [@media(pointer:fine)]:min-w-9";
+
+function isNestedControl(event: React.MouseEvent<HTMLElement>): boolean {
+    if (!(event.target instanceof Element)) return false;
+    if (!event.currentTarget.contains(event.target)) return true;
+    const control = event.target.closest(
+        "button, a, input, select, textarea, summary, [role='button'], [role='link'], [contenteditable='true']"
+    );
+    return control !== null && control !== event.currentTarget;
+}
 
 // ─── Types ─────────────────────────────────────────────
 
@@ -69,6 +80,8 @@ export interface DataTableProps<T> {
     focusedRowIndex?: number;
     className?: string;
     stickyHeader?: boolean;
+    /** Keep one identifying column visible at the logical start while scrolling. */
+    stickyColumnKey?: string;
     title?: React.ReactNode;
     drawerTitle?: (row: T) => string;
     drawerDescription?: (row: T) => string;
@@ -77,6 +90,8 @@ export interface DataTableProps<T> {
     rowClassName?: (row: T) => string | undefined;
     dir?: "rtl" | "ltr";
     maxHeight?: string;
+    /** Use page scrolling for short, paginated mobile lists. */
+    mobileScrollMode?: "contained" | "page";
 }
 
 // ─── Mobile Card View (virtualized to prevent OOM) ──────
@@ -88,9 +103,11 @@ interface MobileCardViewProps<T> {
     actionsColumn?: CustomColumnDef<T>;
     renderCell: (row: T, i: number, col: CustomColumnDef<T>) => React.ReactNode;
     renderMobileCard?: (row: T, index: number) => React.ReactNode;
+    rowClassName?: (row: T) => string | undefined;
     onRowClick: (row: T) => void;
     hasRowInteraction: boolean;
     maxHeight?: string;
+    scrollMode: "contained" | "page";
 }
 
 function MobileCardView<T>({
@@ -100,30 +117,39 @@ function MobileCardView<T>({
     actionsColumn,
     renderCell,
     renderMobileCard,
+    rowClassName,
     onRowClick,
     hasRowInteraction,
     maxHeight,
+    scrollMode,
 }: MobileCardViewProps<T>) {
     const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+    const isPageScroll = scrollMode === "page";
 
     const mobileVirtualizer = useVirtualizer({
         count: data.length,
         getScrollElement: () => scrollContainerRef.current,
         estimateSize: () => MOBILE_CARD_ESTIMATED_HEIGHT,
         overscan: 5,
-        gap: 2,
+        gap: 8,
+        enabled: !isPageScroll,
     });
 
-    const virtualItems = mobileVirtualizer.getVirtualItems();
+    const virtualItems = isPageScroll
+        ? data.map((_, index) => ({ index, start: 0 }))
+        : mobileVirtualizer.getVirtualItems();
     const totalSize = mobileVirtualizer.getTotalSize();
 
     return (
         <div
             ref={scrollContainerRef}
-            className="p-0 md:p-3 overflow-y-auto"
-            style={{ maxHeight: maxHeight ?? 'calc(100dvh - 260px)' }}
+            className={cn(isPageScroll ? "py-1" : "overflow-y-auto p-1")}
+            style={isPageScroll ? undefined : { maxHeight: maxHeight ?? "calc(100dvh - 260px)" }}
         >
-            <div style={{ height: `${totalSize}px`, position: 'relative' }}>
+            <div
+                className={isPageScroll ? "space-y-2" : "relative"}
+                style={isPageScroll ? undefined : { height: `${totalSize}px` }}
+            >
                 {virtualItems.map((virtualRow) => {
                     const i = virtualRow.index;
                     const row = data[i];
@@ -133,8 +159,8 @@ function MobileCardView<T>({
                         <div
                             key={key}
                             data-index={virtualRow.index}
-                            ref={mobileVirtualizer.measureElement}
-                            style={{
+                            ref={isPageScroll ? undefined : mobileVirtualizer.measureElement}
+                            style={isPageScroll ? undefined : {
                                 position: 'absolute',
                                 top: 0,
                                 left: 0,
@@ -142,14 +168,17 @@ function MobileCardView<T>({
                                 transform: `translateY(${virtualRow.start}px)`,
                             }}
                             className={cn(
-                                "bg-card rounded-xl border border-border/80 shadow-sm overflow-hidden",
-                                hasRowInteraction && "cursor-pointer active:scale-[0.99] transition-transform"
+                                "min-w-0 bg-card rounded-xl border border-border overflow-hidden",
+                                hasRowInteraction && "cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+                                rowClassName?.(row)
                             )}
-                            onClick={() => onRowClick(row)}
-                            role="button"
-                            tabIndex={0}
+                            onClick={(e) => {
+                                if (hasRowInteraction && !isNestedControl(e)) onRowClick(row);
+                            }}
+                            role={hasRowInteraction ? "button" : undefined}
+                            tabIndex={hasRowInteraction ? 0 : undefined}
                             onKeyDown={(e) => {
-                                if (e.key === 'Enter' || e.key === ' ') {
+                                if (hasRowInteraction && e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {
                                     e.preventDefault();
                                     onRowClick(row);
                                 }
@@ -162,7 +191,7 @@ function MobileCardView<T>({
                                     {dataColumns.map((col, idx) => (
                                         <div key={col.key} className={cn(
                                             "flex items-center gap-2 px-3 py-2",
-                                            idx < dataColumns.length - 1 && "border-b border-border/60"
+                                            idx < dataColumns.length - 1 && "border-b border-border"
                                         )}>
                                             <span className="text-caption font-bold text-muted-foreground shrink-0 min-w-[60px] text-end">
                                                 {col.header}
@@ -173,7 +202,7 @@ function MobileCardView<T>({
                                         </div>
                                     ))}
                                     {actionsColumn && (
-                                        <div className="flex justify-center items-center gap-2 px-3 py-2 bg-muted/20 border-t border-border/60">
+                                        <div className="flex justify-center items-center gap-2 px-3 py-2 bg-muted/20 border-t border-border">
                                             {renderCell(row, i, actionsColumn)}
                                         </div>
                                     )}
@@ -204,6 +233,7 @@ function DataTable<T>({
     focusedRowIndex,
     className,
     stickyHeader = true,
+    stickyColumnKey,
     title,
     drawerTitle,
     drawerDescription,
@@ -212,6 +242,7 @@ function DataTable<T>({
     rowClassName,
     dir = "rtl",
     maxHeight,
+    mobileScrollMode = "contained",
 }: DataTableProps<T>) {
     const data = React.useMemo(() => {
         if (!unsafeData) return [];
@@ -238,6 +269,7 @@ function DataTable<T>({
         getScrollElement: () => scrollRef.current,
         estimateSize: () => ESTIMATED_ROW_HEIGHT,
         overscan: 10,
+        enabled: shouldVirtualize,
     });
 
     // Scroll to focused row when it changes
@@ -312,14 +344,18 @@ function DataTable<T>({
                 <td
                     key={col.key}
                     className={cn(
-                        "px-3 sm:px-4 py-3.5 text-start align-middle text-sm font-medium text-table-foreground whitespace-normal sm:whitespace-nowrap transition-colors duration-300",
-                        col.className
+                        "border-b border-border px-3 py-2 text-start align-middle text-sm font-medium text-table-foreground whitespace-nowrap transition-colors motion-reduce:transition-none",
+                        i === data.length - 1 && "border-b-0",
+                        col.className,
+                        col.key === stickyColumnKey && "sticky start-0 z-10 bg-card group-hover/table-row:bg-muted",
+                        col.key === stickyColumnKey && focusedRowIndex === i && "bg-muted"
                     )}
+                    style={{ width: col.size, minWidth: col.minSize, maxWidth: col.maxSize }}
                 >
                     {renderCell(row, i, col)}
                 </td>
             )),
-        [columns, renderCell]
+        [columns, data.length, focusedRowIndex, renderCell, stickyColumnKey]
     );
 
     const renderTr = React.useCallback(
@@ -332,17 +368,19 @@ function DataTable<T>({
                     key={key}
                     data-row-index={i}
                     className={cn(
-                        "hover:bg-primary/5 hover:scale-[1.001] transition-all duration-300 border-b border-border/40 last:border-0",
+                        "group/table-row hover:bg-muted transition-colors motion-reduce:transition-none",
                         isClickable && "cursor-pointer",
-                        focusedRowIndex === i && "bg-primary/10 ring-1 ring-primary/30",
+                        focusedRowIndex === i && "bg-muted ring-1 ring-inset ring-primary",
                         rowClassName?.(row),
                         extraClassName
                     )}
-                    onClick={() => handleRowClick(row)}
+                    onClick={(e) => {
+                        if (!isNestedControl(e)) handleRowClick(row);
+                    }}
                     role={isClickable ? "button" : undefined}
                     tabIndex={isClickable ? 0 : undefined}
                     onKeyDown={(e) => {
-                        if (isClickable && (e.key === "Enter" || e.key === " ")) {
+                        if (isClickable && e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {
                             e.preventDefault();
                             handleRowClick(row);
                         }
@@ -370,57 +408,72 @@ function DataTable<T>({
         pagination &&
         pagination.cursor !== undefined &&
         pagination.cursor !== null;
+    const PreviousIcon = dir === "rtl" ? ChevronRight : ChevronLeft;
+    const NextIcon = dir === "rtl" ? ChevronLeft : ChevronRight;
+    const FirstIcon = dir === "rtl" ? ChevronsRight : ChevronsLeft;
+    const LastIcon = dir === "rtl" ? ChevronsLeft : ChevronsRight;
 
     return (
-        <div className={cn("space-y-4", className)} dir={dir}>
+        <div className={cn(
+            "min-w-0 overflow-hidden",
+            mobileScrollMode === "page" ? "sm:rounded-xl sm:border sm:border-border sm:bg-card" : "rounded-xl border border-border bg-card",
+            className
+        )} dir={dir}>
             {title && (
-                <div className="flex items-center justify-between px-2">
-                    <h4 className="text-sm font-black text-primary/80 tracking-wide">
+                <div className="flex items-center justify-between border-b border-border px-3 py-3">
+                    <h4 className="text-sm font-black text-primary tracking-wide">
                         {title}
                     </h4>
                 </div>
             )}
-            <div className="rounded-2xl border border-border/70 overflow-hidden bg-card transition-all duration-300">
+            <div className="min-w-0">
                 <div
                     ref={scrollRef}
-                    className="overflow-y-auto overflow-x-auto hidden sm:block"
+                    className="hidden overflow-auto [scrollbar-gutter:stable] [scroll-padding-block-start:3rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:block"
                     style={{ maxHeight: maxHeight ?? "calc(100dvh - 260px)" }}
+                    role="region"
+                    aria-label={typeof title === "string" ? title : "بيانات الجدول"}
+                    tabIndex={0}
                 >
-                    <table className="w-full text-sm min-w-full sm:min-w-[680px] border-collapse">
+                    <table className="w-full min-w-full border-separate border-spacing-0 text-sm">
                         {/* ─── Header ────────────────────────────── */}
-                        <thead
-                            className={cn(
-                                "bg-muted border-b border-border/80",
-                                stickyHeader && "sticky top-0 z-10"
-                            )}
-                        >
+                        <thead className="bg-muted">
                             <tr>
                                 {columns.map((col) => (
                                     <th
                                         key={col.key}
                                         scope="col"
                                         className={cn(
-                                            "px-3 sm:px-4 py-3.5 text-start font-bold text-table-foreground whitespace-normal sm:whitespace-nowrap bg-muted border-b border-border/60 transition-colors duration-200",
-                                            col.sortable &&
-                                                "cursor-pointer select-none hover:text-primary hover:bg-muted/40",
-                                            col.className
+                                            "border-b border-border bg-muted px-3 py-2.5 text-start align-middle text-sm font-semibold text-table-foreground whitespace-nowrap",
+                                            col.className,
+                                            col.sortable && onSort && "p-0",
+                                            stickyHeader && "sticky top-0 z-20",
+                                            col.key === stickyColumnKey && "sticky start-0 z-10",
+                                            stickyHeader && col.key === stickyColumnKey && "z-30"
                                         )}
-                                        onClick={() => handleSort(col)}
+                                        style={{ width: col.size, minWidth: col.minSize, maxWidth: col.maxSize }}
                                         aria-sort={
-                                            sortColumn === col.key
-                                                ? sortDirection === "asc"
-                                                    ? "ascending"
-                                                    : sortDirection === "desc"
-                                                        ? "descending"
-                                                        : "none"
+                                            col.sortable && onSort
+                                                ? sortColumn === col.key
+                                                    ? sortDirection === "asc"
+                                                        ? "ascending"
+                                                        : sortDirection === "desc"
+                                                            ? "descending"
+                                                            : "none"
+                                                    : "none"
                                                 : undefined
                                         }
                                     >
-                                        <span className="inline-flex items-center gap-2 text-xs sm:text-sm font-extrabold tracking-wide">
-                                            {col.header}
-                                            {col.sortable && (
+                                        {col.sortable && onSort ? (
+                                            <button
+                                                type="button"
+                                                onClick={() => handleSort(col)}
+                                                className="inline-flex min-h-11 w-full items-center gap-2 rounded-sm px-3 py-2.5 text-start text-sm font-semibold hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+                                                aria-label={`ترتيب حسب ${col.header}`}
+                                            >
+                                                {col.header}
                                                 <span
-                                                    className="text-muted-foreground/40"
+                                                    className="text-muted-foreground"
                                                     aria-hidden="true"
                                                 >
                                                     {sortColumn === col.key &&
@@ -433,8 +486,10 @@ function DataTable<T>({
                                                         <ArrowUpDown className="h-4 w-4" />
                                                     )}
                                                 </span>
-                                            )}
-                                        </span>
+                                            </button>
+                                        ) : (
+                                            <span className="text-sm font-semibold">{col.header}</span>
+                                        )}
                                     </th>
                                 ))}
                             </tr>
@@ -442,7 +497,7 @@ function DataTable<T>({
 
                         {/* ─── Body ──────────────────────────────── */}
                         {shouldVirtualize && !loading ? (
-                            <tbody className="divide-y divide-border/40 relative">
+                            <tbody className="relative">
                                 {virtualItems.length > 0 &&
                                     virtualItems[0].start > 0 && (
                                         <tr aria-hidden="true">
@@ -470,17 +525,21 @@ function DataTable<T>({
                                             data-row-index={virtualRow.index}
                                             ref={rowVirtualizer.measureElement}
                                             className={cn(
-                                                "hover:bg-primary/5 transition-all duration-300 border-b border-border/40",
+                                                "group/table-row hover:bg-muted transition-colors motion-reduce:transition-none",
                                                 isClickable && "cursor-pointer",
                                                 focusedRowIndex === virtualRow.index &&
-                                                    "bg-primary/10 ring-1 ring-primary/30"
+                                                    "bg-muted ring-1 ring-inset ring-primary",
+                                                rowClassName?.(row)
                                             )}
-                                            onClick={() => handleRowClick(row)}
+                                            onClick={(e) => {
+                                                if (!isNestedControl(e)) handleRowClick(row);
+                                            }}
                                             role={isClickable ? "button" : undefined}
                                             tabIndex={isClickable ? 0 : undefined}
                                             onKeyDown={(e) => {
                                                 if (
                                                     isClickable &&
+                                                    e.target === e.currentTarget &&
                                                     (e.key === "Enter" || e.key === " ")
                                                 ) {
                                                     e.preventDefault();
@@ -507,13 +566,13 @@ function DataTable<T>({
                                     )}
                             </tbody>
                         ) : (
-                            <tbody className="divide-y divide-border/40">
+                            <tbody>
                                 {/* Loading state */}
                                 {loading &&
                                     Array.from({ length: 5 }).map((_, i) => (
                                         <tr key={`skeleton-${i}`} aria-hidden="true">
                                             {columns.map((col) => (
-                                                <td key={col.key} className="px-4 py-3.5">
+                                                <td key={col.key} className="border-b border-border px-3 py-2" style={{ width: col.size, minWidth: col.minSize, maxWidth: col.maxSize }}>
                                                     <Skeleton className="h-4 w-full max-w-[200px]" />
                                                 </td>
                                             ))}
@@ -534,7 +593,7 @@ function DataTable<T>({
                                             >
                                                 {emptyIcon || (
                                                     <Inbox
-                                                        className="h-12 w-12 opacity-30 text-primary/40"
+                                                        className="h-12 w-12 opacity-100 text-primary"
                                                         aria-hidden="true"
                                                     />
                                                 )}
@@ -566,9 +625,11 @@ function DataTable<T>({
                             actionsColumn={actionsColumn}
                             renderCell={renderCell}
                             renderMobileCard={renderMobileCard}
+                            rowClassName={rowClassName}
                             onRowClick={handleRowClick}
                             hasRowInteraction={!!(onRowClick || renderDrawerContent)}
                             maxHeight={maxHeight}
+                            scrollMode={mobileScrollMode}
                         />
                     </div>
                 )}
@@ -583,7 +644,7 @@ function DataTable<T>({
                         >
                             {emptyIcon || (
                                 <Inbox
-                                    className="h-12 w-12 opacity-30 text-primary/40"
+                                    className="h-12 w-12 opacity-100 text-primary"
                                     aria-hidden="true"
                                 />
                             )}
@@ -593,47 +654,49 @@ function DataTable<T>({
                 )}
 
                 {/* ─── Pagination ───────────────────────────── */}
-                {pagination && (totalPages > 1 || pagination.pageSizeOptions) && (
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-2 px-3 sm:px-4 py-2 bg-muted/10 border-t border-border/60">
-                        <div className="flex items-center gap-2 order-2 sm:order-1">
-                            <p className="text-caption text-muted-foreground font-medium whitespace-nowrap sm:whitespace-normal break-words">
+                {pagination && (totalPages > 1 || pagination.pageSizeOptions || isCursorMode) && (
+                    <div className="flex flex-col items-stretch justify-between gap-3 border-t border-border bg-card px-3 py-3 sm:flex-row sm:flex-wrap sm:items-center">
+                        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-center sm:justify-start sm:text-start">
+                            <p className="text-xs font-medium text-foreground sm:text-sm" aria-live="polite">
                                 عرض{" "}
-                                <span className="font-semibold text-foreground">
-                                    {pagination.total > 0
-                                        ? (
+                                <bdi dir="ltr" className="font-semibold tabular-nums">
+                                    {tableNumberFormatter.format(pagination.total > 0
+                                        ?
                                             (pagination.page - 1) * pagination.pageSize +
                                             1
-                                        ).toLocaleString()
-                                        : 0}
-                                </span>
-                                {" - "}
-                                <span className="font-semibold text-foreground">
-                                    {Math.min(
+                                        : 0)}
+                                    {"–"}
+                                    {tableNumberFormatter.format(Math.min(
                                         pagination.page * pagination.pageSize,
                                         pagination.total
-                                    ).toLocaleString()}
-                                </span>
+                                    ))}
+                                </bdi>
                                 {" من "}
-                                <span className="font-semibold text-foreground">
-                                    {pagination.total.toLocaleString()}
-                                </span>
+                                <bdi className="font-semibold tabular-nums">
+                                    {tableNumberFormatter.format(pagination.total)}
+                                </bdi>
                                 {" سجل"}
                             </p>
+                            {!isCursorMode && totalPages > 0 && (
+                                <p className="text-xs text-muted-foreground">
+                                    الصفحة {tableNumberFormatter.format(pagination.page)} من {tableNumberFormatter.format(totalPages)}
+                                </p>
+                            )}
 
                             {pagination.pageSizeOptions && pagination.onPageSizeChange && (
                                 <div className="flex items-center gap-1.5">
-                                    <span className="text-caption text-muted-foreground">عرض</span>
+                                    <span className="text-xs text-muted-foreground">حجم الصفحة</span>
                                     <select
                                         value={pagination.pageSize}
                                         onChange={(e) =>
                                             pagination.onPageSizeChange?.(Number(e.target.value))
                                         }
-                                        className="h-6 text-caption rounded-md border border-border/60 bg-background px-1.5 py-0.5 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                        className="h-11 min-w-16 rounded-md border border-border bg-background px-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring [@media(pointer:fine)]:h-9"
                                         aria-label="عدد السجلات في الصفحة"
                                     >
                                         {pagination.pageSizeOptions.map((size) => (
                                             <option key={size} value={size}>
-                                                {size}
+                                                {tableNumberFormatter.format(size)}
                                             </option>
                                         ))}
                                     </select>
@@ -643,7 +706,7 @@ function DataTable<T>({
 
                         {/* Cursor mode: simplified Prev/Next */}
                         {isCursorMode ? (
-                            <div className="flex items-center gap-1 order-1 sm:order-2">
+                            <div className="flex items-center justify-center gap-2" role="navigation" aria-label="التنقل بين صفحات الجدول">
                                 <Button
                                     variant="ghost"
                                     size="icon"
@@ -653,18 +716,18 @@ function DataTable<T>({
                                         pagination.page <= 1
                                     }
                                     onClick={() => pagination.onCursorPrev?.()}
-                                    className="h-7 w-7 text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-300"
+                                    className={paginationButtonClass}
                                     title="السابق"
                                     aria-label="الصفحة السابقة"
                                 >
-                                    <ChevronRight className="h-4 w-4" aria-hidden="true" />
+                                    <PreviousIcon className="h-4 w-4" aria-hidden="true" />
                                 </Button>
 
                                 <span
-                                    className="text-caption text-muted-foreground font-medium mx-1"
+                                    className="mx-1 text-sm font-medium tabular-nums text-foreground"
                                     aria-live="polite"
                                 >
-                                    الصفحة {pagination.page}
+                                    الصفحة {tableNumberFormatter.format(pagination.page)}
                                 </span>
 
                                 <Button
@@ -672,16 +735,16 @@ function DataTable<T>({
                                     size="icon"
                                     disabled={!pagination.hasMore || !pagination.onCursorNext}
                                     onClick={() => pagination.onCursorNext?.()}
-                                    className="h-7 w-7 text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-300"
+                                    className={paginationButtonClass}
                                     title="التالي"
                                     aria-label="الصفحة التالية"
                                 >
-                                    <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+                                    <NextIcon className="h-4 w-4" aria-hidden="true" />
                                 </Button>
                             </div>
                         ) : (
                             <div
-                                className="flex items-center gap-1 order-1 sm:order-2"
+                                className="flex items-center justify-center gap-1"
                                 role="navigation"
                                 aria-label="التنقل بين الصفحات"
                             >
@@ -691,11 +754,11 @@ function DataTable<T>({
                                     size="icon"
                                     disabled={pagination.page <= 1}
                                     onClick={() => pagination.onPageChange(1)}
-                                    className="min-h-[28px] min-w-[28px] text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-300"
+                                    className={paginationButtonClass}
                                     title="الصفحة الأولى"
                                     aria-label="الصفحة الأولى"
                                 >
-                                    <ChevronsRight className="h-4 w-4" aria-hidden="true" />
+                                    <FirstIcon className="h-4 w-4" aria-hidden="true" />
                                 </Button>
 
                                 {/* Previous */}
@@ -704,15 +767,15 @@ function DataTable<T>({
                                     size="icon"
                                     disabled={pagination.page <= 1}
                                     onClick={() => pagination.onPageChange(pagination.page - 1)}
-                                    className="min-h-[28px] min-w-[28px] text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-300"
+                                    className={paginationButtonClass}
                                     title="الصفحة السابقة"
                                     aria-label="الصفحة السابقة"
                                 >
-                                    <ChevronRight className="h-4 w-4" aria-hidden="true" />
+                                    <PreviousIcon className="h-4 w-4" aria-hidden="true" />
                                 </Button>
 
                                 {/* Page numbers */}
-                                <div className="flex items-center gap-0.5 mx-1">
+                                <div className="hidden items-center gap-1 sm:flex">
                                     {getPageNumbers().map((p) => (
                                         <Button
                                             key={p}
@@ -720,15 +783,15 @@ function DataTable<T>({
                                             size="icon"
                                             onClick={() => pagination.onPageChange(p)}
                                             className={cn(
-                                                "h-7 w-7 text-caption font-bold transition-all duration-300 rounded-lg",
+                                                paginationButtonClass,
                                                 p === pagination.page
-                                                    ? "bg-primary text-primary-foreground scale-105"
-                                                    : "text-muted-foreground hover:text-primary hover:bg-primary/5"
+                                                    ? "bg-primary text-primary-foreground"
+                                                    : "text-foreground hover:text-primary"
                                             )}
                                             aria-label={`الصفحة ${p}`}
                                             aria-current={p === pagination.page ? "page" : undefined}
                                         >
-                                            {p}
+                                            {tableNumberFormatter.format(p)}
                                         </Button>
                                     ))}
                                 </div>
@@ -739,11 +802,11 @@ function DataTable<T>({
                                     size="icon"
                                     disabled={pagination.page >= totalPages}
                                     onClick={() => pagination.onPageChange(pagination.page + 1)}
-                                    className="min-h-[28px] min-w-[28px] text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-300"
+                                    className={paginationButtonClass}
                                     title="الصفحة التالية"
                                     aria-label="الصفحة التالية"
                                 >
-                                    <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+                                    <NextIcon className="h-4 w-4" aria-hidden="true" />
                                 </Button>
 
                                 {/* Last */}
@@ -752,11 +815,11 @@ function DataTable<T>({
                                     size="icon"
                                     disabled={pagination.page >= totalPages}
                                     onClick={() => pagination.onPageChange(totalPages)}
-                                    className="min-h-[28px] min-w-[28px] text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-300"
+                                    className={paginationButtonClass}
                                     title="الصفحة الأخيرة"
                                     aria-label="الصفحة الأخيرة"
                                 >
-                                    <ChevronsLeft className="h-4 w-4" aria-hidden="true" />
+                                    <LastIcon className="h-4 w-4" aria-hidden="true" />
                                 </Button>
                             </div>
                         )}

@@ -4,8 +4,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 import { Button } from "./Button";
-import { Card } from "./Card";
-import { type CustomColumnDef, DataTable, type PaginationConfig } from "./DataTable";
+import { type CustomColumnDef, DataTable, type DataTableProps, type PaginationConfig } from "./DataTable";
 import { Input } from "./Input";
 import { Heading, Text } from "./Typography";
 
@@ -13,6 +12,7 @@ export interface CrudPageLayoutProps<T> {
   // Header
   title: string;
   description?: string;
+  titleSuffix?: React.ReactNode;
   createLabel?: string;
   onCreateClick?: () => void;
   headerActions?: React.ReactNode;
@@ -26,6 +26,9 @@ export interface CrudPageLayoutProps<T> {
   rowKey?: (row: T, index: number) => string | number;
   onRowClick?: (row: T) => void;
   renderMobileCard?: (row: T, index: number) => React.ReactNode;
+  rowClassName?: DataTableProps<T>["rowClassName"];
+  stickyColumnKey?: DataTableProps<T>["stickyColumnKey"];
+  mobileScrollMode?: DataTableProps<T>["mobileScrollMode"];
 
   // Sorting
   sortColumn?: string;
@@ -35,6 +38,7 @@ export interface CrudPageLayoutProps<T> {
   // Search
   searchable?: boolean;
   searchPlaceholder?: string;
+  searchLabel?: string;
   onSearchChange?: (value: string) => void;
   searchValue?: string;
   onSearchKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -52,11 +56,13 @@ export interface CrudPageLayoutProps<T> {
   className?: string;
   icon?: React.ReactNode;
   hideHeader?: boolean;
+  density?: "default" | "compact";
 }
 
 function CrudPageLayoutInner<T>({
   title,
   description,
+  titleSuffix,
   createLabel = "إضافة جديد",
   onCreateClick,
   headerActions,
@@ -69,6 +75,7 @@ function CrudPageLayoutInner<T>({
   onRowClick,
   searchable,
   searchPlaceholder = "بحث...",
+  searchLabel,
   onSearchChange,
   searchValue,
   onSearchKeyDown,
@@ -84,6 +91,10 @@ function CrudPageLayoutInner<T>({
   icon,
   hideHeader = false,
   renderMobileCard,
+  rowClassName,
+  stickyColumnKey,
+  mobileScrollMode,
+  density = "default",
 }: CrudPageLayoutProps<T>) {
   // ═══════════════════════════════════════════════════════
   // 1. دمج الأحداث: Escape يُفرّغ البحث (UX محسّن)
@@ -105,41 +116,25 @@ function CrudPageLayoutInner<T>({
   );
 
   const searchField = searchable ? (
-    <div
-      className={cn(
-        "relative",
-        searchInHeader
-          ? "w-full rounded-lg border-2 border-primary/40 bg-primary/5 p-1 shadow-md shadow-primary/10 transition-colors focus-within:border-primary/70 focus-within:bg-primary/[0.07]"
-          : "max-w-md"
-      )}
-    >
-      <Search
-        className="pointer-events-none absolute end-4 top-1/2 h-4 w-4 -translate-y-1/2 text-primary/70"
-        aria-hidden="true"
-      />
+    <div className={searchInHeader ? "w-full" : "max-w-md"}>
       <Input
         ref={searchInputRef}
         type="search"
         role="searchbox"
-        aria-label="البحث في الجدول"
+        aria-label={searchLabel || "البحث في الجدول"}
+        label={searchLabel}
+        icon={Search}
         placeholder={searchPlaceholder}
         value={searchValue ?? ""}
         onChange={(e) => onSearchChange?.(e.target.value)}
         onKeyDown={handleSearchKeyDown}
-        className={cn(
-          "h-10 pe-10 text-sm transition-colors",
-          searchInHeader
-            ? "border-0 bg-transparent shadow-none focus-visible:ring-0"
-            : "border border-input bg-background placeholder:text-muted-foreground/70 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
-          "placeholder:text-muted-foreground/70"
-        )}
       />
     </div>
   ) : null;
 
   return (
     <div
-      className={cn("w-full space-y-4 md:space-y-6", className)}
+      className={cn("w-full", density === "compact" ? "space-y-1.5 md:space-y-3" : "space-y-4 md:space-y-6", className)}
       dir="rtl"
     >
       {/* ═══════════════════════════════════════════════════
@@ -149,11 +144,14 @@ function CrudPageLayoutInner<T>({
           ═══════════════════════════════════════════════════ */}
       {!hideHeader && (
         <header
-          className={
+          className={cn(
             searchInHeader
-              ? "grid grid-cols-1 items-center gap-3 lg:grid-cols-[auto_minmax(0,1fr)_auto]"
-              : "flex flex-row flex-wrap items-center justify-between gap-3"
-          }
+              ? cn("grid grid-cols-1 items-center gap-3", hasHeaderActions
+                ? "lg:grid-cols-[auto_minmax(0,1fr)_auto]"
+                : "lg:grid-cols-[auto_minmax(0,1fr)]")
+              : "flex flex-row flex-wrap items-center justify-between gap-3",
+            density === "compact" && "gap-2"
+          )}
         >
           <div className="min-w-0">
             <div className="flex items-center gap-2">
@@ -168,6 +166,11 @@ function CrudPageLayoutInner<T>({
               >
                 {title}
               </Heading>
+              {titleSuffix && (
+                <span className="shrink-0" aria-label="العدد">
+                  {titleSuffix}
+                </span>
+              )}
             </div>
             {description && (
               <Text
@@ -185,20 +188,19 @@ function CrudPageLayoutInner<T>({
             </div>
           )}
 
-          <div
+          {hasHeaderActions && <div
             className={
               searchInHeader
                 ? "flex flex-wrap items-center gap-2 justify-self-end"
                 : "flex flex-wrap items-center gap-2 shrink-0"
             }
           >
-            {hasHeaderActions && (
               <div className="flex items-center gap-2">
                 {canCreate && onCreateClick && (
                   <Button
                     type="button"
                     onClick={onCreateClick}
-                    className="h-9 gap-1.5 px-3 text-xs font-medium sm:h-10 sm:px-4 sm:text-sm"
+                    className="gap-1.5 px-3 text-xs font-medium sm:px-4 sm:text-sm"
                   >
                     <Plus className="h-4 w-4" aria-hidden="true" />
                     <span>{createLabel}</span>
@@ -206,8 +208,7 @@ function CrudPageLayoutInner<T>({
                 )}
                 {headerActions}
               </div>
-            )}
-          </div>
+          </div>}
         </header>
       )}
 
@@ -221,12 +222,11 @@ function CrudPageLayoutInner<T>({
       {children}
 
       {/* ═══════════════════════════════════════════════════
-          4. DataTable — إزالة padding الزائد من Card
-             + shadow خفيف لعمق بصري
+          4. DataTable owns the table frame and mobile card containers.
           ═══════════════════════════════════════════════════ */}
-      <Card className="overflow-hidden border shadow-sm">
         <DataTable
           columns={columns}
+          stickyColumnKey={stickyColumnKey}
           data={data}
           loading={loading}
           pagination={pagination}
@@ -237,10 +237,10 @@ function CrudPageLayoutInner<T>({
           sortDirection={sortDirection}
           onSort={onSort}
           renderMobileCard={renderMobileCard}
+          rowClassName={rowClassName}
+          mobileScrollMode={mobileScrollMode}
           focusedRowIndex={focusedRowIndex}
-          className="border-0"
         />
-      </Card>
     </div>
   );
 }

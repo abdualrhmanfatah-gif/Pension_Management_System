@@ -1,3 +1,4 @@
+using PensionMS.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using PensionMS.Core.DTOs.Accounting;
 using PensionMS.Core.DTOs.Common;
@@ -128,7 +129,10 @@ public class SimpleStocktakeService : ISimpleStocktakeService
         return ApiResponse<bool>.Success(true);
     }
 
-    public async Task<ApiResponse<JournalEntryDto>> AdjustStocktakeAsync(int stocktakeId, int userId)
+    public Task<ApiResponse<JournalEntryDto>> AdjustStocktakeAsync(int stocktakeId, int userId) =>
+        UnitOfWorkTransaction.ExecuteAsync(_unitOfWork, () => AdjustStocktakeCoreAsync(stocktakeId, userId));
+
+    private async Task<ApiResponse<JournalEntryDto>> AdjustStocktakeCoreAsync(int stocktakeId, int userId)
     {
         var stocktake = await _unitOfWork.SimpleStocktakes. Query()
             .Include(s => s.Lines)
@@ -155,7 +159,7 @@ public class SimpleStocktakeService : ISimpleStocktakeService
             stocktake.CompletedByUserID = userId;
             stocktake.CompletedAt = DateTime.UtcNow;
             await _unitOfWork.SaveChangesAsync();
-            return ApiResponse<JournalEntryDto>.Fail("لا توجد فروق للتسوية");
+            return ApiResponse<JournalEntryDto>.Success(null, "لا توجد فروق للتسوية");
         }
 
 
@@ -165,7 +169,7 @@ public class SimpleStocktakeService : ISimpleStocktakeService
 
         decimal totalDeficit = linesWithVariance
             .Where(l => l.PhysicalQuantity < l.SystemQuantity)
-            .Sum(l => l.VarianceValue); // هذا سالب تلقائياً لأن VarianceValue سالب
+            .Sum(l => -l.VarianceValue); // قيمة الفرق في الكيان مطلقة؛ العجز هنا يجب أن يكون سالباً.
 
    
         var inventoryAccount = await _unitOfWork.ChartOfAccounts. Query()
@@ -314,6 +318,11 @@ public class SimpleStocktakeService : ISimpleStocktakeService
     public async Task<List<SimpleStocktakeDto>> GetAllStocktakesAsync(int fiscalYearId)
     {
         var stocktakes = await _unitOfWork.SimpleStocktakes.Query()
+            .AsNoTracking()
+            .Include(s => s.Lines)
+            .Include(s => s.CreatedByUser)
+            .Include(s => s.CompletedByUser)
+            .Include(s => s.JournalEntry)
             .Where(s => s.FiscalYearID == fiscalYearId && !s.IsDeleted)
             .OrderByDescending(s => s.StocktakeDate)
             .ToListAsync();
@@ -321,14 +330,14 @@ public class SimpleStocktakeService : ISimpleStocktakeService
         var result = new List<SimpleStocktakeDto>();
         foreach (var stocktake in stocktakes)
         {
-            result.Add(await MapToDtoAsync(stocktake));
+            result.Add(await MapToDtoAsync(stocktake, linesLoaded: true));
         }
         return result;
     }
 
-    private async Task<SimpleStocktakeDto> MapToDtoAsync(SimpleStocktake stocktake)
+    private async Task<SimpleStocktakeDto> MapToDtoAsync(SimpleStocktake stocktake, bool linesLoaded = false)
     {
-        if (stocktake.Lines == null || stocktake.Lines.Count == 0)
+        if (!linesLoaded && (stocktake.Lines == null || stocktake.Lines.Count == 0))
         {
             stocktake.Lines = await _unitOfWork.SimpleStocktakeLines.Query()
                 .Where(l => l.SimpleStocktakeID == stocktake.SimpleStocktakeID)

@@ -74,6 +74,7 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
   initialValues,
   showGlobalError = false,
   formErrors,
+  dirtyWarningMessage = "لديك تغييرات غير محفوظة، هل أنت متأكد من الإغلاق؟",
   enableKeyboardShortcuts = true,
   submitIcon,
   submitVariant = "primary",
@@ -95,7 +96,7 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
         console.warn("[BaseFormDialog] unsaved-changes confirm", new Error("trace").stack);
       }
       const ok = await confirm({
-        title: "لديك تغييرات غير محفوظة، هل أنت متأكد من الإغلاق؟",
+        title: dirtyWarningMessage,
         variant: "warning",
       });
       if (ok) {
@@ -104,7 +105,7 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
     } else if (!isLoading) {
       onOpenChange?.(false);
     }
-  }, [isDirty, isLoading, onOpenChange, confirm]);
+  }, [isDirty, isLoading, onOpenChange, confirm, dirtyWarningMessage]);
 
   const dummyReset = React.useCallback(() => {}, []);
   useDialogReset(
@@ -266,7 +267,7 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
               {showGlobalError && hasErrors && (
                 <ErrorAlert
                   message="يرجى مراجعة البيانات الإلزامية وتصحيح الأخطاء للمتابعة."
-                  className="border-destructive/20 animate-in slide-in-from-top-2"
+                  className="border-destructive animate-in slide-in-from-top-2"
                 />
               )}
               {children}

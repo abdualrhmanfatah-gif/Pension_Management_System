@@ -11,7 +11,10 @@ import {
     FormField,
     FormSection,
     Input,
-    NativeSelect,    NoteBox} from "@/components/ui";
+    NativeSelect,
+    NoteBox,
+    yemenPhoneSchema,
+} from "@/components/ui";
 import { useApiMutation } from "@/hooks";
 
 // ─── Validation Schema ─────────────────────────────────
@@ -20,9 +23,9 @@ const branchSchema = z.object({
     branchName: z.string().trim().min(3, "اسم الفرع يجب أن يكون 3 أحرف على الأقل"),
     governorate: z.string().trim().min(2, "المحافظة مطلوبة"),
     address: z.string().trim().optional().nullable().or(z.literal("")),
-    phone: z.string().trim().optional().nullable().or(z.literal("")),
+    phone: yemenPhoneSchema.optional().nullable().or(z.literal("")),
     managerName: z.string().trim().optional().nullable().or(z.literal("")),
-    managerPhone: z.string().trim().optional().nullable().or(z.literal("")),
+    managerPhone: yemenPhoneSchema.optional().nullable().or(z.literal("")),
     isActive: z.boolean(),
 });
 

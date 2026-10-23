@@ -309,8 +309,11 @@ export const queryKeys = {
   // ─── Notifications ──────────────────────────────────────
   notifications: {
     all: ["notifications"] as const,
-    list: (page: number) => ["notifications", page] as const,
-    unread: ["notifications", "unread"] as const,
+    // userID يعزل استجابات الحسابات المختلفة في الذاكرة المؤقتة (NF2)
+    byUser: (userId: number) => ["notifications", "user", userId] as const,
+    list: (userId: number, page: number, pageSize: number, category?: string) =>
+      ["notifications", "user", userId, "list", page, pageSize, category ?? ""] as const,
+    unread: (userId: number) => ["notifications", "user", userId, "unread"] as const,
   },
 
   // ─── Achievements ───────────────────────────────────────

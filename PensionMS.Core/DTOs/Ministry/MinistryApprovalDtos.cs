@@ -38,7 +38,9 @@ public class MinistryApprovalItemDto
     public string MilitaryNumber { get; set; } = string.Empty;
     public string FullName { get; set; } = string.Empty;
     public byte? Gender { get; set; }
+    public int? RankID { get; set; }
     public string? RankName { get; set; }
+    public int? CategoryID { get; set; }
     public string? UnitName { get; set; }
     public DateOnly? EnrollmentDate { get; set; }
     public DateOnly? RetirementDate { get; set; }
@@ -61,6 +63,25 @@ public class ImportBatchFromExcelDto
 }
 
 public class AddManualItemDto
+{
+    [Required(ErrorMessage = "الرقم العسكري مطلوب")]
+    public string MilitaryNumber { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "الاسم الكامل مطلوب")]
+    public string FullName { get; set; } = string.Empty;
+
+    public int? RankID { get; set; }
+    public string? UnitName { get; set; }
+    public DateOnly? EnrollmentDate { get; set; }
+    public DateOnly? RetirementDate { get; set; }
+    public decimal? Salary { get; set; }
+    public int? CategoryID { get; set; }
+    public byte? Gender { get; set; }
+    public string? Notes { get; set; }
+    public string? LinkNumber { get; set; }
+}
+
+public class UpdateManualItemDto
 {
     [Required(ErrorMessage = "الرقم العسكري مطلوب")]
     public string MilitaryNumber { get; set; } = string.Empty;

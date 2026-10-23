@@ -1,0 +1,14 @@
+{
+  "surface": "Isolated preview of existing Input, DateInput, StatCard, InfoPair, FormSection, DataTable and AuditTimeline components",
+  "usesTestData": true,
+  "reducedMotion": true,
+  "captures": [
+    {"width":1280,"theme":"light","overflow":false,"searchIconOpacity":"1","searchIconColor":"rgb(0, 0, 0)","borderColor":"rgb(8, 48, 104)","descriptionOpacity":"1","screenshot":"plan/transparency-removal-1280-light.png"},
+    {"width":1280,"theme":"dark","overflow":false,"searchIconOpacity":"1","searchIconColor":"rgb(255, 255, 255)","borderColor":"rgb(51, 115, 204)","descriptionOpacity":"1","screenshot":"plan/transparency-removal-1280-dark.png"},
+    {"width":360,"theme":"light","overflow":false,"searchIconOpacity":"1","searchIconColor":"rgb(0, 0, 0)","borderColor":"rgb(8, 48, 104)","descriptionOpacity":"1","screenshot":"plan/transparency-removal-360-light.png"},
+    {"width":360,"theme":"dark","overflow":false,"searchIconOpacity":"1","searchIconColor":"rgb(255, 255, 255)","borderColor":"rgb(51, 115, 204)","descriptionOpacity":"1","screenshot":"plan/transparency-removal-360-dark.png"}
+  ],
+  "typingValue": "123",
+  "collapsedSectionOpacity": "0",
+  "productionPreview": "http://127.0.0.1:4178/login"
+}

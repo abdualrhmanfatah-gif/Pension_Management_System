@@ -33,7 +33,7 @@ export function LoadingIndicator({
             role="status"
             aria-live="polite"
         >
-            <Loader className="w-6 h-6 animate-spin text-primary/40" aria-hidden="true" />
+            <Loader className="w-6 h-6 animate-spin text-primary" aria-hidden="true" />
             <p>{message}</p>
         </div>
     );

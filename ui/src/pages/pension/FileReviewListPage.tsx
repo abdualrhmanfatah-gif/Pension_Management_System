@@ -244,11 +244,11 @@ export function FileReviewListPage() {
         }
 
         if (filters.status === "pending") {
-            items = items.filter((f: PendingReviewFile) => f.reviewStatus === 0);
-        } else if (filters.status === "approved") {
             items = items.filter((f: PendingReviewFile) => f.reviewStatus === 1);
-        } else if (filters.status === "rejected") {
+        } else if (filters.status === "approved") {
             items = items.filter((f: PendingReviewFile) => f.reviewStatus === 2);
+        } else if (filters.status === "rejected") {
+            items = items.filter((f: PendingReviewFile) => f.reviewStatus === 3);
         }
 
         return items;
@@ -263,9 +263,9 @@ export function FileReviewListPage() {
 
     const stats = useMemo(() => {
         const total = pendingFiles.length;
-        const pending = pendingFiles.filter((f: PendingReviewFile) => f.reviewStatus === 0).length;
-        const approved = pendingFiles.filter((f: PendingReviewFile) => f.reviewStatus === 1).length;
-        const rejected = pendingFiles.filter((f: PendingReviewFile) => f.reviewStatus === 2).length;
+        const pending = pendingFiles.filter((f: PendingReviewFile) => f.reviewStatus === 1).length;
+        const approved = pendingFiles.filter((f: PendingReviewFile) => f.reviewStatus === 2).length;
+        const rejected = pendingFiles.filter((f: PendingReviewFile) => f.reviewStatus === 3).length;
         return { total, pending, approved, rejected };
     }, [pendingFiles]);
 
@@ -410,10 +410,10 @@ export function FileReviewListPage() {
             key: "reviewStatus",
             header: "الحالة",
             render: (row: PendingReviewFile) => {
-                if (row.reviewStatus === 1) {
+                if (row.reviewStatus === 2) {
                     return <Badge variant="success">تمت الموافقة</Badge>;
                 }
-                if (row.reviewStatus === 2) {
+                if (row.reviewStatus === 3) {
                     return <Badge variant="danger">مرفوض</Badge>;
                 }
                 return <Badge variant="warning">قيد المراجعة</Badge>;
@@ -433,7 +433,7 @@ export function FileReviewListPage() {
                     >
                         <Eye className="w-4 h-4 shrink-0" />
                     </Button>
-                    {row.reviewStatus === 0 && (
+                    {row.reviewStatus === 1 && (
                         <>
                             <Button
                                 variant="ghost"
@@ -510,7 +510,7 @@ export function FileReviewListPage() {
                         getName={(r) => r.retireeFullName}
                         getSubtitle={(r) => r.fileNumber}
                         title="بحث بالاسم"
-                        placeholder="اكتب اسم المتقاعد أو رقم الملف..."
+                        placeholder="اكتب الرقم العسكري أو الرقم العسكري أو الرقم العسكري أو اسم المتقاعد..."
                         hideTrigger
                     />
                     <Button

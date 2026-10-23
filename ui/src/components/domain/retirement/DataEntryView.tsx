@@ -9,8 +9,11 @@ import { useEffect,useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import api from "@/api/axios";
+import { retirementApi } from "@/api/retirement";
 import { CreateFileWizard } from "@/components/domain/retirement/CreateFileWizard";
-import { Text } from "@/components/ui";
+import { FileStatusBadge } from "@/components/domain/retirement/FileStatusBadge";
+import { RetirementFileCard } from "@/components/domain/retirement/RetirementFileCard";
+import { Input, Text } from "@/components/ui";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { DataTable } from "@/components/ui/DataTable";
@@ -52,6 +55,15 @@ export function DataEntryView() {
     const [page, setPage] = useState(1);
     const pageSize = 20;
 
+    const { data: statuses } = useQuery({
+        queryKey: ["retirement-files", "statuses"],
+        queryFn: () => retirementApi.getStatuses(),
+        staleTime: 5 * 60_000,
+    });
+    // The data-entry endpoint omits statusID; resolve against the status lookup.
+    const resolveStatusId = (file: RetirementFileListItem) => file.statusID
+        ?? statuses?.find((status) => status.statusName === file.fileStatusName)?.statusID;
+
     // Create dialog
     const [createOpen, setCreateOpen] = useState(false);
 
@@ -84,18 +96,6 @@ export function DataEntryView() {
 
     const files = filesData?.items ?? [];
     const totalCount = filesData?.totalCount ?? 0;
-
-    // ─── Status Badge Color ────────────────────────────────
-
-    const getStatusVariant = (statusName: string | null): "outline" | "success" | "warning" | "danger" => {
-        if (!statusName) return "outline";
-        const lower = statusName.toLowerCase();
-        if (lower.includes("جديد") || lower.includes("مفتوح")) return "outline";
-        if (lower.includes("مكتمل") || lower.includes("نشط")) return "success";
-        if (lower.includes("معلق") || lower.includes("ناقص")) return "warning";
-        if (lower.includes("مغلق") || lower.includes("موقوف")) return "danger";
-        return "outline";
-    };
 
     // ─── Columns ───────────────────────────────────────────
 
@@ -135,9 +135,7 @@ export function DataEntryView() {
             header: "الحالة",
             render: (row: RetirementFileListItem) => (
                 <div className="flex items-center gap-2">
-                    <Badge variant={getStatusVariant(row.fileStatusName)}>
-                        {row.fileStatusName || "غير محدد"}
-                    </Badge>
+                    <FileStatusBadge statusId={resolveStatusId(row)} statusName={row.fileStatusName} />
                     {row.needsDataCompletion && (
                         <Badge variant="warning" className="text-xs">
                             <Clock className="w-3 h-3 ms-1" />
@@ -173,9 +171,9 @@ export function DataEntryView() {
     // ─── Render ────────────────────────────────────────────
 
     return (
-        <div className="space-y-6 animate-fade-in" dir="rtl">
+        <div className="min-w-0 space-y-1.5 md:space-y-3" dir="rtl">
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
                     <h1 className="text-lg sm:text-2xl font-bold text-foreground">إدخال البيانات</h1>
                     <Text variant="description" className="mt-1">
@@ -191,12 +189,12 @@ export function DataEntryView() {
             </div>
 
             {/* Search */}
-            <div className="relative flex-1 min-w-0 sm:min-w-[280px] max-w-md">
-                <Search className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <input
-                    type="text"
-                    className="w-full rounded-lg border px-10 py-2.5 bg-background focus:ring-2 focus:ring-primary/20 outline-none"
-                    placeholder="بحث بالاسم، الرقم الوطني، أو رقم الملف..."
+            <div className="min-w-0 max-w-xl">
+                <Input
+                    type="search"
+                    label="البحث عن ملف"
+                    icon={Search}
+                    placeholder="الاسم أو الرقم الوطني أو رقم الملف"
                     value={search}
                     onChange={(e) => { setSearch(e.target.value); setPage(1); }}
                     aria-label="البحث في ملفات التقاعد"
@@ -219,12 +217,22 @@ export function DataEntryView() {
                     )}
                 </div>
             ) : (
-                <div className="rounded-xl border bg-card overflow-hidden min-h-[250px] sm:min-h-[400px]">
+                <div>
                     <DataTable
                         columns={columns}
                         data={files}
                         loading={loading}
                         rowKey={(row) => row.fileID}
+                        mobileScrollMode="page"
+                        onRowClick={(row) => navigate(`/files/${row.fileID}`)}
+                        renderMobileCard={(row) => (
+                            <RetirementFileCard file={{ ...row, statusID: resolveStatusId(row) }}>
+                                <Button variant="outline" size="sm" className="w-full" onClick={() => navigate(`/files/${row.fileID}`)}>
+                                    <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+                                    استكمال البيانات
+                                </Button>
+                            </RetirementFileCard>
+                        )}
                         emptyMessage="لا توجد ملفات تطابق البحث"
                     />
                 </div>

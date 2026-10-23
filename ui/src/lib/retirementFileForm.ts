@@ -4,6 +4,7 @@
  */
 
 import { normalizeDateInputValue, todayYemen } from "./date.ts";
+import { PHONE_ERROR_MESSAGE, yemenPhoneSchema } from "./validation/common.ts";
 
 export const DRAFT_SESSION_KEY = "retirement_file_draft";
 
@@ -177,7 +178,6 @@ export function mapRetireeToForm(
 // ─── التحقق ─────────────────────────────────────────────
 
 const NATIONAL_ID_PATTERN = /^\d{12}$/;
-const YEMEN_PHONE_PATTERN = /^7\d{8}$/;
 
 /** المقارنة نصية على YYYY-MM-DD: لا تحويل ولا انزياح منطقة زمنية. */
 function isFutureDateOnly(value: string, today: string): boolean {
@@ -243,8 +243,11 @@ export function validateStep(
         }
     }
 
-    if (step === 2 && form.phone && !YEMEN_PHONE_PATTERN.test(form.phone)) {
-        errors.phone = "رقم الهاتف يجب أن يتكون من 9 أرقام ويبدأ بالرقم 7";
+    if (step === 2 && form.phone && form.phone.trim() !== "") {
+        const result = yemenPhoneSchema.safeParse(form.phone);
+        if (!result.success) {
+            errors.phone = result.error.issues[0]?.message ?? PHONE_ERROR_MESSAGE;
+        }
     }
 
     return errors;
@@ -262,14 +265,12 @@ export function isRetireeStepBlocked(context: ValidateContext = {}): boolean {
 }
 
 /**
- * أول ملف غير مغلق يمنع فتح ملف جديد لنفس المتقاعد.
- * `statusID = null` يُعامل كغير مغلق (حالة غير معروفة يجب ألا تفتح الباب).
+ * وجود ملف سابق يمنع إنشاء بديل؛ إعادة الاستحقاق تتم على الملف نفسه.
  */
 export function findActiveFile<T extends Pick<ExistingFile, "statusID">>(
     files: readonly T[],
-    closedStatusId: number,
 ): T | undefined {
-    return files.find((file) => file.statusID !== closedStatusId);
+    return files[0];
 }
 
 /**

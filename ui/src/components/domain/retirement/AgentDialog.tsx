@@ -1,9 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
-import { Calendar, FileText, Search, User, Users, X } from "lucide-react";
+import { Calendar, FileText, RotateCw, Search, User, UserRoundCheck, Users, X } from "lucide-react";
 import { type MouseEvent,type PointerEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Controller,type Resolver, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import api from "@/api/axios";
@@ -18,22 +19,29 @@ import {
     FormSection,
     Input,
     nationalIdSchema,
+    NativeSelect,
     RadioGroup,
     RadioGroupItem,
     Text,
     Textarea,
     yemenPhoneSchema,
 } from "@/components/ui";
-import { useApiMutation } from "@/hooks";
+import { useApiMutation, useRecordNavigation } from "@/hooks";
+import { AGENT_KEY } from "@/hooks/queries/useAgentQuery";
 import { useDebounce } from "@/hooks/useDebounce";
+import { agentScopeKind, agentScopePayload } from "@/lib/agentScope";
+import { normalizeDateInputValue } from "@/lib/date";
 import { focusEnterField, nextEnterIndex } from "@/lib/enterFocus";
 import { cn } from "@/lib/utils";
 import { useAuthStore, useHasPermission } from "@/stores/authStore";
+import type { ApiResponse } from "@/types/api";
 import type { AgentDto, AgentSearchResult, EntitledPersonSummary } from "@/types/retirement";
 
 // ─── Validation Schema ─────────────────────────────────
 
 const baseAgentSchema = z.object({
+    scopeKind: z.enum(["retiree", "allEntitled", "specificEntitled", "legacy"]),
+    entitledScope: z.string(),
     hasAgency: z.enum(["yes", "no"]),
     fullName: z.string().trim().min(3, "اسم الوكيل مطلوب (3 أحرف على الأقل)"),
     nationalID: nationalIdSchema,
@@ -47,6 +55,10 @@ const baseAgentSchema = z.object({
     nationalIDDocument: z.instanceof(File).optional().nullable(),
     agencyDocument: z.instanceof(File).optional().nullable(),
 }).superRefine((data, ctx) => {
+    if (data.scopeKind === "specificEntitled" && !/^[1-9]\d*$/.test(data.entitledScope))
+        ctx.addIssue({ code: "custom", message: "اختر المستحق الذي تمثله هذه الوكالة", path: ["entitledScope"] });
+    if (data.agencyDate && data.agencyEndDate && data.agencyEndDate < data.agencyDate)
+        ctx.addIssue({ code: "custom", message: "تاريخ الانتهاء يجب ألا يسبق تاريخ الإصدار", path: ["agencyEndDate"] });
     if (data.hasAgency === "yes") {
         if (!data.agencyNumber || data.agencyNumber.trim().length === 0) {
             ctx.addIssue({ code: z.ZodIssueCode.custom, message: "رقم الوكالة مطلوب عند وجود وكالة", path: ["agencyNumber"] });
@@ -60,6 +72,8 @@ const baseAgentSchema = z.object({
 type AgentFormValues = z.infer<typeof baseAgentSchema>;
 
 const createEmptyDefaults: AgentFormValues = {
+    scopeKind: "retiree",
+    entitledScope: "",
     hasAgency: "yes",
     fullName: "",
     nationalID: "",
@@ -105,57 +119,126 @@ export function AgentDialog({
     const inputWrapRef = useRef<HTMLDivElement>(null);
     const bodyRef = useRef<HTMLDivElement>(null);
 
-    const mutation = useApiMutation(
-        async (formData: FormData) => {
-            if (mode === "create") {
-                return api.post("/agents", formData, { headers: { "Content-Type": "multipart/form-data" } });
-            } else {
-                return api.put(`/agents/${initialData?.agentID}`, formData, { headers: { "Content-Type": "multipart/form-data" } });
-            }
-        },
-        {
-            invalidateKeys: [["agents"], ["retirement-file", fileId]],
-            successMessage: mode === "create" ? "تم إضافة الوكيل بنجاح" : "تم تحديث الوكيل بنجاح",
-            onSuccess: () => {
-                if (mode === "create") {
-                    sessionStorage.removeItem(DRAFT_KEY);
-                }
-            }
-        }
-    );
+    // في وضع التعديل: معرّف الوكيل المفتوح (لبذر فهرس التنقل)
+    const editId = mode === "edit" ? initialData?.agentID : undefined;
+
+    // تحويل بيانات الوكيل (من التفاصيل أو صف القائمة) إلى قيم النموذج
+    const toFormValues = useCallback((data: AgentDto): AgentFormValues => {
+        const hasExistingAgency = !!(data.agencyNumber && data.agencyNumber.trim().length > 0);
+        return {
+            scopeKind: agentScopeKind(data),
+            entitledScope: String(data.entitledID ?? ""),
+            hasAgency: (hasExistingAgency ? "yes" : "no") as "yes" | "no",
+            fullName: data.fullName,
+            nationalID: data.nationalID,
+            phone: data.phone || "",
+            agencyNumber: data.agencyNumber || "",
+            agencyDate: normalizeDateInputValue(data.agencyDate),
+            agencyEndDate: (data.agencyEndDate && data.agencyEndDate !== "0001-01-01T00:00:00")
+                ? normalizeDateInputValue(data.agencyEndDate)
+                : "",
+            personalPhoto: null,
+            nationalIDDocument: null,
+            agencyDocument: null,
+            notes: data.notes || "",
+        };
+    }, []);
 
     const form = useForm<AgentFormValues>({
         resolver: zodResolver(baseAgentSchema) as Resolver<z.infer<typeof baseAgentSchema>>,
         defaultValues: createEmptyDefaults,
     });
 
-    const { control, register, reset, watch, setValue, formState: { errors, isDirty } } = form;
+    const { control, register, reset, watch, setValue, setError, clearErrors, formState: { errors, isDirty } } = form;
 
     useEffect(() => {
         if (open && mode === "create") {
             const saved = sessionStorage.getItem(DRAFT_KEY);
             if (saved) {
-                try { reset(JSON.parse(saved)); } catch { /* ignore */ }
+                try {
+                    const draft = JSON.parse(saved);
+                    reset({ ...createEmptyDefaults, ...draft, scopeKind: draft.scopeKind ?? (draft.entitledScope ? "specificEntitled" : "retiree") });
+                } catch { /* ignore */ }
             }
         }
     }, [open, mode, DRAFT_KEY, reset]);
     const hasAgency = watch("hasAgency");
+    const scopeKind = watch("scopeKind");
+
+    // ─── Alt+↑/↓: التنقل بين وكلاء الملف (المنطق المشترك في useRecordNavigation) ───
+    const savingRef = useRef(false);
+    const { activeRecord, detailReady, effectiveMode } = useRecordNavigation<
+        AgentDto,
+        AgentDto,
+        AgentFormValues
+    >({
+        open,
+        mode,
+        editRecordId: editId,
+        listKey: ["agents", fileId],
+        fetchList: async () => (await retirementApi.getAgents(fileId)) as unknown as AgentDto[],
+        getId: a => a.agentID,
+        detailKey: id => [AGENT_KEY, id],
+        fetchDetail: id => retirementApi.getAgentById(id) as Promise<AgentDto>,
+        getDetailId: d => d.agentID,
+        emptyMessage: "لا يوجد وكلاء مسجلون لهذا الملف",
+        emptyDefaults: createEmptyDefaults,
+        toFormValues: record => toFormValues(record as AgentDto),
+        form,
+        isDirty,
+        isBusyRef: savingRef,
+        focusField: "fullName",
+    });
+
+    // استخدم السجل الحالي (تفاصيل طازجة أو صف القائمة)، وإلا initialData
+    const effectiveData = (activeRecord ?? initialData) as AgentDto | undefined;
+
+    // ─── Mutation Logic ────────────────────────────────
+    const mutation = useApiMutation(
+        async (formData: FormData) => {
+            if (effectiveMode === "create") {
+                return api.post<ApiResponse<AgentDto> & { errors?: string[] }>("/agents", formData, { headers: { "Content-Type": "multipart/form-data" } });
+            } else {
+                return api.put<ApiResponse<AgentDto> & { errors?: string[] }>(`/agents/${effectiveData?.agentID}`, formData, { headers: { "Content-Type": "multipart/form-data" } });
+            }
+        },
+        {
+            invalidateKeys: [["agents"], ["agents-search"], ["retirement-file", fileId], ["salary-recipients", fileId], ["missing-documents"], ["file-review"]],
+            successMessage: effectiveMode === "create" ? "تم إضافة الوكيل بنجاح" : "تم تحديث الوكيل بنجاح",
+            onSuccess: (response) => {
+                if (response.data.errors?.length) toast.warning("تم حفظ الوكيل مع نواقص في المرفقات", { description: response.data.errors.join("؛ ") });
+                if (effectiveMode === "create") {
+                    sessionStorage.removeItem(DRAFT_KEY);
+                }
+            }
+        }
+    );
+
+    // مزامنة حارس التنقل مع حالة الحفظ (يُقرأ عند الضغط فقط)
+    useEffect(() => {
+        savingRef.current = mutation.isPending;
+    }, [mutation.isPending]);
 
     const allValues = watch();
     useEffect(() => {
-        if (mode === "create" && isDirty) {
+        if (effectiveMode === "create" && isDirty) {
             const { personalPhoto: _p, nationalIDDocument: _n, agencyDocument: _a, ...textFields } = allValues;
             void _p; void _n; void _a;
             sessionStorage.setItem(DRAFT_KEY, JSON.stringify(textFields));
         }
-    }, [allValues, mode, isDirty]);
+    }, [allValues, effectiveMode, isDirty]);
 
     // ─── Fill From Entitled Person ───────────────
     // نفس مفتاح تبويب المستحقين: لا طلب شبكة إضافي إن كان محمّلاً
-    const { data: entitledPersons = [], isLoading: loadingEntitled } = useQuery<EntitledPersonSummary[]>({
+    const { data: entitledPersons = [], isLoading: loadingEntitled, isError: entitledError, refetch: retryEntitled } = useQuery<EntitledPersonSummary[]>({
         queryKey: ["entitled-persons", fileId],
         queryFn: () => retirementApi.getEntitledPersons(fileId),
-        enabled: open && mode === "create" && canViewEntitled,
+        enabled: open && canViewEntitled,
+    });
+    const { data: existingAgents = [] } = useQuery({
+        queryKey: ["agents", fileId],
+        queryFn: () => retirementApi.getAgents(fileId),
+        enabled: open,
     });
 
     const getEntitledStatusLabel = (p: EntitledPersonSummary) =>
@@ -249,7 +332,7 @@ export function AgentDialog({
     const { data: searchResults, isLoading: isSearching } = useQuery<AgentSearchResult[]>({
         queryKey: ["agents-search", debouncedSearch],
         queryFn: () => retirementApi.searchAgents(debouncedSearch, 8),
-        enabled: showSuggestions && debouncedSearch.length >= 2 && mode === "create",
+        enabled: showSuggestions && debouncedSearch.length >= 2 && effectiveMode === "create",
     });
 
     const updateDropdownPos = useCallback(() => {
@@ -315,8 +398,21 @@ export function AgentDialog({
     };
 
     const performSubmit = async (values: AgentFormValues, keepOpen = false) => {
+        const scope = agentScopePayload(values.scopeKind, values.entitledScope);
+        const scopeChanged = values.scopeKind !== (effectiveData ? agentScopeKind(effectiveData) : "retiree")
+            || scope.entitledID !== String(effectiveData?.entitledID ?? "");
+        if (values.scopeKind === "specificEntitled" && (effectiveMode === "create" || scopeChanged)) {
+            const person = entitledPersons.find(p => String(p.entitledID) === scope.entitledID);
+            if (!canViewEntitled || loadingEntitled || entitledError || !person || person.isDeceased) {
+                setError("entitledScope", { message: "تعذر التحقق من المستحق؛ حمّل القائمة واختر مستحقًا متاحًا" });
+                return;
+            }
+        }
         const formData = new FormData();
-        if (mode === "create") formData.append("fileID", fileId.toString());
+        if (effectiveMode === "create") formData.append("fileID", fileId.toString());
+        if (scope.agencyScope) formData.append("agencyScope", String(scope.agencyScope));
+        if (scope.entitledID) formData.append("entitledID", scope.entitledID);
+        if (effectiveMode === "edit") formData.append("updateEntitledScope", String(scopeChanged));
 
         formData.append("fullName", values.fullName);
         formData.append("nationalID", values.nationalID);
@@ -334,7 +430,7 @@ export function AgentDialog({
         if (values.personalPhoto) formData.append("personalPhoto", values.personalPhoto);
         if (values.nationalIDDocument) formData.append("nationalIDDocument", values.nationalIDDocument);
         if (values.hasAgency === "yes" && values.agencyDocument) formData.append("agencyDocument", values.agencyDocument);
-        if (mode === "edit" && initialData?.updatedAt) formData.append("updatedAt", initialData.updatedAt);
+        if (effectiveMode === "edit" && effectiveData?.updatedAt) formData.append("updatedAt", effectiveData.updatedAt);
 
         await mutation.mutateAsync(formData);
 
@@ -357,41 +453,26 @@ export function AgentDialog({
         })();
     };
 
-    const initialValues = useMemo(() => {
-        if (!initialData) return undefined;
-        const hasExistingAgency = !!(initialData.agencyNumber && initialData.agencyNumber.trim().length > 0);
-        return {
-            hasAgency: (hasExistingAgency ? "yes" : "no") as "yes" | "no",
-            fullName: initialData.fullName,
-            nationalID: initialData.nationalID,
-            phone: initialData.phone || "",
-            agencyNumber: initialData.agencyNumber || "",
-            agencyDate: initialData.agencyDate ? initialData.agencyDate.split('T')[0] : "",
-            agencyEndDate: (initialData.agencyEndDate && initialData.agencyEndDate !== "0001-01-01T00:00:00")
-                ? initialData.agencyEndDate.split('T')[0]
-                : "",
-            personalPhoto: null,
-            nationalIDDocument: null,
-            agencyDocument: null,
-            notes: initialData.notes || "",
-        };
-    }, [initialData]);
+    const initialValues = useMemo(
+        () => (effectiveData ? toFormValues(effectiveData) : undefined),
+        [toFormValues, effectiveData]
+    );
 
     const suggestions = searchResults?.filter(a => a.agentID !== selectedAgentId) ?? [];
 
-    const suggestionsDropdown = showSuggestions && mode === "create" && dropdownPos && createPortal(
+    const suggestionsDropdown = showSuggestions && effectiveMode === "create" && dropdownPos && createPortal(
         <div
             className="fixed z-dialog bg-card border border-border rounded-xl overflow-hidden"
             style={{ top: dropdownPos.top, left: dropdownPos.left, width: dropdownPos.width, direction: "rtl" }}
         >
             {debouncedSearch.length < 2 ? (
                 <div className="p-3 text-center text-sm text-muted-foreground">
-                    <Search className="w-4 h-4 mx-auto mb-1 opacity-40" />
+                    <Search className="w-4 h-4 mx-auto mb-1 opacity-100" />
                     اكتب حرفين على الأقل للبحث عن وكيل موجود...
                 </div>
             ) : isSearching ? (
                 <div className="p-3 text-center text-sm text-muted-foreground">
-                    <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-1" />
+                    <div className="w-4 h-4 border-2 border-primary border-t-primary rounded-full animate-spin mx-auto mb-1" />
                     جاري البحث...
                 </div>
             ) : suggestions.length === 0 ? (
@@ -408,7 +489,7 @@ export function AgentDialog({
                             key={agent.agentID}
                             type="button"
                             variant="ghost"
-                            className="w-full justify-start p-3 h-auto border-b border-border/30 last:border-0"
+                            className="w-full justify-start p-3 h-auto border-b border-border last:border-0"
                             onPointerDown={(e: PointerEvent) => e.stopPropagation()}
                             onMouseDown={(e: MouseEvent) => e.stopPropagation()}
                             onClick={() => handleSelectAgent(agent)}
@@ -441,29 +522,103 @@ export function AgentDialog({
         <BaseFormDialog
             isOpen={open}
             onClose={onClose}
-            title={mode === "create" ? "تسجيل وكيل جديد" : "تعديل بيانات الوكيل"}
+            title={effectiveMode === "create" ? "تسجيل وكيل جديد" : "تعديل بيانات الوكيل"}
             description={
-                mode === "create"
+                effectiveMode === "create"
                     ? `إضافة وكيل قانوني لاستلام المستحقات نيابة عن صاحب الملف ${fileNumber ? `(${fileNumber})` : ""}`
                     : `تحديث بيانات الوكيل والوكالة القانونية ${fileNumber ? `(${fileNumber})` : ""}`
             }
             size="full"
-            isLoading={mutation.isPending}
+            isLoading={mutation.isPending || !detailReady}
             isDirty={isDirty}
             onSubmit={form.handleSubmit(onFormSubmit)}
-            onSaveAndNew={mode === "create" ? handleSaveAndNew : undefined}
+            onSaveAndNew={effectiveMode === "create" ? handleSaveAndNew : undefined}
             resetOnOpen={true}
             reset={form.reset}
             initialValues={initialValues}
             showGlobalError
             formErrors={errors}
-            submitLabel={mode === "create" ? "تسجيل الوكيل" : "حفظ التعديلات"}
+            submitLabel={effectiveMode === "create" ? "تسجيل الوكيل" : "حفظ التعديلات"}
         >
             <div className="space-y-4" ref={bodyRef} onKeyDown={handleEnterChain}>
+                <FormSection title="نطاق الوكالة" icon={Users}>
+                    <Controller name="scopeKind" control={control} render={({ field }) => (
+                        <RadioGroup aria-label="الوكالة عن" value={field.value} onValueChange={(value) => {
+                            field.onChange(value);
+                            clearErrors("entitledScope");
+                        }} dir="rtl" className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            {[
+                                { value: "retiree", label: "عن المتقاعد", icon: User },
+                                { value: "allEntitled", label: "عن جميع المستحقين", icon: Users },
+                                { value: "specificEntitled", label: "عن مستحق معين", icon: UserRoundCheck },
+                            ].map(({ value, label, icon: Icon }) => (
+                                <label key={value} className={cn(
+                                    "flex min-h-12 min-w-0 items-center gap-3 rounded-md border px-3 py-3 cursor-pointer",
+                                    "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2",
+                                    field.value === value ? "border-primary bg-accent text-accent-foreground" : "border-border hover:bg-muted/50",
+                                )}>
+                                    <RadioGroupItem value={value} aria-label={label} />
+                                    <Icon className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                                    <span className="text-sm font-medium leading-6">{label}</span>
+                                </label>
+                            ))}
+                        </RadioGroup>
+                    )} />
+                    {scopeKind === "legacy" && <p className="text-sm text-muted-foreground">النطاق المسجل: وكالة عامة للملف</p>}
+                    {scopeKind === "specificEntitled" && (
+                        <div className="max-w-xl space-y-2">
+                            <FormField label="المستحق الموكِّل" required error={errors.entitledScope?.message}>
+                                <Controller name="entitledScope" control={control} render={({ field }) => (
+                                    <NativeSelect id="agent-entitled-scope" aria-label="المستحق الموكِّل" value={field.value} onChange={field.onChange}
+                                        placeholder={loadingEntitled ? "جارٍ تحميل المستحقين..." : "اختر المستحق"}
+                                        disabled={!canViewEntitled || loadingEntitled || entitledError}
+                                        options={[
+                                            ...entitledPersons.map(person => ({
+                                                value: String(person.entitledID),
+                                                label: person.fullName + (person.isDeceased ? " (متوفى)" : person.isEligible === false ? " (موقوف)" : ""),
+                                                disabled: person.isDeceased || existingAgents.some(a => a.isActive && a.agentID !== effectiveData?.agentID && a.entitledID === person.entitledID),
+                                            })),
+                                            ...(!canViewEntitled && effectiveData?.entitledID ? [{ value: String(effectiveData.entitledID), label: effectiveData.entitledPersonName ?? "المستحق المرتبط" }] : []),
+                                        ]} />
+                                )} />
+                            </FormField>
+                            {!canViewEntitled ? <p className="text-sm text-destructive" role="status">لا تملك صلاحية عرض المستحقين.</p>
+                                : entitledError ? <div className="flex flex-wrap items-center gap-2" role="alert">
+                                    <p className="text-sm text-destructive">تعذر تحميل المستحقين.</p>
+                                    <Button type="button" variant="outline" size="sm" onClick={() => void retryEntitled()}><RotateCw className="h-4 w-4" />إعادة المحاولة</Button>
+                                </div>
+                                : !loadingEntitled && entitledPersons.length === 0 && <p className="text-sm text-muted-foreground" role="status">لا يوجد مستحقون مسجلون في هذا الملف.</p>}
+                        </div>
+                    )}
+                </FormSection>
                 <FormSection title="بيانات الوكيل الأساسية" icon={User}>
                     <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
                         <FormField label="الاسم الكامل للوكيل" required error={errors.fullName?.message} className="md:col-span-3">
-                            <div className="flex items-start gap-2">
+                            <div className="flex items-start gap-2" dir="rtl">
+                            {effectiveMode === "create" && canViewEntitled && (
+                                <Button
+                                    ref={entitledBtnRef}
+                                    type="button"
+                                    variant="outline"
+                                    className="shrink-0 gap-1.5 h-11 sm:h-10"
+                                    title="عرض قائمة المستحقين أسفل حقل الاسم"
+                                    aria-label="عرض قائمة المستحقين أسفل حقل الاسم"
+                                    aria-expanded={entitledListOpen}
+                                    aria-controls="entitled-listbox"
+                                    onClick={() => {
+                                        setShowSuggestions(false);
+                                        setEntitledActiveIndex(0);
+                                        setEntitledNavigated(false);
+                                        setEntitledListOpen((v) => !v);
+                                        requestAnimationFrame(() => {
+                                            inputWrapRef.current?.querySelector("input")?.focus();
+                                        });
+                                    }}
+                                >
+                                    <Users className="w-4 h-4" />
+                                    <span className="hidden sm:inline text-xs font-bold">من مستحق</span>
+                                </Button>
+                            )}
                             <div className="flex-1 min-w-0" ref={inputWrapRef}>
                                 <div className="relative">
                                 <Input
@@ -475,7 +630,7 @@ export function AgentDialog({
                                     aria-expanded={entitledListOpen}
                                     aria-controls="entitled-listbox"
                                     onFocus={() => {
-                                        if (mode === "create" && !entitledListOpen && watch("fullName").length >= 2) {
+                                        if (effectiveMode === "create" && !entitledListOpen && watch("fullName").length >= 2) {
                                             setShowSuggestions(true);
                                         }
                                     }}
@@ -512,9 +667,9 @@ export function AgentDialog({
                                             setEntitledNavigated(false);
                                         }
                                     }}
-                                    className={cn(selectedAgentId && "border-primary/50 bg-primary/5")}
+                                    className={cn(selectedAgentId && "border-primary bg-primary/5")}
                                 />
-                                {selectedAgentId && mode === "create" && (
+                                {selectedAgentId && effectiveMode === "create" && (
                                     <Button
                                         type="button"
                                         variant="ghost"
@@ -529,7 +684,7 @@ export function AgentDialog({
                                 )}
                                 </div>
 
-                                {mode === "create" && canViewEntitled && entitledListOpen && (
+                                {effectiveMode === "create" && canViewEntitled && entitledListOpen && (
                                     <div
                                         id="entitled-listbox"
                                         role="listbox"
@@ -538,7 +693,7 @@ export function AgentDialog({
                                     >
                                         {loadingEntitled ? (
                                             <div className="p-3 text-center text-sm text-muted-foreground">
-                                                <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-1" />
+                                                <div className="w-4 h-4 border-2 border-primary border-t-primary rounded-full animate-spin mx-auto mb-1" />
                                                 جاري تحميل المستحقين...
                                             </div>
                                         ) : filteredEntitled.length === 0 ? (
@@ -557,7 +712,7 @@ export function AgentDialog({
                                                     onMouseEnter={() => setEntitledActiveIndex(i)}
                                                     onClick={() => handleFillFromEntitled(p.entitledID)}
                                                     className={cn(
-                                                        "w-full text-start p-3 border-b border-border/30 last:border-0 transition-colors",
+                                                        "w-full text-start p-3 border-b border-border last:border-0 transition-colors",
                                                         i === safeEntitledIndex ? "bg-primary/10" : "hover:bg-muted/50"
                                                     )}
                                                 >
@@ -575,30 +730,6 @@ export function AgentDialog({
                                     </div>
                                 )}
                             </div>
-                            {mode === "create" && canViewEntitled && (
-                                <Button
-                                    ref={entitledBtnRef}
-                                    type="button"
-                                    variant="outline"
-                                    className="shrink-0 gap-1.5 h-11 sm:h-10"
-                                    title="عرض قائمة المستحقين أسفل حقل الاسم"
-                                    aria-label="عرض قائمة المستحقين أسفل حقل الاسم"
-                                    aria-expanded={entitledListOpen}
-                                    aria-controls="entitled-listbox"
-                                    onClick={() => {
-                                        setShowSuggestions(false);
-                                        setEntitledActiveIndex(0);
-                                        setEntitledNavigated(false);
-                                        setEntitledListOpen((v) => !v);
-                                        requestAnimationFrame(() => {
-                                            inputWrapRef.current?.querySelector("input")?.focus();
-                                        });
-                                    }}
-                                >
-                                    <Users className="w-4 h-4" />
-                                    <span className="hidden sm:inline text-xs font-bold">من مستحق</span>
-                                </Button>
-                            )}
                             </div>
                         </FormField>
 
@@ -689,7 +820,7 @@ export function AgentDialog({
                     )}
                 </FormSection>
 
-                <FormSection title="الوثائق الثبوتية والمرفقات" icon={FileText}>
+                <FormSection title="الوثائق والمرفقات" icon={FileText}>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <FileField
                             name="personalPhoto"

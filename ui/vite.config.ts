@@ -41,9 +41,6 @@ export default defineConfig({
             if (id.includes('react-hook-form') || id.includes('@hookform') || id.includes('zod')) {
               return 'vendor-forms';
             }
-            if (id.includes('xlsx') || id.includes('file-saver')) {
-              return 'vendor-xlsx';
-            }
             if (id.includes('qrcode')) {
               return 'vendor-qrcode';
             }

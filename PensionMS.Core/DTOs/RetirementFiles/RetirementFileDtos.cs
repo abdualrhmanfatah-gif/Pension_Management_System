@@ -5,6 +5,7 @@ namespace PensionMS.Core.DTOs.RetirementFiles;
 
 public class CreateRetirementFileDto
 {
+    public int? BranchID { get; set; }
     public int RetireeID { get; set; }
     public DateOnly? RetirementDate { get; set; }
     public DateOnly? ServiceStartDate { get; set; }
@@ -83,6 +84,7 @@ public class UpdateRetirementFileDto
 
 public class RetirementFileDto
 {
+    public string SalaryStatus { get; set; } = string.Empty;
     public int FileID { get; set; }
     public int RetireeID { get; set; }
     public string FileNumber { get; set; } = string.Empty;
@@ -155,6 +157,7 @@ public class RetirementFileListDto
     public int? PreviousStatusID { get; set; }
     public string? FileStatusName { get; set; }
     public DateTime? FileOpenDate { get; set; }
+    public DateTime CreatedAt { get; set; }
     public string? ActivePaymentBookNumber { get; set; }
     public int MissingDocumentsCount { get; set; }
     public bool HasDocuments { get; set; }

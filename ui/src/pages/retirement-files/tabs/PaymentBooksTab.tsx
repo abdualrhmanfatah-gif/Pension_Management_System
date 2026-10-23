@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import { retirementApi } from "@/api/retirement";
 import { type BookFormValues,PaymentBookDialog } from "@/components/domain/retirement/PaymentBookDialog";
-import { Badge, Button, Card, type CustomColumnDef, DataTable, Heading, StatusBadge,useConfirm } from "@/components/ui";
+import { Badge, Button, type CustomColumnDef,DataTable, StatusBadge, TabHeader, useConfirm } from "@/components/ui";
 import { PENDING_REVIEW_STATUS, RECIPIENT_TYPE_AR } from "@/constants";
 import { PAYMENT_BOOK_STATUS } from "@/constants/statusConfigs";
 import { useApiMutation, useCreateShortcut, useCrudState } from "@/hooks";
@@ -84,19 +84,19 @@ export function PaymentBooksTab({ fileId }: PaymentBooksTabProps) {
         (params: { entityType: string; entityId: number }) =>
             retirementApi.acknowledgeEntityRejection(params.entityType, params.entityId),
         {
-            successMessage: "تم قبول الرفض وإعادة الكيان لحالته الطبيعية",
+            successMessage: "تم إعادة المراجعة وإعادة الكيان لحالته الطبيعية",
             invalidateKeys: [["payment-books", fileId], ["retirement-file"]]
         }
     );
 
     // طفرات البيانات
     const saveMutation = useApiMutation(
-        async (values: BookFormValues) => {
-            if (crud.selectedItem) {
+        async ({ values, paymentBookID }: { values: BookFormValues; paymentBookID?: number }) => {
+            if (paymentBookID) {
                 const updateDto = {
                     bookNumber: values.bookNumber,
-                    issueDate: values.issueDate ? new Date(values.issueDate).toISOString() : undefined,
-                    expiryDate: values.expiryDate ? new Date(values.expiryDate).toISOString() : undefined,
+                    issueDate: values.issueDate ? values.issueDate : undefined,
+                    expiryDate: values.expiryDate ? values.expiryDate : undefined,
                     status: values.status,
                     legacyColor: values.legacyColor,
                     changeReason: values.changeReason,
@@ -105,17 +105,17 @@ export function PaymentBooksTab({ fileId }: PaymentBooksTabProps) {
                     notes: values.notes,
                     issuingBranchID: values.issuingBranchID || null,
                 };
-                return retirementApi.updatePaymentBook(crud.selectedItem.paymentBookID, updateDto);
+                return retirementApi.updatePaymentBook(paymentBookID, updateDto);
             } else {
                 const formData = new FormData();
                 formData.append("FileID", fileId.toString());
-                formData.append("IssueDate", values.issueDate ? new Date(values.issueDate).toISOString() : new Date().toISOString());
+                formData.append("IssueDate", values.issueDate ? values.issueDate : new Date().toISOString().split('T')[0]);
                 formData.append("BookType", values.bookType);
                 if (values.bookType === "يدوي") {
                     if (values.bookNumber) formData.append("BookNumber", values.bookNumber);
                     if (values.legacyColor) formData.append("LegacyColor", values.legacyColor);
                 } else {
-                    if (values.expiryDate) formData.append("ExpiryDate", new Date(values.expiryDate).toISOString());
+                    if (values.expiryDate) formData.append("ExpiryDate", values.expiryDate);
                     if (values.changeReason) formData.append("ChangeReason", values.changeReason);
                 }
 
@@ -295,7 +295,7 @@ export function PaymentBooksTab({ fileId }: PaymentBooksTabProps) {
                         </Button>
                     )}
                     {row.pendingReviewStatus === PENDING_REVIEW_STATUS.REJECTED && (
-                        <Button variant="ghost" size="icon" className="min-h-[44px] min-w-[44px] text-amber-600" onClick={() => acknowledgeMutation.mutate({ entityType: "PaymentBook", entityId: row.paymentBookID })} title="قبول الرفض">
+                        <Button variant="ghost" size="icon" className="min-h-[44px] min-w-[44px] text-amber-600" onClick={() => acknowledgeMutation.mutate({ entityType: "PaymentBook", entityId: row.paymentBookID })} title="إعادة المراجعة">
                             <Check className="w-4 h-4" />
                         </Button>
                     )}
@@ -317,17 +317,17 @@ export function PaymentBooksTab({ fileId }: PaymentBooksTabProps) {
 
     return (
         <div className="space-y-2 md:space-y-4 animate-in fade-in duration-500 text-start">
-            <Card className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 p-3 sm:p-5">
-                <div className="space-y-0.5 sm:space-y-1">
-                    <Heading level="h3" className="font-bold text-sm sm:text-base">سجل دفاتر الصرف</Heading>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground font-medium hidden sm:block">قائمة بدفاتر صرف المستحقات الصادرة لهذا الملف</p>
-                </div>
-                {canCreate && (
-                    <Button size="sm" className="gap-1.5 sm:gap-2 rounded-xl h-8 sm:h-10 font-bold text-xs sm:text-sm px-3 sm:px-4" onClick={() => { setModalMode("create"); crud.openCreate(); }}>
-                        <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> إضافة دفتر جديد
-                    </Button>
-                )}
-            </Card>
+            <TabHeader
+                title="سجل دفاتر الصرف"
+                description="قائمة بدفاتر صرف المستحقات الصادرة لهذا الملف"
+                icon={BookOpen}
+                action={{
+                    label: "إضافة دفتر جديد",
+                    icon: Plus,
+                    onClick: () => { setModalMode("create"); crud.openCreate(); },
+                    show: canCreate
+                }}
+            />
 
             <DataTable
                 columns={columns}
@@ -393,8 +393,10 @@ export function PaymentBooksTab({ fileId }: PaymentBooksTabProps) {
             <PaymentBookDialog
                 open={crud.isFormOpen}
                 onOpenChange={crud.onOpenChange}
+                fileId={fileId}
                 mode={modalMode}
-                onSubmit={(v) => saveMutation.mutate(v)}
+                editRecordId={crud.selectedItem?.paymentBookID}
+                onSubmit={(v, ctx) => saveMutation.mutateAsync({ values: v, paymentBookID: ctx.paymentBookID })}
                 isLoading={saveMutation.isPending}
                 initialData={crud.selectedItem ? {
                     bookNumber: crud.selectedItem.bookNumber,

@@ -14,7 +14,9 @@ import {
     FormSection,
     Input,
     NativeSelect,
-    NoteBox} from "@/components/ui";
+    NoteBox,
+    yemenPhoneSchema,
+} from "@/components/ui";
 import { useApiMutation } from "@/hooks";
 
 // ─── Validation Schema ─────────────────────────────────
@@ -24,7 +26,7 @@ const tenantSchema = z.object({
     tenantType: z.enum(["Individual", "Company", "Merchant"]),
     nationalID: z.string().trim().optional(),
     commercialRegister: z.string().trim().optional(),
-    phone: z.string().min(7, "رقم الهاتف غير صحيح"),
+    phone: yemenPhoneSchema,
     address: z.string().trim().optional(),
 }).superRefine((data, ctx) => {
     if (data.tenantType === "Individual" && (!data.nationalID || data.nationalID.length < 5)) {

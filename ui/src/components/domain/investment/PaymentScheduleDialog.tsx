@@ -8,12 +8,22 @@ import type { PaymentScheduleDto, UpdatePaymentStatusDto } from "@/api/investmen
 import { investmentApi } from "@/api/investment";
 import {
     BaseFormDialog,
+<<<<<<< HEAD
     DateInput,
     FormField,
     FormSection,
     Input,
     NativeSelect,
     NoteBox} from "@/components/ui";
+=======
+    FormField,
+    FormSection,
+    Input,
+    DateInput,
+    NoteBox,
+    NativeSelect
+} from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation } from "@/hooks";
 
 // ─── Validation Schema ─────────────────────────────────

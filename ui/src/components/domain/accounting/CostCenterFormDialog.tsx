@@ -5,9 +5,15 @@ import { type Resolver, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { costCentersApi } from "@/api/accounting";
+<<<<<<< HEAD
 import { BaseFormDialog, FormField, FormSection, Input } from "@/components/ui";
 import { useApiMutation } from "@/hooks";
 import type { CostCenterDto } from "@/types/accounting";
+=======
+import type { CostCenterDto } from "@/types/accounting";
+import { BaseFormDialog, FormField, FormSection, Input } from "@/components/ui";
+import { useApiMutation } from "@/hooks";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Schema ───────────────────────────────────────
 const schema = z.object({

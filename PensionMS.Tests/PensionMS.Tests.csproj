@@ -19,7 +19,10 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
+<<<<<<< HEAD
     <Compile Include="..\PensionMS.API\Converters\YemenDateTimeConverter.cs" Link="Converters\YemenDateTimeConverter.cs" />
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   </ItemGroup>
 
   <ItemGroup>

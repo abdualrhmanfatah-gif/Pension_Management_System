@@ -9,6 +9,10 @@ import {
 } from "lucide-react";
 
 import { journalEntriesApi } from "@/api/accounting";
+<<<<<<< HEAD
+=======
+import type { JournalEntryLineDto } from "@/types/accounting";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
   Badge,
   Button,
@@ -24,7 +28,10 @@ import {
 } from "@/components/ui";
 import { JOURNAL_STATUS } from "@/constants";
 import { formatCurrency } from "@/lib/utils";
+<<<<<<< HEAD
 import type { JournalEntryLineDto } from "@/types/accounting";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface JournalEntryViewDialogProps {
   open: boolean;
@@ -109,7 +116,11 @@ export function JournalEntryViewDialog({ open, onOpenChange, entryId }: JournalE
                   </thead>
                   <tbody>
                     {entry.lines.map((line: JournalEntryLineDto, idx) => (
+<<<<<<< HEAD
                       <tr key={line.lineID} className={`border-t border-border ${idx % 2 === 0 ? "bg-muted/5" : ""} hover:bg-muted/20 transition-colors`}>
+=======
+                      <tr key={line.lineID} className={`border-t border-border/50 ${idx % 2 === 0 ? "bg-muted/5" : ""} hover:bg-muted/20 transition-colors`}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <td className="p-2.5">
                           <div className="flex items-center gap-2">
                             <span className="font-mono text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded">{line.accountCode}</span>

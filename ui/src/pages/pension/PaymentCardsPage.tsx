@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useQuery } from "@tanstack/react-query";
 import {
     AlertTriangle,
@@ -36,6 +37,46 @@ import { PAYMENT_BOOK_STATUS } from "@/constants/statusConfigs";
 import { useApiMutation } from "@/hooks/useApiMutation";
 import type { BookFormValues } from "@/pages/retirement-files/tabs/BookFormSchema";
 import type { PaymentBookReview } from "@/types/pension";
+=======
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
+import {
+    CreditCard,
+    Eye,
+    Pencil,
+    Printer,
+    AlertTriangle,
+    CheckCircle2,
+    Clock,
+    Inbox,
+    XCircle,
+} from "lucide-react";
+
+import { paymentBookReviewApi } from "@/api/pension";
+import { retirementApi } from "@/api/retirement";
+import { retireeApi } from "@/api/retirees";
+import { CrudPageLayout } from "@/components/ui/CrudPageLayout";
+import { StatCard } from "@/components/ui/StatCard";
+import { Badge } from "@/components/ui/Badge";
+import { EmptyState, StatusBadge } from "@/components/ui";
+import { Button } from "@/components/ui/Button";
+import { BaseFormDialog } from "@/components/ui/BaseFormDialog";
+import { FormField } from "@/components/ui/FormField";
+import { Input } from "@/components/ui/Input";
+import { NativeSelect } from "@/components/ui/NativeSelect";
+import { FormSection } from "@/components/ui/FormSection";
+import { InfoPair } from "@/components/ui/InfoPair";
+import { Separator } from "@/components/ui/Separator";
+import { PaymentBookDialog } from "@/components/domain/retirement/PaymentBookDialog";
+import { useApiMutation } from "@/hooks/useApiMutation";
+import type { PaymentBookReview } from "@/types/pension";
+import type { BookFormValues } from "@/pages/retirement-files/tabs/BookFormSchema";
+import { RECIPIENT_TYPE_AR } from "@/constants";
+import { PAYMENT_BOOK_STATUS } from "@/constants/statusConfigs";
+import { useConfirm } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */

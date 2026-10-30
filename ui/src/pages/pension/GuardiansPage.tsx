@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Eye, ShieldCheck, Trash2, Users } from "lucide-react";
 import { useRef, useState } from "react";
@@ -13,11 +14,32 @@ import {
     Heading,
     InfoPair,
     StatCard,
+=======
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { ShieldCheck, Eye, Trash2, Users } from "lucide-react";
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { retirementApi } from "@/api/retirement";
+import type { GuardianSummary } from "@/types/retirement";
+import {
+    Badge,
+    CrudPageLayout,
+    Heading,
+    StatCard,
+    Button,
+    InfoPair,
+    BaseFormDialog,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     useConfirm,
 } from "@/components/ui";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
 import { getPhotoUrl, resolvePersonalPhotoPath } from "@/lib/utils";
+<<<<<<< HEAD
 import type { GuardianSummary } from "@/types/retirement";
+=======
+import { toast } from "sonner";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function GuardiansPage() {
     const navigate = useNavigate();
@@ -91,7 +113,11 @@ export function GuardiansPage() {
         {
             key: "phone",
             header: "الهاتف",
+<<<<<<< HEAD
             render: (row: any) => <span className="text-sm">{row.phone || "—"}</span>,
+=======
+            render: (row: any) => <span className="text-sm font-mono">{row.phone || "—"}</span>,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         },
         ...(isSearchMode ? [
             {

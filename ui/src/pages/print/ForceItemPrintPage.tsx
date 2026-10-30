@@ -4,11 +4,20 @@ import { useNavigate,useParams } from "react-router-dom";
 
 import api from "@/api/axios";
 import { ministryApi } from "@/api/ministry";
+<<<<<<< HEAD
 import { UnifiedRetireeStatement } from "@/components/common/UnifiedRetireeStatement";
 import type { ApprovalItem,Statement } from "@/components/domain/print/print.types";
 import { fetchFileDetails } from "@/components/domain/print/print.utils";
 import { Button } from "@/components/ui/Button";
 import { PrintLayout } from "@/components/ui/print/PrintLayout";
+=======
+import { Button } from "@/components/ui/Button";
+import { PrintLayout } from "@/components/ui/print/PrintLayout";
+
+import { UnifiedRetireeStatement } from "@/components/common/UnifiedRetireeStatement";
+import type { ApprovalItem,Statement } from "@/components/domain/print/print.types";
+import { fetchFileDetails } from "@/components/domain/print/print.utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 /**
  * مباينة بيانات المتقاعد من كشف الإحالة

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
  * استكمال النواقص — صفحة مخصصة لتوثيق ورفع الوثائق الناقصة لملفات التقاعد.
  * تعرض قائمة ملفات التقاعد مع عدد النواقص ونسبة اكتمال الوثائق
@@ -539,4 +540,14 @@ if(total===0)window.print();
             />
         </div>
     );
+=======
+import { DocumentUploadView } from "@/components/domain/retirement/DocumentUploadView";
+
+/**
+ * استكمال النواقص — صفحة مخصصة لتوثيق ورفع الوثائق الناقصة لملفات التقاعد.
+ * تعرض قائمة الملفات مع عدد النواقص وحالة التوثيق مع إمكانية التصفية والبحث.
+ */
+export function MissingDocsCompletionPage() {
+    return <DocumentUploadView />;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }

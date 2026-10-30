@@ -1,11 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
+=======
+import { useEffect } from "react";
+import { toast } from "sonner";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     AlertTriangle,
     BarChart3,
     Clock,
     FileCheck} from "lucide-react";
+<<<<<<< HEAD
 import { useEffect } from "react";
 import { toast } from "sonner";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 import { ministryApi } from "@/api/ministry";
 import { Skeleton, StatCard } from "@/components/ui";

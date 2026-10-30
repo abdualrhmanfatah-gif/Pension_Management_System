@@ -19,6 +19,7 @@
 
 ## 2. Authentication
 
+<<<<<<< HEAD
 ### نطاق الوصول إلى بيانات التقاعد
 
 يحدد الخادم نطاق كل عملية من المستخدم المصادق عليه والصلاحية وتعيينات أدواره النشطة. `BranchId` في الفلاتر يضيّق النطاق ولا يمنح فرعاً إضافياً. اسم الدور وفرع الحساب وJWT لا يمنحون مركزية. غياب النطاق يعيد 403؛ جلب سجل خارج النطاق عبر معرّفه يعامل كسجل غير متاح.
@@ -53,6 +54,8 @@
 `POST /api/retirement-files` يقبل `BranchID` اختيارياً لتحديد فرع إنشاء مسموح. عند غيابه يُستخدم فرع الحساب المسموح، أو الفرع الوحيد في النطاق. لا اختيار تلقائي لأول فرع فعّال. تغيير الفرع عبر تحديث الملف العادي مرفوض؛ استخدم مسار النقل.
 راجع [Security.md](Security.md) لقيود الدفعات المشتركة وتهيئة الحسابات قبل النشر.
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | `/api/auth/login` | Login, returns JWT + refresh token |
@@ -345,9 +348,13 @@ POST /api/auth/login
 | GET | `/batches/{id}/items` | Get items (paginated) |
 | GET | `/items/{itemId}` | Get item |
 | DELETE | `/batches/{id}` | Delete batch |
+<<<<<<< HEAD
 | POST | `/batches/{id}/items` | Add manual item (allowed in any batch status; completed batches revert to «قيد المعالجة» while the new item is unprocessed) |
 | PUT | `/items/{itemId}` | Update manual item |
 | DELETE | `/items/{itemId}` | Delete manual item |
+=======
+| POST | `/batches/{id}/items` | Add manual item |
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 | POST | `/items/{itemId}/process` | Process item |
 | GET | `/analytics/dashboard` | Dashboard stats |
 | GET | `/search` | Global search |

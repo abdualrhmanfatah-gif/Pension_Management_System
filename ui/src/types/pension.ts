@@ -237,10 +237,24 @@ export interface EntitledPersonDetail {
 }
 
 /** إيقاف المستحق */
+<<<<<<< HEAD
 export type StopEntitledPersonDto = import("@/lib/entitledPersonRequests").StopEntitledPersonRequest;
 
 /** إعادة تفعيل المستحق */
 export type ReactivateEntitledPersonDto = import("@/lib/entitledPersonRequests").ReactivateEntitledPersonRequest;
+=======
+export interface StopEntitledPersonDto {
+  stopCode: string;
+  stopReason: string;
+  stopDate?: string;
+}
+
+/** إعادة تفعيل المستحق */
+export interface ReactivateEntitledPersonDto {
+  reactivateCode: string;
+  reason: string;
+}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 /** سبب الإيقاف */
 export type StopCode =
@@ -251,7 +265,11 @@ export type StopCode =
   | "ADMIN_DECISION"
   | "EMPLOYED"
   | "MISSING_DATA"
+<<<<<<< HEAD
   | "RETIREE_ALIVE";
+=======
+  | "RETIRER_ALIVE";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 /** سبب إعادة التفعيل */
 export type ReactivateCode =
@@ -617,7 +635,11 @@ export const StopCodeLabels: Record<StopCode, string> = {
   ADMIN_DECISION: "قرار إداري",
   EMPLOYED: "توظيف",
   MISSING_DATA: "بيانات ناقصة",
+<<<<<<< HEAD
   RETIREE_ALIVE: "المتقاعد على قيد الحياة",
+=======
+  RETIRER_ALIVE: "المتقاعد على قيد الحياة",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 };
 
 /** أكواد إعادة التفعيل بالعربية */

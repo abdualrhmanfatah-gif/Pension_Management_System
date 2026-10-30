@@ -13,8 +13,11 @@ export interface RetirementFileListItem {
     fileStatusName: string | null;
     fileOpenDate: string | null;
     missingDocumentsCount?: number;
+<<<<<<< HEAD
     hasDocuments?: boolean;
     lastUploadedByUserName?: string | null;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     missingDataCount?: number;
     reviewStatus?: number;
 }
@@ -29,8 +32,11 @@ export interface RetirementFilesPagedResult {
 }
 
 export interface RetirementFileDetail {
+<<<<<<< HEAD
     salaryStatus?: string;
     previousStatusID?: number | null;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     missingDataList?: string[];
     fileID: number;
     fileNumber: string;
@@ -158,7 +164,10 @@ export interface EntitledPersonDto {
 
 export interface EntitledPersonSummary {
     entitledID: number;
+<<<<<<< HEAD
     fileID?: number;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     fullName: string;
     nationalID?: string | null;
     relationshipName?: string;
@@ -177,7 +186,10 @@ export interface EntitledPersonSummary {
     hasPersonalPhoto?: boolean;
     isDeceased?: boolean;
     pendingReviewStatus?: number;
+<<<<<<< HEAD
     sharePercent?: number | null;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 export interface EntitledPersonSearchResult {
@@ -196,9 +208,12 @@ export interface EntitledPersonSearchResult {
 }
 
 export interface AgentSummary {
+<<<<<<< HEAD
     agencyScope?: import("@/lib/agentScope").AgencyScope | null;
     entitledID?: number | null;
     entitledPersonName?: string | null;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     agentID: number;
     fullName: string;
     nationalID?: string;
@@ -212,9 +227,12 @@ export interface AgentSummary {
 }
 
 export interface AgentDto {
+<<<<<<< HEAD
     agencyScope?: import("@/lib/agentScope").AgencyScope | null;
     entitledID?: number | null;
     entitledPersonName?: string | null;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     agentID: number;
     fullName: string;
     nationalID: string;
@@ -231,10 +249,13 @@ export interface AgentDto {
 }
 
 export interface AgentSearchResult {
+<<<<<<< HEAD
     agencyScope?: import("@/lib/agentScope").AgencyScope | null;
     entitledID?: number | null;
     entitledPersonName?: string | null;
     isActive: boolean;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     agentID: number;
     fullName: string;
     nationalID: string;
@@ -421,10 +442,13 @@ export interface SuspensionItem {
 }
 
 export interface RecipientItem {
+<<<<<<< HEAD
     recipientName?: string;
     recipientType?: string;
     effectiveEntitledID?: number | null;
     entitledPersonName?: string | null;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     recipientID: number;
     fileID: number;
     retireeID?: number;
@@ -440,7 +464,10 @@ export interface RecipientItem {
     isActive: boolean;
     notes?: string;
     pendingReviewStatus?: number;
+<<<<<<< HEAD
     sharePercent?: number | null;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 export interface NoteItem {

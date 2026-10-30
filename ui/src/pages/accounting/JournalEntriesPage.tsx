@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { Eye, FileText, PlusCircle, RefreshCw } from "lucide-react";
 import { useState } from "react";
 
@@ -12,6 +13,21 @@ import { JOURNAL_ENTRY_STATUS } from "@/constants/statusConfigs";
 import { formatCurrency } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
 import type { JournalEntryDto, JournalEntryFilterDto } from "@/types/accounting";
+=======
+import { useState } from "react";
+import { Eye, FileText, PlusCircle, RefreshCw } from "lucide-react";
+
+import { journalEntriesApi, fiscalYearsApi } from "@/api/accounting";
+import { useHasPermission } from "@/stores/authStore";
+import type { JournalEntryDto, JournalEntryFilterDto } from "@/types/accounting";
+import { Button, Card, Heading, Input, PageLayout, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, StickyHeader, StatusBadge, Text } from "@/components/ui";
+import { DataTable } from "@/components/ui/DataTable";
+import type { CustomColumnDef, PaginationConfig } from "@/components/ui/DataTable";
+import { formatCurrency } from "@/lib/utils";
+import { JOURNAL_STATUS } from "@/constants";
+import { JOURNAL_ENTRY_STATUS } from "@/constants/statusConfigs";
+import { JournalEntryFormDialog, JournalEntryPostDialog, JournalEntryReverseDialog, JournalEntryViewDialog } from "@/components/domain/accounting";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 const ALL = "__all__";
 

@@ -3,7 +3,11 @@ import { CheckCircle, LogIn, MapPin, Monitor,RefreshCw, Search, ShieldAlert, XCi
 import { useState } from "react";
 
 import api from "@/api/axios";
+<<<<<<< HEAD
 import { Badge, Button, Card, type CustomColumnDef, DataTable, DateInput, Heading, Input, Loader, PageLayout, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, StatCard, StickyHeader, Text } from "@/components/ui";
+=======
+import { Badge, Button, Card, DataTable, type CustomColumnDef, Heading, Input, DateInput, Loader, PageLayout, StatCard, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, StickyHeader, Text } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface LoginEntry {
     loginID: number;
@@ -135,7 +139,11 @@ export function LoginHistoryPage() {
                 <Card className="py-20 text-center text-destructive"><p>تعذر تحميل سجل الدخول</p></Card>
             ) : entries.length === 0 ? (
                 <Card className="py-20 text-center text-muted-foreground">
+<<<<<<< HEAD
                     <Search className="w-12 h-12 mx-auto mb-3 opacity-100" />
+=======
+                    <Search className="w-12 h-12 mx-auto mb-3 opacity-20" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <p>لا توجد سجلات مطابقة للبحث</p>
                 </Card>
             ) : (

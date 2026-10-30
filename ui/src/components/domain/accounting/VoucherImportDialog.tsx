@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 import { AlertTriangle, CheckCircle2, FileSpreadsheet, Upload, X } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { type ImportVoucherResultDto,vouchersApi } from "@/api/vouchers";
 import { Badge, Button, Dialog, DialogContent, DialogHeader, DialogTitle, Text } from "@/components/ui";
+=======
+import { useCallback, useRef, useState } from "react";
+import { Upload, FileSpreadsheet, CheckCircle2, AlertTriangle, X } from "lucide-react";
+
+import { vouchersApi, type ImportVoucherResultDto } from "@/api/vouchers";
+import { Badge, Button, Dialog, DialogContent, DialogHeader, DialogTitle, Text } from "@/components/ui";
+import { toast } from "sonner";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface Props {
   open: boolean;

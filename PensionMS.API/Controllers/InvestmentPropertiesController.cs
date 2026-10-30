@@ -101,6 +101,7 @@ public class InvestmentPropertiesController : ControllerBase
         if (file == null || file.Length == 0)
             return ApiResponse<string>.Fail("لم يتم اختيار ملف").ToActionResult();
 
+<<<<<<< HEAD
         var userId = this.GetUserId();
         var property = await _service.GetPropertyByIdAsync(id);
         if (!property.IsSuccess)
@@ -125,6 +126,14 @@ public class InvestmentPropertiesController : ControllerBase
         }
 
         if (!result.IsSuccess) await _fileStorage.DeleteFileAsync(filePath);
+=======
+        using var stream = file.OpenReadStream();
+        var filePath = await _fileStorage.SaveFileAsync(stream, file.FileName, "properties");
+
+        var userId = this.GetUserId();
+        var result = await _service.UpdatePropertyMainPhotoPathAsync(id, filePath, userId);
+        
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         return result.ToActionResult();
     }
 

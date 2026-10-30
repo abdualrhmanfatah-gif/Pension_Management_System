@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo,useState } from "react";
 
@@ -9,6 +10,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { chartColors } from "@/lib/chartColors";
 import { formatCurrency } from "@/lib/utils";
 import type { FiscalPeriodDto, TrialBalanceItemDto } from "@/types/accounting";
+=======
+import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect, useCallback, useMemo } from "react";
+
+import { reportsApi, periodsApi } from "@/api/accounting";
+import type { FiscalPeriodDto, TrialBalanceItemDto } from "@/types/accounting";
+import { formatCurrency } from "@/lib/utils";
+import { Card, Heading, Text } from "@/components/ui";
+import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
+import { ReportBarChart, ReportPieChart } from "@/components/common/charts";
+import { chartColors } from "@/lib/chartColors";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/Select";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface CurrentOperationsReportProps {
   fiscalYearId?: number;
@@ -71,10 +85,17 @@ export function CurrentOperationsReport({ fiscalYearId, externalFilters, hideInt
   }, [trialBalance]);
 
   const customKPIs = classified ? [
+<<<<<<< HEAD
     { label: 'الإيرادات', value: formatCurrency(classified.totalRevenue), color: 'success' },
     { label: 'المصروفات', value: formatCurrency(classified.totalExpenses), color: 'danger' },
     { label: 'صافي الدخل', value: formatCurrency(classified.totalRevenue - classified.totalExpenses), color: (classified.totalRevenue - classified.totalExpenses) >= 0 ? 'text-green-600' : 'text-red-600' },
     { label: 'الفترة', value: selectedPeriod?.periodName || '', color: 'primary' },
+=======
+    { label: 'الإيرادات', value: formatCurrency(classified.totalRevenue), color: 'text-green-600' },
+    { label: 'المصروفات', value: formatCurrency(classified.totalExpenses), color: 'text-red-600' },
+    { label: 'صافي الدخل', value: formatCurrency(classified.totalRevenue - classified.totalExpenses), color: (classified.totalRevenue - classified.totalExpenses) >= 0 ? 'text-green-600' : 'text-red-600' },
+    { label: 'الفترة', value: selectedPeriod?.periodName || '', color: 'text-primary' },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   ] : [];
 
   const chartContent = classified ? (
@@ -107,7 +128,11 @@ export function CurrentOperationsReport({ fiscalYearId, externalFilters, hideInt
   const filterBar = hideInternalControls ? undefined : (
     <Card className="p-4 flex flex-wrap gap-4 items-end mb-6">
       <div className="w-full sm:w-64">
+<<<<<<< HEAD
         <label className="label-filter">الفترة المحاسبية</label>
+=======
+        <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">الفترة المحاسبية</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         <Select
           value={selectedPeriodId != null ? String(selectedPeriodId) : undefined}
           onValueChange={(v) => setInternalSelectedPeriodId(Number(v))}
@@ -159,7 +184,11 @@ export function CurrentOperationsReport({ fiscalYearId, externalFilters, hideInt
               ) : (
                 <div className="space-y-2">
                   {classified.revenueAccounts.map((account: TrialBalanceItemDto) => (
+<<<<<<< HEAD
                     <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+=======
+                    <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{account.accountCode}</span>
                         <span className="text-sm mr-2">{account.accountName}</span>
@@ -182,7 +211,11 @@ export function CurrentOperationsReport({ fiscalYearId, externalFilters, hideInt
               ) : (
                 <div className="space-y-2">
                   {classified.expenseAccounts.map((account: TrialBalanceItemDto) => (
+<<<<<<< HEAD
                     <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+=======
+                    <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{account.accountCode}</span>
                         <span className="text-sm mr-2">{account.accountName}</span>
@@ -205,7 +238,11 @@ export function CurrentOperationsReport({ fiscalYearId, externalFilters, hideInt
               ) : (
                 <div className="space-y-2">
                   {classified.assetAccounts.map((account: TrialBalanceItemDto) => (
+<<<<<<< HEAD
                     <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+=======
+                    <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{account.accountCode}</span>
                         <span className="text-sm mr-2">{account.accountName}</span>
@@ -228,7 +265,11 @@ export function CurrentOperationsReport({ fiscalYearId, externalFilters, hideInt
               ) : (
                 <div className="space-y-2">
                   {classified.equityAccounts.map((account: TrialBalanceItemDto) => (
+<<<<<<< HEAD
                     <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+=======
+                    <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{account.accountCode}</span>
                         <span className="text-sm mr-2">{account.accountName}</span>
@@ -238,7 +279,11 @@ export function CurrentOperationsReport({ fiscalYearId, externalFilters, hideInt
                     </div>
                   ))}
                   {classified.liabilityAccounts.map((account: TrialBalanceItemDto) => (
+<<<<<<< HEAD
                     <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+=======
+                    <div key={account.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{account.accountCode}</span>
                         <span className="text-sm mr-2">{account.accountName}</span>

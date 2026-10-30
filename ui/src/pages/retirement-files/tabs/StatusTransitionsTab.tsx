@@ -8,7 +8,11 @@ UserCheck, Users, Wallet} from "lucide-react";
 import { useCallback, useDeferredValue,useMemo, useState } from "react";
 
 import { retirementApi } from "@/api/retirement";
+<<<<<<< HEAD
 import { Button, Card, Input, LoadingIndicator, TabHeader } from "@/components/ui";
+=======
+import { Button, Card, Heading, Input, LoadingIndicator, Text } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { AuditTimeline } from "@/components/ui/AuditTimeline";
 import { translateFieldName } from "@/lib/fieldTranslations";
 import type { ChangeLogItem } from "@/types/retirement";
@@ -159,8 +163,13 @@ export function StatusTransitionsTab({ fileId }: StatusTransitionsTabProps) {
     // ─── Error State ─────────────────────────────────────
     if (error) {
         return (
+<<<<<<< HEAD
             <div className="border-2 border-destructive rounded-2xl py-16 text-center text-destructive bg-destructive/5">
                 <FileWarning className="w-12 h-12 mx-auto mb-4 opacity-100" />
+=======
+            <div className="border-2 border-destructive/20 rounded-2xl py-16 text-center text-destructive bg-destructive/5">
+                <FileWarning className="w-12 h-12 mx-auto mb-4 opacity-50" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <p className="font-medium mb-2">حدث خطأ أثناء تحميل السجل</p>
                 <Button variant="outline" size="sm" onClick={() => refetch()} className="gap-1.5">
                     <RefreshCw className="w-4 h-4" /> إعادة المحاولة
@@ -173,7 +182,11 @@ export function StatusTransitionsTab({ fileId }: StatusTransitionsTabProps) {
     if (changes.length === 0) {
         return (
             <div className="border-2 border-dashed rounded-2xl py-16 text-center text-muted-foreground bg-muted/10 animate-in fade-in duration-500">
+<<<<<<< HEAD
                 <History className="w-12 h-12 mx-auto mb-4 opacity-100" />
+=======
+                <History className="w-12 h-12 mx-auto mb-4 opacity-20" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <p className="font-medium">لا توجد تغييرات مسجلة لهذا الملف حتى الآن</p>
             </div>
         );
@@ -182,16 +195,31 @@ export function StatusTransitionsTab({ fileId }: StatusTransitionsTabProps) {
     return (
         <div className="space-y-3 md:space-y-6 animate-in fade-in duration-500 text-start">
             {/* Header */}
+<<<<<<< HEAD
             <TabHeader
                 title="سجل العمليات"
                 description="تتبع الأنشطة والتعديلات التي تمت على الملف"
                 icon={History}
             >
                 <div className="flex items-center gap-2 flex-wrap md:flex-nowrap">
+=======
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-muted/30 p-4 rounded-xl border border-border/50">
+                <div className="space-y-1">
+                    <Heading level="h3" className="text-lg font-bold flex items-center gap-2">
+                        <History className="w-5 h-5 text-primary" /> 
+                        سجل العمليات
+                    </Heading>
+                    <Text variant="caption" className="font-medium">
+                        تتبع الأنشطة والتعديلات التي تمت على الملف
+                    </Text>
+                </div>
+                <div className="flex items-center gap-2 flex-wrap lg:flex-nowrap">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <Input
                         value={search}
                         onChange={handleSearchChange}
                         placeholder="بحث في الوصف أو المستخدم..."
+<<<<<<< HEAD
                         className="h-9 w-full sm:w-64 text-xs bg-background"
                         aria-label="البحث في سجل التغييرات"
                     />
@@ -208,12 +236,34 @@ export function StatusTransitionsTab({ fileId }: StatusTransitionsTabProps) {
                     </Button>
                 </div>
             </TabHeader>
+=======
+                        className="h-9 w-full sm:w-64 text-xs bg-background "
+                        aria-label="البحث في سجل التغييرات"
+                    />
+                    <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => refetch()} 
+                        className="h-11 gap-1.5 "
+                        disabled={isFetching}
+                        aria-label="تحديث السجل"
+                    >
+                        <RefreshCw className={`w-4 h-4 ${isFetching ? "animate-spin" : ""}`} /> 
+                        تحديث
+                    </Button>
+                </div>
+            </div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
             {/* Filters */}
             <div className="space-y-3">
                 {/* نوع التغيير */}
                 <div 
+<<<<<<< HEAD
                     className="flex gap-2 flex-wrap p-1 bg-muted/50 rounded-lg border border-border w-fit"
+=======
+                    className="flex gap-2 flex-wrap p-1 bg-muted/50 rounded-lg border border-border/40 w-fit"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     role="group"
                     aria-label="فلترة حسب نوع التغيير"
                 >
@@ -243,7 +293,11 @@ export function StatusTransitionsTab({ fileId }: StatusTransitionsTabProps) {
                 {/* فلترة الكيانات */}
                 {uniqueEntities.length > 1 && (
                     <div 
+<<<<<<< HEAD
                         className="flex gap-2 flex-wrap p-1 bg-muted/50 rounded-lg border border-border w-fit"
+=======
+                        className="flex gap-2 flex-wrap p-1 bg-muted/50 rounded-lg border border-border/40 w-fit"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         role="group"
                         aria-label="فلترة حسب الكيان"
                     >
@@ -286,4 +340,8 @@ export function StatusTransitionsTab({ fileId }: StatusTransitionsTabProps) {
             </Card>
         </div>
     );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

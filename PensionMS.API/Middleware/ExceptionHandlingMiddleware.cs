@@ -36,10 +36,13 @@ public class ExceptionHandlingMiddleware
 
         switch (exception)
         {
+<<<<<<< HEAD
             case BranchScopeAccessException ex:
                 statusCode = HttpStatusCode.Forbidden;
                 message = ex.Message;
                 break;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             // ── Custom business exceptions ──────────────────────
             case BusinessRuleException ex:
                 statusCode = HttpStatusCode.BadRequest;

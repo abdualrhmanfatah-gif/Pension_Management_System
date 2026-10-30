@@ -7,8 +7,11 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import unusedImports from 'eslint-plugin-unused-imports'
 
+<<<<<<< HEAD
 import { restrictedDatePatterns } from './eslint.restricted-date-patterns.js'
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 export default defineConfig([
   globalIgnores(['dist']),
   {
@@ -41,7 +44,10 @@ export default defineConfig([
       'react-hooks/purity': 'off',
       'react-hooks/preserve-manual-memoization': 'off',
       'react-hooks/set-state-in-effect': 'off',
+<<<<<<< HEAD
       'no-restricted-syntax': ['error', ...restrictedDatePatterns],
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     },
   },
 ])

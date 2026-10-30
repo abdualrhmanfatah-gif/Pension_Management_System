@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { ArrowLeft, FileText, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { useNavigate,useParams } from "react-router-dom";
@@ -10,6 +11,19 @@ import { JOURNAL_STATUS } from "@/constants";
 import { JOURNAL_ENTRY_STATUS } from "@/constants/statusConfigs";
 import { formatCurrency } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
+=======
+import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { ArrowLeft, FileText, RefreshCw } from "lucide-react";
+
+import { journalEntriesApi } from "@/api/accounting";
+import { useHasPermission } from "@/stores/authStore";
+import { Button, Card, DataTable, type CustomColumnDef, ErrorState, Heading, PageLayout, Skeleton, StickyHeader, StatusBadge } from "@/components/ui";
+import { formatCurrency } from "@/lib/utils";
+import { JOURNAL_STATUS } from "@/constants";
+import { JOURNAL_ENTRY_STATUS } from "@/constants/statusConfigs";
+import { JournalEntryPostDialog, JournalEntryReverseDialog } from "@/components/domain/accounting";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 
 
@@ -119,7 +133,11 @@ export function JournalEntryDetailsPage() {
 
       {/* Lines */}
       <Card className="border-none rounded-3xl overflow-hidden">
+<<<<<<< HEAD
         <div className="p-4 border-b border-border">
+=======
+        <div className="p-4 border-b border-border/40">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           <Heading level="h3" className="font-semibold">بنود القيد</Heading>
         </div>
         <DataTable

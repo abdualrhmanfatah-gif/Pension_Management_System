@@ -13,7 +13,10 @@ import {
   User,
 } from "lucide-react";
 import { useRef } from "react";
+<<<<<<< HEAD
 import { useReactToPrint } from "react-to-print";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 import { vouchersApi } from "@/api/vouchers";
 import {
@@ -26,6 +29,7 @@ import {
   DialogTitle,
   InfoPair,
   Skeleton,
+<<<<<<< HEAD
   StatusBadge,
   SummaryCard,
   SummaryRow,
@@ -33,6 +37,16 @@ import {
 import { VOUCHER_STATUS } from "@/constants/statusConfigs";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { PrintablePaymentOrder } from "@/pages/print/PrintablePaymentOrder";
+=======
+  SummaryCard,
+  SummaryRow,
+  StatusBadge,
+} from "@/components/ui";
+import { formatCurrency, formatDate } from "@/lib/utils";
+import { VOUCHER_STATUS } from "@/constants/statusConfigs";
+import { PrintablePaymentOrder } from "@/pages/print/PrintablePaymentOrder";
+import { useReactToPrint } from "react-to-print";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface Props {
   open: boolean;
@@ -113,7 +127,11 @@ export function VoucherViewDialog({ open, onOpenChange, voucherId }: Props) {
               </SummaryCard>
 
               {/* المبلغ */}
+<<<<<<< HEAD
               <div className="rounded-xl border bg-primary/5 border-primary p-4">
+=======
+              <div className="rounded-xl border bg-primary/5 border-primary/20 p-4">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <div className="flex items-center gap-1.5 mb-1">
                   <DollarSign className="w-3.5 h-3.5 text-primary" />
                   <span className="text-xs text-muted-foreground">المبلغ</span>

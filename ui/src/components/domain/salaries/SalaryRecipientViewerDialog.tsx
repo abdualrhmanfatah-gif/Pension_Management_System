@@ -39,7 +39,11 @@ export function SalaryRecipientViewerDialog({ open, onClose, recipient }: Salary
             <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
                 <DialogContent size="md" aria-labelledby="recipient-dialog-title" className="p-0 border-none bg-slate-50 overflow-visible">
                     <div className="h-32 bg-gradient-to-r from-primary/90 to-primary relative rounded-t-xl">
+<<<<<<< HEAD
                         <div className="absolute inset-0 opacity-100" style={{ backgroundImage: "url('/pension-logo.png')", backgroundSize: "100px", backgroundRepeat: "repeat" }} />
+=======
+                        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "url('/pension-logo.png')", backgroundSize: "100px", backgroundRepeat: "repeat" }} />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <div className="absolute -bottom-16 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 z-20">
                             <div className="relative group">
                                 <EditableImage
@@ -77,7 +81,10 @@ export function SalaryRecipientViewerDialog({ open, onClose, recipient }: Salary
                             {/* Info Grid */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4">
                                 <DetailCard label="رقم الملف التقاعدي" value={recipient.fileNumber} />
+<<<<<<< HEAD
                                 <DetailCard label="حصة المعاش" value={recipient.sharePercent == null ? "—" : `${recipient.sharePercent}%`} />
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 <DetailCard label="تاريخ بدء الاستحقاق" value={formatDate(recipient.startDate)} />
                                 <DetailCard label="تاريخ نهاية الاستحقاق" value={recipient.endDate ? formatDate(recipient.endDate) : "ـــ ـــ ـــ"} isDanger={!recipient.isActive} />
                                 <DetailCard label="تاريخ التسجيل بالنظام" value={formatDate(recipient.createdAt)} />
@@ -85,7 +92,11 @@ export function SalaryRecipientViewerDialog({ open, onClose, recipient }: Salary
 
                             {/* Notes */}
                             {recipient.notes && (
+<<<<<<< HEAD
                                 <div className="bg-card p-4 rounded-2xl border border-slate-200 text-start relative overflow-hidden">
+=======
+                                <div className="bg-card p-4 rounded-2xl border border-slate-200/60 text-start relative overflow-hidden">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     <div className="absolute top-0 start-0 w-1 h-full bg-primary/20" />
                                     <span className="text-[10px] sm:text-xs font-black text-slate-400 uppercase tracking-widest block mb-2">ملاحظات إدارية:</span>
                                     <Text variant="body" className="text-slate-700 leading-relaxed font-bold italic">
@@ -103,7 +114,11 @@ export function SalaryRecipientViewerDialog({ open, onClose, recipient }: Salary
 
 function DetailCard({ label, value, isDanger }: { label: string; value: string; isDanger?: boolean }) {
     return (
+<<<<<<< HEAD
         <div className="bg-card p-4 rounded-2xl border border-slate-200 flex flex-col gap-1 transition-all hover:bg-slate-50">
+=======
+        <div className="bg-card p-4 rounded-2xl border border-slate-200/50 flex flex-col gap-1 transition-all hover:bg-slate-50">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             <span className="text-[9px] font-black text-slate-400 uppercase tracking-wider">
                 {label}
             </span>
@@ -112,4 +127,8 @@ function DetailCard({ label, value, isDanger }: { label: string; value: string; 
             </div>
         </div>
     );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

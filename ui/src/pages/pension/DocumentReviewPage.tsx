@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+=======
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     AlertTriangle,
     FileSearch,
@@ -9,6 +13,7 @@ import {
     XCircle,
 } from "lucide-react";
 import { useRef, useState } from "react";
+<<<<<<< HEAD
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -16,6 +21,16 @@ import { z } from "zod";
 
 import type { RetirementFileReportRow } from "@/api/retirement";
 import { retirementApi } from "@/api/retirement";
+=======
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+import { retirementApi } from "@/api/retirement";
+import type { RetirementFileReportRow } from "@/api/retirement";
+import type { MissingDocumentInfo } from "@/types/retirement";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Badge,
     BaseFormDialog,
@@ -27,7 +42,11 @@ import {
     StatCard,
 } from "@/components/ui";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
+<<<<<<< HEAD
 import type { MissingDocumentInfo } from "@/types/retirement";
+=======
+import { toast } from "sonner";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 const pledgeSchema = z.object({
     deadline: z.string().min(1, "الموعد النهاي مطلوب"),

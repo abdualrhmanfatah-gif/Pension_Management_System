@@ -69,4 +69,8 @@ const Text = forwardRef<HTMLParagraphElement, TextProps>(
 Text.displayName = "Text";
 
 export { Heading, Text };
+<<<<<<< HEAD
 export type { HeadingLevel, HeadingProps, TextProps,TextVariant };
+=======
+export type { HeadingLevel, HeadingProps, TextVariant, TextProps };
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

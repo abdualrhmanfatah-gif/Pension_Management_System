@@ -13,7 +13,11 @@ const FormMessage = React.forwardRef<HTMLParagraphElement, FormMessageProps>(
         return (
             <p
                 ref={ref}
+<<<<<<< HEAD
                 className={cn("text-sm font-medium text-destructive mt-1", className)}
+=======
+                className={cn("text-[0.8rem] font-medium text-destructive mt-1", className)}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 {...props}
             >
                 {children}

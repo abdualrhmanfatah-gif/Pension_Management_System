@@ -4,8 +4,11 @@ namespace PensionMS.Core.DTOs.SalaryRecipients;
 
 public class SalaryRecipientDto
 {
+<<<<<<< HEAD
     public int? EffectiveEntitledID { get; set; }
     public string? EntitledPersonName { get; set; }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public int RecipientID { get; set; }
     public int FileID { get; set; }
     public string FileNumber { get; set; } = string.Empty;
@@ -28,7 +31,10 @@ public class SalaryRecipientDto
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public int PendingReviewStatus { get; set; }
+<<<<<<< HEAD
     public decimal? SharePercent { get; set; }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 public class CreateSalaryRecipientDto
@@ -57,6 +63,7 @@ public class CreateSalaryRecipientDto
 
     // ─── حقول تكميلية للمستحقين (في حال وجود نواقص) ───
     public string? NationalID { get; set; }
+<<<<<<< HEAD
     public DateOnly? BirthDate { get; set; }
     public int? SocialStatusID { get; set; }
     public int? HealthStatusID { get; set; }
@@ -71,6 +78,11 @@ public class CreateSalaryRecipientDto
     /// النسبة المئوية المحسوبة من المبلغ أو يدوياً
     /// </summary>
     public decimal? SharePercent { get; set; }
+=======
+    public DateTime? BirthDate { get; set; }
+    public int? SocialStatusID { get; set; }
+    public int? HealthStatusID { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 public class EndSalaryRecipientDto

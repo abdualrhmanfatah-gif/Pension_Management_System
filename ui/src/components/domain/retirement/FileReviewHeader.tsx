@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { ArrowRight, CheckCircle2, Eye,Printer, XCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -5,6 +6,15 @@ import { PermissionGate } from "@/components/auth/PermissionGate";
 import { Button, Text } from "@/components/ui";
 import { Badge } from "@/components/ui";
 import { retirementFileStatusName } from "@/constants/retirement";
+=======
+import { useNavigate } from "react-router-dom";
+import { ArrowRight, CheckCircle2, XCircle, Printer, Eye } from "lucide-react";
+
+import { Button, Text } from "@/components/ui";
+import { Badge } from "@/components/ui";
+import { RecordStateBadge } from "@/components/ui";
+import { PermissionGate } from "@/components/auth/PermissionGate";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface FileReviewHeaderProps {
     fileId: number;
@@ -50,7 +60,11 @@ export function FileReviewHeader({
                 <div>
                     <div className="flex items-center gap-2">
                         <span className="text-lg font-bold">ملف رقم {fileNumber}</span>
+<<<<<<< HEAD
                         {statusID && <Badge variant="outline">{retirementFileStatusName(statusID)}</Badge>}
+=======
+                        {statusID && <RecordStateBadge state={statusID as any} />}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     </div>
                     <Text variant="description">{retireeName}</Text>
                 </div>

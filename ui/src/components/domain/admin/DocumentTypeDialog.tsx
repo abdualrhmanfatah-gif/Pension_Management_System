@@ -210,7 +210,11 @@ export function DocumentTypeDialog({ open, onOpenChange, onSaved, docType }: Pro
                 <FormSection title="خصائص الوثيقة والحالة" icon={Activity}>
                     <div className="space-y-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<<<<<<< HEAD
                             <label className="flex items-center gap-3 p-4 bg-muted/30 rounded-2xl border border-border hover:bg-muted/50 transition-colors cursor-pointer">
+=======
+                            <label className="flex items-center gap-3 p-4 bg-muted/30 rounded-2xl border border-border/40 hover:bg-muted/50 transition-colors cursor-pointer">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 <Checkbox
                                     id="is-required-check"
                                     checked={watch("isRequired")}
@@ -221,7 +225,11 @@ export function DocumentTypeDialog({ open, onOpenChange, onSaved, docType }: Pro
                                 </span>
                             </label>
 
+<<<<<<< HEAD
                             <label className="flex items-center gap-3 p-4 bg-muted/30 rounded-2xl border border-border hover:bg-muted/50 transition-colors cursor-pointer">
+=======
+                            <label className="flex items-center gap-3 p-4 bg-muted/30 rounded-2xl border border-border/40 hover:bg-muted/50 transition-colors cursor-pointer">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 <Checkbox
                                     id="has-expiry-check"
                                     checked={watch("hasExpiry")}
@@ -233,7 +241,11 @@ export function DocumentTypeDialog({ open, onOpenChange, onSaved, docType }: Pro
                             </label>
                         </div>
 
+<<<<<<< HEAD
                         <label className="flex items-center gap-3 p-4 bg-primary/5 rounded-2xl border border-primary cursor-pointer">
+=======
+                        <label className="flex items-center gap-3 p-4 bg-primary/5 rounded-2xl border border-primary/20 cursor-pointer">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <Checkbox
                                 id="is-active-check"
                                 checked={watch("isActive")}

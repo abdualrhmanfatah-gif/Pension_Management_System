@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { AlertTriangle,ArrowRight, FileText, Printer } from "lucide-react";
 import { useCallback,useMemo } from "react";
 import { useNavigate, useParams,useSearchParams } from "react-router-dom";
@@ -8,11 +9,23 @@ import {
   fiscalYearsApi,
   periodsApi,
   reportsApi,
+=======
+import { ArrowRight, Printer, FileText, AlertTriangle } from "lucide-react";
+import { useNavigate, useSearchParams, useParams } from "react-router-dom";
+import { useMemo, useCallback } from "react";
+
+import {
+  reportsApi,
+  periodsApi,
+  fiscalYearsApi,
+  accountsApi,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 } from "@/api/accounting";
 import { fixedAssetApi, type FixedAssetDto } from "@/api/fixedAssets";
 import { Button } from "@/components/ui/Button";
 import { PrintableReport } from "@/components/ui/print/PrintableReport";
 import type { TableCell } from "@/components/ui/print/PrintableReportTable";
+<<<<<<< HEAD
 import { chartColors } from "@/lib/chartColors";
 import { formatCurrency } from "@/lib/utils";
 import type {
@@ -35,6 +48,30 @@ import type {
   SubledgerReportResultDto,
   TrialBalanceItemDto,
   YearOverYearReportDto,
+=======
+import { formatCurrency } from "@/lib/utils";
+import { chartColors } from "@/lib/chartColors";
+import type {
+  TrialBalanceItemDto,
+  JournalRegisterItemDto,
+  JournalRegisterDto,
+  AccountStatementResultDto,
+  GeneralLedgerDto,
+  BalanceSheetDto,
+  IncomeStatementDto,
+  CashFlowStatementDto,
+  QuarterlyReportDto,
+  BudgetReportResultDto,
+  CurrentOperationsReportDto,
+  LiabilitiesReportDto,
+  YearOverYearReportDto,
+  CumulativePnLReportDto,
+  CostCenterReportDto,
+  ProvisionsReportDto,
+  DepreciationReportDto,
+  SubledgerReportResultDto,
+  BalanceCheckResult,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 } from "@/types/accounting";
 
 /* ═══════════════════════════════════════════════════════════

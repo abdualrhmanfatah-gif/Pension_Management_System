@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using PensionMS.Testing;
 using PensionMS.Infrastructure.Services.Pension.RetirementFile;
 using System.Linq.Expressions;
@@ -8,6 +9,16 @@ using PensionMS.Core.DTOs.EntitledPersons;
 using PensionMS.Core.DTOs.RetirementFiles;
 using PensionMS.Core.Entities;
 using PensionMS.Core.Interfaces;
+=======
+using System.Linq.Expressions;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore.Query;
+using Moq;
+using PensionMS.Core.Constants;
+using PensionMS.Core.Entities;
+using PensionMS.Core.Interfaces;
+using PensionMS.Infrastructure.Services;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 using Xunit;
 
 namespace PensionMS.Tests.Services;
@@ -15,13 +26,24 @@ namespace PensionMS.Tests.Services;
 public class RetirementFileServiceTests
 {
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+<<<<<<< HEAD
     private readonly Mock<IImmutableAuditService> _auditMock;
     private readonly RetirementFileService _service;
     private readonly Mock<IMissingDocumentService> _missingService = new();
+=======
+    private readonly Mock<IWebHostEnvironment> _envMock;
+    private readonly Mock<ISoDGuard> _sodGuardMock;
+    private readonly Mock<IWorkflowEngine> _workflowMock;
+    private readonly Mock<IRiskScoringService> _riskMock;
+    private readonly Mock<IImmutableAuditService> _auditMock;
+    private readonly Mock<ISnapshotService> _snapshotMock;
+    private readonly RetirementFileService _service;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     public RetirementFileServiceTests()
     {
         _unitOfWorkMock = new Mock<IUnitOfWork>();
+<<<<<<< HEAD
         _auditMock = new Mock<IImmutableAuditService>();
 
         _service = new RetirementFileService(
@@ -205,6 +227,88 @@ public class RetirementFileServiceTests
         _unitOfWorkMock.Setup(repository).Returns(repo.Object);
     }
 
+=======
+        _envMock = new Mock<IWebHostEnvironment>();
+        _sodGuardMock = new Mock<ISoDGuard>();
+        _workflowMock = new Mock<IWorkflowEngine>();
+        _riskMock = new Mock<IRiskScoringService>();
+        _auditMock = new Mock<IImmutableAuditService>();
+        _snapshotMock = new Mock<ISnapshotService>();
+
+        _service = new RetirementFileService(
+            _unitOfWorkMock.Object, 
+            _envMock.Object, 
+            _sodGuardMock.Object,
+            _workflowMock.Object,
+            _riskMock.Object,
+            _auditMock.Object,
+            _snapshotMock.Object);
+    }
+
+    [Fact]
+    public async Task GetAllowedStatusTransitionsAsync_FileNotFound_ReturnsFail()
+    {
+        // Arrange
+        _unitOfWorkMock.Setup(u => u.RetirementFiles.GetByIdAsync(It.IsAny<int>()))
+            .ReturnsAsync((RetirementFile?)null);
+
+        // Act
+        var result = await _service.GetAllowedStatusTransitionsAsync(99);
+
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.Equal("الملف غير موجود", result.Message);
+    }
+
+    [Fact]
+    public async Task GetAllowedStatusTransitionsAsync_UnderReview_ReturnsActiveAndClosed()
+    {
+        // Arrange
+        var fileId = 1;
+        var file = new RetirementFile { FileID = fileId, StatusID = FileStatusConstants.UnderReview };
+        
+        _unitOfWorkMock.Setup(u => u.RetirementFiles.GetByIdAsync(fileId))
+            .ReturnsAsync(file);
+
+        var statuses = new List<FileStatus>
+        {
+            new FileStatus { StatusID = FileStatusConstants.Active, StatusName = "نشط" },
+            new FileStatus { StatusID = FileStatusConstants.Closed, StatusName = "مغلق" },
+            new FileStatus { StatusID = FileStatusConstants.Suspended, StatusName = "موقوف" }
+        }.AsQueryable();
+
+        var queryableMock = new TestAsyncEnumerable<FileStatus>(statuses);
+
+        var statusRepoMock = new Mock<IRepository<FileStatus>>();
+        statusRepoMock.Setup(r => r.Query()).Returns(queryableMock);
+        _unitOfWorkMock.Setup(u => u.FileStatuses).Returns(statusRepoMock.Object);
+
+        // Act
+        var result = await _service.GetAllowedStatusTransitionsAsync(fileId);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.NotNull(result.Data);
+        Assert.Equal(2, result.Data.Count);
+        Assert.Contains(result.Data, s => s.StatusID == FileStatusConstants.Active);
+        Assert.Contains(result.Data, s => s.StatusID == FileStatusConstants.Closed);
+    }
+
+    [Fact]
+    public async Task AssignEmployeeAsync_FileNotFound_ReturnsFail()
+    {
+        // Arrange
+        _unitOfWorkMock.Setup(u => u.RetirementFiles.GetByIdAsync(It.IsAny<int>()))
+            .ReturnsAsync((RetirementFile?)null);
+
+        // Act
+        var result = await _service.AssignEmployeeAsync(1, 100, 10);
+
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.Equal("الملف غير موجود", result.Message);
+    }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 // Helper classes to mock EF Core IQueryable async extensions (e.g., ToListAsync, FirstOrDefaultAsync)

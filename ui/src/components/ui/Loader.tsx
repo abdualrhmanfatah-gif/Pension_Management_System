@@ -28,6 +28,7 @@ const Spinner = memo(function Spinner({
   const rings = [
     {
       size: size + 48,
+<<<<<<< HEAD
       className: "border-[3px] border-dashed border-primary animate-[spin_5s_linear_infinite]",
     },
     {
@@ -37,6 +38,17 @@ const Spinner = memo(function Spinner({
     {
       size: size + 12,
       className: "border-[2px] border-transparent border-b-primary animate-[spin_2s_linear_infinite]",
+=======
+      className: "border-[3px] border-dashed border-primary/20 animate-[spin_5s_linear_infinite]",
+    },
+    {
+      size: size + 28,
+      className: "border-[3px] border-transparent border-t-primary/60 border-r-primary/60 animate-[spin_3s_linear_infinite_reverse]",
+    },
+    {
+      size: size + 12,
+      className: "border-[2px] border-transparent border-b-primary/40 animate-[spin_2s_linear_infinite]",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     },
   ];
 
@@ -65,7 +77,11 @@ const Spinner = memo(function Spinner({
 
       {/* المركز */}
       <div
+<<<<<<< HEAD
         className="relative z-10 flex items-center justify-center bg-background rounded-full border border-border"
+=======
+        className="relative z-10 flex items-center justify-center bg-background rounded-full border border-border/50"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         style={{ width: size, height: size }}
       >
         {isSecurity ? (
@@ -119,11 +135,19 @@ export const Loader = forwardRef<HTMLDivElement, LoaderProps>(function Loader(
 
       {text && (
         <div className="flex flex-col items-center gap-1.5 text-center">
+<<<<<<< HEAD
           <p className="text-sm font-semibold text-foreground tracking-wide animate-pulse">
             {text}
           </p>
           {isSecurity && (
             <span className="text-xs text-muted-foreground font-medium">
+=======
+          <p className="text-sm font-semibold text-foreground/90 tracking-wide animate-pulse">
+            {text}
+          </p>
+          {isSecurity && (
+            <span className="text-xs text-muted-foreground/80 font-medium">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               نظام إدارة صندوق التقاعد الأمني
             </span>
           )}

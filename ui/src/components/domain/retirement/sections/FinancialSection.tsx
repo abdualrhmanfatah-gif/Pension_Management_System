@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Ban, BookOpen, CreditCard, DollarSign, Download, Loader2, Pencil, Plus, Settings,Wallet, X } from "lucide-react";
 import { useState } from "react";
@@ -26,6 +27,32 @@ import { PaymentBookDialog } from "../PaymentBookDialog";
 import type { RecipientFormValues } from "../RecipientsDialog";
 import { RecipientsDialog } from "../RecipientsDialog";
 
+=======
+import { useState } from "react";
+import { DollarSign, BookOpen, Wallet, CreditCard, Pencil, Ban, Plus, X, Loader2, Download, Settings } from "lucide-react";
+
+import { Heading, useConfirm } from "@/components/ui";
+import { Badge } from "@/components/ui";
+import { Button } from "@/components/ui";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui";
+import { EmptyState } from "@/components/ui";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import api from "@/api/axios";
+import { retirementApi } from "@/api/retirement";
+import { formatCurrency, formatDate, getDocumentUrl } from "@/lib/utils";
+import { PaymentBookDialog } from "../PaymentBookDialog";
+import type { BookFormValues } from "../PaymentBookDialog";
+import { RecipientsDialog } from "../RecipientsDialog";
+import { DocumentProcessDialog } from "../DocumentProcessDialog";
+import type { RecipientFormValues } from "../RecipientsDialog";
+import { useHasPermission } from "@/stores/authStore";
+import { useApiMutation } from "@/hooks/useApiMutation";
+import { useDocumentBlob } from "@/hooks/useDocumentBlob";
+import { documentsApi } from "@/api/documents";
+import { cn } from "@/lib/utils";
+import type { PaymentBookItem } from "@/types/retirement";
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 function useAttachmentBlob(filePath: string | null | undefined) {
     const result = useDocumentBlob(filePath);
     return { ...result, error: false };
@@ -59,7 +86,11 @@ function BookPreview({ book, docs, fileId }: { book: PaymentBookItem; docs: any[
 
         return (
             <div className="flex flex-col items-center justify-center h-full gap-4 p-6">
+<<<<<<< HEAD
                 <CreditCard className="w-16 h-16 text-muted-foreground" />
+=======
+                <CreditCard className="w-16 h-16 text-muted-foreground/40" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <div className="text-center">
                     <p className="font-medium">{book.bookNumber}</p>
                     <p className="text-sm text-muted-foreground mt-1">
@@ -236,6 +267,7 @@ export function FinancialSection({ fileId, retireeId }: FinancialSectionProps) {
     });
 
     const saveMutation = useApiMutation(
+<<<<<<< HEAD
         async ({ values, paymentBookID }: { values: BookFormValues; paymentBookID?: number }) => {
             const targetId = paymentBookID ?? editingBook?.paymentBookID;
             if (!targetId) throw new Error("لم يتم تحديد دفتر الصرف المراد تعديله");
@@ -252,6 +284,22 @@ export function FinancialSection({ fileId, retireeId }: FinancialSectionProps) {
                     issuingBranchID: values.issuingBranchID,
                 };
                 return retirementApi.updatePaymentBook(targetId, updateDto);
+=======
+        async (values: BookFormValues) => {
+            if (editingBook) {
+                const updateDto = {
+                    bookNumber: values.bookNumber,
+                    issueDate: values.issueDate ? new Date(values.issueDate).toISOString() : undefined,
+                    expiryDate: values.expiryDate ? new Date(values.expiryDate).toISOString() : undefined,
+                    status: values.status,
+                    legacyColor: values.legacyColor,
+                    changeReason: values.changeReason,
+                    notes: values.notes,
+                    issuingBranchID: values.issuingBranchID,
+                };
+                return retirementApi.updatePaymentBook(editingBook.paymentBookID, updateDto);
+            }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         },
         {
             successMessage: "تم تحديث الدفتر بنجاح",
@@ -263,6 +311,7 @@ export function FinancialSection({ fileId, retireeId }: FinancialSectionProps) {
         }
     );
 
+<<<<<<< HEAD
     const createBookMutation = useApiMutation(
         ({ values, paymentBookID }: { values: BookFormValues; paymentBookID?: number }): Promise<ApiResponse<number | boolean>> => {
             // التنقل (Alt+↑/↓) قد يحوّل الحوار الفارغ إلى سجل موجود — عندها الحفظ تعديل لا إنشاء
@@ -318,6 +367,8 @@ export function FinancialSection({ fileId, retireeId }: FinancialSectionProps) {
         }
     );
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const endRecipientMutation = useApiMutation(
         async ({ id, reason }: { id: number; reason: string }) => {
             return retirementApi.endRecipient(id, { endDate: new Date().toISOString(), reason });
@@ -370,6 +421,7 @@ export function FinancialSection({ fileId, retireeId }: FinancialSectionProps) {
 
     const createRecipientMutation = useApiMutation(
         async (values: RecipientFormValues) => {
+<<<<<<< HEAD
             return salaryRecipientApi.create({
                 fileID: fileId,
                 startDate: values.startDate,
@@ -387,6 +439,15 @@ export function FinancialSection({ fileId, retireeId }: FinancialSectionProps) {
                 sharePercent: values.recipientType === "entitled" && values.sharePercent ? Number(values.sharePercent) : undefined,
                 entitledAmount: values.recipientType === "entitled" && values.entitledAmount ? Number(values.entitledAmount) : undefined,
             });
+=======
+            const formData = new FormData();
+            formData.append("fileID", fileId.toString());
+            formData.append("recipientType", values.recipientType);
+            formData.append("targetID", values.targetID);
+            formData.append("startDate", values.startDate + "T00:00:00");
+            if (values.notes) formData.append("notes", values.notes);
+            return retirementApi.createRecipient(formData as any);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         },
         {
             successMessage: "تم إضافة مستلم المعاش بنجاح",
@@ -480,7 +541,11 @@ export function FinancialSection({ fileId, retireeId }: FinancialSectionProps) {
                                                 "flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors",
                                                 selectedBook?.paymentBookID === book.paymentBookID
                                                     ? "border-primary bg-primary/5"
+<<<<<<< HEAD
                                                     : "border-border bg-card hover:border-muted-foreground"
+=======
+                                                    : "border-border bg-card hover:border-muted-foreground/30"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             )}
                                         >
                                             <div className="flex items-center gap-3">
@@ -637,10 +702,15 @@ export function FinancialSection({ fileId, retireeId }: FinancialSectionProps) {
             <PaymentBookDialog
                 open={editDialogOpen}
                 onOpenChange={setEditDialogOpen}
+<<<<<<< HEAD
                 fileId={fileId}
                 mode="edit"
                 editRecordId={editingBook?.paymentBookID}
                 onSubmit={(v, ctx) => saveMutation.mutateAsync({ values: v, paymentBookID: ctx.paymentBookID })}
+=======
+                mode="edit"
+                onSubmit={(v) => saveMutation.mutate(v)}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 isLoading={saveMutation.isPending}
                 existingImages={documents
                     .filter((d: any) => d.documentTypeName?.includes("دفتر الصرف") || d.documentTypeName?.includes("صورة دفتر"))
@@ -678,10 +748,16 @@ export function FinancialSection({ fileId, retireeId }: FinancialSectionProps) {
             <PaymentBookDialog
                 open={createBookOpen}
                 onOpenChange={setCreateBookOpen}
+<<<<<<< HEAD
                 fileId={fileId}
                 mode="create"
                 onSubmit={(v, ctx) => createBookMutation.mutateAsync({ values: v, paymentBookID: ctx.paymentBookID })}
                 isLoading={createBookMutation.isPending}
+=======
+                mode="create"
+                onSubmit={(v) => saveMutation.mutate(v)}
+                isLoading={saveMutation.isPending}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 lookups={{
                     changeReasons: CHANGE_REASONS,
                     recipientTypes: RECIPIENT_TYPES,

@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 import { jwtDecode } from "jwt-decode";
 import { create } from "zustand";
 
 import api, { broadcastLogout,broadcastToken } from "@/api/axios";
 
+=======
+import { create } from "zustand";
+import { jwtDecode } from "jwt-decode";
+
+import api, { broadcastToken, broadcastLogout } from "@/api/axios";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useNotificationStore } from "./useNotificationStore";
 
 // ─── Constants ──────────────────────────────────────────
@@ -58,7 +65,11 @@ interface AuthState {
 // ─── Logger ─────────────────────────────────────────────
 function logError(context: string, error: unknown) {
     if (import.meta.env.DEV) {
+<<<<<<< HEAD
          
+=======
+        // eslint-disable-next-line no-console
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         console.error(`[AuthStore] ${context}:`, error);
     }
     // TODO: Send to error tracking service in production
@@ -328,7 +339,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
         // تسجيل السبب للتشخيص
         if (import.meta.env.DEV) {
+<<<<<<< HEAD
              
+=======
+            // eslint-disable-next-line no-console
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             console.error('[AuthStore] Session expired:', {
                 hadToken: !!get().token,
                 hadRefreshToken: !!localStorage.getItem(LS_REFRESH_TOKEN_KEY),

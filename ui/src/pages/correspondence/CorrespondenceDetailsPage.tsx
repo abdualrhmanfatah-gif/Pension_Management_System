@@ -16,7 +16,11 @@ import { useNavigate,useParams } from "react-router-dom";
 
 import { correspondenceApi } from "@/api/correspondence";
 import type { HrDocumentDto } from "@/api/hr";
+<<<<<<< HEAD
 import { CorrespondenceFormDialog } from "@/components/domain/correspondence/CorrespondenceFormDialog";
+=======
+import { useHasPermission } from "@/stores/authStore";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { DetailLayout } from "@/components/layout/DetailLayout";
 import {
   Badge,
@@ -31,9 +35,15 @@ import {
   Skeleton,
   Text,
   useConfirm} from "@/components/ui";
+<<<<<<< HEAD
 import { useApiMutation, useCrudState } from "@/hooks";
 import { formatDate, getDocumentUrl } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
+=======
+import { CorrespondenceFormDialog } from "@/components/domain/correspondence/CorrespondenceFormDialog";
+import { useApiMutation, useCrudState } from "@/hooks";
+import { formatDate, getDocumentUrl } from "@/lib/utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
   type CorrespondenceDetailsDto,
   CorrespondenceDirection} from "@/types/correspondence";
@@ -256,9 +266,15 @@ export function CorrespondenceDetailsPage() {
             </div>
 
             {correspondence.notes && (
+<<<<<<< HEAD
               <div className="mt-8 pt-6 border-t border-dashed border-border">
                 <p className="text-[10px] sm:text-xs text-muted-foreground uppercase font-black mb-2">ملاحظات إضافية</p>
                 <Text variant="body" className="leading-relaxed text-foreground bg-muted/20 p-4 rounded-xl border italic">
+=======
+              <div className="mt-8 pt-6 border-t border-dashed border-border/60">
+                <p className="text-[10px] sm:text-xs text-muted-foreground uppercase font-black mb-2">ملاحظات إضافية</p>
+                <Text variant="body" className="leading-relaxed text-foreground/80 bg-muted/20 p-4 rounded-xl border italic">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                   {correspondence.notes}
                 </Text>
               </div>

@@ -2,7 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 
 import { documentsApi } from "@/api/documents";
 import { retirementApi } from "@/api/retirement";
+<<<<<<< HEAD
 import type { DocumentItem, MissingDocumentInfo, PersonDocumentsResult,PledgeItem } from "@/types/retirement";
+=======
+import type { DocumentItem, MissingDocumentInfo, PledgeItem, PersonDocumentsResult } from "@/types/retirement";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export const PERSON_DOCUMENTS_KEY = "person-documents";
 

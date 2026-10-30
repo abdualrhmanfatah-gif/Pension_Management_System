@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FolderTree, PlusCircle, RefreshCw, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -8,6 +9,18 @@ import { CostCenterFormDialog } from "@/components/domain/accounting";
 import { Button, Card, Heading, PageLayout, Skeleton, StickyHeader,useConfirm } from "@/components/ui";
 import { useHasPermission } from "@/stores/authStore";
 import type { CostCenterDto } from "@/types/accounting";
+=======
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { toast } from "sonner";
+import { FolderTree, PlusCircle, RefreshCw, Trash2 } from "lucide-react";
+
+import { costCentersApi } from "@/api/accounting";
+import { useHasPermission } from "@/stores/authStore";
+import type { CostCenterDto } from "@/types/accounting";
+import { Button, Card, Heading, PageLayout, Skeleton, useConfirm, StickyHeader } from "@/components/ui";
+import { CostCenterFormDialog } from "@/components/domain/accounting";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function CostCentersPage() {
   const queryClient = useQueryClient();
@@ -70,7 +83,11 @@ export function CostCentersPage() {
     return nodes.map((node) => (
       <div key={node.costCenterID}>
         <div
+<<<<<<< HEAD
           className="flex items-center justify-between px-4 py-2.5 hover:bg-accent/50 transition-colors border-b border-border"
+=======
+          className="flex items-center justify-between px-4 py-2.5 hover:bg-accent/50 transition-colors border-b border-border/30"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           style={{ marginRight: `${depth * 1.5}rem` }}
         >
           <div className="flex items-center gap-2">

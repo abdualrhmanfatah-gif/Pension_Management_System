@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+=======
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     CheckCircle,
     Edit,
@@ -10,6 +14,7 @@ import {
     Users,
 } from "lucide-react";
 import { useRef, useState } from "react";
+<<<<<<< HEAD
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -18,6 +23,15 @@ import { z } from "zod";
 import { retirementApi } from "@/api/retirement";
 import { ReactivateEntitledPersonDialog } from "@/components/domain/retirement/ReactivateEntitledPersonDialog";
 import { StopEntitledPersonDialog } from "@/components/domain/retirement/StopEntitledPersonDialog";
+=======
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+import { retirementApi } from "@/api/retirement";
+import type { EntitledPersonSummary } from "@/types/retirement";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Badge,
     BaseFormDialog,
@@ -25,19 +39,36 @@ import {
     CrudPageLayout,
     FormField,
     Input,
+<<<<<<< HEAD
     StatCard,
     yemenPhoneSchema,
 } from "@/components/ui";
 import { queryKeys } from "@/constants/queryKeys";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
 import type { EntitledPersonSummary } from "@/types/retirement";
+=======
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+    StatCard,
+} from "@/components/ui";
+import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
+import { toast } from "sonner";
+import { queryKeys } from "@/constants/queryKeys";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 const addSchema = z.object({
     fullName: z.string().min(1, "الاسم مطلوب"),
     nationalID: z.string().min(1, "الرقم الوطني مطلوب"),
     relationshipID: z.string().min(1, "صلة القرابة مطلوبة"),
     birthDate: z.string().optional(),
+<<<<<<< HEAD
     phone: yemenPhoneSchema.optional().or(z.literal("")),
+=======
+    phone: z.string().optional(),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 });
 
 const editSchema = z.object({
@@ -45,11 +76,33 @@ const editSchema = z.object({
     nationalID: z.string().min(1, "الرقم الوطني مطلوب"),
     relationshipID: z.string().min(1, "صلة القرابة مطلوبة"),
     birthDate: z.string().optional(),
+<<<<<<< HEAD
     phone: yemenPhoneSchema.optional().or(z.literal("")),
+=======
+    phone: z.string().optional(),
+});
+
+const stopSchema = z.object({
+    stopCode: z.string().min(1, "سبب الإيقاف مطلوب"),
+    stopDate: z.string().min(1, "تاريخ الإيقاف مطلوب"),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 });
 
 type AddForm = z.infer<typeof addSchema>;
 type EditForm = z.infer<typeof editSchema>;
+<<<<<<< HEAD
+=======
+type StopForm = z.infer<typeof stopSchema>;
+
+const STOP_CODES = [
+    { value: "AGE_LIMIT", label: "ابن >= 24 سنة" },
+    { value: "DAUGHTER_MARRIED", label: "بنت متزوجة" },
+    { value: "WIDOW_REMARRIED", label: "زوجة تزوجت مرة أخرى" },
+    { value: "DECEASED", label: "متوفى" },
+    { value: "ADMIN_DECISION", label: "قرار إداري" },
+    { value: "EMPLOYED", label: "توظيف" },
+];
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function EntitledPersonsPage() {
     const queryClient = useQueryClient();
@@ -114,13 +167,25 @@ export function EntitledPersonsPage() {
         },
     });
 
+<<<<<<< HEAD
+=======
+    const stopForm = useForm<StopForm>({
+        resolver: zodResolver(stopSchema),
+        defaultValues: { stopCode: "", stopDate: "" },
+    });
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const addMutation = useMutation({
         mutationFn: (data: AddForm) => {
             const formData = new FormData();
             formData.append("fullName", data.fullName);
             formData.append("nationalID", data.nationalID);
             formData.append("relationshipID", data.relationshipID);
+<<<<<<< HEAD
             if (data.birthDate) formData.append("dateOfBirth", data.birthDate);
+=======
+            if (data.birthDate) formData.append("birthDate", data.birthDate);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             if (data.phone) formData.append("phone", data.phone);
             return retirementApi.createEntitledPerson(fileId!, formData);
         },
@@ -153,6 +218,45 @@ export function EntitledPersonsPage() {
         },
     });
 
+<<<<<<< HEAD
+=======
+    const stopMutation = useMutation({
+        mutationFn: (data: { id: number; stopCode: string; stopDate: string }) =>
+            retirementApi.stopEntitledPerson(data.id, {
+                stopCode: data.stopCode,
+                stopDate: data.stopDate,
+            }),
+        onSuccess: () => {
+            toast.success("تم إيقاف الاستحقاق بنجاح");
+            queryClient.invalidateQueries({
+                queryKey: queryKeys.retirement.entitledPersons.all,
+            });
+            setStopTarget(null);
+            stopForm.reset();
+        },
+        onError: () => {
+            toast.error("خطأ في إيقاف الاستحقاق");
+        },
+    });
+
+    const reactivateMutation = useMutation({
+        mutationFn: (data: { id: number; reactivationCode: string }) =>
+            retirementApi.reactivateEntitledPerson(data.id, {
+                reactivationCode: data.reactivationCode,
+            }),
+        onSuccess: () => {
+            toast.success("تم إعادة تفعيل الاستحقاق بنجاح");
+            queryClient.invalidateQueries({
+                queryKey: queryKeys.retirement.entitledPersons.all,
+            });
+            setReactivateTarget(null);
+        },
+        onError: () => {
+            toast.error("خطأ في إعادة التفعيل");
+        },
+    });
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const deleteMutation = useMutation({
         mutationFn: (id: number) =>
             retirementApi.deleteEntitledPerson(id),
@@ -202,7 +306,11 @@ export function EntitledPersonsPage() {
             key: "phone",
             header: "الهاتف",
             render: (row: any) => (
+<<<<<<< HEAD
                 <span className="text-sm">{row.phone || "—"}</span>
+=======
+                <span className="text-sm font-mono">{row.phone || "—"}</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             ),
         },
         ...(isSearchMode ? [
@@ -445,23 +553,33 @@ export function EntitledPersonsPage() {
                 isLoading={addMutation.isPending}
                 size="md"
             >
+<<<<<<< HEAD
                 <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                     <FormField
                         label="الاسم الكامل *"
                         error={addForm.formState.errors.fullName?.message}
                         className="sm:col-span-2"
+=======
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <FormField
+                        label="الاسم الكامل *"
+                        error={addForm.formState.errors.fullName?.message}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     >
                         <Input
                             {...addForm.register("fullName")}
                             placeholder="الاسم"
                         />
                     </FormField>
+<<<<<<< HEAD
                     <FormField label="تاريخ الميلاد" className="sm:col-span-2">
                         <Input
                             {...addForm.register("birthDate")}
                             type="date"
                         />
                     </FormField>
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <FormField
                         label="الرقم الوطني *"
                         error={addForm.formState.errors.nationalID?.message}
@@ -471,12 +589,15 @@ export function EntitledPersonsPage() {
                             placeholder="الرقم الوطني"
                         />
                     </FormField>
+<<<<<<< HEAD
                     <FormField label="الهاتف">
                         <Input
                             {...addForm.register("phone")}
                             placeholder="7xxxxxxx"
                         />
                     </FormField>
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <FormField
                         label="صلة القرابة *"
                         error={
@@ -488,6 +609,23 @@ export function EntitledPersonsPage() {
                             placeholder="رقم العلاقة"
                         />
                     </FormField>
+<<<<<<< HEAD
+=======
+                    <FormField label="تاريخ الميلاد">
+                        <Input
+                            {...addForm.register("birthDate")}
+                            type="date"
+                        />
+                    </FormField>
+                    <div className="sm:col-span-2">
+                        <FormField label="الهاتف">
+                            <Input
+                                {...addForm.register("phone")}
+                                placeholder="رقم الهاتف"
+                            />
+                        </FormField>
+                    </div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 </div>
             </BaseFormDialog>
 
@@ -505,7 +643,11 @@ export function EntitledPersonsPage() {
                         formData.append("fullName", data.fullName);
                         formData.append("nationalID", data.nationalID);
                         formData.append("relationshipID", data.relationshipID);
+<<<<<<< HEAD
                         if (data.birthDate) formData.append("dateOfBirth", data.birthDate);
+=======
+                        if (data.birthDate) formData.append("birthDate", data.birthDate);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         if (data.phone) formData.append("phone", data.phone);
                         updateMutation.mutate({ id: editTarget.entitledID, formData });
                     }
@@ -513,23 +655,33 @@ export function EntitledPersonsPage() {
                 isLoading={updateMutation.isPending}
                 size="md"
             >
+<<<<<<< HEAD
                 <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                     <FormField
                         label="الاسم الكامل *"
                         error={editForm.formState.errors.fullName?.message}
                         className="sm:col-span-2"
+=======
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <FormField
+                        label="الاسم الكامل *"
+                        error={editForm.formState.errors.fullName?.message}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     >
                         <Input
                             {...editForm.register("fullName")}
                             placeholder="الاسم"
                         />
                     </FormField>
+<<<<<<< HEAD
                     <FormField label="تاريخ الميلاد" className="sm:col-span-2">
                         <Input
                             {...editForm.register("birthDate")}
                             type="date"
                         />
                     </FormField>
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <FormField
                         label="الرقم الوطني *"
                         error={editForm.formState.errors.nationalID?.message}
@@ -539,12 +691,15 @@ export function EntitledPersonsPage() {
                             placeholder="الرقم الوطني"
                         />
                     </FormField>
+<<<<<<< HEAD
                     <FormField label="الهاتف">
                         <Input
                             {...editForm.register("phone")}
                             placeholder="7xxxxxxx"
                         />
                     </FormField>
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <FormField
                         label="صلة القرابة *"
                         error={editForm.formState.errors.relationshipID?.message}
@@ -554,6 +709,7 @@ export function EntitledPersonsPage() {
                             placeholder="رقم العلاقة"
                         />
                     </FormField>
+<<<<<<< HEAD
                 </div>
             </BaseFormDialog>
 
@@ -573,6 +729,97 @@ export function EntitledPersonsPage() {
                 fileId={reactivateTarget?.fileID ?? fileId ?? 0}
                 onSuccess={() => { void queryClient.invalidateQueries({ queryKey: ["entitled-persons-search"] }); }}
             />
+=======
+                    <FormField label="تاريخ الميلاد">
+                        <Input
+                            {...editForm.register("birthDate")}
+                            type="date"
+                        />
+                    </FormField>
+                    <div className="sm:col-span-2">
+                        <FormField label="الهاتف">
+                            <Input
+                                {...editForm.register("phone")}
+                                placeholder="رقم الهاتف"
+                            />
+                        </FormField>
+                    </div>
+                </div>
+            </BaseFormDialog>
+
+            <BaseFormDialog
+                title="إيقاف الاستحقاق"
+                description={stopTarget?.fullName || ""}
+                isOpen={!!stopTarget}
+                onClose={() => {
+                    setStopTarget(null);
+                    stopForm.reset();
+                }}
+                onSubmit={stopForm.handleSubmit((data) => {
+                    if (stopTarget) {
+                        stopMutation.mutate({
+                            id: stopTarget.entitledID,
+                            stopCode: data.stopCode,
+                            stopDate: data.stopDate,
+                        });
+                    }
+                })}
+                size="md"
+            >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <FormField
+                        label="سبب الإيقاف *"
+                        error={stopForm.formState.errors.stopCode?.message}
+                    >
+                        <Select
+                            value={stopForm.watch("stopCode") ?? ""}
+                            onValueChange={(value) => stopForm.setValue("stopCode", value)}
+                        >
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="اختر السبب" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {STOP_CODES.map((c) => (
+                                    <SelectItem key={c.value} value={c.value}>
+                                        {c.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </FormField>
+                    <FormField
+                        label="تاريخ الإيقاف *"
+                        error={stopForm.formState.errors.stopDate?.message}
+                    >
+                        <Input
+                            {...stopForm.register("stopDate")}
+                            type="date"
+                        />
+                    </FormField>
+                </div>
+            </BaseFormDialog>
+
+            <BaseFormDialog
+                title="إعادة التفعيل"
+                description={reactivateTarget?.fullName || ""}
+                isOpen={!!reactivateTarget}
+                onClose={() => setReactivateTarget(null)}
+                onSubmit={() => {
+                    if (reactivateTarget) {
+                        reactivateMutation.mutate({
+                            id: reactivateTarget.entitledID,
+                            reactivationCode: "ADMIN_DECISION",
+                        });
+                    }
+                }}
+                size="md"
+            >
+                <p className="text-sm text-muted-foreground">
+                    هل أنت متأكد من إعادة تفعيل استحقاق{" "}
+                    <strong>{reactivateTarget?.fullName}</strong>؟
+                </p>
+            </BaseFormDialog>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         </CrudPageLayout>
     );
 }

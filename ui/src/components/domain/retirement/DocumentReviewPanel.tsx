@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Eye, FileSearch, FileText } from "lucide-react";
@@ -7,6 +8,17 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { archiveApi } from "@/api/archive";
+=======
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Eye, FileSearch, FileText } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useNavigate } from "react-router-dom";
+
+import { archiveApi } from "@/api/archive";
+import { DocumentActions } from "./DocumentActions";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Badge,
     Button,
@@ -17,10 +29,16 @@ import {
     Textarea,
 } from "@/components/ui";
 import { formatDate, getDocumentUrl } from "@/lib/utils";
+<<<<<<< HEAD
 import type { DocumentReviewItem } from "@/types/archive";
 import { REVIEW_STATUS } from "@/types/archive";
 
 import { DocumentActions } from "./DocumentActions";
+=======
+import { REVIEW_STATUS } from "@/types/archive";
+import type { DocumentReviewItem } from "@/types/archive";
+import { toast } from "sonner";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 const reviewSchema = z.object({
     reviewStatus: z.number().min(0, "حالة الفحص مطلوبة"),
@@ -117,7 +135,11 @@ export function DocumentReviewPanel({
             <Card className="flex-1 flex flex-col overflow-hidden">
                 <div className="flex-1 flex items-center justify-center text-muted-foreground">
                     <div className="text-center">
+<<<<<<< HEAD
                         <FileText className="w-12 h-12 mx-auto mb-3 opacity-100" />
+=======
+                        <FileText className="w-12 h-12 mx-auto mb-3 opacity-30" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <Text variant="body">اختر وثيقة من القائمة لعرض تفاصيلها</Text>
                     </div>
                 </div>
@@ -202,7 +224,11 @@ export function DocumentReviewPanel({
                             }
                             return (
                                 <div className="text-center text-muted-foreground">
+<<<<<<< HEAD
                                     <FileText className="w-10 h-10 mx-auto mb-2 opacity-100" />
+=======
+                                    <FileText className="w-10 h-10 mx-auto mb-2 opacity-30" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     <Text variant="body">نوع الملف غير مدعوم للعرض</Text>
                                     <p className="text-xs mt-1">{doc.fileName}</p>
                                 </div>
@@ -210,7 +236,11 @@ export function DocumentReviewPanel({
                         })()
                     ) : (
                         <div className="text-center text-muted-foreground">
+<<<<<<< HEAD
                             <FileText className="w-10 h-10 mx-auto mb-2 opacity-100" />
+=======
+                            <FileText className="w-10 h-10 mx-auto mb-2 opacity-30" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <Text variant="body">لا يوجد ملف مرفق</Text>
                         </div>
                     )}

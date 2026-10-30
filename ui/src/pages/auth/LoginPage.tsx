@@ -6,9 +6,15 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
 
 import api from "@/api/axios";
+<<<<<<< HEAD
 import { Heading, Text } from "@/components/ui";
 import { AlertBanner } from "@/components/ui/AlertBanner";
 import { Button } from "@/components/ui/Button";
+=======
+import { AlertBanner } from "@/components/ui/AlertBanner";
+import { Button } from "@/components/ui/Button";
+import { Heading, Text } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { Input } from "@/components/ui/Input";
 import { useAuthStore } from "@/stores/authStore";
 
@@ -28,14 +34,23 @@ function LogoWithFallback() {
 
     if (failed) {
         return (
+<<<<<<< HEAD
             <div className="inline-flex items-center justify-center w-28 h-28 rounded-3xl bg-hero-fg/5 backdrop-blur-xl mb-4 border border-hero-fg ">
                 <ShieldCheck className="w-16 h-16 text-hero-accent" strokeWidth={1.5} />
+=======
+            <div className="inline-flex items-center justify-center w-28 h-28 rounded-3xl bg-white/5 backdrop-blur-xl mb-4 border border-white/10 ">
+                <ShieldCheck className="w-16 h-16 text-primary-300" strokeWidth={1.5} />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             </div>
         );
     }
 
     return (
+<<<<<<< HEAD
         <div className="inline-flex items-center justify-center w-28 h-28 rounded-3xl bg-hero-fg/5 backdrop-blur-xl mb-4 overflow-hidden border border-hero-fg ">
+=======
+        <div className="inline-flex items-center justify-center w-28 h-28 rounded-3xl bg-white/5 backdrop-blur-xl mb-4 overflow-hidden border border-white/10 ">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             <picture>
               <source srcSet="/pension-logo.webp" type="image/webp" />
               <img src="/pension-logo.png" alt="الشعار" fetchPriority="high" className="w-full h-full object-contain p-2" onError={() => setFailed(true)} />
@@ -154,17 +169,26 @@ export function LoginPage() {
     };
 
     return (
+<<<<<<< HEAD
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-hero via-hero-mid to-hero-end p-4" dir="rtl">
             {/* Decorative background */}
             <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute -top-40 -start-40 w-96 h-96 bg-hero-end/30 rounded-full" />
                 <div className="absolute -bottom-40 -end-40 w-96 h-96 bg-hero-accent/20 rounded-full" />
+=======
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-950 via-primary-900 to-primary-800 p-4" dir="rtl">
+            {/* Decorative background */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute -top-40 -start-40 w-96 h-96 bg-primary-500/10 rounded-full" />
+                <div className="absolute -bottom-40 -end-40 w-96 h-96 bg-primary-400/10 rounded-full" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             </div>
 
             <div className="relative w-full max-w-md animate-fade-in">
                 {/* Logo */}
                 <div className="text-center mb-8">
                     <LogoWithFallback />
+<<<<<<< HEAD
                     <Heading level="h1" className="text-lg md:text-xl lg:text-2xl font-bold text-hero-fg">الإدارة العامة لصندوق التقاعد الأمني</Heading>
                     <Text variant="body" className="text-hero-accent mt-1">تسجيل الدخول </Text>
                 </div>
@@ -172,13 +196,26 @@ export function LoginPage() {
                 {/* Card */}
                 <div className="bg-hero-fg/10 border border-hero-fg rounded-2xl p-8 ">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 [&_label]:text-hero-fg">
+=======
+                    <Heading level="h1" className="text-lg md:text-xl lg:text-2xl font-bold text-white">الإدارة العامة لصندوق التقاعد الأمني</Heading>
+                    <Text variant="body" className="text-primary-300 mt-1">تسجيل الدخول </Text>
+                </div>
+
+                {/* Card */}
+                <div className="bg-white/10 border border-white/10 rounded-2xl p-8 ">
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 [&_label]:text-white">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         {/* API Error + Cooldown */}
                         {apiError && (
                             <AlertBanner
                                 variant="destructive"
                                 title={cooldown > 0 ? `انتظر ${Math.ceil(cooldown / 1000)} ثانية قبل المحاولة التالية` : apiError}
                                 icon={cooldown > 0 ? <TimerReset className="h-4 w-4" /> : undefined}
+<<<<<<< HEAD
                                 className="bg-red-500/10 border-red-400 text-red-300"
+=======
+                                className="bg-red-500/10 border-red-400/20 text-red-300"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             />
                         )}
 
@@ -190,7 +227,11 @@ export function LoginPage() {
                             placeholder="أدخل اسم المستخدم"
                             label="اسم المستخدم"
                             error={errors.username?.message}
+<<<<<<< HEAD
                             className="dark-autofill-fix bg-hero-fg/5 border-hero-fg text-foreground placeholderr:text-hero-accent/50 focus:ring-hero-accent/50 focus:border-transparent"
+=======
+                            className="dark-autofill-fix bg-white/5 border-white/10 text-foreground placeholderr:text-primary-400/50 focus:ring-primary-400/50 focus:border-transparent"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             {...register("username")}
                         />
 
@@ -203,7 +244,11 @@ export function LoginPage() {
                                 placeholder="أدخل كلمة المرور"
                                 label="كلمة المرور"
                                 error={errors.password?.message}
+<<<<<<< HEAD
                                 className="dark-autofill-fix bg-hero-fg/5 border-hero-fg text-foreground placeholderr:text-hero-accent/50 focus:ring-hero-accent/50 focus:border-transparent pe-10"
+=======
+                                className="dark-autofill-fix bg-white/5 border-white/10 text-foreground placeholderr:text-primary-400/50 focus:ring-primary-400/50 focus:border-transparent pe-10"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 {...register("password")}
                             />
                             <Button
@@ -211,7 +256,11 @@ export function LoginPage() {
                                 size="sm"
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
+<<<<<<< HEAD
                                 className="absolute end-3 top-8 text-hero-accent hover:text-hero-accent"
+=======
+                                className="absolute end-3 top-8 text-primary-400/70 hover:text-primary-300"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             >
                                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             </Button>
@@ -222,7 +271,11 @@ export function LoginPage() {
                             type="submit"
                             loading={isSubmitting}
                             disabled={cooldown > 0}
+<<<<<<< HEAD
                             className="w-full h-11 text-base bg-hero-end hover:bg-hero-end/90 text-hero-fg"
+=======
+                            className="w-full h-11 text-base bg-primary-500 hover:bg-primary-400 text-white"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         >
                             {!isSubmitting && "تسجيل الدخول"}
                         </Button>
@@ -230,7 +283,11 @@ export function LoginPage() {
                 </div>
 
                 {/* Footer */}
+<<<<<<< HEAD
                 <Text variant="body-sm" className="text-center text-hero-fg mt-6">
+=======
+                <Text variant="body-sm" className="text-center text-white mt-6">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     جميع الحقوق محفوظة © 2026 —الإدارة العامة لصندوق التقاعد الأمني
                 </Text>
             </div>

@@ -16,10 +16,17 @@ public class RetireeDto
     public string? UnitName { get; set; }
     public string? RankName { get; set; }
     public string? CategoryName { get; set; }
+<<<<<<< HEAD
     public DateOnly? EnrollmentDate { get; set; }
     public DateOnly? RetirementDate { get; set; }
     public bool IsAlive { get; set; }
     public DateOnly? DeathDate { get; set; }
+=======
+    public DateTime? EnrollmentDate { get; set; }
+    public DateTime? RetirementDate { get; set; }
+    public bool IsAlive { get; set; }
+    public DateTime? DeathDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? PersonalPhotoPath { get; set; }
     public string? SocialStatusName { get; set; }
     public string? HealthStatusName { get; set; }
@@ -63,11 +70,16 @@ public class SocialResearchQueryDto
     public int? RankId { get; set; }
     public byte? Gender { get; set; }
     public bool? HasFiles { get; set; }
+<<<<<<< HEAD
     public bool? IsProcessed { get; set; }
     public bool? HasSettlements { get; set; }
     public string? UnitName { get; set; }
     public DateOnly? RetirementDateFrom { get; set; }
     public DateOnly? RetirementDateTo { get; set; }
+=======
+    public DateTime? RetirementDateFrom { get; set; }
+    public DateTime? RetirementDateTo { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 20;
 }
@@ -80,7 +92,10 @@ public class UpdateRetireeDto
     public string? MilitaryNumber { get; set; }
     public string? LinkNumber { get; set; }
     public byte? Gender { get; set; }
+<<<<<<< HEAD
     public DateOnly? BirthDate { get; set; }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? Phone { get; set; }
     public string? Address { get; set; }
     public string? City { get; set; }
@@ -114,7 +129,11 @@ public class ApprovalItemSummaryDto
     public byte? Gender { get; set; }
     public string? RankName { get; set; }
     public string? UnitName { get; set; }
+<<<<<<< HEAD
     public DateOnly? RetirementDate { get; set; }
+=======
+    public DateTime? RetirementDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public decimal? Salary { get; set; }
     public string? CategoryName { get; set; }
     public string? Notes { get; set; }
@@ -163,7 +182,11 @@ public class RetireeFullDataDto
     public string? RankName { get; set; }
     public string? LinkNumber { get; set; }
     public byte Gender { get; set; }
+<<<<<<< HEAD
     public DateOnly? BirthDate { get; set; }
+=======
+    public DateTime? BirthDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? Phone { get; set; }
     public string? Address { get; set; }
     public string? City { get; set; }
@@ -171,6 +194,12 @@ public class RetireeFullDataDto
     public int? SocialStatusID { get; set; }
     public int? HealthStatusID { get; set; }
     public bool IsAlive { get; set; }
+<<<<<<< HEAD
     public DateOnly? DeathDate { get; set; }
     public string? PersonalPhotoPath { get; set; }
 }
+=======
+    public DateTime? DeathDate { get; set; }
+    public string? PersonalPhotoPath { get; set; }
+}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

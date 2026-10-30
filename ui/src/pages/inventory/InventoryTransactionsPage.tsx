@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
+<<<<<<< HEAD
 import { itemApi, type ItemDto } from "@/api/inventory/items";
 import { transactionApi, type TransactionDto } from "@/api/inventory/transactions";
 import { InventoryBulkTransactionFormDialog } from "@/components/domain/inventory/InventoryBulkTransactionFormDialog";
@@ -11,10 +12,23 @@ import { InventoryItemFormDialog } from "@/components/domain/inventory/Inventory
 import { InventoryTransactionFormDialog } from "@/components/domain/inventory/InventoryTransactionFormDialog";
 import { Badge, Button, Card, Heading, Loader, PageLayout, Select, SelectContent, SelectItem, SelectTrigger, SelectValue,Text } from "@/components/ui";
 import { INVENTORY_TRANSACTION_TYPE } from "@/constants/inventory";
+=======
+import { transactionApi, type TransactionDto } from "@/api/inventory/transactions";
+import { Badge, Button, Loader, PageLayout, Card, Heading, Text, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useCrudState } from "@/hooks";
 import { normalizeApiError } from "@/lib/errorUtils";
 import { formatDate } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
+<<<<<<< HEAD
+=======
+import { INVENTORY_TRANSACTION_TYPE } from "@/constants/inventory";
+
+import { InventoryBulkTransactionFormDialog } from "@/components/domain/inventory/InventoryBulkTransactionFormDialog";
+import { InventoryItemFormDialog } from "@/components/domain/inventory/InventoryItemFormDialog";
+import { InventoryTransactionFormDialog } from "@/components/domain/inventory/InventoryTransactionFormDialog";
+import { itemApi, type ItemDto } from "@/api/inventory/items";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function InventoryTransactionsPage() {
     const crud = useCrudState<TransactionDto>();
@@ -103,7 +117,11 @@ export function InventoryTransactionsPage() {
         <div key={row.inventoryTransactionID}
             role="button"
             tabIndex={0}
+<<<<<<< HEAD
             className="flex items-center gap-4 p-3 border-b border-border last:border-b-0 hover:bg-muted/30 cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
+=======
+            className="flex items-center gap-4 p-3 border-b border-border/40 last:border-b-0 hover:bg-muted/30 cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             onClick={() => navigate(`/inventory/transactions/${row.inventoryTransactionID}`)}
             onKeyDown={(e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/inventory/transactions/${row.inventoryTransactionID}`); } }}>
             <div className="flex-1 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-11 gap-2 items-center text-sm">
@@ -135,7 +153,11 @@ export function InventoryTransactionsPage() {
         const first = group.transactions[0];
         const t = INVENTORY_TRANSACTION_TYPE[first.transactionType] ?? INVENTORY_TRANSACTION_TYPE[4];
         return (
+<<<<<<< HEAD
             <div key={group.batchID} className="border-b border-border last:border-b-0">
+=======
+            <div key={group.batchID} className="border-b border-border/40 last:border-b-0">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <div
                     role="button"
                     tabIndex={0}
@@ -150,7 +172,11 @@ export function InventoryTransactionsPage() {
                     <span className="text-xs text-muted-foreground ms-auto">{formatDate(first.transactionDate)}</span>
                 </div>
                 {isExpanded && (
+<<<<<<< HEAD
                     <div className="border-t border-border bg-muted/5">
+=======
+                    <div className="border-t border-border/40 bg-muted/5">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         {group.transactions.map(renderRow)}
                     </div>
                 )}
@@ -189,7 +215,11 @@ export function InventoryTransactionsPage() {
                 </div>
             </div>
 
+<<<<<<< HEAD
             <Card className="p-4 flex flex-col sm:flex-row sm:items-center gap-4 bg-muted/20 border-border">
+=======
+            <Card className="p-4 flex flex-col sm:flex-row sm:items-center gap-4 bg-muted/20 border-border/60">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <div className="flex items-center gap-3">
                     <Text variant="label" className="whitespace-nowrap">تصفية حسب الصنف:</Text>
                     <Select
@@ -214,10 +244,17 @@ export function InventoryTransactionsPage() {
                 {loading ? (
                     <div className="py-8"><Loader text="جاري تحميل الحركات..." size={40} /></div>
                 ) : error ? (
+<<<<<<< HEAD
                     <div className="text-center py-12 text-destructive bg-destructive/10 rounded-lg border border-destructive">تعذر تحميل الحركات</div>
                 ) : groupedTransactions.groups.length === 0 && groupedTransactions.singles.length === 0 ? (
                     <div className="text-center py-12 text-muted-foreground bg-muted/10 rounded-lg border border-dashed">
                         <Inbox className="w-10 h-10 mx-auto mb-2 opacity-100" />
+=======
+                    <div className="text-center py-12 text-destructive bg-destructive/10 rounded-lg border border-destructive/20">تعذر تحميل الحركات</div>
+                ) : groupedTransactions.groups.length === 0 && groupedTransactions.singles.length === 0 ? (
+                    <div className="text-center py-12 text-muted-foreground bg-muted/10 rounded-lg border border-dashed">
+                        <Inbox className="w-10 h-10 mx-auto mb-2 opacity-30" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <p className="font-bold">لا توجد حركات مخزون</p>
                         <p className="text-xs mt-1">لم يتم تسجيل أي حركات مخزون بعد</p>
                     </div>

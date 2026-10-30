@@ -5,11 +5,19 @@ import { useNavigate,useParams } from "react-router-dom";
 import { financialEntitlementsApi } from "@/api/financial-entitlements";
 import { retireeApi } from "@/api/retirees";
 import { retirementApi } from "@/api/retirement";
+<<<<<<< HEAD
 import type { NormalizableItem, SalaryRecipientForPrint } from "@/components/domain/print/print.types";
 import { normalizePrintItem } from "@/components/domain/print/print.utils";
 import { Button } from "@/components/ui/Button";
 import { PrintLayout } from "@/components/ui/print/PrintLayout";
 
+=======
+import { Button } from "@/components/ui/Button";
+import { PrintLayout } from "@/components/ui/print/PrintLayout";
+
+import type { NormalizableItem, SalaryRecipientForPrint } from "@/components/domain/print/print.types";
+import { normalizePrintItem } from "@/components/domain/print/print.utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { PrintableRetirementFileReport } from "./PrintableRetirementFileReport";
 
 export function RetirementFilePrintPage() {

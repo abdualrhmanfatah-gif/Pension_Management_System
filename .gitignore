@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ===== .NET =====
 [Bb]in/
 [Oo]bj/
@@ -9,10 +10,16 @@ TestResults/
 *.suo
 
 # ===== Node =====
+=======
+# .gitignore for Pension Management System (React + .NET)
+
+# --- Node.js (.ui/) ---
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 node_modules/
 dist/
 dist-ssr/
 *.local
+<<<<<<< HEAD
 *.log
 logs/
 
@@ -27,3 +34,57 @@ logs/
 .idea/
 .DS_Store
 *.sw?
+=======
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.shorthand/
+
+# --- .NET (Backend) ---
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.userosscache
+*.sln.docstates
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+/PensionMS.API/Properties/launchSettings.json
+/PensionMS.API/appsettings.Development.json
+
+# --- AI Agent Config ---
+.agents/
+.aider-desk/
+.mimocode/
+.aider*
+
+# --- Project Extras ---
+backups/
+skills/
+skills-lock.json
+
+# --- .NET Publish ---
+PensionMS.API/publish/
+
+# --- Others ---
+.DS_Store
+Thumbs.db
+*.log
+/tmp/
+/artifacts/
+/brain/
+implementation_plan.md
+task.md
+walkthrough.md
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

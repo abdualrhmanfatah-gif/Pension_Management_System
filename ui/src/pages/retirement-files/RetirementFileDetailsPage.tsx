@@ -1,10 +1,15 @@
 import { useQuery,useQueryClient } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { AlertTriangle, ArrowRight, ClipboardCheck, FileCheck, FileText, MoreHorizontal, Printer, Shield, Trash2,User } from "lucide-react";
+=======
+import { AlertTriangle, ArrowRight, FileCheck, FileText, MoreHorizontal, Printer, Shield, Trash2,User } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 import { retirementApi } from "@/api/retirement";
 import { PermissionGate } from "@/components/auth/PermissionGate";
+<<<<<<< HEAD
 import { CorrectLifeStatusDialog, type CorrectLifeStatusValues } from "@/components/domain/retirement/CorrectLifeStatusDialog";
 import { FileLifecycleActions } from "@/components/domain/retirement/FileLifecycleActions";
 import { RecordDeathDialog, type RecordDeathFormValues } from "@/components/domain/retirement/RecordDeathDialog";
@@ -20,18 +25,36 @@ import {
     AlertBanner,
     Badge,
     BaseSheet,
+=======
+import { DetailLayout } from "@/components/layout/DetailLayout";
+import {
+    AlertBanner,
+    Badge,
+    BaseSheet,
+    Breadcrumb,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     Button,
     Heading,
     Skeleton,
     Text,
     useConfirm
 } from "@/components/ui";
+<<<<<<< HEAD
+=======
+import { RecordDeathDialog, type RecordDeathFormValues } from "@/components/domain/retirement/RecordDeathDialog";
+import { RetirementFileDialog } from "@/components/domain/retirement/RetirementFileDialog";
+import { StatusUpdateDialog } from "@/components/domain/retirement/StatusUpdateDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation } from "@/hooks";
 import { FILE_DETAIL_KEY } from "@/hooks/queries";
 import { useFileDetailsQuery } from "@/hooks/queries";
 import { cn, getStatusColorClass } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
 
+<<<<<<< HEAD
+=======
+import { RetirementFileSidebar } from "@/components/domain/retirement/RetirementFileSidebar";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { FileWorkflowManager, type TabKey } from "./FileWorkflowManager";
 
 /**
@@ -60,7 +83,10 @@ export function RetirementFileDetailsPage() {
     );
     const [updateStatusOpen, setUpdateStatusOpen] = useState(false);
     const [recordDeathOpen, setRecordDeathOpen] = useState(false);
+<<<<<<< HEAD
     const [correctLifeStatusOpen, setCorrectLifeStatusOpen] = useState(false);
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const [editFileOpen, setEditFileOpen] = useState(false);
     const [actionsOpen, setActionsOpen] = useState(false);
 
@@ -163,7 +189,11 @@ export function RetirementFileDetailsPage() {
             return retirementApi.handleDeath(fileId, values.deathDate);
         },
         {
+<<<<<<< HEAD
             successMessage: "تم تسجيل وفاة المتقاعد وإيقاف الملف مؤقتاً",
+=======
+            successMessage: "تم تسجيل وفاة المتقاعد وإغلاق الملف بنجاح",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             onSuccess: async () => {
                 setRecordDeathOpen(false);
                 await queryClient.invalidateQueries({ queryKey: [FILE_DETAIL_KEY, fileId] });
@@ -171,6 +201,7 @@ export function RetirementFileDetailsPage() {
         }
     );
 
+<<<<<<< HEAD
     const correctLifeStatusMutation = useApiMutation(
         async (values: CorrectLifeStatusValues) => retirementApi.correctLifeStatus(fileId, values),
         {
@@ -182,6 +213,8 @@ export function RetirementFileDetailsPage() {
         }
     );
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const statusMutation = useApiMutation(
         async (values: { newStatusID: number, reason?: string }) => {
             return retirementApi.updateFileStatus(fileId, values.newStatusID, values.reason);
@@ -210,15 +243,33 @@ export function RetirementFileDetailsPage() {
 
     return (
         <DetailLayout
+<<<<<<< HEAD
             stickyHeader
             headerTitle={
                 <div className="flex items-start gap-2 sm:gap-3 min-w-0">
                     <Button variant="ghost" size="icon" onClick={() => navigate("/files")} className="rounded-full shrink-0 mt-0.5 h-8 w-8" aria-label="العودة لقائمة الملفات">
+=======
+            breadcrumb={
+                <Breadcrumb
+                    items={[
+                        { label: "ملفات التقاعد", href: "/files" },
+                        { label: file.fileNumber }
+                    ]}
+                />
+            }
+            headerTitle={
+                <div className="flex items-start gap-2 sm:gap-3 min-w-0">
+                    <Button variant="ghost" size="icon" onClick={() => navigate("/files")} className="rounded-full shrink-0 mt-0.5 sm:mt-1 h-8 w-8 sm:h-10 sm:w-10" aria-label="العودة لقائمة الملفات">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                     </Button>
                     <div className="flex flex-col text-start min-w-0 flex-1">
                         <Heading level="h1" className={cn(
+<<<<<<< HEAD
                             "text-base sm:text-xl font-black tracking-tight leading-tight break-words",
+=======
+                            "text-base sm:text-2xl font-black tracking-tight leading-tight break-words",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             getStatusColorClass(file.statusID)
                         )}>
                             {file.retireeFullName}
@@ -230,6 +281,7 @@ export function RetirementFileDetailsPage() {
                             <span className="text-[10px] sm:text-sm text-muted-foreground font-medium">ملف رقم <span dir="ltr" className="font-mono">{file.fileNumber}</span></span>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <Button
                         variant="ghost"
                         size="icon"
@@ -239,6 +291,8 @@ export function RetirementFileDetailsPage() {
                     >
                         <MoreHorizontal className="w-4 h-4" />
                     </Button>
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 </div>
             }
             headerActions={
@@ -246,26 +300,43 @@ export function RetirementFileDetailsPage() {
                     <PermissionGate permission="File.Edit.FinancialData">
                         <Button
                             variant="outline"
+<<<<<<< HEAD
                             className="hidden sm:inline-flex gap-1.5 sm:gap-2 font-bold border-emerald-500 bg-emerald-500/5 text-emerald-700 hover:bg-emerald-100 sm:flex-none whitespace-nowrap h-9 text-[11px] sm:text-sm px-2.5 sm:px-4"
                             onClick={() => setEditFileOpen(true)}
                         >
                             <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" /> <span className="hidden sm:inline">تعديل البيانات الأساسية</span>
+=======
+                            className="gap-1.5 sm:gap-2 font-bold border-emerald-500/20 bg-emerald-500/5 text-emerald-700 hover:bg-emerald-100 flex-1 sm:flex-none whitespace-nowrap h-9 sm:h-10 text-[11px] sm:text-sm px-2.5 sm:px-4"
+                            onClick={() => setEditFileOpen(true)}
+                        >
+                            <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" /> <span className="hidden sm:inline">تعديل البيانات الأساسية</span><span className="sm:hidden">تعديل</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         </Button>
                     </PermissionGate>
 
                     <PermissionGate permission="File.ChangeStatus.Approve">
+<<<<<<< HEAD
                         <Button className="hidden sm:inline-flex gap-1.5 sm:gap-2 font-bold sm:flex-none whitespace-nowrap h-9 text-[11px] sm:text-sm px-2.5 sm:px-4" onClick={() => setUpdateStatusOpen(true)}>
                             <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" /> <span className="hidden sm:inline">تغيير الحالة / اعتماد</span>
                         </Button>
                     </PermissionGate>
 
                     <Button variant="ghost" size="icon" className="hidden sm:inline-flex rounded-xl border h-9 w-9 shrink-0" onClick={() => setActionsOpen(true)} aria-label="إجراءات إضافية">
+=======
+                        <Button className="gap-1.5 sm:gap-2 font-bold flex-1 sm:flex-none whitespace-nowrap h-9 sm:h-10 text-[11px] sm:text-sm px-2.5 sm:px-4" onClick={() => setUpdateStatusOpen(true)}>
+                            <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" /> <span className="hidden sm:inline">تغيير الحالة / اعتماد</span><span className="sm:hidden">الحالة</span>
+                        </Button>
+                    </PermissionGate>
+
+                    <Button variant="ghost" size="icon" className="rounded-xl border  h-9 w-9 sm:h-10 sm:w-10 shrink-0" onClick={() => setActionsOpen(true)} aria-label="إجراءات إضافية">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <MoreHorizontal className="w-4 h-4 sm:w-5 sm:h-5" />
                     </Button>
                 </div>
             }
             sidebar={<RetirementFileSidebar file={file} retiree={retiree} isCompact={false} />}
         >
+<<<<<<< HEAD
             <div className="space-y-2.5 md:space-y-3.5">
                 <FileLifecycleActions fileId={fileId} statusId={file.statusID} previousStatusId={file.previousStatusID} reviewStatus={file.reviewStatus} salaryStatus={file.salaryStatus} />
                 {(() => {
@@ -375,6 +446,78 @@ export function RetirementFileDetailsPage() {
                         </Accordion>
                     );
                 })()}
+=======
+            <div className="space-y-6">
+                {file && file.reviewStatus === 3 && (
+                    <AlertBanner
+                        variant="danger"
+                        className="items-start"
+                        message={
+                            <div className="flex flex-col gap-2">
+                                <div>
+                                    <strong className="text-sm">تم رفض التعديلات الأخيرة</strong>
+                                    <Text variant="body" className="mt-0.5">يرجى إصلاح الملاحظات التالية ثم إعادة التعديل:</Text>
+                                </div>
+                                {file.reviewNotes && (
+                                    <div className="text-sm max-w-3xl bg-destructive/10 p-3 rounded-lg border border-destructive/20 leading-relaxed font-semibold">
+                                        {file.reviewNotes}
+                                    </div>
+                                )}
+                            </div>
+                        }
+                        icon={<AlertTriangle className="w-5 h-5 mt-0.5" />}
+                    />
+                )}
+
+                {file && file.reviewStatus === 1 && (
+                    <AlertBanner
+                        variant="warning"
+                        className="items-start sm:items-center"
+                        message={
+                            <div className="flex flex-col gap-0.5">
+                                <strong className="text-sm">الملف قيد المراجعة</strong>
+                                <Text variant="body-sm" className="sm:text-sm">هناك تعديلات على هذا الملف بانتظار المراجعة والاعتماد من قبل التدقيق.</Text>
+                            </div>
+                        }
+                        icon={<Shield className="w-5 h-5 mt-0.5" />}
+                    />
+                )}
+
+                {file && ((file.missingDocumentsCount || 0) > 0 || (file.missingDataCount || 0) > 0) && (
+                    <AlertBanner
+                        variant="warning"
+                        className="items-start sm:items-center"
+                        message={
+                            <div className="flex flex-col gap-1.5">
+                                <div>
+                                    <strong className="text-sm">تنبيه: مستندات وبيانات ناقصة</strong>
+                                    <Text variant="body-sm" className="sm:text-sm mt-0.5">يوجد {file.missingDocumentsCount || 0} وثيقة ناقصة و {file.missingDataCount || 0} حقول بيانات غير مكتملة. يرجى المراجعة لاستكمالها.</Text>
+                                </div>
+                                {((file.missingDocumentsList && file.missingDocumentsList.length > 0) || (file.missingDataList && file.missingDataList.length > 0)) && (
+                                    <details className="group mt-1 cursor-pointer">
+                                        <summary className="text-xs font-bold opacity-75 hover:opacity-100 select-none focus-visible:ring-2 focus-visible:ring-primary/20 rounded mb-1">
+                                            عرض وتفاصيل النواقص
+                                        </summary>
+                                        <div className="flex flex-col gap-2 mt-2 cursor-auto animate-in fade-in duration-300">
+                                            {file.missingDocumentsList && file.missingDocumentsList.length > 0 && (
+                                                <div className="text-xs bg-amber-900/10 dark:bg-amber-100/10 p-2.5 rounded-lg border border-amber-900/10 leading-relaxed">
+                                                    <strong>الوثائق الناقصة:</strong> {file.missingDocumentsList.join("، ")}
+                                                </div>
+                                            )}
+                                            {file.missingDataList && file.missingDataList.length > 0 && (
+                                                <div className="text-xs bg-amber-900/10 dark:bg-amber-100/10 p-2.5 rounded-lg border border-amber-900/10 leading-relaxed">
+                                                    <strong>البيانات غير المكتملة:</strong> {file.missingDataList.join("، ")}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </details>
+                                )}
+                            </div>
+                        }
+                        icon={<AlertTriangle className="w-5 h-5 mt-0.5" />}
+                    />
+                )}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <FileWorkflowManager
                     file={file}
                     activeTab={activeTab}
@@ -401,6 +544,7 @@ export function RetirementFileDetailsPage() {
                 isLoading={handleDeathMutation.isPending}
             />
 
+<<<<<<< HEAD
             <CorrectLifeStatusDialog
                 open={correctLifeStatusOpen}
                 onOpenChange={setCorrectLifeStatusOpen}
@@ -409,6 +553,8 @@ export function RetirementFileDetailsPage() {
                 isLoading={correctLifeStatusMutation.isPending}
             />
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             {file && retiree && (
                 <RetirementFileDialog
                     mode="edit"
@@ -425,6 +571,7 @@ export function RetirementFileDetailsPage() {
 
             <BaseSheet open={actionsOpen} onOpenChange={setActionsOpen} title="إجراءات إضافية">
                 <div className="space-y-2 p-4 text-start">
+<<<<<<< HEAD
                     <PermissionGate permission="File.Edit.FinancialData">
                         <Button
                             type="button"
@@ -449,6 +596,8 @@ export function RetirementFileDetailsPage() {
                         </Button>
                     </PermissionGate>
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {canViewStatement && (
                         <Button
                             type="button"
@@ -489,7 +638,11 @@ export function RetirementFileDetailsPage() {
                                 type="button"
                                 variant="ghost"
                                 className="w-full justify-start gap-3 h-12 rounded-xl text-destructive hover:bg-destructive/5 hover:text-destructive"
+<<<<<<< HEAD
                                 onClick={() => { setActionsOpen(false); setRecordDeathOpen(true); }}
+=======
+                                onClick={() => setRecordDeathOpen(true)}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 aria-label="تسجيل وفاة المتقاعد"
                             >
                                 <AlertTriangle className="w-5 h-5" /> تسجيل وفاة المتقاعد
@@ -497,6 +650,7 @@ export function RetirementFileDetailsPage() {
                         </PermissionGate>
                     )}
 
+<<<<<<< HEAD
                     {(!file.isAlive || !!retiree.deathDate || [4, 5].includes(retiree.healthStatusID ?? 0)) && (
                         <PermissionGate permission="File.ChangeStatus.Approve">
                             <Button
@@ -510,6 +664,8 @@ export function RetirementFileDetailsPage() {
                         </PermissionGate>
                     )}
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {canDelete && (
                         <Button
                             type="button"
@@ -555,4 +711,8 @@ function FileDetailsSkeleton() {
             </div>
         </div>
     );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

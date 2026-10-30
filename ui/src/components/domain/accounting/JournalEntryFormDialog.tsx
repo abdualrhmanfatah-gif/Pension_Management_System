@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Pencil, PlusCircle, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
+<<<<<<< HEAD
 import { accountsApi, fiscalYearsApi,journalEntriesApi, journalEntryTypesApi, periodsApi } from "@/api/accounting";
 import {
   BaseFormDialog,
@@ -17,6 +18,23 @@ import { queryKeys } from "@/constants/queryKeys";
 import { useApiMutation } from "@/hooks";
 import { formatCurrency } from "@/lib/utils";
 import type { ChartOfAccountDto, CreateJournalEntryLineDto, FiscalPeriodDto, FiscalYearSummaryDto, JournalEntryTypeDto } from "@/types/accounting";
+=======
+import { accountsApi, journalEntriesApi, journalEntryTypesApi, periodsApi, fiscalYearsApi } from "@/api/accounting";
+import type { CreateJournalEntryLineDto, FiscalYearSummaryDto, FiscalPeriodDto, ChartOfAccountDto, JournalEntryTypeDto } from "@/types/accounting";
+import {
+  BaseFormDialog,
+  Button,
+  FormField,
+  FormSection,
+  Input,
+  DateInput,
+  NativeSelect,
+  Text,
+} from "@/components/ui";
+import { useApiMutation } from "@/hooks";
+import { queryKeys } from "@/constants/queryKeys";
+import { formatCurrency } from "@/lib/utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Types ────────────────────────────────────────
 interface LineEntry {
@@ -301,7 +319,11 @@ export function JournalEntryFormDialog({ open, onOpenChange }: JournalEntryFormD
               </thead>
               <tbody>
                 {lines.map((line, idx) => (
+<<<<<<< HEAD
                   <tr key={line.key} className="border-t border-border">
+=======
+                  <tr key={line.key} className="border-t border-border/50">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <td className="p-1.5 text-xs text-muted-foreground text-center">{idx + 1}</td>
                     <td className="p-1.5">
                       <NativeSelect

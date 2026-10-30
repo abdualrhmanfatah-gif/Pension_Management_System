@@ -3,8 +3,13 @@ import { Building2, Calendar, DollarSign, User, Wrench } from "lucide-react";
 import type { FixedAssetDto } from "@/api/fixedAssets";
 import { VALUATION_METHODS } from "@/api/fixedAssets";
 import { Card, CardContent, CardHeader, CardTitle, InfoPair } from "@/components/ui";
+<<<<<<< HEAD
 import { ASSET_STATUS_LABELS } from "@/constants/assets";
 import { formatCurrency, formatDate } from "@/lib/utils";
+=======
+import { formatCurrency, formatDate } from "@/lib/utils";
+import { ASSET_STATUS_LABELS } from "@/constants/assets";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface AssetInfoTabProps {
     asset: FixedAssetDto;

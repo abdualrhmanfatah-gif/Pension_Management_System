@@ -20,6 +20,7 @@ interface ApiResponseShape {
     errors?: string[] | Record<string, string[] | string>;
 }
 
+<<<<<<< HEAD
 /** ASP.NET ValidationProblemDetails — يحمل title لا message */
 interface ValidationProblemDetailsShape {
     title?: string;
@@ -70,6 +71,11 @@ function formatValidationErrors(
 
     if (!parts.length) return null;
     return { message: parts.join(" • "), errors: flat };
+=======
+/** Specific shape for validation errors */
+interface ValidationErrorsShape {
+    errors?: Record<string, string[] | string>;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 // ─── Normalizer ───────────────────────────────────────
@@ -111,6 +117,7 @@ export function normalizeApiError(error: unknown): NormalizedApiError {
                     status 
                 };
             }
+<<<<<<< HEAD
 
             // ValidationProblemDetails: لا message — السبب في errors (وقد يكون على مستوى الطلب)
             const detail = formatValidationErrors(errors);
@@ -126,11 +133,31 @@ export function normalizeApiError(error: unknown): NormalizedApiError {
             if (typeof title === "string" && title.length > 0 && hasArabic(title)) {
                 return { message: sanitize(title), status };
             }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
 
         // Fallback by HTTP status code
         switch (status) {
             case 400:
+<<<<<<< HEAD
+=======
+                if (data && typeof data === 'object' && 'errors' in data) {
+                    const validationData = data as ValidationErrorsShape;
+                    const errorObj = validationData.errors;
+                    if (errorObj && typeof errorObj === 'object') {
+                        const errorDetails = Object.entries(errorObj)
+                            .map(([field, msgs]) => {
+                                const combined = Array.isArray(msgs) ? msgs.map(sanitize).join(" و ") : sanitize(String(msgs));
+                                return `${sanitize(field)}: ${combined}`;
+                            })
+                            .join(" | ");
+                        if (errorDetails) {
+                            return { message: `تحقق من الحقول التالية: ${errorDetails}`, status };
+                        }
+                    }
+                }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 return { message: "البيانات المُدخلة غير صالحة", status };
             case 401:
                 return { message: "انتهت صلاحية الجلسة — يرجى تسجيل الدخول", status };

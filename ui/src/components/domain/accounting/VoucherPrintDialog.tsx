@@ -1,5 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { useEffect,useRef } from "react";
+=======
+import { useRef, useEffect } from "react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useReactToPrint } from "react-to-print";
 
 import { vouchersApi } from "@/api/vouchers";
@@ -53,7 +57,11 @@ export function VoucherPrintDialog({ open, onOpenChange, voucherId }: Props) {
           <PrintablePaymentOrder ref={printRef} voucher={voucher} />
         )
       ) : (
+<<<<<<< HEAD
         <div className="text-lg text-muted-foreground">السند غير موجود</div>
+=======
+        <div className="text-lg text-muted-foreground/60">السند غير موجود</div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       )}
     </div>
   );

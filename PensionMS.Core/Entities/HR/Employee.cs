@@ -36,13 +36,22 @@ public class Employee : ISoftDeletable
     public string? ProfilePhotoPath { get; set; }
     public string? BloodGroup { get; set; }
     public string? NationalIDIssuePlace { get; set; }
+<<<<<<< HEAD
     public DateOnly? NationalIDIssueDate { get; set; }
     public DateOnly? NationalIDExpiryDate { get; set; }
+=======
+    public DateTime? NationalIDIssueDate { get; set; }
+    public DateTime? NationalIDExpiryDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? EmergencyContactName { get; set; }
     public string? EmergencyContactPhone { get; set; }
     public byte Gender { get; set; }
     public DateTime HireDate { get; set; }
+<<<<<<< HEAD
     public DateOnly? BirthDate { get; set; }
+=======
+    public DateTime? BirthDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }

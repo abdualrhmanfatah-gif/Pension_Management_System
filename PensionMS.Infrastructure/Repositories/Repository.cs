@@ -22,8 +22,11 @@ public class Repository<T> : IRepository<T> where T : class
     public async Task<T?> GetByIdAsync(int id)
         => await _dbSet.FindAsync(id);
 
+<<<<<<< HEAD
     public Task ReloadAsync(T entity) => _context.Entry(entity).ReloadAsync();
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public async Task<T?> GetByIdAsync(string id)
         => await _dbSet.FindAsync(id);
 
@@ -36,6 +39,15 @@ public class Repository<T> : IRepository<T> where T : class
     public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
         => await _dbSet.FirstOrDefaultAsync(predicate);
 
+<<<<<<< HEAD
+=======
+    public async Task<IEnumerable<T>> GetPagedAsync(int page, int pageSize)
+        => await _dbSet.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+    public async Task<IEnumerable<T>> GetPagedAsync(Expression<Func<T, bool>> predicate, int page, int pageSize)
+        => await _dbSet.Where(predicate).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public async Task<int> CountAsync()
         => await _dbSet.CountAsync();
 
@@ -55,6 +67,7 @@ public class Repository<T> : IRepository<T> where T : class
         => _dbSet.Update(entity);
 
     public void Delete(T entity)
+<<<<<<< HEAD
     {
         RejectSoftDeletable(entity);
         _dbSet.Remove(entity);
@@ -72,6 +85,12 @@ public class Repository<T> : IRepository<T> where T : class
         if (entity is ISoftDeletable)
             throw new InvalidOperationException("الكيان يدعم الحذف المنطقي؛ يجب تحديث حقول الحذف بدلاً من حذفه فعلياً");
     }
+=======
+        => _dbSet.Remove(entity);
+
+    public void DeleteRange(IEnumerable<T> entities)
+        => _dbSet.RemoveRange(entities);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     public IQueryable<T> Query()
         => _dbSet.AsQueryable();
@@ -82,8 +101,11 @@ public class Repository<T> : IRepository<T> where T : class
         int limit,
         Expression<Func<T, int>> orderByKeySelector)
     {
+<<<<<<< HEAD
         if (limit <= 0 || limit == int.MaxValue)
             throw new ArgumentOutOfRangeException(nameof(limit), "حجم الصفحة غير صالح");
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         var query = predicate != null ? _dbSet.Where(predicate) : _dbSet.AsQueryable();
 
         if (cursor.HasValue)

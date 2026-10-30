@@ -1,7 +1,10 @@
 import React from "react";
 
 import { cn } from "@/lib/utils";
+<<<<<<< HEAD
 import { useNavStore } from "@/stores/navStore";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface DetailLayoutProps {
     sidebar: React.ReactNode;
@@ -12,7 +15,10 @@ interface DetailLayoutProps {
     extraHeader?: React.ReactNode;
     statusBadge?: React.ReactNode;
     banner?: React.ReactNode;
+<<<<<<< HEAD
     stickyHeader?: boolean;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     className?: string;
 }
 
@@ -29,6 +35,7 @@ export function DetailLayout({
     extraHeader,
     statusBadge,
     banner,
+<<<<<<< HEAD
     stickyHeader = false,
     className
 }: DetailLayoutProps) {
@@ -46,6 +53,14 @@ export function DetailLayout({
                 stickyHeader && "sticky top-14 z-30 -mx-4 bg-background px-4 py-1 sm:-mx-6 sm:px-6 print:static print:z-auto",
                 stickyHeader && (hasSecondaryNav ? "lg:top-24" : "lg:top-14")
             )}>
+=======
+    className
+}: DetailLayoutProps) {
+    return (
+        <div className={cn("space-y-3 md:space-y-6 animate-fade-in", className)}>
+            {/* ── Header Section ─────────────────────────────────── */}
+            <div className="space-y-2 md:space-y-4">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 {breadcrumb && <div>{breadcrumb}</div>}
                 
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">

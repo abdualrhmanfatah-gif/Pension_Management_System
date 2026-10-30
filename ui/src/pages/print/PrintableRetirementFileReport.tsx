@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+import { formatDate, getDocumentUrl } from "@/lib/utils";
+import { useAuthStore } from "@/stores/authStore";
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import type {
     AgentForPrint,
     EntitledForPrint,
@@ -6,8 +12,11 @@ import type {
     RetirementFileSummary,
     SalaryRecipientForPrint} from "@/components/domain/print/print.types";
 import { PRINT_STYLES } from "@/components/domain/print/print.utils";
+<<<<<<< HEAD
 import { formatDate, getDocumentUrl } from "@/lib/utils";
 import { useAuthStore } from "@/stores/authStore";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 const { TB, CELL, LBL, VAL, SECTION_HEADER } = PRINT_STYLES;
 
@@ -95,7 +104,11 @@ export function PrintableRetirementFileReport({
                         {retireePhoto ? (
                             <img src={getUrl(retireePhoto)} alt="صورة المتقاعد" className="w-16 h-20 object-cover border-2 border-black rounded" />
                         ) : (
+<<<<<<< HEAD
                             <div className="w-16 h-20 border-2 border-black rounded bg-muted/50 flex items-center justify-center text-[9px] text-muted-foreground">لا توجد</div>
+=======
+                            <div className="w-16 h-20 border-2 border-black rounded bg-muted/50 flex items-center justify-center text-[9px] text-muted-foreground/60">لا توجد</div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         )}
                     </div>
                     <div className="flex flex-col items-center w-16">
@@ -103,7 +116,11 @@ export function PrintableRetirementFileReport({
                         {recipientPhoto ? (
                             <img src={getUrl(recipientPhoto)} alt="صورة المستلم" className="w-16 h-20 object-cover border-2 border-black rounded" />
                         ) : (
+<<<<<<< HEAD
                             <div className="w-16 h-20 border-2 border-black rounded bg-muted/50 text-muted-foreground">لا توجد</div>
+=======
+                            <div className="w-16 h-20 border-2 border-black rounded bg-muted/50 text-muted-foreground/60">لا توجد</div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         )}
                     </div>
                 </div>

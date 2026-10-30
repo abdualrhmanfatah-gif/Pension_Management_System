@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type {
   AccountBalanceDto,
   AccountingDashboardDto,
@@ -7,19 +8,36 @@ import type {
   BankTransactionDto,
   BankTransactionFilterDto,
   BudgetReportResultDto,
+=======
+import api from "./axios";
+
+import type {
+  AccountBalanceDto,
+  AccountStatementResultDto,
+  AccountTreeNode,
+  AccountingDashboardDto,
+  BalanceSheetDto,
+  BankTransactionDto,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   CashFlowStatementDto,
   ChartOfAccountDto,
   CloseQuarterRequestDto,
   ClosingResultDto,
   CostCenterDto,
+<<<<<<< HEAD
   CostCenterReportDto,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   CreateChartOfAccountDto,
   CreateCostCenterDto,
   CreateFiscalYearDto,
   CreateJournalEntryDto,
+<<<<<<< HEAD
   CumulativePnLReportDto,
   CurrentOperationsReportDto,
   DepreciationReportDto,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   FiscalPeriodDto,
   FiscalYearSummaryDto,
   GeneralLedgerDto,
@@ -30,6 +48,7 @@ import type {
   JournalEntryFilterDto,
   JournalEntryTypeDto,
   JournalRegisterDto,
+<<<<<<< HEAD
   LiabilitiesReportDto,
   OpeningBalanceDto,
   OpeningBalanceResultDto,
@@ -38,17 +57,40 @@ import type {
   QuarterDto,
   QuarterlyReportDto,
   SeedInitialDefaultsResultDto,
+=======
+  OpeningBalanceDto,
+  OpeningBalanceResultDto,
+  SeedInitialDefaultsResultDto,
+  QuarterDetailsDto,
+  QuarterDto,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   SubledgerReportResultDto,
   TrialBalanceItemDto,
   UpdateChartOfAccountDto,
   UpdateCostCenterDto,
   YearEndCloseDto,
+<<<<<<< HEAD
   YearOverYearReportDto,
 } from "@/types/accounting";
 import type { ApiResponse } from "@/types/api";
 
 import api from "./axios";
 import { exportReportFile } from "./reportExport";
+=======
+  BankTransactionFilterDto,
+  QuarterlyReportDto,
+  BudgetReportResultDto,
+  CurrentOperationsReportDto,
+  LiabilitiesReportDto,
+  YearOverYearReportDto,
+  CumulativePnLReportDto,
+  CostCenterReportDto,
+  ProvisionsReportDto,
+  DepreciationReportDto,
+} from "@/types/accounting";
+
+import type { ApiResponse } from "@/types/api";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ═══════════════════════════════════════════════════
 // CHART OF ACCOUNTS (دليل الحسابات)
@@ -159,10 +201,13 @@ export const periodsApi = {
 // ═══════════════════════════════════════════════════
 
 export const quartersApi = {
+<<<<<<< HEAD
   exportPeriods: (quarterId: number) =>
     exportReportFile(`/accounting/quarters/${quarterId}/periods/export`, {}, "QuarterPeriods.xlsx"),
   exportExpenses: (quarterId: number) =>
     exportReportFile(`/accounting/quarters/${quarterId}/expenses/export`, {}, "QuarterExpenses.xlsx"),
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   getAll: (fiscalYearId: number) =>
     api.get<ApiResponse<QuarterDto[]>>("/accounting/quarters", { params: { fiscalYearId } })
       .then((r) => r.data.data),
@@ -264,6 +309,7 @@ export const reportsApi = {
       .then((r) => r.data.data),
 
   // ── Export Functions ──
+<<<<<<< HEAD
   exportTrialBalance: (params: { periodId?: number; fromDate?: string; toDate?: string; accountLevel?: number; format?: "excel" | "pdf" }) =>
     exportReportFile("/accounting/reports/trial-balance/export", params, `TrialBalance.${params.format === "pdf" ? "pdf" : "xlsx"}`),
 
@@ -293,6 +339,31 @@ export const reportsApi = {
 
   exportBudget: (params: { fiscalYearId: number; format?: "excel" | "pdf" }) =>
     exportReportFile("/accounting/reports/budget/export", params, `BudgetReport.${params.format === "pdf" ? "pdf" : "xlsx"}`),
+=======
+  exportTrialBalance: (params: { periodId?: number; fromDate?: string; toDate?: string; format?: "excel" | "pdf" }) =>
+    api.get("/accounting/reports/trial-balance/export", { params, responseType: "blob" }),
+
+  exportBalanceSheet: (params: { asOfDate: string; format?: "excel" | "pdf" }) =>
+    api.get("/accounting/reports/balance-sheet/export", { params, responseType: "blob" }),
+
+  exportIncomeStatement: (params: { fiscalYearId: number; quarterId?: number; format?: "excel" | "pdf" }) =>
+    api.get("/accounting/reports/income-statement/export", { params, responseType: "blob" }),
+
+  exportGeneralLedger: (params: { accountId: number; periodId?: number; fromDate?: string; toDate?: string; format?: "excel" | "pdf" }) =>
+    api.get("/accounting/reports/general-ledger/export", { params, responseType: "blob" }),
+
+  exportAccountStatement: (params: { accountId: number; fromDate: string; toDate: string; format?: "excel" | "pdf" }) =>
+    api.get("/accounting/reports/account-statement/export", { params, responseType: "blob" }),
+
+  exportSubledger: (params: { accountId: number; fromDate?: string; toDate?: string; format?: "excel" | "pdf" }) =>
+    api.get("/accounting/reports/subledger/export", { params, responseType: "blob" }),
+
+  exportJournalRegister: (params: { fromDate: string; toDate: string; format?: "excel" | "pdf" }) =>
+    api.get("/accounting/reports/journal-register/export", { params, responseType: "blob" }),
+
+  exportCashFlow: (params: { fiscalYearId: number; format?: "excel" | "pdf" }) =>
+    api.get("/accounting/reports/cash-flow/export", { params, responseType: "blob" }),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
   // ── التقارير المفقودة ──
   quarterlyReport: (params: { fiscalYearId?: number; quarterId?: number }) =>

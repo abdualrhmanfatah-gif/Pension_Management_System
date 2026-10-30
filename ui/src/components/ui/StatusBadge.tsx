@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { Badge } from "./Badge";
 import type { BadgeVariantProps } from "./badgeVariants";
+=======
+import type { BadgeVariantProps } from "./badgeVariants";
+import { Badge } from "./Badge";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 type StatusBadgeVariant = BadgeVariantProps["variant"];
 

@@ -9,19 +9,29 @@ namespace PensionMS.Infrastructure.Services.Investment;
 public class InvestmentProjectService : IInvestmentProjectService
 {
     private readonly IUnitOfWork _unitOfWork;
+<<<<<<< HEAD
     private readonly IAccessiblePensionRepository _access;
     public InvestmentProjectService(IUnitOfWork unitOfWork, IAccessiblePensionRepository access)
     {
         _unitOfWork = unitOfWork;
         _access = access;
+=======
+    public InvestmentProjectService(IUnitOfWork unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 
     public async Task<ApiResponse<int>> CreateProjectAsync(CreateProjectDto dto, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         queries.ResolveBranch(dto.PensionBranchID);
         var portfolio = await queries.Query(_unitOfWork.InvestmentPortfolios)
             .FirstOrDefaultAsync(p => p.PortfolioID == dto.PortfolioID);
+=======
+        var portfolio = await _unitOfWork.InvestmentPortfolios.GetByIdAsync(dto.PortfolioID);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (portfolio == null || portfolio.IsDeleted)
             return ApiResponse<int>.Fail("المحفظة الاستثمارية غير موجودة");
 
@@ -30,7 +40,11 @@ public class InvestmentProjectService : IInvestmentProjectService
             return ApiResponse<int>.Fail("نوع الاستثمار غير موجود");
 
         // Unique constraint check: Project Name must be unique within a Portfolio
+<<<<<<< HEAD
         var exists = await queries.Query(_unitOfWork.InvestmentProjects)
+=======
+        var exists = await _unitOfWork.InvestmentProjects.Query()
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .AnyAsync(p => p.PortfolioID == dto.PortfolioID && p.Name == dto.Name && !p.IsDeleted);
         if (exists)
             return ApiResponse<int>.Fail($"يوجد مشروع استثماري بنفس الاسم '{dto.Name}' في هذه المحفظة الاستثمارية");
@@ -59,6 +73,7 @@ public class InvestmentProjectService : IInvestmentProjectService
 
     public async Task<ApiResponse<bool>> UpdateProjectAsync(int id, UpdateProjectDto dto, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var project = await queries.Query(_unitOfWork.InvestmentProjects)
             .FirstOrDefaultAsync(p => p.ProjectID == id);
@@ -68,6 +83,13 @@ public class InvestmentProjectService : IInvestmentProjectService
         queries.ResolveBranch(dto.PensionBranchID);
         var portfolio = await queries.Query(_unitOfWork.InvestmentPortfolios)
             .FirstOrDefaultAsync(p => p.PortfolioID == dto.PortfolioID);
+=======
+        var project = await _unitOfWork.InvestmentProjects.GetByIdAsync(id);
+        if (project == null || project.IsDeleted)
+            return ApiResponse<bool>.Fail("المشروع غير موجود");
+
+        var portfolio = await _unitOfWork.InvestmentPortfolios.GetByIdAsync(dto.PortfolioID);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (portfolio == null || portfolio.IsDeleted)
             return ApiResponse<bool>.Fail("المحفظة الاستثمارية غير موجودة");
 
@@ -76,7 +98,11 @@ public class InvestmentProjectService : IInvestmentProjectService
             return ApiResponse<bool>.Fail("نوع الاستثمار غير موجود");
 
         // Unique constraint check: Project Name must be unique within a Portfolio
+<<<<<<< HEAD
         var exists = await queries.Query(_unitOfWork.InvestmentProjects)
+=======
+        var exists = await _unitOfWork.InvestmentProjects.Query()
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .AnyAsync(p => p.PortfolioID == dto.PortfolioID && p.Name == dto.Name && p.ProjectID != id && !p.IsDeleted);
         if (exists)
             return ApiResponse<bool>.Fail($"اسم المشروع '{dto.Name}' مستخدم بالفعل في هذه المحفظة");
@@ -105,9 +131,13 @@ public class InvestmentProjectService : IInvestmentProjectService
 
     public async Task<ApiResponse<bool>> DeleteProjectAsync(int id, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var project = await queries.Query(_unitOfWork.InvestmentProjects)
             .FirstOrDefaultAsync(p => p.ProjectID == id);
+=======
+        var project = await _unitOfWork.InvestmentProjects.GetByIdAsync(id);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (project == null || project.IsDeleted)
             return ApiResponse<bool>.Fail("المشروع غير موجود");
 
@@ -123,9 +153,13 @@ public class InvestmentProjectService : IInvestmentProjectService
 
     public async Task<ApiResponse<ProjectDto>> GetProjectByIdAsync(int id)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var project = await queries.Query(_unitOfWork.InvestmentProjects)
             .AsNoTracking()
+=======
+        var project = await _unitOfWork.InvestmentProjects.Query()
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Include(p => p.Portfolio)
             .Include(p => p.InvestmentType)
             .FirstOrDefaultAsync(p => p.ProjectID == id && !p.IsDeleted);
@@ -155,9 +189,13 @@ public class InvestmentProjectService : IInvestmentProjectService
 
     public async Task<ApiResponse<List<ProjectDto>>> GetAllProjectsAsync()
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var projects = await queries.Query(_unitOfWork.InvestmentProjects)
             .AsNoTracking()
+=======
+        var projects = await _unitOfWork.InvestmentProjects.Query()
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Include(p => p.Portfolio)
             .Include(p => p.InvestmentType)
             .Where(p => !p.IsDeleted)
@@ -184,9 +222,13 @@ public class InvestmentProjectService : IInvestmentProjectService
 
     public async Task<ApiResponse<List<ProjectDto>>> GetProjectsByPortfolioAsync(int portfolioId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var projects = await queries.Query(_unitOfWork.InvestmentProjects)
             .AsNoTracking()
+=======
+        var projects = await _unitOfWork.InvestmentProjects.Query()
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Include(p => p.Portfolio)
             .Include(p => p.InvestmentType)
             .Where(p => p.PortfolioID == portfolioId && !p.IsDeleted)
@@ -213,17 +255,25 @@ public class InvestmentProjectService : IInvestmentProjectService
 
     public async Task<ApiResponse<ProjectSummaryDto>> GetProjectSummaryAsync(int id)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var project = await queries.Query(_unitOfWork.InvestmentProjects)
             .AsNoTracking()
+=======
+        var project = await _unitOfWork.InvestmentProjects.Query()
+            .Include(p => p.Properties.Where(pr => !pr.IsDeleted))
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .FirstOrDefaultAsync(p => p.ProjectID == id && !p.IsDeleted);
 
         if (project == null)
             return ApiResponse<ProjectSummaryDto>.Fail("المشروع غير موجود");
 
+<<<<<<< HEAD
         var propertyCount = await queries.Query(_unitOfWork.InvestmentProperties)
             .CountAsync(p => p.ProjectID == id && !p.IsDeleted);
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         // Calculate actual spent from real transactions (Expenses only)
         // TODO: In a future phase, integrate with the new BankAccountService 
         // to retrieve actual investment expenses for this project.
@@ -238,7 +288,11 @@ public class InvestmentProjectService : IInvestmentProjectService
             Status = project.Status,
             PlannedBudget = project.PlannedBudget,
             TotalActualSpent = totalSpent,
+<<<<<<< HEAD
             PropertyCount = propertyCount,
+=======
+            PropertyCount = project.Properties.Count,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             ProgressPercentage = Math.Round(progress, 2)
         };
 
@@ -251,9 +305,13 @@ public class InvestmentProjectService : IInvestmentProjectService
 
     public async Task<ApiResponse<List<InvestmentPlanDto>>> GetProjectPlansAsync(int projectId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var plans = await queries.Query(_unitOfWork.InvestmentPlans)
             .AsNoTracking()
+=======
+        var plans = await _unitOfWork.InvestmentPlans.Query()
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Include(p => p.FiscalYear)
             .Where(p => p.ProjectID == projectId && !p.IsDeleted)
             .Select(p => new InvestmentPlanDto
@@ -272,9 +330,13 @@ public class InvestmentProjectService : IInvestmentProjectService
 
     public async Task<ApiResponse<int>> CreatePlanAsync(CreateInvestmentPlanDto dto, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var project = await queries.Query(_unitOfWork.InvestmentProjects)
             .FirstOrDefaultAsync(p => p.ProjectID == dto.ProjectID);
+=======
+        var project = await _unitOfWork.InvestmentProjects.GetByIdAsync(dto.ProjectID);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (project == null || project.IsDeleted)
             return ApiResponse<int>.Fail("المشروع غير موجود");
 
@@ -295,9 +357,13 @@ public class InvestmentProjectService : IInvestmentProjectService
 
     public async Task<ApiResponse<bool>> UpdatePlanAsync(int id, UpdateInvestmentPlanDto dto, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var plan = await queries.Query(_unitOfWork.InvestmentPlans)
             .FirstOrDefaultAsync(p => p.PlanID == id);
+=======
+        var plan = await _unitOfWork.InvestmentPlans.GetByIdAsync(id);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (plan == null || plan.IsDeleted)
             return ApiResponse<bool>.Fail("الخطة غير موجودة");
 
@@ -314,9 +380,13 @@ public class InvestmentProjectService : IInvestmentProjectService
 
     public async Task<ApiResponse<bool>> DeletePlanAsync(int id, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var plan = await queries.Query(_unitOfWork.InvestmentPlans)
             .FirstOrDefaultAsync(p => p.PlanID == id);
+=======
+        var plan = await _unitOfWork.InvestmentPlans.GetByIdAsync(id);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (plan == null || plan.IsDeleted)
             return ApiResponse<bool>.Fail("الخطة غير موجودة");
 

@@ -3,9 +3,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/Button";
+<<<<<<< HEAD
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { Dialog, DialogContent, DialogDescription,DialogHeader, DialogTitle } from "@/components/ui/Dialog";
 import { combineScannedPages } from "@/lib/scanned-document";
+=======
+import { Dialog, DialogContent, DialogDescription,DialogHeader, DialogTitle } from "@/components/ui/Dialog";
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { cn } from "@/lib/utils";
 
 import { ImageCropperDialog } from "./ImageCropperDialog";
@@ -15,8 +20,13 @@ import { ImageCropperDialog } from "./ImageCropperDialog";
 export interface FileUploaderProps {
     /** قيمة الملف الحالي */
     value?: File | string | null;
+<<<<<<< HEAD
     /** callback عند تغيير الملف؛ يمكن إرجاع false عند رفض إضافته */
     onChange?: (file: File | null) => void | boolean;
+=======
+    /** callback عند تغيير الملف */
+    onChange?: (file: File | null) => void;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     /** Label للمكون */
     label?: string;
     /** هل الحقل إلزامي */
@@ -31,8 +41,11 @@ export interface FileUploaderProps {
     showPreview?: boolean;
     /** هل يتم تفعيل الكاميرا */
     enableCamera?: boolean;
+<<<<<<< HEAD
     /** سؤال المستخدم عن تصوير مرفق آخر بعد قبول الصورة */
     allowContinuousCapture?: boolean;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     /** هل يتم تفعيل الماسح الضوئي */
     enableScanner?: boolean;
     /** إعدادات الماسح الضوئي */
@@ -67,6 +80,7 @@ const DEFAULT_SCANNER_URL = "http://localhost:5000";
 const DEFAULT_SCANNER_CONFIG = {
     url: DEFAULT_SCANNER_URL,
     dpi: 200,
+<<<<<<< HEAD
     // م45: A4 هو المقاس القياسي للمستندات، لا Letter (8.5×11). الوحدة: إنش (inches).
     width: 8.27,
     height: 11.69,
@@ -84,10 +98,20 @@ const SCANNER_PROBLEM_MESSAGES: Record<ScannerProblem, string> = {
 };
 
 async function checkScannerAvailable(scannerUrl: string): Promise<{ available: boolean; problem?: ScannerProblem }> {
+=======
+    width: 8.5,
+    height: 11,
+};
+
+// ─── Helper: Check Scanner Availability ────────────────
+
+async function checkScannerAvailable(scannerUrl: string): Promise<boolean> {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     try {
         const r = await fetch(`${scannerUrl}/scanners`, {
             signal: AbortSignal.timeout(1500)
         });
+<<<<<<< HEAD
         // م49: حالة الاستجابة والجسم يحددان السبب — ليست مجرد r.ok.
         if (r.status === 403) return { available: false, problem: "origin-blocked" };
         if (!r.ok) return { available: false, problem: "wia-error" };
@@ -97,6 +121,11 @@ async function checkScannerAvailable(scannerUrl: string): Promise<{ available: b
         return { available: true };
     } catch {
         return { available: false, problem: "agent-offline" };
+=======
+        return r.ok;
+    } catch {
+        return false;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 }
 
@@ -132,10 +161,13 @@ async function compressImage(file: File, maxSizeMB: number): Promise<File> {
     // If already under limit, return as-is
     if (file.size <= maxBytes) return file;
 
+<<<<<<< HEAD
     // Determine target format (keep original if supported by canvas toBlob, else fallback to jpeg)
     const targetType = (file.type === 'image/png' || file.type === 'image/webp') ? file.type : 'image/jpeg';
     const targetExt = targetType === 'image/png' ? '.png' : targetType === 'image/webp' ? '.webp' : '.jpg';
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     return new Promise<File>((resolve) => {
         const img = new Image();
         const url = URL.createObjectURL(file);
@@ -145,6 +177,7 @@ async function compressImage(file: File, maxSizeMB: number): Promise<File> {
 
             // Dimension tiers to try (progressively smaller)
             const dimensionTiers = [2048, 1600, 1280, 1024, 800];
+<<<<<<< HEAD
             
             // Reduced quality levels for jpeg/webp. PNG ignores quality so it only gets 1 level.
             const qualityLevels = targetType === 'image/png' ? [1.0] : [0.8, 0.5, 0.2];
@@ -174,6 +207,31 @@ async function compressImage(file: File, maxSizeMB: number): Promise<File> {
                 const quality = qualityLevels[qualIdx];
 
                 currentCanvas.toBlob(
+=======
+            // Quality levels to try at each dimension tier
+            const qualityLevels = [0.8, 0.65, 0.5, 0.35, 0.2];
+
+            const tryCompress = (dimIdx: number, qualIdx: number) => {
+                const maxDim = dimensionTiers[dimIdx];
+                let { width, height } = img;
+
+                // Scale down to fit within maxDim
+                if (width > maxDim || height > maxDim) {
+                    const ratio = Math.min(maxDim / width, maxDim / height);
+                    width = Math.round(width * ratio);
+                    height = Math.round(height * ratio);
+                }
+
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d')!;
+                ctx.drawImage(img, 0, 0, width, height);
+
+                const quality = qualityLevels[qualIdx];
+
+                canvas.toBlob(
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     (blob) => {
                         if (!blob) { resolve(file); return; }
 
@@ -181,6 +239,7 @@ async function compressImage(file: File, maxSizeMB: number): Promise<File> {
                             // Success — fits under the limit
                             const compressed = new File(
                                 [blob],
+<<<<<<< HEAD
                                 file.name.replace(/\.[^.]+$/, targetExt),
                                 { type: targetType }
                             );
@@ -190,25 +249,53 @@ async function compressImage(file: File, maxSizeMB: number): Promise<File> {
                             tryCompress(dimIdx, qualIdx + 1, currentCanvas);
                         } else if (dimIdx < dimensionTiers.length - 1) {
                             // Move to smaller dimension, reset quality and clear canvas
+=======
+                                file.name.replace(/\.[^.]+$/, '.jpg'),
+                                { type: 'image/jpeg' }
+                            );
+                            resolve(compressed);
+                        } else if (qualIdx < qualityLevels.length - 1) {
+                            // Try lower quality at same dimension
+                            tryCompress(dimIdx, qualIdx + 1);
+                        } else if (dimIdx < dimensionTiers.length - 1) {
+                            // Move to smaller dimension, reset quality
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             tryCompress(dimIdx + 1, 0);
                         } else {
                             // All options exhausted, return best effort
                             const compressed = new File(
                                 [blob],
+<<<<<<< HEAD
                                 file.name.replace(/\.[^.]+$/, targetExt),
                                 { type: targetType }
+=======
+                                file.name.replace(/\.[^.]+$/, '.jpg'),
+                                { type: 'image/jpeg' }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             );
                             resolve(compressed);
                         }
                     },
+<<<<<<< HEAD
                     targetType,
+=======
+                    'image/jpeg',
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     quality
                 );
             };
 
+<<<<<<< HEAD
             // Start with first tier that's smaller than or equal to the original
             const startDimIdx = Math.max(0, dimensionTiers.findIndex(d => d <= Math.max(img.width, img.height)));
             tryCompress(startDimIdx, 0);
+=======
+            // Start with first tier that's smaller than the original
+            const startDimIdx = dimensionTiers.findIndex(
+                d => d < Math.max(img.width, img.height)
+            );
+            tryCompress(Math.max(0, startDimIdx), 0);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         };
 
         img.onerror = () => {
@@ -233,9 +320,14 @@ export function FileUploader({
     hint,
     showPreview = true,
     enableCamera = true,
+<<<<<<< HEAD
     allowContinuousCapture = false,
     enableScanner = true,
     scannerConfig: userScannerConfig,
+=======
+    enableScanner = true,
+    scannerConfig = DEFAULT_SCANNER_CONFIG,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     size = "md",
     className,
     disabled = false,
@@ -248,17 +340,23 @@ export function FileUploader({
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     // Detect mobile once
+<<<<<<< HEAD
     // Merge scanner config properties with defaults
     const scannerConfig = useMemo(() => {
         return { ...DEFAULT_SCANNER_CONFIG, ...userScannerConfig };
     }, [userScannerConfig]);
 
     // Detect mobile once
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const isMobile = useMemo(() => isMobileDevice(), []);
 
     // Camera state
     const [cameraOpen, setCameraOpen] = useState(false);
+<<<<<<< HEAD
     const [continueCaptureOpen, setContinueCaptureOpen] = useState(false);
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const [previewOpen, setPreviewOpen] = useState(false);
     const [cropOpen, setCropOpen] = useState(false);
     const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
@@ -271,17 +369,24 @@ export function FileUploader({
 
     // Scanner state
     const [scannerAvailable, setScannerAvailable] = useState(false);
+<<<<<<< HEAD
     const [scannerProblem, setScannerProblem] = useState<ScannerProblem | null>(null);
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const [scanning, setScanning] = useState(false);
 
     // Check scanner availability on mount
     useEffect(() => {
         if (enableScanner) {
             checkScannerAvailable(scannerConfig.url || DEFAULT_SCANNER_URL)
+<<<<<<< HEAD
                 .then((res) => {
                     setScannerAvailable(res.available);
                     setScannerProblem(res.problem ?? null);
                 })
+=======
+                .then(setScannerAvailable)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 .catch(() => setScannerAvailable(false));
         }
     }, [enableScanner, scannerConfig.url]);
@@ -340,7 +445,10 @@ export function FileUploader({
                 return;
             }
             // فتح crop يدوي مباشر بدون auto-scan
+<<<<<<< HEAD
             cropCompletedRef.current = false;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             setPendingCropFile(file);
             setCropOpen(true);
         }
@@ -354,6 +462,7 @@ export function FileUploader({
         cameraInputRef.current?.click();
     }, []);
 
+<<<<<<< HEAD
     // ─── م40: فحص موحد على كل نتيجة نهائية (رفع/كاميرا/ماسح/قص) ──
     // يرمي خطأ برسالة عربية يعرضها ImageCropperDialog ويُبقي النافذة مفتوحة
     const validateFinalFile = useCallback(async (file: File): Promise<File> => {
@@ -370,6 +479,8 @@ export function FileUploader({
         return out;
     }, [accept, maxSizeMB]);
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     // ─── Camera Handlers ────────────────────────────────
 
     const handleOpenCamera = useCallback(() => {
@@ -410,14 +521,21 @@ export function FileUploader({
                         );
                         handleCloseCamera();
                         // فتح crop يدوي مباشر بدون auto-scan
+<<<<<<< HEAD
                         cropCompletedRef.current = false;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         setPendingCropFile(file);
                         setCropOpen(true);
                     }
                 }, "image/jpeg", 0.9);
             }
         }
+<<<<<<< HEAD
     }, [handleCloseCamera, videoReady, validateFinalFile]);
+=======
+    }, [handleCloseCamera, videoReady]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     useEffect(() => {
         if (!cameraOpen) {
@@ -483,6 +601,7 @@ export function FileUploader({
     // ─── Scanner Handler ────────────────────────────────
 
     const handleScan = useCallback(async (options: { useAdf?: boolean, isPassport?: boolean } = {}) => {
+<<<<<<< HEAD
         const { isPassport = false } = options;
         setScanning(true);
         try {
@@ -496,11 +615,24 @@ export function FileUploader({
                 });
                 setScannerAvailable(false);
                 setScannerProblem(probe.problem ?? null);
+=======
+        const { useAdf = false, isPassport = false } = options;
+        setScanning(true);
+        try {
+            // Check scanner availability first
+            const available = await checkScannerAvailable(scannerConfig.url || DEFAULT_SCANNER_URL);
+            if (!available) {
+                toast.error("الماسح الضوئي غير متاح", {
+                    description: "تأكد من تشغيل برنامج 'Scanner Agent' وتوصيل الماسح الضوئي."
+                });
+                setScannerAvailable(false);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 setScanning(false);
                 return;
             }
 
             setScannerAvailable(true);
+<<<<<<< HEAD
             setScannerProblem(null);
 
             const isAdf = options.useAdf ?? scannerConfig.adf ?? false;
@@ -511,6 +643,15 @@ export function FileUploader({
             // م46: مقاس الصورة الشخصية 4×6 سم = 1.575×2.362 إنش، والإزاحة 0.1 إنش تتجاهل حواف الزجاج الفارغة.
             const scanWidth = isPassport ? 1.575 : scannerConfig.width;
             const scanHeight = isPassport ? 2.362 : scannerConfig.height;
+=======
+
+            const adfParam = useAdf || scannerConfig.adf ? "&adf=true" : "";
+
+            // 4cm = 1.575 inches, 6cm = 2.362 inches.
+            // We use offsets to ignore the empty glass borders (margins) from all sides.
+            const scanWidth = isPassport ? 1.35 : scannerConfig.width;
+            const scanHeight = isPassport ? 1.75 : scannerConfig.height;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             const offsetX = isPassport ? 0.1 : 0;
             const offsetY = isPassport ? 0.1 : 0;
 
@@ -520,15 +661,22 @@ export function FileUploader({
             if (offsetX) url += `&offsetX=${offsetX}`;
             if (offsetY) url += `&offsetY=${offsetY}`;
 
+<<<<<<< HEAD
             const r = await fetch(url, { method: "POST", signal: AbortSignal.timeout(60000) });
 
             // م49: كل حالة له رسالة حقيقية — إلغاء المستخدم (204) منفصل عن الأعطال.
             if (r.status === 204) {
+=======
+            const r = await fetch(url, { method: "POST" });
+
+            if (r.status === 204 || !r.ok) {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 toast.warning("تم إلغاء المسح الضوئي", {
                     description: "لم يتم استلام أي صورة من الماسح الضوئي."
                 });
                 return;
             }
+<<<<<<< HEAD
             if (r.status === 429) {
                 toast.error("جهاز المسح مشغول بطلب آخر", {
                     description: "انتظر انتهاء المسح الجاري ثم أعد المحاولة."
@@ -599,6 +747,21 @@ export function FileUploader({
                     if (!j || typeof j.data !== 'string' || typeof j.type !== 'string' || typeof j.name !== 'string') {
                         throw new Error('استجابة الماسح غير صالحة');
                     }
+=======
+
+            const contentType = r.headers.get("content-type");
+
+            if (contentType?.includes("application/json")) {
+                const json = await r.json();
+                if (!Array.isArray(json) || json.length === 0) {
+                    toast.warning("تم إلغاء المسح الضوئي", {
+                    description: "لم يتم استلام أي صورة من الماسح الضوئي."
+                });
+                    return;
+                }
+
+                const files: File[] = json.map((j: ScannerFile) => {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     const byteString = atob(j.data);
                     const ab = new ArrayBuffer(byteString.length);
                     const ia = new Uint8Array(ab);
@@ -609,6 +772,7 @@ export function FileUploader({
                     return new File([blob], j.name, { type: j.type });
                 });
 
+<<<<<<< HEAD
             } else {
                 const blob = await r.blob();
                 const extension = blob.type === 'application/pdf' ? 'pdf' : blob.type === 'image/png' ? 'png' : 'jpg';
@@ -658,13 +822,57 @@ export function FileUploader({
             }
             setScannerAvailable(false);
             setScannerProblem("agent-offline");
+=======
+                // Emit files sequentially to allow parent components (e.g. uploadDocument) to process them
+                for (let i = 0; i < files.length; i++) {
+                    if (accept && !isFileAccepted(files[i], accept)) {
+                        toast.error(`صيغة الملف "${files[i].name}" غير مدعومة من الماسح`);
+                        continue;
+                    }
+                    onChange?.(files[i]);
+                    if (i < files.length - 1) {
+                        await new Promise(res => setTimeout(res, 600));
+                    }
+                }
+            } else {
+                const blob = await r.blob();
+
+                if (blob) {
+                    const isPdf = blob.type === "application/pdf" || useAdf || scannerConfig.adf;
+                    const extension = isPdf ? "pdf" : "jpg";
+                    const mimeType = isPdf ? "application/pdf" : "image/jpeg";
+
+                    const file = new File(
+                        [blob],
+                        `scan_${Date.now()}.${extension}`,
+                        { type: mimeType }
+                    );
+                    if (accept && !isFileAccepted(file, accept)) {
+                        toast.error(`صيغة الملف الممسوح "${file.name}" غير مدعومة`);
+                    } else {
+                        onChange?.(file);
+                    }
+                } else {
+                    toast.warning("تم إلغاء المسح الضوئي", {
+                    description: "لم يتم استلام أي صورة من الماسح الضوئي."
+                });
+                }
+            }
+        } catch (err: unknown) {
+            console.error(err);
+            setScannerAvailable(false);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             toast.error("فشل الاتصال بالماسح الضوئي", {
                 description: "تأكد من تشغيل برنامج 'Scanner Agent' وتوصيل الجهاز."
             });
         } finally {
             setScanning(false);
         }
+<<<<<<< HEAD
     }, [scannerConfig, onChange, accept, maxSizeMB]);
+=======
+    }, [scannerConfig, onChange, accept]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     // ─── Remove File ────────────────────────────────────
 
@@ -696,6 +904,7 @@ export function FileUploader({
         ? value.toLowerCase().endsWith(".pdf")
         : (value as File)?.type === "application/pdf" || (value as File)?.name?.toLowerCase().endsWith(".pdf");
 
+<<<<<<< HEAD
     const [previewUrl, setPreviewUrl] = useState("");
 
     // Setup preview URL and manage Blob URL lifecycle
@@ -718,6 +927,34 @@ export function FileUploader({
         <div className={cn("space-y-1.5 flex flex-col h-full", className)}>
             {label && (
                 <label className="label-field">
+=======
+    const previewUrlRef = useRef("");
+
+    const previewUrl = useMemo(() => {
+        if (!hasFile) return "";
+        if (isString) return value as string;
+        return URL.createObjectURL(value as File);
+    }, [hasFile, isString, value]);
+
+    // Revoke old blob URL when a new one is created; revoke current on unmount
+    useEffect(() => {
+        if (!isString && previewUrl && previewUrl !== previewUrlRef.current) {
+            if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+            previewUrlRef.current = previewUrl;
+        }
+        return () => {
+            if (previewUrlRef.current) {
+                URL.revokeObjectURL(previewUrlRef.current);
+                previewUrlRef.current = "";
+            }
+        };
+    }, [previewUrl, isString]);
+
+    return (
+        <div className={cn("space-y-1.5 flex flex-col h-full", className)}>
+            {label && (
+                <label className="block text-sm font-medium text-foreground">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {label}
                     {required && <span className="text-destructive me-1">*</span>}
                 </label>
@@ -727,7 +964,11 @@ export function FileUploader({
             <div
                 className={cn(
                     "relative border-2 border-dashed rounded-lg transition-all flex-1 flex flex-col items-center justify-center",
+<<<<<<< HEAD
                     "hover:border-primary hover:bg-primary/5",
+=======
+                    "hover:border-primary/50 hover:bg-primary/5",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     hasFile && "border-primary bg-primary/5",
                     error && "border-destructive",
                     disabled && "opacity-50 cursor-not-allowed",
@@ -755,7 +996,11 @@ export function FileUploader({
                                     e.stopPropagation();
                                     setPreviewOpen(true);
                                 }}
+<<<<<<< HEAD
                                 className="max-h-16 sm:max-h-20 max-w-[90%] rounded object-contain mb-1 cursor-pointer hover:opacity-100 transition-opacity"
+=======
+                                className="max-h-16 sm:max-h-20 max-w-[90%] rounded object-contain mb-1 cursor-pointer hover:opacity-80 transition-opacity"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             />
                         ) : isPdf ? (
                             <div className="p-2 bg-red-100 rounded-lg mb-1">
@@ -856,9 +1101,15 @@ export function FileUploader({
                                                 loading={scanning}
                                                 className={cn(
                                                     "min-h-[40px] px-3 text-xs sm:text-sm relative z-10",
+<<<<<<< HEAD
                                                     !scannerAvailable && "opacity-100"
                                                 )}
                                                 title={scannerAvailable ? "مسح ضوئي لورقة واحدة" : scannerProblem ? `الماسح غير متاح: ${SCANNER_PROBLEM_MESSAGES[scannerProblem]}` : "الماسح غير متاح - تأكد من تشغيل Scanner Agent"}
+=======
+                                                    !scannerAvailable && "opacity-60"
+                                                )}
+                                                title={scannerAvailable ? "مسح ضوئي لورقة واحدة" : "الماسح غير متاح - تأكد من تشغيل Scanner Agent"}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             >
                                                 <ScanLine className="w-4 h-4 ms-1.5" />
                                                 ماسح
@@ -876,9 +1127,15 @@ export function FileUploader({
                                                 loading={scanning}
                                                 className={cn(
                                                     "min-h-[40px] px-3 text-xs sm:text-sm relative z-10 border-primary text-primary hover:bg-primary/10",
+<<<<<<< HEAD
                                                     !scannerAvailable && "opacity-100"
                                                 )}
                                                 title={scannerAvailable ? "سحب أكثر من ورقة (ADF)" : scannerProblem ? `الماسح غير متاح: ${SCANNER_PROBLEM_MESSAGES[scannerProblem]}` : "الماسح غير متاح - تأكد من تشغيل Scanner Agent"}
+=======
+                                                    !scannerAvailable && "opacity-60"
+                                                )}
+                                                title={scannerAvailable ? "سحب أكثر من ورقة (ADF)" : "الماسح غير متاح - تأكد من تشغيل Scanner Agent"}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             >
                                                 <FileText className="w-4 h-4 ms-1.5" />
                                                 عدة أوراق
@@ -895,6 +1152,7 @@ export function FileUploader({
                                                 disabled={disabled || scanning}
                                                 loading={scanning}
                                                 className={cn(
+<<<<<<< HEAD
                                                     "min-h-[40px] px-3 text-xs sm:text-sm relative z-10 border-blue-500 text-blue-600 hover:bg-blue-500/10",
                                                     !scannerAvailable && "opacity-100"
                                                 )}
@@ -902,6 +1160,15 @@ export function FileUploader({
                                             >
                                                 <User className="w-4 h-4 ms-1.5" />
                                                 صورة 4×6
+=======
+                                                    "min-h-[40px] px-3 text-xs sm:text-sm relative z-10 border-blue-500/50 text-blue-600 hover:bg-blue-500/10",
+                                                    !scannerAvailable && "opacity-60"
+                                                )}
+                                                title={scannerAvailable ? "مسح صورة شخصية (6×4)" : "الماسح غير متاح"}
+                                            >
+                                                <User className="w-4 h-4 ms-1.5" />
+                                                صورة 6×4
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             </Button>
                                         </>
                                     )}
@@ -1041,6 +1308,7 @@ export function FileUploader({
             <ImageCropperDialog
                 open={cropOpen}
                 imageFile={pendingCropFile || value!}
+<<<<<<< HEAD
                 onClose={async () => {
                     // إذا كان هناك التقاط جديد، يتم اعتماد الصورة الأصلية بدلاً من تجاهلها عند إلغاء القص
                     const originalFile = pendingCropFile && !cropCompletedRef.current ? pendingCropFile : null;
@@ -1085,6 +1353,21 @@ export function FileUploader({
                 onConfirm={() => {
                     setContinueCaptureOpen(false);
                     handleOpenCamera();
+=======
+                onClose={() => {
+                    // Only use the original file if crop wasn't already confirmed
+                    if (pendingCropFile && !cropCompletedRef.current) {
+                        onChange?.(pendingCropFile);
+                    }
+                    setPendingCropFile(null);
+                    cropCompletedRef.current = false;
+                    setCropOpen(false);
+                }}
+                onCrop={(croppedFile) => {
+                    onChange?.(croppedFile);
+                    setPendingCropFile(null);
+                    cropCompletedRef.current = true;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 }}
             />
         </div>

@@ -94,7 +94,11 @@ export function PropertyActivityLogTab({ propertyId }: PropertyActivityLogTabPro
                                 تم تحديث قيم الحقول في قاعدة البيانات
                             </div>
                         )}
+<<<<<<< HEAD
                         <div className="text-[10px] sm:text-xs font-mono text-muted-foreground opacity-100">IP: {row.ipAddress}</div>
+=======
+                        <div className="text-[10px] sm:text-xs font-mono text-muted-foreground opacity-70">IP: {row.ipAddress}</div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     </div>
                 );
             }
@@ -109,7 +113,11 @@ export function PropertyActivityLogTab({ propertyId }: PropertyActivityLogTabPro
 
     return (
         <div className="space-y-4 animate-in fade-in duration-500 text-start">
+<<<<<<< HEAD
             <Card className="flex items-center justify-between bg-muted/30 p-4 border border-border">
+=======
+            <Card className="flex items-center justify-between bg-muted/30 p-4 border border-border/50">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <div className="space-y-1">
                     <Heading level="h3" className="flex items-center gap-2">
                         <History className="w-5 h-5 text-primary" /> سجل الأنشطة والتدقيق
@@ -120,11 +128,19 @@ export function PropertyActivityLogTab({ propertyId }: PropertyActivityLogTabPro
 
             {logs.length === 0 ? (
                 <div className="bg-muted/10 border-2 border-dashed rounded-2xl p-4 sm:p-8 lg:p-16 text-center">
+<<<<<<< HEAD
                     <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto mb-4 text-muted-foreground opacity-100">
                         <Monitor className="w-6 h-6" />
                     </div>
                     <h4 className="font-bold text-muted-foreground">لا توجد سجلات تدقيق</h4>
                     <p className="text-sm text-muted-foreground mt-1 opacity-100">لم يتم العثور على حركات مسجلة لهذا الأصل في النظام.</p>
+=======
+                    <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto mb-4 text-muted-foreground opacity-30">
+                        <Monitor className="w-6 h-6" />
+                    </div>
+                    <h4 className="font-bold text-muted-foreground">لا توجد سجلات تدقيق</h4>
+                    <p className="text-sm text-muted-foreground mt-1 opacity-70">لم يتم العثور على حركات مسجلة لهذا الأصل في النظام.</p>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 </div>
             ) : (
                 <DataTable
@@ -133,8 +149,13 @@ export function PropertyActivityLogTab({ propertyId }: PropertyActivityLogTabPro
                 />
             )}
             
+<<<<<<< HEAD
             <div className="text-[10px] sm:text-xs text-muted-foreground bg-info/10 p-3 rounded-lg border border-info italic flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-info" />
+=======
+            <div className="text-[10px] sm:text-xs text-muted-foreground bg-blue-50/50 p-3 rounded-lg border border-blue-100 italic flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 ملاحظة: يتم أرشفة كافة العمليات لضمان أعلى مستويات الرقابة والشفافية في إدارة الاستثمارات.
             </div>
         </div>

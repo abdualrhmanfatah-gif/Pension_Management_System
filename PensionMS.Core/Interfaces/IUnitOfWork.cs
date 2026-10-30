@@ -211,6 +211,7 @@ public interface IUnitOfWork : IDisposable
     // ═══════════════════════════════════════
     // TRANSACTION MANAGEMENT
     // ═══════════════════════════════════════
+<<<<<<< HEAD
     /// <summary>Flushes tracked changes. Inside a transaction it does not commit that transaction.</summary>
     Task<int> SaveChangesAsync();
     bool HasActiveTransaction { get; }
@@ -228,5 +229,11 @@ public interface IUnitOfWork : IDisposable
     /// <summary>Only the transaction owner commits. Does not implicitly call SaveChanges.</summary>
     Task CommitAsync();
     /// <summary>Only the transaction owner rolls back. Discard the operation context after failure; tracked values are not restored.</summary>
+=======
+    Task<int> SaveChangesAsync();
+    bool HasActiveTransaction { get; }
+    Task BeginTransactionAsync();
+    Task CommitAsync();
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     Task RollbackAsync();
 }

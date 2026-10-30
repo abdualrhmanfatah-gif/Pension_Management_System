@@ -41,8 +41,13 @@ const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
+<<<<<<< HEAD
       "relative flex cursor-pointer select-none items-center gap-2 rounded-lg px-3 py-2.5 text-sm outline-none text-popover-foreground font-bold",
       "transition-colors focus:bg-accent focus:text-popover-foreground focus:ring-0 focus:outline-none hover:no-underline",
+=======
+      "relative flex cursor-pointer select-none items-center gap-2 rounded-lg px-3 py-2.5 text-sm outline-none text-black font-bold",
+      "transition-colors focus:bg-accent focus:text-black focus:ring-0 focus:outline-none hover:no-underline",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       inset && "ps-8",
       className
@@ -84,6 +89,7 @@ DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName
 
 export {
   DropdownMenu,
+<<<<<<< HEAD
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
@@ -92,4 +98,14 @@ export {
   DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuTrigger,
+=======
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuGroup,
+  DropdownMenuSub,
+  DropdownMenuRadioGroup,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }

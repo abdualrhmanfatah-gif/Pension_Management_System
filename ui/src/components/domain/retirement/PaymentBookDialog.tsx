@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { BookOpen, CreditCard, FileText, Trash2,User } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
@@ -13,15 +14,30 @@ import {
     BaseFormDialog,
     Button,
     DateInput,
+=======
+import { BookOpen, CreditCard, FileText, User, Trash2 } from "lucide-react";
+import { useEffect, useMemo, useCallback, useState } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
+import { z } from "zod";
+
+import {
+    BaseFormDialog,
+    Button,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     FileField,
     FormField,
     FormSection,
     Input,
+<<<<<<< HEAD
+=======
+    DateInput,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     NativeSelect,
     RadioGroup,
     RadioGroupItem,
     Textarea,
 } from "@/components/ui";
+<<<<<<< HEAD
 import { LEGACY_BOOK_COLORS } from "@/constants";
 import { useRecordNavigation } from "@/hooks";
 import { useDocumentBlob } from "@/hooks/useDocumentBlob";
@@ -29,6 +45,15 @@ import { chartColors } from "@/lib/chartColors";
 import { toDateOnlyYemen } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import type { PaymentBookItem } from "@/types/retirement";
+=======
+
+import { LEGACY_BOOK_COLORS } from "@/constants";
+import { chartColors } from "@/lib/chartColors";
+import { cn } from "@/lib/utils";
+import { retirementApi } from "@/api/retirement";
+import api from "@/api/axios";
+import { useDocumentBlob } from "@/hooks/useDocumentBlob";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Validation Schema ─────────────────────────────────
 
@@ -60,13 +85,17 @@ export type BookFormValues = z.infer<typeof bookSchema>;
 
 interface RecipientOption { id: string | number; name: string; }
 
+<<<<<<< HEAD
 interface BranchOption { id: number; name: string; }
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 interface ExistingImage {
     documentID: number;
     filePath: string;
 }
 
+<<<<<<< HEAD
 export interface PaymentBookSubmitContext {
     paymentBookID?: number;
 }
@@ -81,6 +110,14 @@ interface PaymentBookDialogProps {
     mode: "create" | "edit";
     /** معرّف الدفتر عند الفتح بالتعديل (يملكه التبويب) */
     editRecordId?: number;
+=======
+interface PaymentBookDialogProps {
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+    onSubmit: (values: BookFormValues) => void;
+    isLoading?: boolean;
+    mode: "create" | "edit";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     initialData?: Partial<BookFormValues>;
     existingImages?: ExistingImage[];
     onDeleteImage?: (documentID: number) => void;
@@ -93,6 +130,7 @@ interface PaymentBookDialogProps {
 
 const DRAFT_KEY = "payment_book_draft";
 
+<<<<<<< HEAD
 const DEFAULT_BOOK_VALUES: BookFormValues = {
     bookType: "يدوي", legacyColor: "أخضر", bookNumber: "", issueDate: "", expiryDate: "",
     changeReason: "", status: "فعال", autoCreateSalaryRecipient: true,
@@ -100,6 +138,8 @@ const DEFAULT_BOOK_VALUES: BookFormValues = {
     salaryRecipientID: null, notes: "", bookImage: null, issuingBranchID: null,
 };
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 const COLOR_HEX: Record<string, string> = {
     "أبيض": "#ffffff",
     "أخضر": chartColors.success,
@@ -115,11 +155,17 @@ function BlobImage({ filePath, alt, className }: { filePath: string; alt?: strin
 export function PaymentBookDialog({
     open,
     onOpenChange,
+<<<<<<< HEAD
     fileId,
     onSubmit,
     isLoading,
     mode,
     editRecordId,
+=======
+    onSubmit,
+    isLoading,
+    mode,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     initialData,
     existingImages = [],
     onDeleteImage,
@@ -127,6 +173,7 @@ export function PaymentBookDialog({
 }: PaymentBookDialogProps) {
     const form = useForm<BookFormValues>({
         resolver: zodResolver(bookSchema) as import("react-hook-form").Resolver<BookFormValues>,
+<<<<<<< HEAD
         defaultValues: DEFAULT_BOOK_VALUES,
     });
 
@@ -192,11 +239,45 @@ export function PaymentBookDialog({
     const allValues = watch();
     useEffect(() => {
         if (open && effectiveMode === "create" && isDirty) {
+=======
+        defaultValues: useMemo(() => {
+            const saved = sessionStorage.getItem(DRAFT_KEY);
+            if (mode === "create" && saved) {
+                try {
+                    return JSON.parse(saved);
+                } catch { /* ignore */ }
+            }
+            return {
+                bookType: "يدوي",
+                legacyColor: "أخضر",
+                bookNumber: "",
+                issueDate:"",
+                expiryDate: "",
+                changeReason: "",
+                status: "فعال",
+                autoCreateSalaryRecipient: true,
+                notes: "",
+                bookImage: null,
+                issuingBranchID: null,
+            };
+        }, [mode])
+    });
+
+    const { control, register, setValue, watch, formState: { errors, isDirty } } = form;
+
+    const allValues = watch();
+    useEffect(() => {
+        if (mode === "create" && isDirty) {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             const { bookImage: _b, ...textFields } = allValues;
             void _b;
             sessionStorage.setItem(DRAFT_KEY, JSON.stringify(textFields));
         }
+<<<<<<< HEAD
     }, [allValues, open, effectiveMode, isDirty]);
+=======
+    }, [allValues, mode, isDirty]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     const bookType = useWatch({ control, name: "bookType" });
     const issueDate = useWatch({ control, name: "issueDate" });
@@ -231,7 +312,11 @@ export function PaymentBookDialog({
             const date = new Date(issueDate);
             if (!isNaN(date.getTime())) {
                 date.setFullYear(date.getFullYear() + 1);
+<<<<<<< HEAD
                 setValue("expiryDate", toDateOnlyYemen(date));
+=======
+                setValue("expiryDate", date.toISOString().split('T')[0]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             }
         }
     }, [issueDate, setValue, isLegacy]);
@@ -251,9 +336,14 @@ export function PaymentBookDialog({
     const { data: branches = [], isLoading: loadingBranches } = useQuery({
         queryKey: ["branches-lookup"],
         queryFn: async () => {
+<<<<<<< HEAD
             const res = await api.get<{ data: BranchOption[] } | BranchOption[]>("/lookups/branches");
             const data = res.data;
             return Array.isArray(data) ? data : (data?.data || []);
+=======
+            const res = await api.get<{ data: Array<{ id: number; name: string }> }>("/lookups/branches");
+            return res.data.data;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         },
         enabled: open,
     });
@@ -265,7 +355,11 @@ export function PaymentBookDialog({
                 try {
                     // Only check for duplicates if it's a legacy book AND 
                     // (it's create mode OR the book number actually changed during edit)
+<<<<<<< HEAD
                     if (isLegacy && data.bookNumber && (effectiveMode === "create" || data.bookNumber !== baselineBookNumber)) {
+=======
+                    if (isLegacy && data.bookNumber && (mode === "create" || data.bookNumber !== initialData?.bookNumber)) {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         try {
                             const exists = await retirementApi.checkBookNumber(data.bookNumber);
                             if (exists) {
@@ -278,9 +372,13 @@ export function PaymentBookDialog({
                             console.warn("فشل التحقق من رقم الدفتر، سيتم المتابعة:", apiError);
                         }
                     }
+<<<<<<< HEAD
                     await onSubmit(data, {
                         paymentBookID: effectiveMode === "edit" ? effectiveRecordId : undefined,
                     });
+=======
+                    onSubmit(data);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 } catch (error) {
                     console.error("خطأ أثناء حفظ الدفتر:", error);
                 }
@@ -289,6 +387,7 @@ export function PaymentBookDialog({
                 console.warn("أخطاء التحقق:", validationErrors);
             }
         );
+<<<<<<< HEAD
     }, [form, onSubmit, isLegacy, effectiveMode, baselineBookNumber, effectiveRecordId]);
 
     const initialValues = useMemo(() => {
@@ -296,23 +395,43 @@ export function PaymentBookDialog({
         if (!initialData) return undefined;
         return {
             ...DEFAULT_BOOK_VALUES,
+=======
+    }, [form, onSubmit, isLegacy, mode, initialData?.bookNumber]);
+
+    const initialValues = useMemo(() => {
+        if (!initialData) return undefined;
+        return {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             ...initialData,
             issueDate: initialData.issueDate ? initialData.issueDate.split('T')[0] : "",
             expiryDate: initialData.expiryDate ? initialData.expiryDate.split('T')[0] : "",
             issuingBranchID: initialData.issuingBranchID || null,
         } as BookFormValues;
+<<<<<<< HEAD
     }, [initialData, effectiveMode]);
+=======
+    }, [initialData]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     return (
         <BaseFormDialog<BookFormValues>
             open={open}
             onOpenChange={onOpenChange}
+<<<<<<< HEAD
             title={effectiveMode === "create" ? (isLegacy ? "إضافة دفتر صرف قديم" : "إصدار دفتر صرف جديد") : "تعديل بيانات دفتر الصرف"}
             description={effectiveMode === "create"
                 ? (isLegacy ? "إضافة دفتر يدوي قديم (أبيض/أخضر/أزرق) مع بيانات المستلم." : "سيتم إلغاء تفعيل أي دفتر حالي للملف تلقائياً.")
                 : `تعديل بيانات الدفتر رقم: ${baselineBookNumber ?? ""}`}
             size="full"
             isLoading={isLoading || !detailReady}
+=======
+            title={mode === "create" ? (isLegacy ? "إضافة دفتر صرف قديم" : "إصدار دفتر صرف جديد") : "تعديل بيانات دفتر الصرف"}
+            description={mode === "create"
+                ? (isLegacy ? "إضافة دفتر يدوي قديم (أبيض/أخضر/أزرق) مع بيانات المستلم." : "سيتم إلغاء تفعيل أي دفتر حالي للملف تلقائياً.")
+                : `تعديل بيانات الدفتر رقم: ${initialData?.bookNumber}`}
+            size="full"
+            isLoading={isLoading}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             isDirty={isDirty}
             onSubmit={handleSubmitWithCheck}
             resetOnOpen={true}
@@ -320,7 +439,11 @@ export function PaymentBookDialog({
             initialValues={initialValues || undefined}
             showGlobalError
             formErrors={errors}
+<<<<<<< HEAD
             submitLabel={effectiveMode === "create" ? (isLegacy ? "إضافة الدفتر القديم" : "إصدار الدفتر") : "حفظ التعديلات"}
+=======
+            submitLabel={mode === "create" ? (isLegacy ? "إضافة الدفتر القديم" : "إصدار الدفتر") : "حفظ التعديلات"}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         >
             <div className="space-y-4">
 
@@ -331,7 +454,10 @@ export function PaymentBookDialog({
                         {/* Radio Cards: نوع الدفتر */}
                         <FormField label="نوع الدفتر" required error={errors.bookType?.message}>
                             <RadioGroup
+<<<<<<< HEAD
                                 dir="rtl"
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 value={isLegacy ? "يدوي" : "إلكتروني"}
                                 onValueChange={(val) => {
                                     if (val === "إلكتروني") {
@@ -352,7 +478,11 @@ export function PaymentBookDialog({
                                     "flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all",
                                     !isLegacy
                                         ? "border-primary bg-primary/5"
+<<<<<<< HEAD
                                         : "border-border hover:border-border"
+=======
+                                        : "border-border hover:border-border/60"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 )}>
                                     <RadioGroupItem value="إلكتروني" className="sr-only" />
                                     <CreditCard className={cn("w-5 h-5 shrink-0", !isLegacy ? "text-primary" : "text-muted-foreground")} />
@@ -366,7 +496,11 @@ export function PaymentBookDialog({
                                     "flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all",
                                     isLegacy
                                         ? "border-primary bg-primary/5"
+<<<<<<< HEAD
                                         : "border-border hover:border-border"
+=======
+                                        : "border-border hover:border-border/60"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 )}>
                                     <RadioGroupItem value="يدوي" className="sr-only" />
                                     <BookOpen className={cn("w-5 h-5 shrink-0", isLegacy ? "text-primary" : "text-muted-foreground")} />
@@ -395,7 +529,11 @@ export function PaymentBookDialog({
                                                 onClick={() => setValue("legacyColor", color, { shouldDirty: true, shouldValidate: true })}
                                             >
                                                 <div
+<<<<<<< HEAD
                                                     className="w-5 h-5 rounded border border-black"
+=======
+                                                    className="w-5 h-5 rounded border border-black/10"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                     style={{ backgroundColor: COLOR_HEX[color] || "#ccc" }}
                                                 />
                                                 <span className="text-xs text-muted-foreground">{color}</span>
@@ -416,9 +554,14 @@ export function PaymentBookDialog({
                                         <Input
                                             {...register("bookNumber")}
                                             placeholder="أدخل الرقم المطبوع على الدفتر"
+<<<<<<< HEAD
                                             autoFocus
                                             className={cn(
                                                 "font-bold",
+=======
+                                            className={cn(
+                                                "font-mono font-bold",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                 bookNumberError && "border-destructive focus:ring-destructive/20"
                                             )}
                                             onBlur={(e) => {
@@ -428,14 +571,22 @@ export function PaymentBookDialog({
                                         />
                                         {checkingBookNumber && (
                                             <div className="absolute left-2 top-1/2 -translate-y-1/2">
+<<<<<<< HEAD
                                                 <div className="w-4 h-4 border-2 border-primary border-t-primary rounded-full animate-spin" />
+=======
+                                                <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             </div>
                                         )}
                                     </div>
                                 </FormField>
                             ) : (
                                 <FormField label="رقم الدفتر">
+<<<<<<< HEAD
                                     <Input value="سيتم التوليد تلقائياً" disabled className="text-muted-foreground" />
+=======
+                                    <Input value="سيتم التوليد تلقائياً" disabled className="font-mono text-muted-foreground" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 </FormField>
                             )}
 
@@ -462,7 +613,11 @@ export function PaymentBookDialog({
                                     control={control}
                                     render={({ field }) => (
                                         <NativeSelect
+<<<<<<< HEAD
                                             options={branches.map(b => ({ value: b.id.toString(), label: b.name }))}
+=======
+                                            options={[{ value: "", label: "اختر الفرع..." }, ...branches.map(b => ({ value: b.id.toString(), label: b.name }))]}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             value={field.value?.toString() || ""}
                                             onChange={(val) => field.onChange(val ? parseInt(val) : null)}
                                             disabled={loadingBranches}
@@ -550,7 +705,11 @@ export function PaymentBookDialog({
                         </div>
 
                         {/* مستلم المعاش (يظهر فقط في الإنشاء الإلكتروني) */}
+<<<<<<< HEAD
                         {!isLegacy && effectiveMode === "create" && (
+=======
+                        {!isLegacy && mode === "create" && (
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <>
                                 <label className="flex items-center gap-2 text-sm font-medium cursor-pointer">
                                     <input

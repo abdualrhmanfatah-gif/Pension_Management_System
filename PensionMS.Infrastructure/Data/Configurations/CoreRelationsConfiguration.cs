@@ -32,13 +32,19 @@ public class EntitledPersonConfiguration : IEntityTypeConfiguration<EntitledPers
     public void Configure(EntityTypeBuilder<EntitledPerson> builder)
     {
         builder.HasKey(e => e.EntitledID);
+<<<<<<< HEAD
         builder.HasIndex(e => e.FileID).HasDatabaseName("IX_EntitledPersons_FileID");
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
         builder.Property(e => e.FullName).HasMaxLength(200);
         builder.Property(e => e.NationalID).HasMaxLength(20);
         builder.Property(e => e.Phone).HasMaxLength(20);
         builder.Property(e => e.StopCode).HasMaxLength(50);
+<<<<<<< HEAD
         builder.Property(e => e.SharePercent).HasPrecision(5, 2);
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
         builder.Property(e => e.PendingReviewStatus)
             .HasConversion<int>()
@@ -118,9 +124,12 @@ public class AgentConfiguration : IEntityTypeConfiguration<Agent>
         builder.Property(e => e.NationalID).HasMaxLength(20);
         builder.Property(e => e.Phone).HasMaxLength(20);
         builder.Property(e => e.AgencyNumber).HasMaxLength(100).IsRequired(false);
+<<<<<<< HEAD
         builder.Property(e => e.AgencyScope).HasConversion<int>();
         builder.ToTable(t => t.HasCheckConstraint("CK_Agents_AgencyScope",
             "[AgencyScope] IS NULL OR ([AgencyScope] IN (1, 2) AND [EntitledID] IS NULL) OR ([AgencyScope] = 3 AND [EntitledID] IS NOT NULL AND [EntitledID] > 0)"));
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
         builder.Property(e => e.PendingReviewStatus)
             .HasConversion<int>()
@@ -128,6 +137,7 @@ public class AgentConfiguration : IEntityTypeConfiguration<Agent>
 
         builder.HasOne(a => a.RetirementFile).WithMany(f => f.Agents).HasForeignKey(a => a.FileID);
 
+<<<<<<< HEAD
         builder.HasOne(a => a.EntitledPerson).WithMany(e => e.Agents).HasForeignKey(a => a.EntitledID).OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(e => e.FileID).IsUnique()
@@ -137,6 +147,8 @@ public class AgentConfiguration : IEntityTypeConfiguration<Agent>
                .IsUnique()
                .HasFilter("[IsDeleted] = 0 AND [IsActive] = 1 AND [EntitledID] IS NOT NULL");
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         builder.HasOne(a => a.CreatedByUser).WithMany().HasForeignKey(a => a.CreatedByUserID).OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(a => a.UpdatedByUser).WithMany().HasForeignKey(a => a.UpdatedByUserID).OnDelete(DeleteBehavior.Restrict);
     }

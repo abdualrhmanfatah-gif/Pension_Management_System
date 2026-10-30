@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import * as React from "react";
 
 import { handleDialogEnter } from "@/lib/enterFocus";
+=======
+import * as React from "react";
+import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { cn } from "@/lib/utils";
 
 const AlertDialog = AlertDialogPrimitive.Root;
@@ -28,7 +34,11 @@ AlertDialogOverlay.displayName = AlertDialogPrimitive.Overlay.displayName;
 const AlertDialogContent = React.forwardRef<
   React.ComponentRef<typeof AlertDialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>
+<<<<<<< HEAD
 >(({ className, onKeyDown, ...props }, ref) => (
+=======
+>(({ className, ...props }, ref) => (
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   <AlertDialogPortal>
     <AlertDialogOverlay />
     <AlertDialogPrimitive.Content
@@ -38,10 +48,13 @@ const AlertDialogContent = React.forwardRef<
         className
       )}
       {...props}
+<<<<<<< HEAD
       onKeyDown={(event) => {
         onKeyDown?.(event);
         handleDialogEnter(event.currentTarget, event.nativeEvent);
       }}
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     />
   </AlertDialogPortal>
 ));
@@ -132,6 +145,7 @@ AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName;
 
 export {
   AlertDialog,
+<<<<<<< HEAD
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -142,4 +156,16 @@ export {
   AlertDialogPortal,
   AlertDialogTitle,
   AlertDialogTrigger,
+=======
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 };

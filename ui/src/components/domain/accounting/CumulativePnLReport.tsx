@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
@@ -8,6 +9,18 @@ import { Card, Heading, Select, SelectContent, SelectItem, SelectTrigger, Select
 import { chartColors } from "@/lib/chartColors";
 import { formatCurrency } from "@/lib/utils";
 import type { FiscalYearSummaryDto } from "@/types/accounting";
+=======
+import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect, useCallback } from "react";
+
+import { reportsApi, fiscalYearsApi, quartersApi } from "@/api/accounting";
+import type { FiscalYearSummaryDto } from "@/types/accounting";
+import { formatCurrency } from "@/lib/utils";
+import { Card, Heading, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui";
+import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
+import { ReportBarChart } from "@/components/common/charts";
+import { chartColors } from "@/lib/chartColors";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface CumulativePnLReportProps {
   fiscalYearId?: number;
@@ -86,10 +99,17 @@ export function CumulativePnLReport({ fiscalYearId, hideInternalControls }: Cumu
   const selectedYear = fiscalYears?.find((y: FiscalYearSummaryDto) => y.fiscalYearID === selectedYearId);
 
   const customKPIs = [
+<<<<<<< HEAD
     { label: 'الإيرادات التراكمية', value: formatCurrency(cumulativeRevenue), color: 'success' },
     { label: 'المصروفات التراكمية', value: formatCurrency(cumulativeExpenses), color: 'danger' },
     { label: 'صافي الدخل التراكمي', value: formatCurrency(cumulativeRevenue - cumulativeExpenses), color: (cumulativeRevenue - cumulativeExpenses) >= 0 ? 'text-green-600' : 'text-red-600' },
     { label: 'السنة المالية', value: selectedYear?.yearName || '', color: 'primary' },
+=======
+    { label: 'الإيرادات التراكمية', value: formatCurrency(cumulativeRevenue), color: 'text-green-600' },
+    { label: 'المصروفات التراكمية', value: formatCurrency(cumulativeExpenses), color: 'text-red-600' },
+    { label: 'صافي الدخل التراكمي', value: formatCurrency(cumulativeRevenue - cumulativeExpenses), color: (cumulativeRevenue - cumulativeExpenses) >= 0 ? 'text-green-600' : 'text-red-600' },
+    { label: 'السنة المالية', value: selectedYear?.yearName || '', color: 'text-primary' },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   ];
 
   const chartContent = cumulativeData.length > 0 ? (
@@ -114,7 +134,11 @@ export function CumulativePnLReport({ fiscalYearId, hideInternalControls }: Cumu
   const filterBar = hideInternalControls ? undefined : (
     <Card className="p-4 flex flex-wrap gap-4 items-end mb-6">
       <div className="w-full sm:w-64">
+<<<<<<< HEAD
         <label className="label-filter">السنة المالية</label>
+=======
+        <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">السنة المالية</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         <Select
           value={selectedYearId?.toString() ?? ''}
           onValueChange={(val) => setSelectedYearId(Number(val))}
@@ -163,7 +187,11 @@ export function CumulativePnLReport({ fiscalYearId, hideInternalControls }: Cumu
             </thead>
             <tbody>
               {cumulativeData.map((row, i) => (
+<<<<<<< HEAD
                 <tr key={i} className="border-t border-border hover:bg-muted/20">
+=======
+                <tr key={i} className="border-t border-border/50 hover:bg-muted/20">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                   <td className="p-3 font-medium">{row.quarterName}</td>
                   <td className="p-3 text-emerald-600 dark:text-emerald-400">{formatCurrency(row.revenue)}</td>
                   <td className="p-3 text-destructive">{formatCurrency(row.expenses)}</td>

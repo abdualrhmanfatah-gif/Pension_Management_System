@@ -5,10 +5,17 @@ import { type Resolver, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { accountsApi } from "@/api/accounting";
+<<<<<<< HEAD
 import { BaseFormDialog, FormField, FormSection, Input, NativeSelect } from "@/components/ui";
 import { useApiMutation } from "@/hooks";
 import type { AccountCategory,ChartOfAccountDto, UpdateChartOfAccountDto } from "@/types/accounting";
 import { ACCOUNT_CATEGORY, ACCOUNT_CATEGORY_AR } from "@/types/accounting";
+=======
+import type { ChartOfAccountDto, UpdateChartOfAccountDto, AccountCategory } from "@/types/accounting";
+import { ACCOUNT_CATEGORY, ACCOUNT_CATEGORY_AR } from "@/types/accounting";
+import { BaseFormDialog, FormField, FormSection, Input, NativeSelect } from "@/components/ui";
+import { useApiMutation } from "@/hooks";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Schema ───────────────────────────────────────
 const schema = z.object({

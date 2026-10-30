@@ -6,19 +6,32 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { fiscalYearsApi } from "@/api/accounting";
+<<<<<<< HEAD
 import { fixedAssetApi } from "@/api/fixedAssets";
 import {
     Badge,
     BaseFormDialog,
+=======
+import type { FiscalYearSummaryDto } from "@/types/accounting";
+import { queryKeys } from "@/constants/queryKeys";
+import { fixedAssetApi } from "@/api/fixedAssets";
+import {
+    BaseFormDialog,
+    Badge,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     FormField,
     FormSection,
     NativeSelect,
     NoteBox,
     Text
 } from "@/components/ui";
+<<<<<<< HEAD
 import { queryKeys } from "@/constants/queryKeys";
 import { useApiMutation } from "@/hooks";
 import type { FiscalYearSummaryDto } from "@/types/accounting";
+=======
+import { useApiMutation } from "@/hooks";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Validation Schema ─────────────────────────────────
 

@@ -73,6 +73,7 @@ public class SettlementRepository : ISettlementRepository
             .AnyAsync(b => b.BatchNumber == batchNumber && !b.IsDeleted);
     }
 
+<<<<<<< HEAD
     // The earliest linked item selects batch metadata deterministically. Batch-scoped
     // calls use only the requested batch for both metadata and totals.
     private static IQueryable<SettlementDecisionDto> ProjectDecisions(IQueryable<SettlementDecision> query, int? batchId = null)
@@ -82,10 +83,23 @@ public class SettlementRepository : ISettlementRepository
             {
                 DecisionID = d.DecisionID,
                 BatchID = first == null ? 0 : first.BatchID,
+=======
+    public async Task<List<SettlementDecisionDto>> GetAllDecisionsAsync()
+    {
+        return await _context.Set<SettlementDecision>()
+            .AsNoTracking()
+            .Where(d => !d.IsDeleted)
+            .OrderByDescending(d => d.CreatedAt)
+            .Select(d => new SettlementDecisionDto
+            {
+                DecisionID = d.DecisionID,
+                BatchID = d.SettlementItems.Any() ? d.SettlementItems.First().BatchID : 0,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 DecisionNumber = d.DecisionNumber,
                 DecisionDate = d.DecisionDate,
                 DecisionType = d.DecisionType,
                 Notes = d.Notes,
+<<<<<<< HEAD
                 ItemCount = d.SettlementItems.Count(i => !i.IsDeleted && (!batchId.HasValue || i.BatchID == batchId)),
                 SourceRowsCount = first == null ? 0 : first.Batch.SourceRowsCount,
                 SkippedCount = first == null ? 0 : first.Batch.SkippedCount,
@@ -153,13 +167,77 @@ public class SettlementRepository : ISettlementRepository
         ProjectDecisions(_context.Set<SettlementDecision>().AsNoTracking()
             .Where(d => d.SettlementItems.Any(i => i.BatchID == batchId && !i.IsDeleted))
             .OrderByDescending(d => d.CreatedAt).ThenByDescending(d => d.DecisionID), batchId).ToListAsync();
+=======
+                ItemCount = d.SettlementItems.Count(i => !i.IsDeleted),
+                SourceRowsCount = d.SettlementItems.Any() ? d.SettlementItems.First().Batch.SourceRowsCount : 0,
+                SkippedCount = d.SettlementItems.Any() ? d.SettlementItems.First().Batch.SkippedCount : 0,
+                HasFailureReport = d.SettlementItems.Any() && !string.IsNullOrEmpty(d.SettlementItems.First().Batch.FailureReportJson),
+                TotalAmount = d.SettlementItems.Where(i => !i.IsDeleted).Sum(i => i.ProcessedRank.BaseSalary),
+                CreatedByUserName = d.CreatedByUser != null ? d.CreatedByUser.FullName : "غير محدد",
+                CreatedAt = d.CreatedAt
+            })
+            .ToListAsync();
+    }
+
+    public async Task<SettlementDecisionDto?> GetDecisionByIdAsync(int decisionId)
+    {
+        return await _context.Set<SettlementDecision>()
+            .AsNoTracking()
+            .Where(d => d.DecisionID == decisionId && !d.IsDeleted)
+            .Select(d => new SettlementDecisionDto
+            {
+                DecisionID = d.DecisionID,
+                BatchID = d.SettlementItems.Any() ? d.SettlementItems.First().BatchID : 0,
+                DecisionNumber = d.DecisionNumber,
+                DecisionDate = d.DecisionDate,
+                DecisionType = d.DecisionType,
+                Notes = d.Notes,
+                ItemCount = d.SettlementItems.Count(i => !i.IsDeleted),
+                SourceRowsCount = d.SettlementItems.Any() ? d.SettlementItems.First().Batch.SourceRowsCount : 0,
+                SkippedCount = d.SettlementItems.Any() ? d.SettlementItems.First().Batch.SkippedCount : 0,
+                FailureReportJson = d.SettlementItems.Any() ? d.SettlementItems.First().Batch.FailureReportJson : null,
+                HasFailureReport = d.SettlementItems.Any() && !string.IsNullOrEmpty(d.SettlementItems.First().Batch.FailureReportJson),
+                TotalAmount = d.SettlementItems.Where(i => !i.IsDeleted).Sum(i => i.ProcessedRank.BaseSalary),
+                CreatedByUserName = d.CreatedByUser != null ? d.CreatedByUser.FullName : "غير محدد",
+                CreatedAt = d.CreatedAt
+            })
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<List<SettlementDecisionDto>> GetBatchDecisionsAsync(int batchId)
+    {
+        return await _context.Set<SettlementDecision>()
+            .AsNoTracking()
+            .Where(d => !d.IsDeleted && d.SettlementItems.Any(i => i.BatchID == batchId && !i.IsDeleted))
+            .OrderByDescending(d => d.CreatedAt)
+            .Select(d => new SettlementDecisionDto
+            {
+                DecisionID = d.DecisionID,
+                BatchID = d.SettlementItems.Any() ? d.SettlementItems.First().BatchID : 0,
+                DecisionNumber = d.DecisionNumber,
+                DecisionDate = d.DecisionDate,
+                DecisionType = d.DecisionType,
+                Notes = d.Notes,
+                ItemCount = d.SettlementItems.Count(i => i.BatchID == batchId && !i.IsDeleted),
+                SourceRowsCount = d.SettlementItems.Any() ? d.SettlementItems.First().Batch.SourceRowsCount : 0,
+                SkippedCount = d.SettlementItems.Any() ? d.SettlementItems.First().Batch.SkippedCount : 0,
+                HasFailureReport = d.SettlementItems.Any() && !string.IsNullOrEmpty(d.SettlementItems.First().Batch.FailureReportJson),
+                CreatedAt = d.CreatedAt
+            })
+            .ToListAsync();
+    }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     public async Task<List<SettlementItemDto>> GetBatchItemsAsync(int batchId)
     {
         return await _context.Set<SettlementItem>()
             .AsNoTracking()
             .Where(i => i.BatchID == batchId && !i.IsDeleted)
+<<<<<<< HEAD
             .OrderBy(i => i.SerialNumber).ThenBy(i => i.SettlementItemID)
+=======
+            .OrderBy(i => i.SerialNumber)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Select(i => new SettlementItemDto
             {
                 SettlementItemID = i.SettlementItemID,
@@ -183,7 +261,11 @@ public class SettlementRepository : ISettlementRepository
         return await _context.Set<SettlementItem>()
             .AsNoTracking()
             .Where(i => i.DecisionID == decisionId && !i.IsDeleted)
+<<<<<<< HEAD
             .OrderBy(i => i.SerialNumber).ThenBy(i => i.SettlementItemID)
+=======
+            .OrderBy(i => i.SerialNumber)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Select(i => new SettlementItemDto
             {
                 SettlementItemID = i.SettlementItemID,
@@ -204,8 +286,11 @@ public class SettlementRepository : ISettlementRepository
 
     public async Task<PagedResult<SettlementDecisionDto>> GetDecisionsPagedAsync(int page, int pageSize, string? searchTerm = null)
     {
+<<<<<<< HEAD
         if (page < 1 || pageSize < 1 || (long)(page - 1) * pageSize > int.MaxValue)
             throw new ArgumentOutOfRangeException(nameof(page));
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         var baseQuery = _context.Set<SettlementDecision>()
             .AsNoTracking()
             .Where(d => !d.IsDeleted);
@@ -218,10 +303,37 @@ public class SettlementRepository : ISettlementRepository
                 (d.Notes != null && d.Notes.Contains(searchTerm)));
         }
 
+<<<<<<< HEAD
         var totalCount = await baseQuery.CountAsync();
         var items = await ProjectDecisions(baseQuery
             .OrderByDescending(d => d.CreatedAt).ThenByDescending(d => d.DecisionID)
             .Skip((page - 1) * pageSize).Take(pageSize)).ToListAsync();
+=======
+        var projectedQuery = baseQuery
+            .OrderByDescending(d => d.CreatedAt)
+            .Select(d => new SettlementDecisionDto
+            {
+                DecisionID = d.DecisionID,
+                BatchID = d.SettlementItems.Any() ? d.SettlementItems.First().BatchID : 0,
+                DecisionNumber = d.DecisionNumber,
+                DecisionDate = d.DecisionDate,
+                DecisionType = d.DecisionType,
+                Notes = d.Notes,
+                ItemCount = d.SettlementItems.Count(i => !i.IsDeleted),
+                SourceRowsCount = d.SettlementItems.Any() ? d.SettlementItems.First().Batch.SourceRowsCount : 0,
+                SkippedCount = d.SettlementItems.Any() ? d.SettlementItems.First().Batch.SkippedCount : 0,
+                HasFailureReport = d.SettlementItems.Any() && !string.IsNullOrEmpty(d.SettlementItems.First().Batch.FailureReportJson),
+                TotalAmount = d.SettlementItems.Where(i => !i.IsDeleted).Sum(i => i.ProcessedRank.BaseSalary),
+                CreatedByUserName = d.CreatedByUser != null ? d.CreatedByUser.FullName : "غير محدد",
+                CreatedAt = d.CreatedAt
+            });
+
+        var totalCount = await projectedQuery.CountAsync();
+        var items = await projectedQuery
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
         return new PagedResult<SettlementDecisionDto>
         {
@@ -234,8 +346,11 @@ public class SettlementRepository : ISettlementRepository
 
     public async Task<PagedResult<SettlementItemDto>> GetDecisionItemsPagedAsync(int decisionId, int page, int pageSize, string? searchTerm = null)
     {
+<<<<<<< HEAD
         if (page < 1 || pageSize < 1 || (long)(page - 1) * pageSize > int.MaxValue)
             throw new ArgumentOutOfRangeException(nameof(page));
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         var baseQuery = _context.Set<SettlementItem>()
             .AsNoTracking()
             .Where(i => i.DecisionID == decisionId && !i.IsDeleted);
@@ -250,7 +365,11 @@ public class SettlementRepository : ISettlementRepository
         }
 
         var projectedQuery = baseQuery
+<<<<<<< HEAD
             .OrderBy(i => i.SerialNumber).ThenBy(i => i.SettlementItemID)
+=======
+            .OrderBy(i => i.SerialNumber)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Select(i => new SettlementItemDto
             {
                 SettlementItemID = i.SettlementItemID,
@@ -291,10 +410,26 @@ public class SettlementRepository : ISettlementRepository
         if (retiree == null)
             return new List<SettlementItemDto>();
 
+<<<<<<< HEAD
         var number = SettlementMilitaryNumber.Normalize(retiree.MilitaryNumber);
         return await _context.Set<SettlementItem>().AsNoTracking()
             .Where(SettlementMilitaryNumber.Matches(retireeId, retiree.ApprovalItemID, number))
             .OrderByDescending(i => i.CreatedAt).ThenByDescending(i => i.SettlementItemID)
+=======
+        var milNum = StringHelpers.NormalizeDigits(retiree.MilitaryNumber);
+        var approvalIds = retiree.ApprovalItemID > 0
+            ? new List<int> { retiree.ApprovalItemID }
+            : new List<int>();
+
+        return await _context.Set<SettlementItem>()
+            .AsNoTracking()
+            .Where(i => !i.IsDeleted && (
+                i.RetireeID == retireeId ||
+                (!string.IsNullOrEmpty(milNum) && i.MilitaryNumber != null && StringHelpers.NormalizeDigits(i.MilitaryNumber) == milNum) ||
+                (i.ApprovalItemID != null && approvalIds.Contains(i.ApprovalItemID.Value))
+            ))
+            .OrderByDescending(i => i.CreatedAt)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Select(i => new SettlementItemDto
             {
                 SettlementItemID = i.SettlementItemID,
@@ -318,9 +453,12 @@ public class SettlementRepository : ISettlementRepository
         return await _context.Set<SettlementItem>()
             .AsNoTracking()
             .Where(i => i.DecisionID == decisionId && !i.IsDeleted)
+<<<<<<< HEAD
             .Include(i => i.CurrentRank)
             .Include(i => i.ProcessedRank)
             .Include(i => i.ApprovalItem)
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .OrderBy(i => i.SettlementItemID)
             .ToListAsync();
     }
@@ -329,8 +467,12 @@ public class SettlementRepository : ISettlementRepository
     {
         if (updates.Count == 0) return;
 
+<<<<<<< HEAD
         var updatesByRetiree = updates.GroupBy(u => u.RetireeID).ToDictionary(g => g.Key, g => g.First());
         var retireeIds = updatesByRetiree.Keys.ToList();
+=======
+        var retireeIds = updates.Select(u => u.RetireeID).Distinct().ToList();
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
         var files = await _context.Set<RetirementFile>()
             .Where(f => retireeIds.Contains(f.RetireeID) && !f.IsDeleted)
@@ -338,10 +480,18 @@ public class SettlementRepository : ISettlementRepository
 
         foreach (var file in files)
         {
+<<<<<<< HEAD
             var update = updatesByRetiree.GetValueOrDefault(file.RetireeID);
             if (update == null) continue;
             file.RankID = update.ProcessedRankID;
             file.UpdatedAt = DateTime.UtcNow;
+=======
+            var update = updates.FirstOrDefault(u => u.RetireeID == file.RetireeID);
+            if (update == null) continue;
+            file.RankID = update.ProcessedRankID;
+            file.UpdatedAt = DateTime.UtcNow;
+            _context.Set<RetirementFile>().Update(file);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
 
         var retirees = await _context.Set<Retiree>()
@@ -351,7 +501,11 @@ public class SettlementRepository : ISettlementRepository
 
         foreach (var retiree in retirees)
         {
+<<<<<<< HEAD
             var update = updatesByRetiree.GetValueOrDefault(retiree.RetireeID);
+=======
+            var update = updates.FirstOrDefault(u => u.RetireeID == retiree.RetireeID);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             if (update == null || retiree.ApprovalItem == null) continue;
 
             retiree.ApprovalItem.RankID = update.ProcessedRankID;

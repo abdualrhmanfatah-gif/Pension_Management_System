@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import type { ApiResponse } from "@/types/api";
 import type { NotificationAttachmentDto, NotificationDto, PagedResult } from "@/types/notifications";
 
 import api from "./axios";
+=======
+import type { NotificationAttachmentDto, NotificationDto, PagedResult } from "@/types/notifications";
+
+import api from "./axios";
+import type { ApiResponse } from "@/types/api";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export interface CreateNotificationMultiDto {
   title: string;
@@ -78,8 +85,13 @@ export interface BulkDeleteDto {
 }
 
 export const notificationsApi = {
+<<<<<<< HEAD
   getAll: (page = 1, pageSize = 20, category?: string, signal?: AbortSignal) => 
     api.get<ApiResponse<PagedResult<NotificationDto>>>('/notifications', { params: { page, pageSize, category }, signal }).then(r => r.data),
+=======
+  getAll: (page = 1, pageSize = 20, category?: string) => 
+    api.get<ApiResponse<PagedResult<NotificationDto>>>('/notifications', { params: { page, pageSize, category } }).then(r => r.data),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
   getAttachments: (notificationId: number) =>
     api.get<ApiResponse<NotificationAttachmentDto[]>>(`/notifications/${notificationId}/attachments`)
@@ -91,8 +103,13 @@ export const notificationsApi = {
         throw err;
       }),
     
+<<<<<<< HEAD
   getUnreadCount: (signal?: AbortSignal) => 
     api.get<ApiResponse<number>>('/notifications/unread-count', { signal }).then(r => r.data),
+=======
+  getUnreadCount: () => 
+    api.get<ApiResponse<number>>('/notifications/unread-count').then(r => r.data),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     
   markAsRead: (id: number) => 
     api.put<ApiResponse<boolean>>(`/notifications/${id}/read`).then(r => r.data),
@@ -100,6 +117,7 @@ export const notificationsApi = {
   markAllAsRead: () => 
     api.put<ApiResponse<boolean>>('/notifications/read-all').then(r => r.data),
 
+<<<<<<< HEAD
   /**
    * تنزيل مرفق عبر مسار الملكية (NF1.3).
    * المصادقة عبر Axios — لا رمز في URL، رابط Blob مؤقت يُلغي بعد الاستخدام.
@@ -128,6 +146,8 @@ export const notificationsApi = {
     }
   },
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   // Admin endpoints
   admin: {
     getAll: (page = 1, pageSize = 20, filters?: AdminNotificationFilterDto) =>

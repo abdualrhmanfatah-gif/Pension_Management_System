@@ -12,8 +12,13 @@ import {
   FormField, 
   FormSection,
   Input, 
+<<<<<<< HEAD
   NativeSelect,
   NoteBox,
+=======
+  NoteBox,
+  NativeSelect,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   Textarea} from "@/components/ui";
 import { useApiMutation } from "@/hooks";
 
@@ -166,7 +171,11 @@ export function SectionDialog({
               <Textarea {...form.register("description")} placeholder="وصف موجز لمهام القسم..." rows={3} />
             </FormField>
 
+<<<<<<< HEAD
             <div className="flex items-center gap-3 p-4 bg-muted/30 rounded-xl border border-border mt-8">
+=======
+            <div className="flex items-center gap-3 p-4 bg-muted/30 rounded-xl border border-border/40 mt-8">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               <Activity className="w-5 h-5 text-primary" />
               <div className="flex items-center gap-3">
                 <Checkbox

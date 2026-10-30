@@ -32,9 +32,15 @@ public class RetirementFile : ISoftDeletable
     public DateTime FileOpenDate { get; set; }
     public DateTime? ClosedDate { get; set; }
     
+<<<<<<< HEAD
     public DateOnly? ServiceStartDate { get; set; }
     public DateOnly? ServiceEndDate { get; set; }
     public DateOnly? RetirementDate { get; set; }
+=======
+    public DateTime? ServiceStartDate { get; set; }
+    public DateTime? ServiceEndDate { get; set; }
+    public DateTime? RetirementDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     public string? Notes { get; set; }
 

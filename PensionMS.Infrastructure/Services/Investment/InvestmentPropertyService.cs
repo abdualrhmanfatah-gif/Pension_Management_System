@@ -11,12 +11,19 @@ namespace PensionMS.Infrastructure.Services.Investment;
 public class InvestmentPropertyService : IInvestmentPropertyService
 {
     private readonly IUnitOfWork _unitOfWork;
+<<<<<<< HEAD
     private readonly IAccessiblePensionRepository _access;
 
     public InvestmentPropertyService(IUnitOfWork unitOfWork, IAccessiblePensionRepository access)
     {
         _unitOfWork = unitOfWork;
         _access = access;
+=======
+
+    public InvestmentPropertyService(IUnitOfWork unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 
     // ----------------------------------------------------------------------
@@ -25,11 +32,17 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<int>> CreatePropertyAsync(CreatePropertyDto dto, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         if (dto.ProjectID.HasValue)
         {
             var project = await queries.Query(_unitOfWork.InvestmentProjects)
                 .FirstOrDefaultAsync(p => p.ProjectID == dto.ProjectID.Value);
+=======
+        if (dto.ProjectID.HasValue)
+        {
+            var project = await _unitOfWork.InvestmentProjects.GetByIdAsync(dto.ProjectID.Value);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             if (project == null || project.IsDeleted)
                 return ApiResponse<int>.Fail("المشروع غير موجود");
         }
@@ -40,7 +53,10 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
         var user = await _unitOfWork.Users.GetByIdAsync(userId);
         int branchId = dto.PensionBranchID > 0 ? dto.PensionBranchID : (user?.BranchID ?? 1);
+<<<<<<< HEAD
         queries.ResolveBranch(branchId);
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
         var property = new InvestmentProperty
         {
@@ -73,6 +89,7 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<bool>> UpdatePropertyAsync(int id, UpdatePropertyDto dto, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var property = await queries.Query(_unitOfWork.InvestmentProperties)
             .FirstOrDefaultAsync(p => p.PropertyID == id);
@@ -85,6 +102,15 @@ public class InvestmentPropertyService : IInvestmentPropertyService
         {
             var project = await queries.Query(_unitOfWork.InvestmentProjects)
                 .FirstOrDefaultAsync(p => p.ProjectID == dto.ProjectID.Value);
+=======
+        var property = await _unitOfWork.InvestmentProperties.GetByIdAsync(id);
+        if (property == null || property.IsDeleted)
+            return ApiResponse<bool>.Fail("العقار غير موجود");
+
+        if (dto.ProjectID.HasValue)
+        {
+            var project = await _unitOfWork.InvestmentProjects.GetByIdAsync(dto.ProjectID.Value);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             if (project == null || project.IsDeleted)
                 return ApiResponse<bool>.Fail("المشروع غير موجود");
         }
@@ -120,9 +146,13 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<bool>> DeletePropertyAsync(int id, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var property = await queries.Query(_unitOfWork.InvestmentProperties)
             .FirstOrDefaultAsync(p => p.PropertyID == id);
+=======
+        var property = await _unitOfWork.InvestmentProperties.GetByIdAsync(id);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (property == null || property.IsDeleted)
             return ApiResponse<bool>.Fail("العقار غير موجود");
 
@@ -138,9 +168,14 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<PropertyDetailDto>> GetPropertyByIdAsync(int id)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var property = await queries.Query(_unitOfWork.InvestmentProperties)
             .AsNoTracking()
+=======
+        var property = await _unitOfWork.InvestmentProperties.Query()
+            .Include(p => p.Project)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Include(p => p.PropertyType)
             .Include(p => p.Units.Where(u => !u.IsDeleted))
                 .ThenInclude(u => u.UnitType)
@@ -150,7 +185,10 @@ public class InvestmentPropertyService : IInvestmentPropertyService
         if (property == null)
             return ApiResponse<PropertyDetailDto>.Fail("العقار غير موجود");
 
+<<<<<<< HEAD
         var projectNames = await LoadProjectNamesAsync(queries, [property]);
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         var latestValuation = property.Valuations
             .OrderByDescending(v => v.ValuationDate)
             .ThenByDescending(v => v.ValuationID)
@@ -160,7 +198,11 @@ public class InvestmentPropertyService : IInvestmentPropertyService
         {
             PropertyID = property.PropertyID,
             ProjectID = property.ProjectID,
+<<<<<<< HEAD
             ProjectName = property.ProjectID.HasValue ? projectNames.GetValueOrDefault(property.ProjectID.Value) : null,
+=======
+            ProjectName = property.Project?.Name,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             PropertyTypeID = property.PropertyTypeID,
             PropertyTypeName = property.PropertyType?.TypeName ?? string.Empty,
             PropertyName = property.PropertyName,
@@ -211,6 +253,7 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<List<PropertyDto>>> GetAllPropertiesAsync(int page = 1, int pageSize = 50)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var properties = await queries.Query(_unitOfWork.InvestmentProperties)
             .AsNoTracking()
@@ -218,11 +261,21 @@ public class InvestmentPropertyService : IInvestmentPropertyService
             .Include(p => p.Valuations.Where(v => !v.IsDeleted))
             .Where(p => !p.IsDeleted)
             .OrderBy(p => p.PropertyID)
+=======
+        var properties = await _unitOfWork.InvestmentProperties.Query()
+            .Include(p => p.Project)
+            .Include(p => p.PropertyType)
+            .Include(p => p.Valuations.Where(v => !v.IsDeleted))
+            .Where(p => !p.IsDeleted)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
 
+<<<<<<< HEAD
         var projectNames = await LoadProjectNamesAsync(queries, properties);
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         var result = properties.Select(p => {
             var latestValuation = p.Valuations
                 .OrderByDescending(v => v.ValuationDate)
@@ -232,7 +285,11 @@ public class InvestmentPropertyService : IInvestmentPropertyService
             {
                 PropertyID = p.PropertyID,
                 ProjectID = p.ProjectID,
+<<<<<<< HEAD
                 ProjectName = p.ProjectID.HasValue ? projectNames.GetValueOrDefault(p.ProjectID.Value) : null,
+=======
+                ProjectName = p.Project?.Name,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 PropertyTypeID = p.PropertyTypeID,
                 PropertyTypeName = p.PropertyType?.TypeName ?? string.Empty,
                 PropertyName = p.PropertyName,
@@ -252,18 +309,26 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<List<PropertyDto>>> GetPropertiesByProjectAsync(int projectId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         if (!await queries.Query(_unitOfWork.InvestmentProjects).AnyAsync(p => p.ProjectID == projectId && !p.IsDeleted))
             return ApiResponse<List<PropertyDto>>.Success(new List<PropertyDto>());
 
         var properties = await queries.Query(_unitOfWork.InvestmentProperties)
             .AsNoTracking()
+=======
+        var properties = await _unitOfWork.InvestmentProperties.Query()
+            .Include(p => p.Project)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Include(p => p.PropertyType)
             .Include(p => p.Valuations.Where(v => !v.IsDeleted))
             .Where(p => p.ProjectID == projectId && !p.IsDeleted)
             .ToListAsync();
 
+<<<<<<< HEAD
         var projectNames = await LoadProjectNamesAsync(queries, properties);
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         var result = properties.Select(p => {
             var latestValuation = p.Valuations
                 .OrderByDescending(v => v.ValuationDate)
@@ -273,7 +338,11 @@ public class InvestmentPropertyService : IInvestmentPropertyService
             {
                 PropertyID = p.PropertyID,
                 ProjectID = p.ProjectID,
+<<<<<<< HEAD
                 ProjectName = p.ProjectID.HasValue ? projectNames.GetValueOrDefault(p.ProjectID.Value) : null,
+=======
+                ProjectName = p.Project?.Name,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 PropertyTypeID = p.PropertyTypeID,
                 PropertyTypeName = p.PropertyType?.TypeName ?? string.Empty,
                 PropertyName = p.PropertyName,
@@ -293,9 +362,13 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<bool>> UpdatePropertyMainPhotoPathAsync(int id, string photoPath, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var property = await queries.Query(_unitOfWork.InvestmentProperties)
             .FirstOrDefaultAsync(p => p.PropertyID == id);
+=======
+        var property = await _unitOfWork.InvestmentProperties.GetByIdAsync(id);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (property == null || property.IsDeleted)
             return ApiResponse<bool>.Fail("العقار غير موجود");
 
@@ -314,9 +387,13 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<int>> CreateUnitAsync(CreateUnitDto dto, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var property = await queries.Query(_unitOfWork.InvestmentProperties)
             .FirstOrDefaultAsync(p => p.PropertyID == dto.PropertyID);
+=======
+        var property = await _unitOfWork.InvestmentProperties.GetByIdAsync(dto.PropertyID);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (property == null || property.IsDeleted)
             return ApiResponse<int>.Fail("العقار غير موجود");
 
@@ -346,6 +423,7 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<bool>> UpdateUnitAsync(int id, UpdateUnitDto dto, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var unit = await queries.Query(_unitOfWork.PropertyUnits)
             .FirstOrDefaultAsync(u => u.UnitID == id);
@@ -354,6 +432,13 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
         var property = await queries.Query(_unitOfWork.InvestmentProperties)
             .FirstOrDefaultAsync(p => p.PropertyID == dto.PropertyID);
+=======
+        var unit = await _unitOfWork.PropertyUnits.GetByIdAsync(id);
+        if (unit == null || unit.IsDeleted)
+            return ApiResponse<bool>.Fail("الوحدة غير موجودة");
+
+        var property = await _unitOfWork.InvestmentProperties.GetByIdAsync(dto.PropertyID);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (property == null || property.IsDeleted)
             return ApiResponse<bool>.Fail("العقار غير موجود");
 
@@ -380,9 +465,13 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<bool>> DeleteUnitAsync(int id, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var unit = await queries.Query(_unitOfWork.PropertyUnits)
             .FirstOrDefaultAsync(u => u.UnitID == id);
+=======
+        var unit = await _unitOfWork.PropertyUnits.GetByIdAsync(id);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (unit == null || unit.IsDeleted)
             return ApiResponse<bool>.Fail("الوحدة غير موجودة");
 
@@ -398,9 +487,13 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<List<PropertyUnitDto>>> GetUnitsByPropertyAsync(int propertyId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var units = await queries.Query(_unitOfWork.PropertyUnits)
             .AsNoTracking()
+=======
+        var units = await _unitOfWork.PropertyUnits.Query()
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Include(u => u.Property)
             .Include(u => u.UnitType)
             .Where(u => u.PropertyID == propertyId && !u.IsDeleted)
@@ -424,9 +517,13 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<List<PropertyUnitDto>>> GetAllUnitsAsync()
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var units = await queries.Query(_unitOfWork.PropertyUnits)
             .AsNoTracking()
+=======
+        var units = await _unitOfWork.PropertyUnits.Query()
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Include(u => u.Property)
             .Include(u => u.UnitType)
             .Where(u => !u.IsDeleted)
@@ -454,9 +551,13 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<int>> CreateValuationAsync(CreateValuationDto dto, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var property = await queries.Query(_unitOfWork.InvestmentProperties)
             .FirstOrDefaultAsync(p => p.PropertyID == dto.PropertyID);
+=======
+        var property = await _unitOfWork.InvestmentProperties.GetByIdAsync(dto.PropertyID);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (property == null || property.IsDeleted)
             return ApiResponse<int>.Fail("العقار غير موجود");
 
@@ -478,9 +579,13 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<List<ValuationDto>>> GetValuationsByPropertyAsync(int propertyId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var valuations = await queries.Query(_unitOfWork.AssetValuations)
             .AsNoTracking()
+=======
+        var valuations = await _unitOfWork.AssetValuations.Query()
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Where(v => v.PropertyID == propertyId && !v.IsDeleted)
             .OrderByDescending(v => v.ValuationDate)
             .Select(v => new ValuationDto
@@ -499,9 +604,13 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<bool>> DeleteValuationAsync(int id, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var valuation = await queries.Query(_unitOfWork.AssetValuations)
             .FirstOrDefaultAsync(v => v.ValuationID == id);
+=======
+        var valuation = await _unitOfWork.AssetValuations.GetByIdAsync(id);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (valuation == null || valuation.IsDeleted)
             return ApiResponse<bool>.Fail("التقييم غير موجود");
 
@@ -521,9 +630,13 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<int>> CreateDepreciationAsync(CreateDepreciationDto dto, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var property = await queries.Query(_unitOfWork.InvestmentProperties)
             .FirstOrDefaultAsync(p => p.PropertyID == dto.PropertyID);
+=======
+        var property = await _unitOfWork.InvestmentProperties.GetByIdAsync(dto.PropertyID);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (property == null || property.IsDeleted)
             return ApiResponse<int>.Fail("العقار غير موجود");
 
@@ -551,9 +664,13 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<List<DepreciationRecordDto>>> GetDepreciationByPropertyAsync(int propertyId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var records = await queries.Query(_unitOfWork.DepreciationRecords)
             .AsNoTracking()
+=======
+        var records = await _unitOfWork.DepreciationRecords.Query()
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Include(d => d.FiscalYear)
             .Where(d => d.PropertyID == propertyId && !d.IsDeleted)
             .OrderByDescending(d => d.CreatedAt)
@@ -574,9 +691,13 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<bool>> DeleteDepreciationAsync(int id, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var record = await queries.Query(_unitOfWork.DepreciationRecords)
             .FirstOrDefaultAsync(d => d.DeprecID == id);
+=======
+        var record = await _unitOfWork.DepreciationRecords.GetByIdAsync(id);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (record == null || record.IsDeleted)
             return ApiResponse<bool>.Fail("سجل الإهلاك غير موجود");
 
@@ -589,6 +710,7 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
         return ApiResponse<bool>.Success(true, "تم حذف سجل الإهلاك بنجاح");
     }
+<<<<<<< HEAD
 
     private async Task<Dictionary<int, string>> LoadProjectNamesAsync(IPensionDataQuery queries,
         IEnumerable<InvestmentProperty> properties)
@@ -601,4 +723,6 @@ public class InvestmentPropertyService : IInvestmentPropertyService
             .Where(p => projectIds.Contains(p.ProjectID) && !p.IsDeleted)
             .ToDictionaryAsync(p => p.ProjectID, p => p.Name);
     }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }

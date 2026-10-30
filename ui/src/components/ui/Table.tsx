@@ -81,4 +81,8 @@ const TableCell = React.forwardRef<
 ));
 TableCell.displayName = "TableCell";
 
+<<<<<<< HEAD
 export { Table, TableBody, TableCell,TableHead, TableHeader, TableRow };
+=======
+export { Table, TableHeader, TableBody, TableRow, TableHead, TableCell };
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

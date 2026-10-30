@@ -7,7 +7,11 @@ import { toast } from "sonner";
 import type { SettlementItemDto } from "@/api/settlements";
 import { settlementApi } from "@/api/settlements";
 import { LinkRetireeDialog } from "@/components/domain/settlements/LinkRetireeDialog";
+<<<<<<< HEAD
 import { Button, CrudPageLayout, EmptyState, Loader, PageLayout, StatCard, useConfirm } from "@/components/ui";
+=======
+import { Breadcrumb,Button, CrudPageLayout, EmptyState, Loader, PageLayout, StatCard, useConfirm } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { AlertBanner } from "@/components/ui/AlertBanner";
 import { useApiMutation } from "@/hooks";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
@@ -159,9 +163,14 @@ export function SettlementBatchDetailsPage() {
         } finally {
             setIsGeneratingFailures(false);
             if (fileInputRef.current) fileInputRef.current.value = "";
+<<<<<<< HEAD
             queryClient.invalidateQueries({ queryKey: ["settlement-decision", id] });
         }
     }, [id, queryClient, toast]);
+=======
+        }
+    }, [id, toast]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     const handleDelete = async () => {
         if (!(await confirm({ title: "تأكيد الإجراء", description: "هل أنت متأكد من حذف هذا القرار وجميع بنوده؟", variant: "danger" }))) return;
@@ -193,11 +202,19 @@ export function SettlementBatchDetailsPage() {
                 <div>
                     <div className="font-medium">{row.retireeFullName}</div>
                     {row.retireeID ? (
+<<<<<<< HEAD
                         <div className="text-xs text-success flex items-center gap-1 mt-0.5">
                             <CheckCircle2 className="w-4 h-4" /> مطابق
                         </div>
                     ) : (
                         <div className="text-xs text-warning flex items-center gap-1 mt-0.5">
+=======
+                        <div className="text-xs text-green-600 flex items-center gap-1 mt-0.5">
+                            <CheckCircle2 className="w-4 h-4" /> مطابق
+                        </div>
+                    ) : (
+                        <div className="text-xs text-amber-600 flex items-center gap-1 mt-0.5">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <XCircle className="w-4 h-4" /> غير مطابق
                         </div>
                     )}
@@ -229,9 +246,13 @@ export function SettlementBatchDetailsPage() {
             header: "",
             render: (row: SettlementItemDto) => (
                 <div className="flex items-center gap-2">
+<<<<<<< HEAD
                     {row.retireeID ? (
                         <span className="text-xs text-success">الاستحقاق مُنشأ</span>
                     ) : (
+=======
+                    {!row.retireeID && (
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <Button
                             variant="secondary"
                             size="sm"
@@ -309,6 +330,16 @@ export function SettlementBatchDetailsPage() {
 
     return (
         <PageLayout className="p-4 sm:p-6">
+<<<<<<< HEAD
+=======
+            <Breadcrumb 
+                items={[
+                    { label: "قائمة التسويات", href: "/settlements" },
+                    { label: `قرار رقم ${dec.decisionNumber}` }
+                ]} 
+            />
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             <CrudPageLayout<SettlementItemDto>
                 title={`قرار تسوية رقم ${dec.decisionNumber}`}
                 description={`تاريخ القرار: ${formatDate(dec.decisionDate)} • النوع: ${dec.decisionType || "تسوية رتب"}`}
@@ -408,7 +439,11 @@ export function SettlementBatchDetailsPage() {
                                 <Button 
                                     variant="outline" 
                                     size="sm" 
+<<<<<<< HEAD
                                     className="gap-2 border-warning hover:bg-warning/10 text-warning"
+=======
+                                    className="gap-2 border-amber-300 hover:bg-amber-100 text-amber-700"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     onClick={() => fileInputRef.current?.click()}
                                     loading={isGeneratingFailures}
                                 >
@@ -456,7 +491,10 @@ export function SettlementBatchDetailsPage() {
                 }}
                 item={selectedItemToLink}
                 onLinked={() => {
+<<<<<<< HEAD
                     queryClient.invalidateQueries({ queryKey: ["settlement-decision", id] });
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     queryClient.invalidateQueries({ queryKey: ["settlement-decision-items", id] });
                 }}
             />

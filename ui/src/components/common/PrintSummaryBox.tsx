@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { Heading } from "@/components/ui";
 import { cn } from "@/lib/utils";
+=======
+import { cn } from "@/lib/utils";
+import { Heading } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface SummaryItem {
     label: string;

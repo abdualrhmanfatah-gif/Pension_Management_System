@@ -131,6 +131,7 @@ public class FileStatusRow
 // ═══════════════════════════════════════
 // RET-02: Active Retirees
 // ═══════════════════════════════════════
+<<<<<<< HEAD
 public class ActiveRetireesSummaryDto
 {
     public int TotalCount { get; set; }
@@ -139,12 +140,17 @@ public class ActiveRetireesSummaryDto
     public int GovernorateCount { get; set; }
 }
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 public class ActiveRetireeRow
 {
     public int RetireeID { get; set; }
     public string FullName { get; set; } = "";
     public string NationalID { get; set; } = "";
+<<<<<<< HEAD
     public string MilitaryNumber { get; set; } = "";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string RankName { get; set; } = "";
     public string Category { get; set; } = "";
     public decimal MonthlyPension { get; set; }
@@ -187,6 +193,7 @@ public class SalaryBatchRow
 public class SettlementRow
 {
     public int SettlementID { get; set; }
+<<<<<<< HEAD
     public int DecisionID { get; set; }
     public string DecisionNumber { get; set; } = "";
     public string RetireeName { get; set; } = "";
@@ -203,6 +210,13 @@ public class SettlementSummaryDto
     public decimal TotalAmount { get; set; }
     public int DecisionCount { get; set; }
     public decimal AverageAmount { get; set; }
+=======
+    public string DecisionNumber { get; set; } = "";
+    public string RetireeName { get; set; } = "";
+    public decimal Amount { get; set; }
+    public string Status { get; set; } = "";
+    public DateTime CreatedAt { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 // ═══════════════════════════════════════
@@ -279,7 +293,11 @@ public class ExpiredDocRow
     public string DocTypeName { get; set; } = "";
     public string OwnerName { get; set; } = "";
     public string OwnerType { get; set; } = "";
+<<<<<<< HEAD
     public DateOnly? ExpiryDate { get; set; }
+=======
+    public DateTime? ExpiryDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public int DaysExpired { get; set; }
     public bool IsVerified { get; set; }
 }
@@ -304,6 +322,7 @@ public class BeneficiaryRow
 }
 
 // ═══════════════════════════════════════
+<<<<<<< HEAD
 // KASHF: Kashf Report (كشوفات الإحالة)
 // ═══════════════════════════════════════
 public class KashfReportRow
@@ -323,6 +342,8 @@ public class KashfReportRow
 }
 
 // ═══════════════════════════════════════
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 // COM-01: Ministry Batches
 // ═══════════════════════════════════════
 public class MinistryBatchRow

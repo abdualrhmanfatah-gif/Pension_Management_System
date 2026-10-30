@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { Calendar, RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -7,6 +8,16 @@ import { FiscalYearCloseDialog, FiscalYearFormDialog } from "@/components/domain
 import { Badge, Button, Card, type CustomColumnDef, DataTable, Heading, PageLayout, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Skeleton, StickyHeader } from "@/components/ui";
 import { formatDate } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
+=======
+import { useEffect, useState } from "react";
+import { Calendar, RefreshCw } from "lucide-react";
+
+import { fiscalYearsApi, periodsApi } from "@/api/accounting";
+import { useHasPermission } from "@/stores/authStore";
+import { Badge, Button, Card, Heading, PageLayout, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Skeleton, DataTable, type CustomColumnDef, StickyHeader } from "@/components/ui";
+import { FiscalYearCloseDialog, FiscalYearFormDialog } from "@/components/domain/accounting";
+import { formatDate } from "@/lib/utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import type { FiscalPeriodDto, FiscalYearSummaryDto } from "@/types/accounting";
 
 export function FiscalPeriodsPage() {
@@ -102,7 +113,11 @@ export function FiscalPeriodsPage() {
 
       {/* Active period notice */}
       {activePeriod && (
+<<<<<<< HEAD
         <div className="bg-emerald-500/5 border border-emerald-500 text-emerald-800 px-4 py-3 rounded-xl text-sm">
+=======
+        <div className="bg-emerald-500/5 border border-emerald-500/20 text-emerald-800 px-4 py-3 rounded-xl text-sm">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           الفترة النشطة حالياً: <strong>{activePeriod.periodName}</strong> —
           من {new Date(activePeriod.startDate).toLocaleDateString("ar-SA")}
           إلى {new Date(activePeriod.endDate).toLocaleDateString("ar-SA")}

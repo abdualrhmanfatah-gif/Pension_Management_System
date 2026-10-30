@@ -76,11 +76,14 @@ public class LookupsController : ControllerBase
     [Authorize(Policy = "Retiree.View")]
     public async Task<IActionResult> GetGovernorates()
         => Ok(await _lookupService.GetGovernoratesAsync());
+<<<<<<< HEAD
 
     [HttpGet("units")]
     [Authorize(Policy = "Retiree.View")]
     public async Task<IActionResult> GetUnits()
         => Ok(await _lookupService.GetUnitsAsync());
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 

@@ -47,13 +47,22 @@ public class EmployeeDetailsDto
     public string? Notes { get; set; }
     public string? BloodGroup { get; set; }
     public string? NationalIDIssuePlace { get; set; }
+<<<<<<< HEAD
     public DateOnly? NationalIDIssueDate { get; set; }
     public DateOnly? NationalIDExpiryDate { get; set; }
+=======
+    public DateTime? NationalIDIssueDate { get; set; }
+    public DateTime? NationalIDExpiryDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? EmergencyContactName { get; set; }
     public string? EmergencyContactPhone { get; set; }
     public byte Gender { get; set; }
     public DateTime HireDate { get; set; }
+<<<<<<< HEAD
     public DateOnly? BirthDate { get; set; }
+=======
+    public DateTime? BirthDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string DepartmentName { get; set; } = string.Empty;
     public string? SectionName { get; set; }
     public string JobTitleName { get; set; } = string.Empty;
@@ -86,13 +95,22 @@ public class CreateEmployeeDto
     public string? Notes { get; set; }
     public string? BloodGroup { get; set; }
     public string? NationalIDIssuePlace { get; set; }
+<<<<<<< HEAD
     public DateOnly? NationalIDIssueDate { get; set; }
     public DateOnly? NationalIDExpiryDate { get; set; }
+=======
+    public DateTime? NationalIDIssueDate { get; set; }
+    public DateTime? NationalIDExpiryDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? EmergencyContactName { get; set; }
     public string? EmergencyContactPhone { get; set; }
     public byte Gender { get; set; } // 1: Male, 2: Female
     public DateTime HireDate { get; set; }
+<<<<<<< HEAD
     public DateOnly? BirthDate { get; set; }
+=======
+    public DateTime? BirthDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 public class UpdateEmployeeDto
@@ -115,11 +133,20 @@ public class UpdateEmployeeDto
     public string? Notes { get; set; }
     public string? BloodGroup { get; set; }
     public string? NationalIDIssuePlace { get; set; }
+<<<<<<< HEAD
     public DateOnly? NationalIDIssueDate { get; set; }
     public DateOnly? NationalIDExpiryDate { get; set; }
+=======
+    public DateTime? NationalIDIssueDate { get; set; }
+    public DateTime? NationalIDExpiryDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? EmergencyContactName { get; set; }
     public string? EmergencyContactPhone { get; set; }
     public byte? Gender { get; set; }
     public DateTime? HireDate { get; set; }
+<<<<<<< HEAD
     public DateOnly? BirthDate { get; set; }
+=======
+    public DateTime? BirthDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }

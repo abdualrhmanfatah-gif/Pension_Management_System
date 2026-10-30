@@ -81,11 +81,19 @@ export function ReconciliationTab({ batchId }: ReconciliationTabProps) {
             render: (row) => (
                 <div className="flex items-center gap-2">
                     {row.isActionRequired ? (
+<<<<<<< HEAD
                         <span className="text-xs text-danger flex items-center gap-1 font-medium">
                             <UserX className="w-3 h-3" /> يتطلب معالجة
                         </span>
                     ) : (
                         <span className="text-xs text-success flex items-center gap-1 font-medium">
+=======
+                        <span className="text-xs text-rose-600 flex items-center gap-1 font-medium">
+                            <UserX className="w-3 h-3" /> يتطلب معالجة
+                        </span>
+                    ) : (
+                        <span className="text-xs text-emerald-600 flex items-center gap-1 font-medium">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <UserCheck className="w-3 h-3" /> مكتمل
                         </span>
                     )}
@@ -96,11 +104,19 @@ export function ReconciliationTab({ batchId }: ReconciliationTabProps) {
 
     return (
         <div className="space-y-4">
+<<<<<<< HEAD
             <div className="bg-warning/10  border border-warning  p-4 rounded-xl flex gap-3 items-start">
                 <AlertCircle className="w-5 h-5 text-warning shrink-0 mt-0.5" />
                 <div className="space-y-1">
                     <h4 className="text-sm font-semibold text-warning ">تحليل المطابقة الذكي</h4>
                     <p className="text-xs text-warning  leading-relaxed">
+=======
+            <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/30 p-4 rounded-xl flex gap-3 items-start">
+                <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                    <h4 className="text-sm font-semibold text-amber-900 dark:text-amber-400">تحليل المطابقة الذكي</h4>
+                    <p className="text-xs text-amber-800/80 dark:text-amber-500/80 leading-relaxed">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         يقوم النظام بمقارنة بيانات هذه الإحالة مع قاعدة بيانات المتقاعدين الحالية. 
                         الإحالات التي تحمل حالة "غير موجود في النظام" تتطلب إنشاء ملفات تقاعد جديدة أو ربطها يدوياً.
                     </p>

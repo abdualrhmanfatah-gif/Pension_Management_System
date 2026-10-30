@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DollarSign,Eye, Receipt } from "lucide-react";
 import { useRef, useState } from "react";
@@ -13,6 +14,23 @@ import {
     InfoPair,
     StatCard,
 } from "@/components/ui";
+=======
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Receipt, Eye, DollarSign } from "lucide-react";
+import { useRef, useState } from "react";
+
+import { financialEntitlementsApi, type FinancialEntitlementDto } from "@/api/financial-entitlements";
+import {
+    Badge,
+    CrudPageLayout,
+    Heading,
+    StatCard,
+    Button,
+    InfoPair,
+    BaseFormDialog,
+} from "@/components/ui";
+import { toast } from "sonner";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function FinancialEntitlementsPage() {
     const queryClient = useQueryClient();
@@ -84,7 +102,11 @@ export function FinancialEntitlementsPage() {
             key: "phone",
             header: "هاتف المتتقاعد",
             render: (row: FinancialEntitlementDto) => (
+<<<<<<< HEAD
                 <span className="text-sm" dir="ltr">{row.phone || "—"}</span>
+=======
+                <span className="text-sm font-mono" dir="ltr">{row.phone || "—"}</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             ),
         },
         {
@@ -186,9 +208,15 @@ export function FinancialEntitlementsPage() {
             {/* No search message */}
             {!activeSearch && (
                 <div className="text-center py-12 text-muted-foreground">
+<<<<<<< HEAD
                     <Receipt className="w-12 h-12 mx-auto mb-4 opacity-100" />
                     <p className="text-sm">أدخل كلمة للبحث في الاستحقاقات المالية</p>
                     <p className="text-xs mt-1 opacity-100">رقم الملف، الرقم العسكري، الهاتف، اسم المتتقاعد، اسم الوكيل</p>
+=======
+                    <Receipt className="w-12 h-12 mx-auto mb-4 opacity-30" />
+                    <p className="text-sm">أدخل كلمة للبحث في الاستحقاقات المالية</p>
+                    <p className="text-xs mt-1 opacity-60">رقم الملف، الرقم العسكري، الهاتف، اسم المتتقاعد، اسم الوكيل</p>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 </div>
             )}
 

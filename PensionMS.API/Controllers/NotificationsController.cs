@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Http;
 using PensionMS.Core.Interfaces;
 using PensionMS.Core.DTOs.Common;
 using PensionMS.Core.DTOs.Notifications;
+<<<<<<< HEAD
 using PensionMS.API.Extensions;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 using System.Security.Claims;
 
 namespace PensionMS.API.Controllers;
@@ -15,12 +18,19 @@ namespace PensionMS.API.Controllers;
 public class NotificationsController : ControllerBase
 {
     private readonly INotificationService _notificationService;
+<<<<<<< HEAD
     private readonly IAuthorizationService _authorizationService;
 
     public NotificationsController(INotificationService notificationService, IAuthorizationService authorizationService)
     {
         _notificationService = notificationService;
         _authorizationService = authorizationService;
+=======
+
+    public NotificationsController(INotificationService notificationService)
+    {
+        _notificationService = notificationService;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 
     [HttpGet]
@@ -55,6 +65,7 @@ public class NotificationsController : ControllerBase
         return Ok(result);
     }
 
+<<<<<<< HEAD
     /// <summary>
     /// تنزيل مرفق إشعار — الملكية مفروضة في الخدمة: المستلم أو System.Admin فقط.
     /// </summary>
@@ -73,6 +84,8 @@ public class NotificationsController : ControllerBase
         return File(attachment.Content, attachment.ContentType, attachment.FileName);
     }
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     private int GetUserId()
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

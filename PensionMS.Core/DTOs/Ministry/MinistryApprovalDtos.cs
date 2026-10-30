@@ -38,12 +38,19 @@ public class MinistryApprovalItemDto
     public string MilitaryNumber { get; set; } = string.Empty;
     public string FullName { get; set; } = string.Empty;
     public byte? Gender { get; set; }
+<<<<<<< HEAD
     public int? RankID { get; set; }
     public string? RankName { get; set; }
     public int? CategoryID { get; set; }
     public string? UnitName { get; set; }
     public DateOnly? EnrollmentDate { get; set; }
     public DateOnly? RetirementDate { get; set; }
+=======
+    public string? RankName { get; set; }
+    public string? UnitName { get; set; }
+    public DateTime? EnrollmentDate { get; set; }
+    public DateTime? RetirementDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public decimal? Salary { get; set; }
     public string? CategoryName { get; set; }
     public string? Notes { get; set; }
@@ -72,6 +79,7 @@ public class AddManualItemDto
 
     public int? RankID { get; set; }
     public string? UnitName { get; set; }
+<<<<<<< HEAD
     public DateOnly? EnrollmentDate { get; set; }
     public DateOnly? RetirementDate { get; set; }
     public decimal? Salary { get; set; }
@@ -93,6 +101,10 @@ public class UpdateManualItemDto
     public string? UnitName { get; set; }
     public DateOnly? EnrollmentDate { get; set; }
     public DateOnly? RetirementDate { get; set; }
+=======
+    public DateTime? EnrollmentDate { get; set; }
+    public DateTime? RetirementDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public decimal? Salary { get; set; }
     public int? CategoryID { get; set; }
     public byte? Gender { get; set; }

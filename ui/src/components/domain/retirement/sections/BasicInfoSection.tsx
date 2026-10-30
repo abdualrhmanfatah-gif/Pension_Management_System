@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { AlertTriangle, FileWarning, Pencil, User } from "lucide-react";
 import { useState } from "react";
 
@@ -13,6 +14,23 @@ import { useApiMutation } from "@/hooks/useApiMutation";
 import { formatDate, getDefaultDeceasedAvatar, getPhotoUrl, resolvePersonalPhotoPath } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
 import type { RetireeDetail,RetirementFileDetail } from "@/types/retirement";
+=======
+import { useState } from "react";
+import { AlertTriangle, FileWarning, Pencil, User } from "lucide-react";
+
+import api from "@/api/axios";
+import { retirementApi } from "@/api/retirement";
+import { retireeApi } from "@/api/retirees";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
+import { Heading, Button, EditableImage } from "@/components/ui";
+import { InfoPair } from "@/components/ui/InfoPair";
+import { AlertBanner } from "@/components/ui";
+import { BaseFormDialog, FormField, Input, Textarea, NativeSelect } from "@/components/ui";
+import { useApiMutation } from "@/hooks/useApiMutation";
+import { useHasPermission } from "@/stores/authStore";
+import { formatDate, getPhotoUrl, getDefaultDeceasedAvatar, resolvePersonalPhotoPath } from "@/lib/utils";
+import type { RetirementFileDetail, RetireeDetail } from "@/types/retirement";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface BasicInfoSectionProps {
     file: RetirementFileDetail;
@@ -162,12 +180,20 @@ export function BasicInfoSection({
                         {/* الصورة الشخصية */}
                         <div className="flex-shrink-0">
                             <div className="relative group">
+<<<<<<< HEAD
                                 <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/30 to-primary/10 rounded-2xl blur opacity-100 group-hover:opacity-100 transition duration-500" />
+=======
+                                <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/30 to-primary/10 rounded-2xl blur opacity-50 group-hover:opacity-75 transition duration-500" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 <EditableImage
                                     src={getPhotoUrl(resolvePersonalPhotoPath(retiree)) || getPhotoUrl(resolvePersonalPhotoPath(file)) || (!file.isAlive ? getDefaultDeceasedAvatar(file.gender) : null)}
                                     alt={retiree.fullName}
                                     className="relative w-24 h-32 rounded-2xl border-[4px] border-card object-cover bg-muted transition-all duration-300 group-hover:scale-[1.02]"
+<<<<<<< HEAD
                                     fallbackIcon={<User className="w-10 h-10 text-muted-foreground" />}
+=======
+                                    fallbackIcon={<User className="w-10 h-10 text-muted-foreground/60" />}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     canEdit={canEditRetiree}
                                     imgWidth={96}
                                     imgHeight={128}
@@ -354,7 +380,12 @@ export function BasicInfoSection({
                                     phone: e.target.value,
                                 }))
                             }
+<<<<<<< HEAD
                             placeholder="7xxxxxxx"
+=======
+                            placeholder="رقم الهاتف"
+                            dir="ltr"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         />
                     </FormField>
                     <FormField label="الحالة الاجتماعية">

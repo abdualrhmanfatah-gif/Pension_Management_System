@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+=======
+import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     CheckCircle,
     Clock,
@@ -13,21 +17,37 @@ import {
     XCircle,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+<<<<<<< HEAD
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+=======
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { z } from "zod";
 
 import { archiveApi } from "@/api/archive";
 import { lookupApi } from "@/api/pension";
+<<<<<<< HEAD
 import { SearchDialog } from "@/components/common/SearchDialog";
 import { DocumentReviewPanel } from "@/components/domain/retirement/DocumentReviewPanel";
 import { type DocumentItem,DocumentViewerDialog } from "@/components/domain/retirement/DocumentViewerDialog";
+=======
+import { getDocumentUrl } from "@/lib/utils";
+import { SearchDialog } from "@/components/common/SearchDialog";
+import { DocumentViewerDialog, type DocumentItem } from "@/components/domain/retirement/DocumentViewerDialog";
+import { DocumentReviewPanel } from "@/components/domain/retirement/DocumentReviewPanel";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Badge,
     Button,
     Card,
+<<<<<<< HEAD
     type CustomColumnDef,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     DataTable,
     DateInput,
     Dialog,
@@ -35,6 +55,7 @@ import {
     DialogHeader,
     DialogTitle,
     FormField,
+<<<<<<< HEAD
     Heading,
     NativeSelect,
     PageLayout,
@@ -52,6 +73,26 @@ import type {
 import {
     REVIEW_STATUS,
 } from "@/types/archive";
+=======
+    NativeSelect,
+    StatCard,
+    Text,
+    Textarea,
+    type CustomColumnDef,
+    Heading,
+    PageLayout,
+} from "@/components/ui";
+import { cn, formatDate } from "@/lib/utils";
+import {
+    REVIEW_STATUS,
+} from "@/types/archive";
+import type {
+    DocumentReviewItem,
+    DocumentReviewFilters,
+    DocumentReviewStats,
+} from "@/types/archive";
+import { toast } from "sonner";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 const reviewSchema = z.object({
     reviewStatus: z.number().min(0, "حالة الفحص مطلوبة"),

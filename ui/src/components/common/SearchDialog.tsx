@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useQuery } from "@tanstack/react-query";
 import { Search, User } from "lucide-react";
 import { useCallback, useEffect, useMemo,useRef, useState } from "react";
@@ -5,6 +6,14 @@ import { useCallback, useEffect, useMemo,useRef, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/Dialog";
 import { Input } from "@/components/ui/Input";
 import { matchesShortcut, SHORTCUT_GLOBAL_SEARCH } from "@/constants/shortcuts";
+=======
+import { Search, User } from "lucide-react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/Dialog";
+import { Input } from "@/components/ui/Input";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { cn } from "@/lib/utils";
 
 interface SearchDialogProps<T> {
@@ -50,7 +59,11 @@ export function SearchDialog<T>({
 
     useEffect(() => {
         const handleShortcut = (e: KeyboardEvent) => {
+<<<<<<< HEAD
             if (matchesShortcut(e, SHORTCUT_GLOBAL_SEARCH)) {
+=======
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.code === "KeyF" || e.key === "f" || e.key === "\u0642")) {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 e.preventDefault();
                 setOpen((prev) => !prev);
             }
@@ -120,7 +133,11 @@ export function SearchDialog<T>({
                     <Search className="w-4 h-4" />
                 </DialogTrigger>
             )}
+<<<<<<< HEAD
             <DialogContent className="sm:max-w-2xl p-0 gap-0 overflow-hidden border-border">
+=======
+            <DialogContent className="sm:max-w-2xl p-0 gap-0 overflow-hidden border-border/60">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <DialogHeader className="px-5 pt-5 pb-0 border-b-0">
                     <DialogTitle className="text-lg font-bold">{title}</DialogTitle>
                 </DialogHeader>
@@ -133,13 +150,21 @@ export function SearchDialog<T>({
                             value={searchText}
                             onChange={(e) => { setSearchText(e.target.value); setActiveIndex(-1); }}
                             onKeyDown={handleKeyDown}
+<<<<<<< HEAD
                             className="pr-10 h-12 text-base border-2 border-primary focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary/20 bg-muted/30"
+=======
+                            className="pr-10 h-12 text-base border-2 border-primary/20 focus-visible:border-primary/40 focus-visible:ring-1 focus-visible:ring-primary/20 bg-muted/30"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             autoFocus
                         />
                     </div>
 
                     {debouncedSearch.length >= minLength && (
+<<<<<<< HEAD
                         <div ref={listRef} className="mt-3 max-h-[28rem] overflow-y-auto space-y-1 divide-y divide-border" role="listbox">
+=======
+                        <div ref={listRef} className="mt-3 max-h-[28rem] overflow-y-auto space-y-1 divide-y divide-border/40" role="listbox">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             {isLoading ? (
                                 <p className="text-sm text-muted-foreground text-center py-8">جاري البحث...</p>
                             ) : uniqueNames.length > 0 ? (

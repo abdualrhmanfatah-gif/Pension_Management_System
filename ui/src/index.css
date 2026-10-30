@@ -211,7 +211,10 @@
     --card-foreground: 220 20% 3%;
     --popover: 0 0% 100%;
     --popover-foreground: 220 20% 3%;
+<<<<<<< HEAD
     --select-foreground: 0 0% 0%;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     /* Primary: Deep Government Blue */
     --primary: 215 85% 22%;
@@ -223,11 +226,18 @@
 
     /* Muted */
     --muted: 215 20% 88%;
+<<<<<<< HEAD
     --muted-foreground: 0 0% 0%;
     --muted-primary: 215 72% 28%;
     --label-font-family: 'Noto Kufi Arabic', 'Noto Sans Arabic', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     --label-font-size: 0.875rem;
     --label-foreground: 220 20% 5%;
+=======
+    --muted-foreground: 220 20% 5%;
+    --muted-primary: 215 72% 28%;
+    --label-font-family: 'Noto Kufi Arabic', 'Noto Sans Arabic', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --label-font-size: 0.90rem;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     /* Table */
     --table-foreground: 220 20% 5%;
@@ -274,6 +284,7 @@
     --gov-danger-bg: 0 60% 95%;
     --gov-info: 205 55% 48%;
     --gov-info-bg: 205 55% 95%;
+<<<<<<< HEAD
     /* Purple — حالات خاصة (استثناء/تمييز) — F-08 */
     --gov-special: 262 83% 58%;
 
@@ -283,6 +294,8 @@
     --gov-hero-end: 227 78% 40%;
     --gov-hero-accent: 213 90% 74%;
     --gov-hero-fg: 0 0% 100%;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     /* ── Spacing Scale ── */
     --space-1: 0.25rem;
@@ -303,11 +316,17 @@
 
 
     /* ── Typography Scale ── */
+<<<<<<< HEAD
     --font-xs: 0.8125rem;
     --font-sm: 0.875rem;
     --font-base: 0.875rem;
     --font-weight-base: 500;
     --font-weight-semibold: 600;
+=======
+    --font-xs: 0.75rem;
+    --font-sm: 0.8125rem;
+    --font-base: 0.875rem;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     --font-md: 1rem;
     --font-lg: 1.125rem;
     --font-xl: 1.375rem;
@@ -326,6 +345,7 @@
     --z-tooltip: 700;
     --z-toast: 800;
 
+<<<<<<< HEAD
     /* ── Overlay (أغطية ثابتة: حوارات/محرّرات) — F-25/F-55 ── */
     --overlay: 0 0% 0%;
 
@@ -341,6 +361,13 @@
     --transition-base: var(--transition-duration-base) var(--transition-easing-standard);
     --transition-slow: var(--transition-duration-slow) var(--transition-easing-standard);
     --transition-bounce: var(--transition-duration-bounce) var(--transition-easing-bounce);
+=======
+    /* ── Transition Tokens ── */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   }
 
   /* ── Dark Mode ── */
@@ -351,15 +378,23 @@
     --card-foreground: 210 40% 98%;
     --popover: 220 15% 10%;
     --popover-foreground: 210 40% 98%;
+<<<<<<< HEAD
     --select-foreground: 210 40% 98%;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     --primary: 215 60% 50%;
     --primary-foreground: 220 15% 7%;
     --secondary: 215 30% 18%;
     --secondary-foreground: 210 40% 98%;
     --muted: 215 30% 18%;
+<<<<<<< HEAD
     --muted-foreground: 0 0% 100%;
     --table-foreground: 215 18% 82%;
     --label-foreground: 215 20% 65%;
+=======
+    --muted-foreground: 215 20% 65%;
+    --table-foreground: 215 18% 82%;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     --accent: 215 30% 18%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 55% 45%;
@@ -429,10 +464,17 @@
   /* ── Reduced Motion ── */
   @media (prefers-reduced-motion: reduce) {
     :root {
+<<<<<<< HEAD
       --transition-duration-fast: 0.01ms;
       --transition-duration-base: 0.01ms;
       --transition-duration-slow: 0.01ms;
       --transition-duration-bounce: 0.01ms;
+=======
+      --transition-fast: 0.01ms;
+      --transition-base: 0.01ms;
+      --transition-slow: 0.01ms;
+      --transition-bounce: 0.01ms;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
     *,
     *::before,
@@ -828,6 +870,7 @@
   }
 }
 
+<<<<<<< HEAD
 /* ── Field Labels ── */
 @layer components {
     .label-field {
@@ -855,29 +898,47 @@
     .watermark-bg {
         isolation: isolate;
     }
+=======
+/* ── Utility Classes ── */
+@layer utilities {
+    /* Watermark background — شعار مائي في خلفية جميع الصفحات */
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     .watermark-bg::before {
         content: '';
         position: fixed;
         inset: 0;
+<<<<<<< HEAD
         z-index: -1;
+=======
+        z-index: 9999;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         background-image: url('/pension-logo.png');
         background-size: 320px;
         background-position: center ;
         background-repeat: no-repeat;
+<<<<<<< HEAD
         opacity: 0.04;
+=======
+        opacity: 0.07;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         pointer-events: none;
     }
     @media (min-width: 768px) {
         .watermark-bg::before {
             background-size: 500px;
             background-position: center 65%;
+<<<<<<< HEAD
             opacity: 0.05;
+=======
+            opacity: 0.08;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
     }
     @media (min-width: 1280px) {
         .watermark-bg::before {
             background-size: 700px;
             background-position: center 65%;
+<<<<<<< HEAD
             opacity: 0.05;
         }
     }
@@ -887,6 +948,17 @@
     @media (min-width: 768px) {
         .dark .watermark-bg::before {
             opacity: 0.07;
+=======
+            opacity: 0.08;
+        }
+    }
+    .dark .watermark-bg::before {
+        opacity: 0.1;
+    }
+    @media (min-width: 768px) {
+        .dark .watermark-bg::before {
+            opacity: 0.12;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
     }
     @media print {
@@ -1021,6 +1093,57 @@
 
 }
 
+<<<<<<< HEAD
+=======
+/* ── react-image-crop — Mobile Touch Overrides ── */
+
+/* تكبير أطراف القص على اللمس ليصل الحد الأدنى 44×44px */
+@media (pointer: coarse) {
+  .ReactCrop__drag-handle {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  /* إظهار الأطراف الجانبية على اللمس (المكتبة تخفيها) */
+  .ReactCrop .ord-n,
+  .ReactCrop .ord-e,
+  .ReactCrop .ord-s,
+  .ReactCrop .ord-w {
+    display: block !important;
+  }
+
+  /* شريط السحب الأفقي والعمودي */
+  .ReactCrop__drag-bar.ord-n,
+  .ReactCrop__drag-bar.ord-e,
+  .ReactCrop__drag-bar.ord-s,
+  .ReactCrop__drag-bar.ord-w {
+    height: 12px !important;
+    width: 12px !important;
+  }
+}
+
+/* حركة سلسة لمربع القص عند تغيير الحجم */
+.ReactCrop__crop-selection {
+  transition: width 0.12s ease-out, height 0.12s ease-out,
+              top 0.12s ease-out, left 0.12s ease-out;
+}
+
+/* تحسين التمرير داخل حاوية القص على الجوال */
+.rc-crop-wrapper {
+  -webkit-overflow-scrolling: touch;
+}
+
+.rc-crop-wrapper .ReactCrop {
+  max-width: 100%;
+  display: inline-block;
+}
+
+/* منع الزوم على Safari عند النقر المزدوج */
+.rc-crop-wrapper img {
+  touch-action: manipulation;
+}
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 /* ── Disable backdrop-blur on mobile to prevent GPU OOM / black screen ── */
 @media (max-width: 640px) {
   *,

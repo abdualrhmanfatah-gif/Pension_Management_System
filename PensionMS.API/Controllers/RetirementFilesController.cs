@@ -1,13 +1,22 @@
+<<<<<<< HEAD
 using PensionMS.Core.Interfaces.Reporting;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+=======
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 using PensionMS.API.Extensions;
 using PensionMS.Core.Constants;
 using PensionMS.Core.DTOs.Common;
 using PensionMS.Core.DTOs.Reports;
 using PensionMS.Core.DTOs.RetirementFiles;
 using PensionMS.Core.Interfaces;
+<<<<<<< HEAD
 using PensionMS.Infrastructure.Reporting.Exporters;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 namespace PensionMS.API.Controllers;
 
@@ -18,15 +27,25 @@ public class RetirementFilesController : ControllerBase
 {
     private readonly IRetirementFileService _fileService;
     private readonly IFileQueryService _queryService;
+<<<<<<< HEAD
     private readonly IRetirementFileReportService _reportService;
     private readonly IFileStatusService _statusService;
     private readonly IFileReviewService _reviewService;
     private readonly IDocumentService _documentService;
     private readonly UploaderStatsReportExporter _statsExporter;
+=======
+    private readonly IFileStatusService _statusService;
+    private readonly IFileReviewService _reviewService;
+    private readonly IMemoryCache _cache;
+
+    private const string FileCachePrefix = "retirement_file_";
+    private static readonly TimeSpan FileCacheDuration = TimeSpan.FromMinutes(5);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     public RetirementFilesController(
         IRetirementFileService fileService,
         IFileQueryService queryService,
+<<<<<<< HEAD
         IRetirementFileReportService reportService,
         IFileStatusService statusService,
         IFileReviewService reviewService,
@@ -40,6 +59,17 @@ public class RetirementFilesController : ControllerBase
         _reviewService = reviewService;
         _documentService = documentService;
         _statsExporter = statsExporter;
+=======
+        IFileStatusService statusService,
+        IFileReviewService reviewService,
+        IMemoryCache cache)
+    {
+        _fileService = fileService;
+        _queryService = queryService;
+        _statusService = statusService;
+        _reviewService = reviewService;
+        _cache = cache;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 
     // ═══════════════════════════════════════
@@ -56,11 +86,18 @@ public class RetirementFilesController : ControllerBase
         [FromQuery] int? uploadedBy = null, [FromQuery] int? cursor = null,
         [FromQuery] string? period = null, [FromQuery] DateTime? fromDate = null, [FromQuery] DateTime? toDate = null,
         [FromQuery] int? categoryId = null, [FromQuery] int? rankId = null,
+<<<<<<< HEAD
         [FromQuery] string? governorate = null, [FromQuery] byte? gender = null,
         [FromQuery] string? unitName = null, [FromQuery] bool? hasSettlements = null)
     {
         var userId = this.GetUserId();
         var result = await _queryService.GetAllAsync(page, pageSize, search, statusId, userId, statusIds, uploadedBy, cursor, period, fromDate, toDate, categoryId, rankId, governorate, gender, unitName, hasSettlements);
+=======
+        [FromQuery] string? governorate = null, [FromQuery] byte? gender = null)
+    {
+        var userId = this.GetUserId();
+        var result = await _queryService.GetAllAsync(page, pageSize, search, statusId, userId, statusIds, uploadedBy, cursor, period, fromDate, toDate, categoryId, rankId, governorate, gender);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         return result.ToActionResult();
     }
 
@@ -71,9 +108,19 @@ public class RetirementFilesController : ControllerBase
     [Authorize(Policy = "File.View.Sensitive")]
     public async Task<IActionResult> GetById(int id)
     {
+<<<<<<< HEAD
         // Linked records and review actions can change this file from many services.
         // Read its current state and enforce the caller's branch scope on every request.
         var result = await _queryService.GetByIdAsync(id);
+=======
+        var cacheKey = FileCachePrefix + id;
+        if (_cache.TryGetValue(cacheKey, out object? cached))
+            return Ok(cached);
+
+        var result = await _queryService.GetByIdAsync(id);
+        _cache.Set(cacheKey, result, FileCacheDuration);
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         return result.ToActionResult();
     }
 
@@ -130,16 +177,26 @@ public class RetirementFilesController : ControllerBase
         return result.ToActionResult();
     }
 
+<<<<<<< HEAD
     /// <summary>تسجيل وفاة المتقاعد</summary>
     [HttpPost("{id:int}/death")]
     [Authorize(Policy = "File.ChangeStatus.Approve")]
     public async Task<IActionResult> HandleDeath(int id, [FromQuery] DateOnly deathDate)
+=======
+    /// <summary>
+    /// تسجيل وفاة المتقاعد
+    /// </summary>
+    [HttpPost("{id:int}/death")]
+    [Authorize(Policy = "File.ChangeStatus.Approve")]
+    public async Task<IActionResult> HandleDeath(int id, [FromQuery] DateTime deathDate)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     {
         var userId = this.GetUserId();
         var result = await _fileService.HandleRetireeDeathAsync(id, deathDate, userId);
         return result.ToActionResult();
     }
 
+<<<<<<< HEAD
     /// <summary>تصحيح حالة وفاة مسجلة خطأً وإعادة المتقاعد إلى حي مع إبقاء الصرف موقوفاً للمراجعة</summary>
     [HttpPost("{id:int}/correct-life-status")]
     [Authorize(Policy = "File.ChangeStatus.Approve")]
@@ -149,6 +206,8 @@ public class RetirementFilesController : ControllerBase
         return result.ToActionResult();
     }
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     /// <summary>
     /// حذف ملف (ناعم)
     /// </summary>
@@ -161,6 +220,21 @@ public class RetirementFilesController : ControllerBase
         return result.ToActionResult();
     }
 
+<<<<<<< HEAD
+=======
+    /// <summary>
+    /// إسناد الملف لموظف
+    /// </summary>
+    [HttpPut("{id:int}/assign")]
+    [Authorize(Policy = "File.Edit.BasicData")]
+    public async Task<IActionResult> AssignEmployee(int id, [FromQuery] int employeeId)
+    {
+        var userId = this.GetUserId();
+        var result = await _fileService.AssignEmployeeAsync(id, employeeId, userId);
+        return result.ToActionResult();
+    }
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     // ═══════════════════════════════════════
     // STATUS ENDPOINTS (IFileStatusService)
     // ═══════════════════════════════════════
@@ -284,6 +358,7 @@ public class RetirementFilesController : ControllerBase
         return result.ToActionResult();
     }
 
+<<<<<<< HEAD
     [HttpGet("uploader-stats/export")]
     [Authorize(Policy = "File.Documents.Upload")]
     public async Task<IActionResult> ExportUploaderStats([FromQuery] UploaderStatsFilterDto filter)
@@ -306,6 +381,8 @@ public class RetirementFilesController : ControllerBase
             $"DataEntryStats_{PensionMS.Core.Time.YemenTime.Now:yyyyMMdd}.xlsx");
     }
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     /// <summary>
     /// ملفات أنشأها مستخدم محدد (من سجل التدقيق)
     /// </summary>
@@ -346,6 +423,7 @@ public class RetirementFilesController : ControllerBase
     /// <summary>
     /// اعتماد مراجعة الملف
     /// </summary>
+<<<<<<< HEAD
     [HttpPost("{id:int}/reinstate-entitlement")]
     [Authorize(Policy = "File.Edit.BasicData")]
     public async Task<IActionResult> ReinstateEntitlement(int id)
@@ -354,6 +432,8 @@ public class RetirementFilesController : ControllerBase
         return result.ToActionResult();
     }
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     [HttpPost("{id:int}/review/approve")]
     [Authorize(Policy = "File.Review.Approve")]
     public async Task<IActionResult> ApproveReview(int id, [FromQuery] string? notes = null)
@@ -379,6 +459,7 @@ public class RetirementFilesController : ControllerBase
     /// طلب مراجعة الملف يدوياً
     /// </summary>
     [HttpPost("{id:int}/request-review")]
+<<<<<<< HEAD
     [Authorize(Policy = "File.Edit.BasicData")]
     public async Task<IActionResult> RequestReview(int id)
     {
@@ -400,6 +481,13 @@ public class RetirementFilesController : ControllerBase
         var userId = this.GetUserId();
         var result = await _documentService.RefreshAfterUploadAsync(
             id, request?.DocumentIds ?? new List<int>(), userId);
+=======
+    [Authorize(Policy = "File.Review.View")]
+    public async Task<IActionResult> RequestReview(int id)
+    {
+        var userId = this.GetUserId();
+        var result = await _reviewService.RequestReviewAsync(id, userId);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         return result.ToActionResult();
     }
 
@@ -441,7 +529,11 @@ public class RetirementFilesController : ControllerBase
     [Authorize(Policy = "File.View")]
     public async Task<IActionResult> GetReport([FromQuery] RetirementFileReportFilter filter)
     {
+<<<<<<< HEAD
         var result = await _reportService.GetRetirementFileReportAsync(filter);
+=======
+        var result = await _fileService.GetRetirementFileReportAsync(filter);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         return Ok(result);
     }
 
@@ -452,7 +544,11 @@ public class RetirementFilesController : ControllerBase
     [Authorize(Policy = "File.View")]
     public async Task<IActionResult> GetReportSummary([FromQuery] RetirementFileReportFilter filter)
     {
+<<<<<<< HEAD
         var result = await _reportService.GetRetirementFileReportSummaryAsync(filter);
+=======
+        var result = await _fileService.GetRetirementFileReportSummaryAsync(filter);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         return Ok(result);
     }
 
@@ -463,10 +559,17 @@ public class RetirementFilesController : ControllerBase
     [Authorize(Policy = "File.View")]
     public async Task<IActionResult> ExportReport([FromQuery] RetirementFileReportFilter filter, [FromQuery] string format = "excel")
     {
+<<<<<<< HEAD
         var bytes = await _reportService.ExportRetirementFileReportAsync(filter, format);
         if (bytes == null || bytes.Length == 0) return NotFound();
 
         var fileName = $"RetirementFiles_Report_{PensionMS.Core.Time.YemenTime.Now:yyyyMMdd}";
+=======
+        var bytes = await _fileService.ExportRetirementFileReportAsync(filter, format);
+        if (bytes == null || bytes.Length == 0) return NotFound();
+
+        var fileName = $"RetirementFiles_Report_{DateTime.Now:yyyyMMdd}";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (format.ToLower() == ExportFormatConstants.Pdf)
         {
             return File(bytes, "application/pdf", $"{fileName}.pdf");

@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { ClipboardList, Download, Eye, FileText, Settings,User } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, type Resolver, useForm } from "react-hook-form";
@@ -8,6 +9,20 @@ import { z } from "zod";
 import { documentsApi } from "@/api/documents";
 import { retirementApi } from "@/api/retirement";
 import { DocumentProcessDialog } from "@/components/domain/retirement/DocumentProcessDialog";
+=======
+import { ClipboardList, FileText, User, Eye, Download, Settings } from "lucide-react";
+import { useMemo, useEffect, useRef, useState } from "react";
+import { Controller, type Resolver, useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { retirementApi } from "@/api/retirement";
+import { documentsApi } from "@/api/documents";
+import type { AgentSummary, EntitledPersonDto, EntitledPersonSummary, GuardianSummary } from "@/types/retirement";
+import type { DocumentItem } from "@/types/retirement";
+import { DocumentProcessDialog } from "@/components/domain/retirement/DocumentProcessDialog";
+import { getDocumentUrl } from "@/lib/utils";
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
   BaseFormDialog,
   Button,
@@ -19,6 +34,7 @@ import {
   FormField,
   FormSection,
   NativeSelect,
+<<<<<<< HEAD
   Text,
   Textarea,
 } from "@/components/ui";
@@ -26,12 +42,19 @@ import { useApiMutation } from "@/hooks";
 import { getDocumentUrl } from "@/lib/utils";
 import type { AgentSummary, EntitledPersonDto, EntitledPersonSummary, GuardianSummary } from "@/types/retirement";
 import type { DocumentItem } from "@/types/retirement";
+=======
+  Textarea,
+  Text,
+} from "@/components/ui";
+import { useApiMutation } from "@/hooks";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Validation Schema ─────────────────────────────────
 
 const editSchema = z.object({
     documentTypeID: z.coerce.number().min(1, "نوع الوثيقة مطلوب"),
     ownerEntity: z.string().optional(),
+<<<<<<< HEAD
     documentNumber: z.string().max(50, "رقم الوثيقة يتجاوز الحد الأقصى (50 حرف)").optional().or(z.literal("")),
     issueDate: z.string().optional().or(z.literal("")),
     expiryDate: z.string().optional().or(z.literal("")),
@@ -39,6 +62,12 @@ const editSchema = z.object({
 }).refine((data) => !data.issueDate || !data.expiryDate || data.expiryDate >= data.issueDate, {
     message: "تاريخ الانتهاء لا يمكن أن يسبق تاريخ الإصدار",
     path: ["expiryDate"],
+=======
+    documentNumber: z.string().optional().or(z.literal("")),
+    issueDate: z.string().optional().or(z.literal("")),
+    expiryDate: z.string().optional().or(z.literal("")),
+    notes: z.string().optional().or(z.literal("")),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 });
 
 type EditFormValues = z.infer<typeof editSchema>;
@@ -113,8 +142,12 @@ export function EditDocumentDialog({
 
             const formData = new FormData();
             formData.append("DocumentTypeID", String(values.documentTypeID));
+<<<<<<< HEAD
             // Notes يُرسل دائماً: الفارغ يعني مسح الملاحظة (null في الخادم = لم يُرسل)
             formData.append("Notes", values.notes ?? "");
+=======
+            if (values.notes) formData.append("Notes", values.notes);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             if (values.documentNumber) formData.append("DocumentNumber", values.documentNumber);
             if (values.issueDate) formData.append("IssueDate", values.issueDate);
             if (values.expiryDate) formData.append("ExpiryDate", values.expiryDate);
@@ -124,10 +157,15 @@ export function EditDocumentDialog({
                 if (type === "agent" && id) formData.append("AgentID", id);
                 if (type === "guardian" && id) formData.append("GuardianID", id);
                 if (type === "entitled" && id) formData.append("EntitledPersonID", id);
+<<<<<<< HEAD
             } else {
                 // المالك المتقاعد: يُرسل صراحة لتفادي التخلي عن المالك عند التعديل
                 if (document.retireeID) formData.append("RetireeID", String(document.retireeID));
                 else if (fileId) formData.append("RetirementFileID", String(fileId));
+=======
+            } else if (values.ownerEntity === "retiree") {
+                if (fileId) formData.append("RetirementFileID", String(fileId));
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             }
 
             return documentsApi.update(document.documentID, formData);
@@ -361,7 +399,11 @@ export function EditDocumentDialog({
                     ) : (
                         <Card className="border-dashed">
                             <CardContent className="flex flex-col items-center justify-center py-16 text-muted-foreground">
+<<<<<<< HEAD
                                 <FileText className="h-12 w-12 mb-3 opacity-100" />
+=======
+                                <FileText className="h-12 w-12 mb-3 opacity-40" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 <Text variant="body">لا توجد وثيقة مرفقة</Text>
                             </CardContent>
                         </Card>

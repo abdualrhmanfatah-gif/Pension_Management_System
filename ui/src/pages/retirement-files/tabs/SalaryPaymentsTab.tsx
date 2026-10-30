@@ -1,5 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { AlertTriangle, CreditCard } from "lucide-react";
+=======
+import { AlertTriangle } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useEffect, useMemo } from "react";
 import { toast } from "sonner";
 
@@ -9,8 +13,12 @@ import {
     type CustomColumnDef,
     DataTable,
     LoadingIndicator,
+<<<<<<< HEAD
     StatusBadge,
     TabHeader} from "@/components/ui";
+=======
+    StatusBadge} from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { RECIPIENT_TYPE,RECIPIENT_TYPE_AR, SALARY_STATUS } from "@/constants";
 import { SALARY_PAYMENT_STATUS } from "@/constants/statusConfigs";
 import { formatDate } from "@/lib/utils";
@@ -107,12 +115,15 @@ export function SalaryPaymentsTab({ fileId }: SalaryPaymentsTabProps) {
 
     return (
         <div className="space-y-2 md:space-y-4 animate-in fade-in duration-500 text-start">
+<<<<<<< HEAD
             <TabHeader
                 title="سجل عمليات المعاشات"
                 description="عرض وتتبع عمليات صرف المعاشات والحوالات المالية الصادرة للملف التقاعدي"
                 icon={CreditCard}
             />
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             <DataTable
                 columns={columns}
                 data={items}

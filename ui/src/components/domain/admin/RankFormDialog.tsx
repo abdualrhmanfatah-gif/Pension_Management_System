@@ -1,7 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+<<<<<<< HEAD
 import { Award, DollarSign, Hash } from "lucide-react";
 import { useEffect } from "react";
 import { type Resolver, useForm } from "react-hook-form";
+=======
+import { Award, DollarSign,Hash } from "lucide-react";
+import { type Resolver,useForm } from "react-hook-form";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import * as z from "zod";
 
 import { ranksApi } from "@/api/ranks";
@@ -81,6 +86,7 @@ export function RankFormDialog({
         rankName: effectiveInitialData.rankName,
         rankLevel: effectiveInitialData.rankLevel,
         baseSalary: effectiveInitialData.baseSalary,
+<<<<<<< HEAD
     } : { rankName: "", rankLevel: 1, baseSalary: 0 };
 
     useEffect(() => {
@@ -94,6 +100,9 @@ export function RankFormDialog({
             reset({ rankName: "", rankLevel: 1, baseSalary: 0 });
         }
     }, [open, effectiveInitialData, reset]);
+=======
+    } : undefined;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     return (
         <BaseFormDialog
@@ -105,7 +114,11 @@ export function RankFormDialog({
             isLoading={mutation.isPending}
             isDirty={isDirty}
             onSubmit={handleSubmit(onSubmit)}
+<<<<<<< HEAD
             resetOnOpen={true}
+=======
+            resetOnOpen={false}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             reset={reset}
             initialValues={initialValues}
             showGlobalError

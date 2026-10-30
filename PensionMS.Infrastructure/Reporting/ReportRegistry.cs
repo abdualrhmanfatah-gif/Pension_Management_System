@@ -229,18 +229,28 @@ public class ReportRegistry : IReportRegistry
             {
                 Id = "ret-02",
                 Name = "ActiveRetirees",
+<<<<<<< HEAD
                 NameAr = "تقرير المتقاعدين",
+=======
+                NameAr = "المتقاعدين النشطين",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 Category = "Retirement",
                 Permission = "Report.Pension.View",
                 Columns = new[]
                 {
                     new ReportColumn { Key = "FullName", Label = "الاسم", Width = 50 },
                     new ReportColumn { Key = "NationalID", Label = "الهوية", Width = 40 },
+<<<<<<< HEAD
                     new ReportColumn { Key = "MilitaryNumber", Label = "الرقم العسكري", Width = 35 },
                     new ReportColumn { Key = "RankName", Label = "الرتبة", Width = 30 },
                     new ReportColumn { Key = "Category", Label = "الفئة", Width = 30 },
                     new ReportColumn { Key = "MonthlyPension", Label = "المعاش الشهري", Type = ReportColumnType.Currency, Width = 40 },
                     new ReportColumn { Key = "Status", Label = "حالة الحياة", Width = 25 },
+=======
+                    new ReportColumn { Key = "RankName", Label = "الرتبة", Width = 30 },
+                    new ReportColumn { Key = "Category", Label = "الفئة", Width = 30 },
+                    new ReportColumn { Key = "MonthlyPension", Label = "المعاش الشهري", Type = ReportColumnType.Currency, Width = 40 },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     new ReportColumn { Key = "Governorate", Label = "المحافظة", Width = 30 }
                 }
             },
@@ -289,12 +299,19 @@ public class ReportRegistry : IReportRegistry
                 Columns = new[]
                 {
                     new ReportColumn { Key = "DecisionNumber", Label = "رقم القرار", Width = 40 },
+<<<<<<< HEAD
                     new ReportColumn { Key = "DecisionDate", Label = "تاريخ القرار", Type = ReportColumnType.Date, Width = 30 },
                     new ReportColumn { Key = "RetireeName", Label = "المتقاعد", Width = 50 },
                     new ReportColumn { Key = "MilitaryNumber", Label = "الرقم العسكري", Width = 35 },
                     new ReportColumn { Key = "PreviousRank", Label = "الرتبة السابقة", Width = 35 },
                     new ReportColumn { Key = "ProcessedRank", Label = "الرتبة المعالجة", Width = 35 },
                     new ReportColumn { Key = "Status", Label = "نوع القرار", Width = 30 }
+=======
+                    new ReportColumn { Key = "RetireeName", Label = "المتقاعد", Width = 50 },
+                    new ReportColumn { Key = "Amount", Label = "المبلغ", Type = ReportColumnType.Currency, Width = 40 },
+                    new ReportColumn { Key = "Status", Label = "الحالة", Width = 30 },
+                    new ReportColumn { Key = "CreatedAt", Label = "تاريخ الإنشاء", Type = ReportColumnType.Date, Width = 30 }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 }
             },
             new ReportDefinition
@@ -398,6 +415,7 @@ public class ReportRegistry : IReportRegistry
                 }
             },
 
+<<<<<<< HEAD
             // ── Kashf (كشوفات الإحالة) ──
             new ReportDefinition
             {
@@ -422,6 +440,27 @@ public class ReportRegistry : IReportRegistry
             },
 
             // ── Compliance ──
+=======
+            // ── Compliance ──
+            new ReportDefinition
+            {
+                Id = "com-01",
+                Name = "MinistryBatches",
+                NameAr = "كشوفات الإحالة",
+                Category = "Compliance",
+                Permission = "Report.Admin.View",
+                Columns = new[]
+                {
+                    new ReportColumn { Key = "BatchNumber", Label = "رقم الدفعة", Width = 30 },
+                    new ReportColumn { Key = "Status", Label = "الحالة", Width = 25 },
+                    new ReportColumn { Key = "TotalCount", Label = "العدد الكلي", Type = ReportColumnType.Number, Width = 25 },
+                    new ReportColumn { Key = "ProcessedCount", Label = "العدد المعالج", Type = ReportColumnType.Number, Width = 25 },
+                    new ReportColumn { Key = "ItemCount", Label = "عدد العناصر", Type = ReportColumnType.Number, Width = 25 },
+                    new ReportColumn { Key = "BatchDate", Label = "تاريخ الدفعة", Type = ReportColumnType.Date, Width = 30 },
+                    new ReportColumn { Key = "SubmittedDate", Label = "تاريخ الإنشاء", Type = ReportColumnType.Date, Width = 30 }
+                }
+            },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             new ReportDefinition
             {
                 Id = "com-02",

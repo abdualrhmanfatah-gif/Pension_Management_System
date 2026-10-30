@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
@@ -11,6 +12,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { chartColors } from "@/lib/chartColors";
 import { formatCurrency } from "@/lib/utils";
 import type { ChartOfAccountDto,GeneralLedgerDto, GeneralLedgerLineDto } from "@/types/accounting";
+=======
+import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect, useCallback } from "react";
+
+import { accountsApi, reportsApi } from "@/api/accounting";
+import type { GeneralLedgerDto, GeneralLedgerLineDto, ChartOfAccountDto } from "@/types/accounting";
+import { formatCurrency } from "@/lib/utils";
+import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
+import { ReportFilters } from "@/components/common/ReportFilters";
+import { ReportLineChart } from "@/components/common/charts";
+import { chartColors } from "@/lib/chartColors";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/Select";
+import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface GeneralLedgerReportProps {
   fiscalYearId?: number;
@@ -86,7 +102,11 @@ export function GeneralLedgerReport({ fromDate: propFromDate, toDate: propToDate
   const filterBar = hideInternalControls ? undefined : (
     <Card className="p-4 flex flex-wrap gap-4 items-end mb-6">
       <div className="w-full sm:w-64">
+<<<<<<< HEAD
         <label className="label-filter">الحساب</label>
+=======
+        <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">الحساب</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         <Select value={String(accountId ?? "")} onValueChange={(v) => setInternalAccountId(Number(v))}>
           <SelectTrigger className="h-10">
             <SelectValue placeholder="اختر الحساب" />
@@ -117,10 +137,17 @@ export function GeneralLedgerReport({ fromDate: propFromDate, toDate: propToDate
   );
 
   const customKPIs = data ? [
+<<<<<<< HEAD
     { label: 'الرصيد الافتتاحي', value: formatCurrency(data.openingBalance), color: 'default' },
     { label: 'إجمالي المدين', value: formatCurrency(data.totalDebit), color: 'info' },
     { label: 'إجمالي الدائن', value: formatCurrency(data.totalCredit), color: 'success' },
     { label: 'الرصيد الختامي', value: formatCurrency(data.closingBalance), color: 'primary' },
+=======
+    { label: 'الرصيد الافتتاحي', value: formatCurrency(data.openingBalance), color: 'text-foreground' },
+    { label: 'إجمالي المدين', value: formatCurrency(data.totalDebit), color: 'text-blue-600' },
+    { label: 'إجمالي الدائن', value: formatCurrency(data.totalCredit), color: 'text-green-600' },
+    { label: 'الرصيد الختامي', value: formatCurrency(data.closingBalance), color: 'text-primary' },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   ] : [];
 
   return (
@@ -164,7 +191,11 @@ function GeneralLedgerTable({ data }: { data: GeneralLedgerDto }) {
         </thead>
         <tbody>
           {data.entries.map((entry, i) => (
+<<<<<<< HEAD
             <tr key={i} className="border-t border-border hover:bg-muted/20">
+=======
+            <tr key={i} className="border-t border-border/50 hover:bg-muted/20">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               <td className="p-2 text-xs">{new Date(entry.entryDate).toLocaleDateString("ar-SA")}</td>
               <td className="p-2 font-mono text-xs ltr" dir="ltr">{entry.entryNumber}</td>
               {isParentAccount && (

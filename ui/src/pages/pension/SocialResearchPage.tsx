@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+=======
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Activity,
     ChevronDown,
@@ -14,6 +18,7 @@ import {
     Users,
 } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
+<<<<<<< HEAD
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -21,6 +26,18 @@ import { z } from "zod";
 
 import { lookupApi,socialResearchApi } from "@/api/pension";
 import { SearchDialog } from "@/components/common/SearchDialog";
+=======
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+import { socialResearchApi, lookupApi } from "@/api/pension";
+import type {
+    SocialResearchFilters,
+    SocialResearchResult,
+} from "@/types/pension";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Badge,
     BaseFormDialog,
@@ -31,6 +48,7 @@ import {
     Input,
     NativeSelect,
     StatCard,
+<<<<<<< HEAD
     yemenPhoneSchema,
 } from "@/components/ui";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
@@ -41,6 +59,15 @@ import type {
 
 const updateSchema = z.object({
     phone: yemenPhoneSchema.optional().or(z.literal("")),
+=======
+} from "@/components/ui";
+import { SearchDialog } from "@/components/common/SearchDialog";
+import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
+import { toast } from "sonner";
+
+const updateSchema = z.object({
+    phone: z.string().optional(),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     governorate: z.string().optional(),
     city: z.string().optional(),
 });
@@ -515,7 +542,11 @@ export function SocialResearchPage() {
                     >
                         <Input
                             {...updateForm.register("phone")}
+<<<<<<< HEAD
                             placeholder="7xxxxxxx"
+=======
+                            placeholder="رقم الهاتف"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         />
                     </FormField>
                     <FormField

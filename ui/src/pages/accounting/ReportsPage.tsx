@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useQuery } from "@tanstack/react-query";
 import { Download, FileText, Printer, RefreshCw } from "lucide-react";
 import { useCallback,useEffect, useState } from "react";
@@ -26,6 +27,36 @@ import {
 } from "@/components/domain/accounting";
 import { Button, Card, DateInput, Heading, PageLayout, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, StickyHeader, Text } from "@/components/ui";
 import type { ChartOfAccountDto, FiscalPeriodDto, FiscalYearSummaryDto, QuarterDto } from "@/types/accounting";
+=======
+import { useState, useEffect, useCallback } from "react";
+import { FileText, Printer, Download, RefreshCw } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
+
+import { fiscalYearsApi, accountsApi, periodsApi, quartersApi, reportsApi } from "@/api/accounting";
+import type { FiscalYearSummaryDto, ChartOfAccountDto, FiscalPeriodDto, QuarterDto } from "@/types/accounting";
+import { Card, Heading, PageLayout, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Button, DateInput, StickyHeader, Text } from "@/components/ui";
+import {
+  AccountStatementReport,
+  BalanceSheetReport,
+  GeneralLedgerReport,
+  IncomeStatementReport,
+  JournalRegisterReport,
+  QuarterlyReport,
+  TrialBalanceReport,
+  CashFlowReport,
+  BudgetReportView,
+  CurrentOperationsReport,
+  LiabilitiesReport,
+  YearOverYearReport,
+  FixedAssetsReport,
+  CumulativePnLReport,
+  CostCenterReport,
+  ProvisionsReport,
+  DepreciationReport,
+  SubledgerReport,
+} from "@/components/domain/accounting";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ═══════════════════════════════════════
 // Types
@@ -164,11 +195,19 @@ export function ReportsPage() {
 
   // اختيار الفصل تلقائياً
   useEffect(() => {
+<<<<<<< HEAD
     if (quarters && quarters.length > 0 && !quarters.some(q => String(q.quarterID) === quarter)) {
       const openQ = quarters.find(q => !q.isClosed);
       setQuarter(String(openQ?.quarterID ?? quarters[quarters.length - 1].quarterID));
     }
   }, [quarters, quarter]);
+=======
+    if (quarters && quarters.length > 0 && !quarter) {
+      const openQ = quarters.find(q => !q.isClosed);
+      setQuarter(String(openQ?.quarterID ?? quarters[quarters.length - 1].quarterID));
+    }
+  }, [quarters]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
   const selectedYear = fiscalYears?.find((y) => y.fiscalYearID === selectedYearId);
   const activeReportConfig = REPORT_CONFIGS.find(r => r.type === activeReport);
@@ -182,6 +221,7 @@ export function ReportsPage() {
     setIsExporting(true);
     setExportFormat(format);
     try {
+<<<<<<< HEAD
       if (!selectedYearId) { toast.error("اختر السنة المالية أولاً"); return; }
       if (activeReportConfig.filters.includes("accountId") && !accountId) { toast.error("اختر الحساب أولاً"); return; }
       const params = {
@@ -209,12 +249,51 @@ export function ReportsPage() {
         default: toast.error("هذا التقرير لا يدعم التصدير حالياً"); return;
       }
       toast.success("تم التصدير بنجاح");
+=======
+      let response;
+      const params: any = {};
+      if (selectedYearId) params.fiscalYearId = selectedYearId;
+      if (fromDate || selectedYear?.startDate) params.fromDate = fromDate || selectedYear?.startDate;
+      if (toDate || selectedYear?.endDate) params.toDate = toDate || selectedYear?.endDate;
+      if (accountId) params.accountId = accountId;
+      if (periodId) params.periodId = periodId;
+      if (quarter) params.quarterId = Number(quarter);
+      params.format = format;
+
+      switch (activeReport) {
+        case "trial-balance": response = await reportsApi.exportTrialBalance(params); break;
+        case "balance-sheet": response = await reportsApi.exportBalanceSheet({ asOfDate: params.toDate, format }); break;
+        case "income-statement": response = await reportsApi.exportIncomeStatement(params); break;
+        case "general-ledger": response = await reportsApi.exportGeneralLedger(params); break;
+        case "account-statement": response = await reportsApi.exportAccountStatement(params); break;
+        case "subledger": response = await reportsApi.exportSubledger(params); break;
+        case "journal-register": response = await reportsApi.exportJournalRegister(params); break;
+        case "cash-flow": response = await reportsApi.exportCashFlow(params); break;
+        default: toast.error("هذا التقرير لا يدعم التصدير حالياً"); return;
+      }
+
+      if (response?.data) {
+        const blob = new Blob([response.data], { type: format === "pdf" ? "application/pdf" : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `${activeReportConfig?.label || "report"}_${new Date().toISOString().slice(0, 10)}.${format === "pdf" ? "pdf" : "xlsx"}`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(link.href);
+        toast.success("تم التصدير بنجاح");
+      }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     } catch {
       toast.error("حدث خطأ أثناء التصدير");
     } finally {
       setIsExporting(false);
     }
+<<<<<<< HEAD
   }, [activeReportConfig, activeReport, selectedYearId, selectedYear, fromDate, toDate, accountId, periodId, quarter, accountLevel]);
+=======
+  }, [activeReportConfig, activeReport, selectedYearId, selectedYear, fromDate, toDate, accountId, periodId, quarter]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
   // طباعة
   const handlePrint = useCallback(() => {
@@ -415,10 +494,17 @@ export function ReportsPage() {
           <BalanceSheetReport fiscalYearId={selectedYearId} asOfDate={toDate || selectedYear?.endDate} externalFilters={{ toDate }} hideInternalControls />
         )}
         {activeReport === "income-statement" && (
+<<<<<<< HEAD
           <IncomeStatementReport fiscalYearId={selectedYearId} hideInternalControls />
         )}
         {activeReport === "quarterly" && (
           <QuarterlyReport fiscalYearId={selectedYearId} externalFilters={{ quarterId: Number(quarter) }} hideInternalControls />
+=======
+          <IncomeStatementReport fiscalYearId={selectedYearId} />
+        )}
+        {activeReport === "quarterly" && (
+          <QuarterlyReport fiscalYearId={selectedYearId} externalFilters={{ quarter: Number(quarter) }} hideInternalControls />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         )}
         {activeReport === "general-ledger" && (
           <GeneralLedgerReport fiscalYearId={selectedYearId} fromDate={fromDate || selectedYear?.startDate} toDate={toDate || selectedYear?.endDate} externalFilters={{ accountId: accountId ?? undefined }} hideInternalControls />

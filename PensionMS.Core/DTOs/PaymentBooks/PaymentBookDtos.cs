@@ -7,8 +7,13 @@ public class PaymentBookDto
     public int PaymentBookID { get; set; }
     public int FileID { get; set; }
     public string BookNumber { get; set; } = string.Empty;
+<<<<<<< HEAD
     public DateOnly IssueDate { get; set; }
     public DateOnly ExpiryDate { get; set; }
+=======
+    public DateTime IssueDate { get; set; }
+    public DateTime ExpiryDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string Status { get; set; } = string.Empty;
     public string BookType { get; set; } = "إلكتروني";
     public string? LegacyColor { get; set; }
@@ -27,8 +32,13 @@ public class CreatePaymentBookDto
 {
     public int FileID { get; set; }
     public string BookNumber { get; set; } = string.Empty;
+<<<<<<< HEAD
     public DateOnly IssueDate { get; set; }
     public DateOnly? ExpiryDate { get; set; }
+=======
+    public DateTime IssueDate { get; set; }
+    public DateTime? ExpiryDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string BookType { get; set; } = "إلكتروني";
     public string? LegacyColor { get; set; }
     public string? ChangeReason { get; set; }
@@ -49,8 +59,13 @@ public class CreatePaymentBookDto
 public class UpdatePaymentBookDto
 {
     public string? BookNumber { get; set; }
+<<<<<<< HEAD
     public DateOnly? IssueDate { get; set; }
     public DateOnly? ExpiryDate { get; set; }
+=======
+    public DateTime? IssueDate { get; set; }
+    public DateTime? ExpiryDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? Status { get; set; }
     public string? LegacyColor { get; set; }
     public string? ChangeReason { get; set; }
@@ -74,8 +89,13 @@ public class PaymentBookReviewDto
     public string? Phone { get; set; }
     public string BookType { get; set; } = string.Empty;
     public string? LegacyColor { get; set; }
+<<<<<<< HEAD
     public DateOnly IssueDate { get; set; }
     public DateOnly? ExpiryDate { get; set; }
+=======
+    public DateTime IssueDate { get; set; }
+    public DateTime? ExpiryDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string Status { get; set; } = string.Empty;
     public string? IssuingBranchName { get; set; }
     public string? ChangeReason { get; set; }

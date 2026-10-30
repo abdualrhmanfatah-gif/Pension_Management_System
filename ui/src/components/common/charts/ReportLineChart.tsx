@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { 
+<<<<<<< HEAD
   Area, 
   AreaChart,
   CartesianGrid, 
@@ -12,6 +13,21 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import type { ChartConfig } from '@/components/ui/chart';
 import { ChartContainer, ChartLegend, ChartLegendContent,ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+=======
+  LineChart, 
+  Line, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Area, 
+  AreaChart,
+  ResponsiveContainer // تمت الإضافة لدعم التجاوب
+} from 'recharts';
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@/components/ui/chart';
+import type { ChartConfig } from '@/components/ui/chart';
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { chartColors } from '@/lib/chartColors';
 import { cn, formatNumber } from '@/lib/utils';
 
@@ -66,7 +82,11 @@ export const ReportLineChart: React.FC<ReportLineChartProps> = ({
   }, [lines]);
 
   return (
+<<<<<<< HEAD
     <Card className={cn("h-full border border-border shadow-sm transition-shadow hover:shadow-md", className)}>
+=======
+    <Card className={cn("h-full border border-border/60 shadow-sm transition-shadow hover:shadow-md", className)}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       {title && (
         <CardHeader className="pb-0 pt-1 px-3 space-y-0">
           <CardTitle className="text-sm font-bold text-foreground">{title}</CardTitle>

@@ -2,11 +2,19 @@ import { useQuery } from "@tanstack/react-query";
 import { Building2, MapPin, Pencil, Phone, Trash2 } from "lucide-react";
 
 import { branchesApi } from "@/api/branches";
+<<<<<<< HEAD
 import { BranchDialog } from "@/components/domain/admin/BranchDialog";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { Badge, Button, CrudPageLayout, Text } from "@/components/ui";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { useApiMutation,useCrudState } from "@/hooks";
 
+<<<<<<< HEAD
+=======
+import { BranchDialog } from "@/components/domain/admin/BranchDialog";
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 // ─── Types ─────────────────────────────────────────────
 
 interface BranchDto {

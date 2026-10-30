@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import { BarChart3, Table } from 'lucide-react';
 import React from 'react';
 
+=======
+import React from 'react';
+import { BarChart3, Table } from 'lucide-react';
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { Button } from '@/components/ui/Button';
 
 interface ChartToggleProps {

@@ -1,8 +1,11 @@
 import * as React from "react";
 import type { DefaultValues, FieldErrors, FieldValues, UseFormReset } from "react-hook-form";
 
+<<<<<<< HEAD
 import { useConfirm } from "@/components/ui";
 import type { ButtonVariant } from "@/components/ui/Dialog"; // استيراد النوع الموحد
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
   Dialog,
   DialogContent,
@@ -11,12 +14,23 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/Dialog";
+<<<<<<< HEAD
 import { useDialogKeyboard } from "@/constants/shortcuts";
 import { useDialogReset } from "@/hooks/useDialogReset";
 import { cn } from "@/lib/utils";
 
 import { ErrorAlert } from "./ErrorAlert";
 import { FormDialogFooter } from "./FormDialogFooter";
+=======
+import type { ButtonVariant } from "@/components/ui/Dialog"; // استيراد النوع الموحد
+import { useDialogKeyboard } from "@/hooks/useDialogKeyboard";
+import { useDialogReset } from "@/hooks/useDialogReset";
+import { cn } from "@/lib/utils";
+import { useConfirm } from "@/components/ui";
+
+import { FormDialogFooter } from "./FormDialogFooter";
+import { ErrorAlert } from "./ErrorAlert";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export interface BaseOverlayProps {
   open?: boolean;
@@ -32,7 +46,11 @@ export interface BaseFormDialogProps<T extends FieldValues = FieldValues> extend
   isLoading?: boolean;
   isDirty?: boolean;
   onSubmit?: (e?: React.BaseSyntheticEvent) => Promise<void> | void;
+<<<<<<< HEAD
   onSaveAndNew?: () => void | Promise<void>;
+=======
+  onSaveAndNew?: () => void;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   children: React.ReactNode;
   submitLabel?: string;
   cancelLabel?: string;
@@ -59,7 +77,11 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
   title,
   description,
   size = "md",
+<<<<<<< HEAD
   isLoading: providedIsLoading = false,
+=======
+  isLoading = false,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   isDirty = false,
   onSubmit,
   onSaveAndNew,
@@ -74,16 +96,22 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
   initialValues,
   showGlobalError = false,
   formErrors,
+<<<<<<< HEAD
   dirtyWarningMessage = "لديك تغييرات غير محفوظة، هل أنت متأكد من الإغلاق؟",
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   enableKeyboardShortcuts = true,
   submitIcon,
   submitVariant = "primary",
   portal = true,
 }: BaseFormDialogProps<T>) {
+<<<<<<< HEAD
   const [submitting, setSubmitting] = React.useState(false);
   const submitInFlight = React.useRef(false);
   const dialogRef = React.useRef<HTMLDivElement>(null);
   const isLoading = providedIsLoading || submitting;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
   const open = controlledOpen !== undefined ? controlledOpen : !!legacyOpen;
   const onOpenChange = controlledOnOpenChange || ((v: boolean) => { if (!v) legacyClose?.(); });
@@ -92,11 +120,16 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
   // 1. إصلاح الحلقة المفرغة: فصل طلب الإغلاق عن الإغلاق الفعلي
   const requestClose = React.useCallback(async () => {
     if (isDirty && !isLoading) {
+<<<<<<< HEAD
       if (import.meta.env.DEV) {
         console.warn("[BaseFormDialog] unsaved-changes confirm", new Error("trace").stack);
       }
       const ok = await confirm({
         title: dirtyWarningMessage,
+=======
+      const ok = await confirm({
+        title: "لديك تغييرات غير محفوظة، هل أنت متأكد من الإغلاق؟",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         variant: "warning",
       });
       if (ok) {
@@ -105,7 +138,11 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
     } else if (!isLoading) {
       onOpenChange?.(false);
     }
+<<<<<<< HEAD
   }, [isDirty, isLoading, onOpenChange, confirm, dirtyWarningMessage]);
+=======
+  }, [isDirty, isLoading, onOpenChange, confirm]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
   const dummyReset = React.useCallback(() => {}, []);
   useDialogReset(
@@ -118,6 +155,7 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
   const autoId = React.useId();
   const internalFormId = formId || `form-${autoId.replace(/:/g, "")}`;
 
+<<<<<<< HEAD
   const triggerSubmit = React.useCallback(async (event?: React.BaseSyntheticEvent) => {
     if (!onSubmit || isLoading || submitInFlight.current) return;
     submitInFlight.current = true;
@@ -146,14 +184,26 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
     }
   }, [onSaveAndNew, isLoading]);
 
+=======
+  const triggerSubmit = React.useCallback(() => {
+    if (onSubmit && !isLoading) {
+      onSubmit();
+    }
+  }, [onSubmit, isLoading]);
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   useDialogKeyboard({
     isOpen: enableKeyboardShortcuts ? open : false,
     isDirty,
     isLoading,
     onClose: requestClose,
     onSubmit: triggerSubmit,
+<<<<<<< HEAD
     onSaveAndNew: triggerSaveAndNew,
     dialogRef,
+=======
+    onSaveAndNew,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   });
 
   const handleOpenChange = React.useCallback((openState: boolean) => {
@@ -170,6 +220,7 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
 
   // ─── حظر زر الرجوع في المتصفح عند وجود تغييرات غير محفوظة ───
   const dirtyRef = React.useRef(isDirty);
+<<<<<<< HEAD
   const requestCloseRef = React.useRef(requestClose);
   const loadingRef = React.useRef(isLoading);
   React.useEffect(() => {
@@ -189,6 +240,20 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
       if (window.history.state?.__dlgBlock) return;
       if (dirtyRef.current && !loadingRef.current) {
         window.history.pushState({ __dlgBlock: token }, "");
+=======
+  dirtyRef.current = isDirty;
+  const requestCloseRef = React.useRef(requestClose);
+  requestCloseRef.current = requestClose;
+
+  React.useEffect(() => {
+    if (!open || !isDirty || isLoading) return;
+
+    window.history.pushState({ __dlgBlock: true }, "");
+
+    const handlePopState = () => {
+      if (dirtyRef.current) {
+        window.history.pushState({ __dlgBlock: true }, "");
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         requestCloseRef.current();
       }
     };
@@ -210,7 +275,11 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
         window.history.back();
       }
     };
+<<<<<<< HEAD
   }, [open, isDirty]);
+=======
+  }, [open, isDirty, isLoading]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
   // 2. إصلاح مشكلة النماذج: الحاوية دائماً form
   const hasErrors = formErrors && Object.keys(formErrors).length > 0;
@@ -219,8 +288,11 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
     <>
       <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
+<<<<<<< HEAD
         ref={dialogRef}
         aria-labelledby={`${internalFormId}-title`}
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         size={size}
         className={cn("flex flex-col p-0 overflow-visible outline-none", className)}
         removePadding // تمرير البروب بدلاً من البحث في النصوص
@@ -233,6 +305,18 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
             setTimeout(() => autoFocusEl.focus(), 0);
           }
         }}
+<<<<<<< HEAD
+=======
+        onKeyDown={(e) => {
+          if ((e.ctrlKey || e.metaKey) && e.nativeEvent.code === "KeyS") {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!isLoading && enableKeyboardShortcuts) {
+              triggerSubmit();
+            }
+          }
+        }}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         onEscapeKeyDown={(e) => {
           // السماح بالإغلاق دائماً لتجنب حجز المستخدم
           if (isLoading) e.preventDefault(); 
@@ -246,13 +330,21 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
           id={internalFormId}
           onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
+<<<<<<< HEAD
             void triggerSubmit(e);
+=======
+            if (!isLoading) onSubmit?.(e);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           }}
           className="flex flex-col h-full min-h-0"
           noValidate
         >
           <DialogHeader className="shrink-0">
+<<<<<<< HEAD
             <DialogTitle id={`${internalFormId}-title`} className="flex items-center gap-2 text-sm sm:text-base">
+=======
+            <DialogTitle className="flex items-center gap-2 text-sm sm:text-base">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               {title}
             </DialogTitle>
             {description && (
@@ -267,7 +359,11 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
               {showGlobalError && hasErrors && (
                 <ErrorAlert
                   message="يرجى مراجعة البيانات الإلزامية وتصحيح الأخطاء للمتابعة."
+<<<<<<< HEAD
                   className="border-destructive animate-in slide-in-from-top-2"
+=======
+                  className="border-destructive/20 animate-in slide-in-from-top-2"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 />
               )}
               {children}
@@ -284,7 +380,11 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
                 cancelLabel={cancelLabel}
                 onSave={triggerSubmit}
                 onCancel={handleCancel}
+<<<<<<< HEAD
                 onSaveAndNew={triggerSaveAndNew}
+=======
+                onSaveAndNew={onSaveAndNew}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 showKeyboardHints={enableKeyboardShortcuts}
                 saveIcon={submitIcon}
                 variant={submitVariant}
@@ -298,4 +398,8 @@ export function BaseFormDialog<T extends FieldValues = FieldValues>({
     {ConfirmDialogElement}
     </>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

@@ -1,15 +1,22 @@
+<<<<<<< HEAD
 import { useQueryClient } from "@tanstack/react-query";
 import { Briefcase, CheckCircle2, ChevronDown, Clock, FileWarning, Pencil, Plus, Shield, Skull,UserPlus, Users, UserX } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef,useState } from "react";
 
 import { documentsApi } from "@/api/documents";
 import { retirementApi } from "@/api/retirement";
+=======
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
+import { Users, UserX, Plus, CheckCircle2, FileWarning, Clock, Pencil, ChevronDown, UserPlus, Briefcase, Shield, Skull } from "lucide-react";
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { Button } from "@/components/ui";
 import { Badge } from "@/components/ui";
 import { Heading } from "@/components/ui";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui";
 import { EmptyState } from "@/components/ui";
 import { EditableImage } from "@/components/ui/EditableImage";
+<<<<<<< HEAD
 import { PERSON_DOC_FILTER, PERSON_DOC_FILTER_AR } from "@/constants";
 import { useAgentQuery } from "@/hooks/queries/useAgentQuery";
 import { useAgentsQuery } from "@/hooks/queries/useAgentsQuery";
@@ -30,6 +37,30 @@ import { GuardianDialog } from "../GuardianDialog";
 import { PersonDocCard } from "../PersonDocCard";
 import { RecordEntitledPersonDeathDialog } from "../RecordEntitledPersonDeathDialog";
 import { UploadDocumentDialog } from "../UploadDocumentDialog";
+=======
+import { cn, formatDate, getPhotoUrl, resolvePersonalPhotoPath } from "@/lib/utils";
+import { chartColors } from "@/lib/chartColors";
+import { useEntitledPersonsQuery } from "@/hooks/queries/useEntitledPersonsQuery";
+import { useAgentsQuery } from "@/hooks/queries/useAgentsQuery";
+import { useAgentQuery } from "@/hooks/queries/useAgentQuery";
+import { useGuardiansQuery } from "@/hooks/queries/useGuardiansQuery";
+import { useGuardianQuery } from "@/hooks/queries/useGuardianQuery";
+import { usePersonDocumentsQuery } from "@/hooks/queries/usePersonDocumentsQuery";
+import { useHasPermission } from "@/stores/authStore";
+import { useApiMutation } from "@/hooks/useApiMutation";
+import { useQueryClient } from "@tanstack/react-query";
+import { retirementApi } from "@/api/retirement";
+import { entitledPersonApi } from "@/api/pension";
+import { documentsApi } from "@/api/documents";
+import { DocumentViewerDialog } from "../DocumentViewerDialog";
+import { UploadDocumentDialog } from "../UploadDocumentDialog";
+import { EntitledPersonFormDialog } from "../EntitledPersonFormDialog";
+import { AgentDialog } from "../AgentDialog";
+import { GuardianDialog } from "../GuardianDialog";
+import type { PersonSummary, PersonType, PersonDocFilter, EntitledPersonSummary, AgentSummary, GuardianSummary, AgentDto, GuardianDto, DocumentItem } from "@/types/retirement";
+import { PERSON_DOC_FILTER, PERSON_DOC_FILTER_AR } from "@/constants";
+import { PersonDocCard } from "../PersonDocCard";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface PeopleSectionProps {
     fileId: number;
@@ -236,6 +267,19 @@ export function PeopleSection({ fileId, fileNumber }: PeopleSectionProps) {
         }
     );
 
+<<<<<<< HEAD
+=======
+    const recordDeathMutation = useApiMutation(
+        async ({ personId, deathDate }: { personId: number; deathDate: string }) =>
+            entitledPersonApi.recordDeath(personId, { deathDate }),
+        {
+            successMessage: "تم تسجيل الوفاة بنجاح",
+            invalidateKeys: [["entitled-persons", fileId], ["retirement-file", fileId]],
+            onSuccess: () => setDeathDialogOpen(false),
+        }
+    );
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const handleViewDocument = useCallback((doc: DocumentItem) => {
         setViewingDoc(doc);
         setViewerOpen(true);
@@ -359,7 +403,11 @@ export function PeopleSection({ fileId, fileNumber }: PeopleSectionProps) {
                                     "rounded-lg border bg-card transition-all",
                                     isSelected
                                         ? "border-primary ring-2 ring-primary/10 bg-primary/5"
+<<<<<<< HEAD
                                         : "border-border hover:border-muted-foreground"
+=======
+                                        : "border-border hover:border-muted-foreground/30"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 )}
                             >
                                 <div
@@ -433,7 +481,11 @@ export function PeopleSection({ fileId, fileNumber }: PeopleSectionProps) {
 
                                 {/* المعلومات الأساسية - تظهر عند التحديد */}
                                 {isSelected && (
+<<<<<<< HEAD
                                     <div className="px-3 pb-3 pt-0 border-t border-border mt-0">
+=======
+                                    <div className="px-3 pb-3 pt-0 border-t border-border/50 mt-0">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-2">
                                             <div className="flex flex-col">
                                                 <span className="text-muted-foreground">العمر</span>
@@ -466,14 +518,22 @@ export function PeopleSection({ fileId, fileNumber }: PeopleSectionProps) {
                 <div className="overflow-y-auto pl-2 border-r border-border">
                     {!selectedPerson ? (
                         <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
+<<<<<<< HEAD
                             <Users className="w-12 h-12 mb-3 opacity-100" />
+=======
+                            <Users className="w-12 h-12 mb-3 opacity-30" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <p className="font-bold text-sm">اختر شخصاً من القائمة</p>
                             <p className="text-xs">سيتم عرض بياناته ووثائقه المرتبطة هنا</p>
                         </div>
                     ) : (
                         <div className="space-y-4">
                             {/* بطاقة الملف الشخصي */}
+<<<<<<< HEAD
                             <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl p-4 border border-primary">
+=======
+                            <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl p-4 border border-primary/20">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 <div className="flex items-start gap-4">
                                     <EditableImage
                                         src={getPhotoUrl(resolvePersonalPhotoPath(selectedPerson))}
@@ -686,6 +746,12 @@ export function PeopleSection({ fileId, fileNumber }: PeopleSectionProps) {
                     queryClient.invalidateQueries({ queryKey: ["entitled-persons", fileId] });
                     queryClient.invalidateQueries({ queryKey: ["person-documents", fileId] });
                     queryClient.invalidateQueries({ queryKey: ["retirement-file", fileId] });
+<<<<<<< HEAD
+=======
+                    setEditDialogOpen(false);
+                    setEditingPersonId(null);
+                    setCreateMode(null);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 }}
             />
 
@@ -693,15 +759,30 @@ export function PeopleSection({ fileId, fileNumber }: PeopleSectionProps) {
             <AgentDialog
                 open={agentDialogOpen}
                 onClose={() => {
+<<<<<<< HEAD
                 setAgentDialogOpen(false);
                 setEditingPersonId(null);
                 setEditingAgentData(null);
                 setCreateMode(null);
             }}
+=======
+                    setAgentDialogOpen(false);
+                    setEditingPersonId(null);
+                    setEditingAgentData(null);
+                    setCreateMode(null);
+                }}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 onSaved={() => {
                     queryClient.invalidateQueries({ queryKey: ["agents", fileId] });
                     queryClient.invalidateQueries({ queryKey: ["person-documents", fileId] });
                     queryClient.invalidateQueries({ queryKey: ["retirement-file", fileId] });
+<<<<<<< HEAD
+=======
+                    setAgentDialogOpen(false);
+                    setEditingPersonId(null);
+                    setEditingAgentData(null);
+                    setCreateMode(null);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 }}
                 fileId={fileId}
                 fileNumber={fileNumber}
@@ -713,15 +794,30 @@ export function PeopleSection({ fileId, fileNumber }: PeopleSectionProps) {
             <GuardianDialog
                 open={guardianDialogOpen}
                 onClose={() => {
+<<<<<<< HEAD
                 setGuardianDialogOpen(false);
                 setEditingPersonId(null);
                 setEditingGuardianData(null);
                 setCreateMode(null);
             }}
+=======
+                    setGuardianDialogOpen(false);
+                    setEditingPersonId(null);
+                    setEditingGuardianData(null);
+                    setCreateMode(null);
+                }}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 onSaved={() => {
                     queryClient.invalidateQueries({ queryKey: ["guardians", fileId] });
                     queryClient.invalidateQueries({ queryKey: ["person-documents", fileId] });
                     queryClient.invalidateQueries({ queryKey: ["retirement-file", fileId] });
+<<<<<<< HEAD
+=======
+                    setGuardianDialogOpen(false);
+                    setEditingPersonId(null);
+                    setEditingGuardianData(null);
+                    setCreateMode(null);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 }}
                 fileId={fileId}
                 availableEntitleds={entitledPersons.map((ep: EntitledPersonSummary) => ({
@@ -734,6 +830,7 @@ export function PeopleSection({ fileId, fileNumber }: PeopleSectionProps) {
 
             {/* حوار تسجيل وفاة المستحق */}
             {deathDialogOpen && selectedPerson && (
+<<<<<<< HEAD
                 <RecordEntitledPersonDeathDialog
                     open={deathDialogOpen}
                     onOpenChange={setDeathDialogOpen}
@@ -741,6 +838,35 @@ export function PeopleSection({ fileId, fileNumber }: PeopleSectionProps) {
                     personName={selectedPerson.name}
                     fileId={fileId}
                 />
+=======
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                    <div className="bg-card rounded-xl border border-border p-6 w-full max-w-md mx-4 space-y-4">
+                        <Heading level="h3" className="font-bold text-lg text-destructive">تسجيل وفاة المستحق</Heading>
+                        <p className="text-sm text-muted-foreground">
+                            أنت بصدد تسجيل وفاة: <strong>{selectedPerson.name}</strong>
+                        </p>
+                        <p className="text-xs text-destructive bg-destructive/10 p-3 rounded-lg">
+                            سيتم إيقاف الصرف تلقائياً لهذا المستحق.
+                        </p>
+                        <div className="flex gap-2 justify-end">
+                            <Button variant="outline" size="sm" onClick={() => setDeathDialogOpen(false)}>
+                                إلغاء
+                            </Button>
+                            <Button
+                                variant="destructive"
+                                size="sm"
+                                loading={recordDeathMutation.isPending}
+                                onClick={() => {
+                                    const today = new Date().toISOString().split('T')[0];
+                                    recordDeathMutation.mutate({ personId: selectedPerson.id, deathDate: today });
+                                }}
+                            >
+                                تأكيد التسجيل
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             )}
         </div>
     );

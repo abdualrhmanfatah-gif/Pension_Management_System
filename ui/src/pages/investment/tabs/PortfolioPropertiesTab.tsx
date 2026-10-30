@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Eye } from "lucide-react";
 import { useEffect, useMemo } from "react";
+<<<<<<< HEAD
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -8,6 +9,15 @@ import type { PropertyDto } from "@/api/investment";
 import { investmentApi } from "@/api/investment";
 import { PropertyDialog } from "@/components/domain/investment/PropertyDialog";
 import { CrudPageLayout, type CustomColumnDef, ErrorState } from "@/components/ui";
+=======
+import { toast } from "sonner";
+import { Link, useNavigate } from "react-router-dom";
+
+import type { PropertyDto } from "@/api/investment";
+import { investmentApi } from "@/api/investment";
+import { CrudPageLayout, type CustomColumnDef, ErrorState } from "@/components/ui";
+import { PropertyDialog } from "@/components/domain/investment/PropertyDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useCrudState } from "@/hooks";
 import { useHasPermission } from "@/stores/authStore";
 
@@ -67,7 +77,11 @@ export function PortfolioPropertiesTab({ portfolioId }: PortfolioPropertiesTabPr
             key: "currentMarketValue",
             header: "القيمة السوقية",
             render: (row) => (
+<<<<<<< HEAD
                 <span className="font-semibold text-success font-mono">
+=======
+                <span className="font-semibold text-emerald-600 font-mono">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {row.currentMarketValue.toLocaleString()} ر.ي
                 </span>
             )

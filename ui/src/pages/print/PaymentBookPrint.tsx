@@ -238,7 +238,11 @@ export function PaymentBookPrint() {
           <ArrowRight className="w-4 h-4" />
           عودة
         </Button>
+<<<<<<< HEAD
         <h2 className="font-bold text-foreground text-sm">معاينة كرت الصرف</h2>
+=======
+        <h2 className="font-bold text-foreground/70 text-sm">معاينة كرت الصرف</h2>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         <Button
           onClick={() => window.print()}
           className="bg-emerald-700 hover:bg-emerald-800 gap-2"
@@ -441,7 +445,11 @@ export function PaymentBookPrint() {
       >
         {/* Watermark */}
         <div
+<<<<<<< HEAD
           className="absolute inset-0 z-0 opacity-100 pointer-events-none"
+=======
+          className="absolute inset-0 z-0 opacity-[0.10] pointer-events-none"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           style={{
             backgroundImage: "url('/pension-logo.png')",
             backgroundPosition: "center",
@@ -545,7 +553,11 @@ function RetireePhoto({ path, alt = "صورة" }: { path: string | undefined; al
   if (hasError || !path) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center bg-slate-50 text-slate-400">
+<<<<<<< HEAD
         <User className="w-5 h-5 opacity-100 mb-1" />
+=======
+        <User className="w-5 h-5 opacity-40 mb-1" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         <span className="text-[6px]">بدون صورة</span>
       </div>
     );
@@ -626,7 +638,11 @@ function LegacyBookPrint({
           <ArrowRight className="w-4 h-4" />
           عودة
         </Button>
+<<<<<<< HEAD
         <h2 className="font-bold text-foreground text-sm">بيانات دفتر صرف قديم</h2>
+=======
+        <h2 className="font-bold text-foreground/70 text-sm">بيانات دفتر صرف قديم</h2>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         <Button onClick={() => window.print()} className="gap-2">
           <Printer className="w-4 h-4" />
           طباعة

@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { ChevronDown, ChevronLeft } from "lucide-react";
 import { useCallback,useState } from "react";
 
@@ -11,6 +12,29 @@ import { chartColors } from "@/lib/chartColors";
 import { formatCurrency } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import type { BalanceSheetSectionDto } from "@/types/accounting";
+=======
+import { useState, useCallback } from "react";
+
+import { reportsApi } from "@/api/accounting";
+import type { BalanceSheetSectionDto } from "@/types/accounting";
+import { formatCurrency } from "@/lib/utils";
+import { chartColors } from "@/lib/chartColors";
+import { cn } from "@/lib/utils";
+import { ChevronDown, ChevronLeft } from "lucide-react";
+import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
+import { ReportFilters } from "@/components/common/ReportFilters";
+import { ReportBarChart } from "@/components/common/charts";
+import { Button } from "@/components/ui";
+import {
+  createWorkbook,
+  buildReportHeader,
+  styleDataCell,
+  altRowFill,
+  buildReportFooter,
+  exportWorkbook,
+  autoFitColumns,
+} from "@/components/domain/print/excel.utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface BalanceSheetReportProps {
   fiscalYearId?: number;
@@ -26,7 +50,11 @@ function SectionRow({ section, depth }: { section: BalanceSheetSectionDto; depth
   return (
     <div>
       <div className={cn(
+<<<<<<< HEAD
         "flex items-center justify-between px-3 py-1.5 border-t border-border text-sm hover:bg-muted/20",
+=======
+        "flex items-center justify-between px-3 py-1.5 border-t border-border/30 text-sm hover:bg-muted/20",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         depth === 0 && "font-medium bg-muted/20",
         depth === 1 && "pr-8",
         depth >= 2 && "pr-12 text-xs"
@@ -69,6 +97,47 @@ export function BalanceSheetReport({ fiscalYearId, asOfDate, externalFilters, hi
     setInternalFilters(prev => ({ ...prev, [key]: value }));
   }, []);
 
+<<<<<<< HEAD
+=======
+  const handleExportExcel = useCallback(async () => {
+    if (!data) return;
+    const { ws } = createWorkbook("الميزانية العمومية");
+    autoFitColumns(ws, { 1: 15, 2: 35, 3: 20 });
+    const dataStartRow = await buildReportHeader(ws, "الميزانية العمومية", 3, [
+      { label: "حتى تاريخ", value: filters.toDate! },
+    ]);
+    ws.getRow(dataStartRow).getCell(1).value = "القسم";
+    ws.getRow(dataStartRow).getCell(2).value = "الوصف";
+    ws.getRow(dataStartRow).getCell(3).value = "المبلغ";
+    styleDataCell(ws.getRow(dataStartRow).getCell(1), { bold: true });
+    styleDataCell(ws.getRow(dataStartRow).getCell(2), { bold: true });
+    styleDataCell(ws.getRow(dataStartRow).getCell(3), { bold: true });
+
+    let row = dataStartRow + 1;
+    const writeSection = (label: string, sections: BalanceSheetSectionDto[], total: number) => {
+      ws.getRow(row).getCell(1).value = label;
+      ws.getRow(row).getCell(3).value = total;
+      styleDataCell(ws.getRow(row).getCell(1), { bold: true });
+      styleDataCell(ws.getRow(row).getCell(3), { numFmt: "#,##0", bold: true });
+      row++;
+      sections.forEach(s => {
+        ws.getRow(row).getCell(2).value = s.accountName;
+        ws.getRow(row).getCell(3).value = s.balance;
+        styleDataCell(ws.getRow(row).getCell(3), { numFmt: "#,##0" });
+        altRowFill(ws.getRow(row).getCell(1), row - dataStartRow);
+        altRowFill(ws.getRow(row).getCell(2), row - dataStartRow);
+        altRowFill(ws.getRow(row).getCell(3), row - dataStartRow);
+        row++;
+      });
+    };
+
+    writeSection("الأصول", data.assets, data.totalAssets);
+    writeSection("الخصوم", data.liabilities, data.totalLiabilities);
+    writeSection("حقوق الملكية", data.equity, data.totalEquity);
+    buildReportFooter(ws, 3);
+    await exportWorkbook(ws.workbook, `الميزانية_العمومية_${filters.toDate}`);
+  }, [data, filters.toDate]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
   const handlePrint = useCallback(() => {
     const params = new URLSearchParams();
@@ -78,10 +147,17 @@ export function BalanceSheetReport({ fiscalYearId, asOfDate, externalFilters, hi
   }, [fiscalYearId, filters.toDate]);
 
   const customKPIs = data ? [
+<<<<<<< HEAD
     { label: 'إجمالي الأصول', value: formatCurrency(data.totalAssets), color: 'info' },
     { label: 'إجمالي الخصوم', value: formatCurrency(data.totalLiabilities), color: 'warning' },
     { label: 'حقوق الملكية', value: formatCurrency(data.totalEquity), color: 'success' },
     { label: 'الحالة', value: data.isBalanced ? 'متوازنة' : 'غير متوازنة', color: data.isBalanced ? 'text-success' : 'text-danger' },
+=======
+    { label: 'إجمالي الأصول', value: formatCurrency(data.totalAssets), color: 'text-blue-600' },
+    { label: 'إجمالي الخصوم', value: formatCurrency(data.totalLiabilities), color: 'text-amber-600' },
+    { label: 'حقوق الملكية', value: formatCurrency(data.totalEquity), color: 'text-green-600' },
+    { label: 'الحالة', value: data.isBalanced ? 'متوازنة' : 'غير متوازنة', color: data.isBalanced ? 'text-green-600' : 'text-red-600' },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   ] : [];
 
   const chartContent = data ? (
@@ -115,7 +191,13 @@ export function BalanceSheetReport({ fiscalYearId, asOfDate, externalFilters, hi
       isLoading={isLoading}
       customKPIs={customKPIs}
       filterBar={filterBar}
+<<<<<<< HEAD
       chartContent={chartContent}      onPrint={hideInternalControls ? undefined : (data ? handlePrint : undefined)}
+=======
+      chartContent={chartContent}
+      onExport={hideInternalControls ? undefined : (data ? handleExportExcel : undefined)}
+      onPrint={hideInternalControls ? undefined : (data ? handlePrint : undefined)}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     >
       {error ? (
         <div className="text-destructive text-sm">فشل في تحميل التقرير</div>
@@ -124,9 +206,15 @@ export function BalanceSheetReport({ fiscalYearId, asOfDate, externalFilters, hi
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div className="border rounded-xl overflow-hidden">
+<<<<<<< HEAD
             <div className="bg-info/10 p-3 font-medium text-info">الأصول</div>
             {data.assets.map((a: BalanceSheetSectionDto) => <SectionRow key={a.accountID} section={a} depth={0} />)}
             <div className="flex justify-between p-3 bg-info/10 font-medium border-t">
+=======
+            <div className="bg-blue-50 p-3 font-medium text-blue-800">الأصول</div>
+            {data.assets.map((a: BalanceSheetSectionDto) => <SectionRow key={a.accountID} section={a} depth={0} />)}
+            <div className="flex justify-between p-3 bg-blue-50/50 font-medium border-t">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               <span>إجمالي الأصول</span>
               <span className="font-mono text-foreground">{formatCurrency(data.totalAssets)}</span>
             </div>
@@ -134,18 +222,30 @@ export function BalanceSheetReport({ fiscalYearId, asOfDate, externalFilters, hi
 
           <div className="space-y-4">
             <div className="border rounded-xl overflow-hidden">
+<<<<<<< HEAD
               <div className="bg-warning/10 p-3 font-medium text-warning">الخصوم</div>
               {data.liabilities.map((l: BalanceSheetSectionDto) => <SectionRow key={l.accountID} section={l} depth={0} />)}
               <div className="flex justify-between p-3 bg-warning/10 font-medium border-t">
+=======
+              <div className="bg-amber-50 p-3 font-medium text-amber-800">الخصوم</div>
+              {data.liabilities.map((l: BalanceSheetSectionDto) => <SectionRow key={l.accountID} section={l} depth={0} />)}
+              <div className="flex justify-between p-3 bg-amber-50/50 font-medium border-t">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <span>إجمالي الخصوم</span>
                 <span className="font-mono text-foreground">{formatCurrency(data.totalLiabilities)}</span>
               </div>
             </div>
 
             <div className="border rounded-xl overflow-hidden">
+<<<<<<< HEAD
               <div className="bg-success/10 p-3 font-medium text-success">حقوق الملكية</div>
               {data.equity.map((e: BalanceSheetSectionDto) => <SectionRow key={e.accountID} section={e} depth={0} />)}
               <div className="flex justify-between p-3 bg-success/10 font-medium border-t">
+=======
+              <div className="bg-green-50 p-3 font-medium text-green-800">حقوق الملكية</div>
+              {data.equity.map((e: BalanceSheetSectionDto) => <SectionRow key={e.accountID} section={e} depth={0} />)}
+              <div className="flex justify-between p-3 bg-green-50/50 font-medium border-t">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <span>إجمالي حقوق الملكية</span>
                 <span className="font-mono">{formatCurrency(data.totalEquity)}</span>
               </div>
@@ -155,7 +255,11 @@ export function BalanceSheetReport({ fiscalYearId, asOfDate, externalFilters, hi
           <div className="lg:col-span-2">
             <div className={cn(
               "p-3 rounded-xl text-center font-medium",
+<<<<<<< HEAD
               data.isBalanced ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"
+=======
+              data.isBalanced ? "bg-green-50 text-green-700" : "bg-destructive/10 text-destructive"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             )}>
               {data.isBalanced
                 ? "الميزانية متوازنة ✓ — الأصول = الخصوم + حقوق الملكية"

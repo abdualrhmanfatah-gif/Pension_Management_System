@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 using PensionMS.Infrastructure.Services.Notifications;
 using PensionMS.Infrastructure.DependencyInjection;
 using PensionMS.Core.Interfaces.Reporting;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,6 +22,10 @@ using PensionMS.Core.Interfaces.Inventory;
 using PensionMS.Core.Interfaces.Services;
 using PensionMS.Infrastructure.Data;
 using PensionMS.Infrastructure.Repositories;
+<<<<<<< HEAD
+=======
+using PensionMS.Infrastructure.Services;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 using PensionMS.Infrastructure.Services.Accounting;
 using PensionMS.Core.Reporting;
 using PensionMS.Infrastructure.Reporting;
@@ -70,7 +77,131 @@ builder.Services.AddDbContext<PensionDbContext>((sp, options) =>
 // DEPENDENCY INJECTION
 // ═══════════════════════════════════════
 // ═══ Core & Infrastructure ═══
+<<<<<<< HEAD
 builder.Services.AddPensionInfrastructureServices();
+=======
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IEncryptionService, Aes256EncryptionService>();
+builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IBranchScopeProvider, BranchScopeProvider>();
+
+// ═══ Retirement & Files ═══
+builder.Services.AddScoped<IAgentService, AgentService>();
+builder.Services.AddScoped<IDocumentService, DocumentService>();
+builder.Services.AddScoped<IDocumentExemptionService, DocumentExemptionService>();
+builder.Services.AddScoped<IDocumentPledgeService, DocumentPledgeService>();
+builder.Services.AddScoped<IDocumentTypeService, DocumentTypeService>();
+builder.Services.AddScoped<IEntitledPersonService, EntitledPersonService>();
+builder.Services.AddScoped<IFileNoteService, FileNoteService>();
+builder.Services.AddScoped<IAchievementObstacleService, AchievementObstacleService>();
+builder.Services.AddScoped<IFileQueryService, RetirementFileService>();
+builder.Services.AddScoped<IFileStatusService, FileStatusService>();
+builder.Services.AddScoped<IGuardianService, GuardianService>();
+builder.Services.AddScoped<IMinistryApprovalService, MinistryApprovalService>();
+builder.Services.AddScoped<IMissingDocumentService, MissingDocumentService>();
+builder.Services.AddScoped<IPensionSuspensionService, PensionSuspensionService>();
+builder.Services.AddScoped<IRankService, RankService>();
+builder.Services.AddScoped<IRetireeService, RetireeService>();
+builder.Services.AddScoped<IRetirementFileService, RetirementFileService>();
+builder.Services.AddScoped<IFileReviewService, FileReviewService>();
+builder.Services.AddScoped<ISettlementRepository, SettlementRepository>();
+builder.Services.AddScoped<ISettlementService, SettlementService>();
+
+// ═══ HR ═══
+builder.Services.AddScoped<ICorrespondenceService, PensionMS.Infrastructure.Services.HR.CorrespondenceService>();
+builder.Services.AddScoped<IHrAdministrativeOrderService, PensionMS.Infrastructure.Services.HR.HrAdministrativeOrderService>();
+builder.Services.AddScoped<IHrAttendanceService, PensionMS.Infrastructure.Services.HR.HrAttendanceService>();
+builder.Services.AddScoped<IHrDocumentService, PensionMS.Infrastructure.Services.HR.HrDocumentService>();
+builder.Services.AddScoped<IHrEmployeeService, PensionMS.Infrastructure.Services.HR.HrEmployeeService>();
+builder.Services.AddScoped<IHrLeaveRequestService, PensionMS.Infrastructure.Services.HR.HrLeaveRequestService>();
+builder.Services.AddScoped<IHrReferenceDataService, PensionMS.Infrastructure.Services.HR.HrReferenceDataService>();
+builder.Services.AddScoped<IHrServiceHistoryService, PensionMS.Infrastructure.Services.HR.HrServiceHistoryService>();
+
+// ═══ Financial & Budget ═══
+builder.Services.AddScoped<IFinancialEntitlementService, FinancialEntitlementService>();
+builder.Services.AddScoped<IPaymentBookService, PaymentBookService>();
+builder.Services.AddScoped<IPayrollGenerationService, PayrollGenerationService>();
+builder.Services.AddScoped<ISalaryPaymentBatchService, SalaryPaymentBatchService>();
+builder.Services.AddScoped<ISalaryRecipientService, SalaryRecipientService>();
+
+// ═══ Accounting ═══
+builder.Services.AddScoped<ICostCenterService, PensionMS.Infrastructure.Services.Accounting.CostCenterService>();
+builder.Services.AddScoped<IChartOfAccountService, PensionMS.Infrastructure.Services.Accounting.ChartOfAccountService>();
+builder.Services.AddScoped<IJournalEntryService, PensionMS.Infrastructure.Services.Accounting.JournalEntryService>();
+builder.Services.AddScoped<IJournalEntryTypeService, PensionMS.Infrastructure.Services.Accounting.JournalEntryTypeService>();
+builder.Services.AddScoped<IReportingService, PensionMS.Infrastructure.Services.Accounting.ReportingService>();
+builder.Services.AddScoped<IVoucherService, PensionMS.Infrastructure.Services.Accounting.VoucherService>();
+builder.Services.AddScoped<IBudgetService, PensionMS.Infrastructure.Services.Accounting.BudgetService>();
+builder.Services.AddScoped<IFiscalPeriodService, PensionMS.Infrastructure.Services.Accounting.FiscalPeriodService>();
+builder.Services.AddScoped<IClosingService, PensionMS.Infrastructure.Services.Accounting.ClosingService>();
+
+
+// ═══ Investment ═══
+builder.Services.AddScoped<IInvestmentDocumentValidationService, InvestmentDocumentValidationService>();
+builder.Services.AddScoped<IInvestmentGovernanceService, PensionMS.Infrastructure.Services.Investment.InvestmentGovernanceService>();
+builder.Services.AddScoped<IInvestmentLeasingService, PensionMS.Infrastructure.Services.Investment.InvestmentLeasingService>();
+builder.Services.AddScoped<IInvestmentLookupService, PensionMS.Infrastructure.Services.Investment.InvestmentLookupService>();
+builder.Services.AddScoped<IInvestmentMaintenanceService, PensionMS.Infrastructure.Services.Investment.InvestmentMaintenanceService>();
+builder.Services.AddScoped<IInvestmentPortfolioService, PensionMS.Infrastructure.Services.Investment.InvestmentPortfolioService>();
+builder.Services.AddScoped<IInvestmentProjectService, PensionMS.Infrastructure.Services.Investment.InvestmentProjectService>();
+builder.Services.AddScoped<IInvestmentPropertyService, PensionMS.Infrastructure.Services.Investment.InvestmentPropertyService>();
+
+// ═══ Citizen Portal ═══
+builder.Services.AddScoped<ISmsService, PensionMS.Infrastructure.Services.Citizen.SmsService>();
+builder.Services.AddScoped<IOtpService, PensionMS.Infrastructure.Services.Citizen.OtpService>();
+
+// ═══ Inventory ═══
+builder.Services.AddScoped<IInventoryItemService, PensionMS.Infrastructure.Services.Inventory.InventoryItemService>();
+builder.Services.AddScoped<IInventoryCustodyService, PensionMS.Infrastructure.Services.Inventory.InventoryCustodyService>();
+builder.Services.AddScoped<IInventoryTransactionService, PensionMS.Infrastructure.Services.Inventory.InventoryTransactionService>();
+builder.Services.AddScoped<ISimpleStocktakeService, PensionMS.Infrastructure.Services.Inventory.SimpleStocktakeService>();
+
+// ═══ Fixed Assets ═══
+builder.Services.AddScoped<IFixedAssetService, PensionMS.Infrastructure.Services.Assets.FixedAssetService>();
+builder.Services.AddScoped<IAssetStocktakeService, PensionMS.Infrastructure.Services.Assets.AssetStocktakeService>();
+
+// ═══ System & Admin ═══
+builder.Services.AddScoped<IAdminSettingsService, AdminSettingsService>();
+builder.Services.AddScoped<IAuditLogService, AuditLogService>();
+builder.Services.AddScoped<IBankService, BankService>();
+builder.Services.AddScoped<IBankTransactionService, BankTransactionService>();
+builder.Services.AddScoped<IBranchService, BranchService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IDiscrepancyService, DiscrepancyService>();
+builder.Services.AddScoped<ILoginHistoryService, LoginHistoryService>();
+builder.Services.AddScoped<ILookupService, LookupService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IAdminNotificationService, AdminNotificationService>();
+builder.Services.AddScoped<IPermissionService, PermissionService>();
+builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddSingleton<IReportRegistry, ReportRegistry>();
+builder.Services.AddSingleton<ExcelReportExporter>();
+builder.Services.AddSingleton<PdfReportExporter>();
+builder.Services.AddScoped<IReportDataService, ReportDataService>();
+builder.Services.AddScoped<IAccountingExportService, AccountingExportService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+// ═══ Workflow & Compliance ═══
+builder.Services.AddScoped<IComplianceEngine, ComplianceEngine>();
+builder.Services.AddScoped<IComplianceService, ComplianceService>();
+builder.Services.AddScoped<IEntitlementEngine, EntitlementEngine>();
+builder.Services.AddScoped<IImmutableAuditService, ImmutableAuditService>();
+builder.Services.AddScoped<IRiskScoringService, RiskScoringService>();
+builder.Services.AddScoped<IScopedPermissionResolver, ScopedPermissionResolver>();
+builder.Services.AddScoped<ISnapshotService, SnapshotService>();
+builder.Services.AddScoped<ISoDGuard, SoDGuardService>();
+builder.Services.AddScoped<ISoDRule, PensionMS.Infrastructure.Services.SoDRules.ApproverCannotActivateRule>();
+builder.Services.AddScoped<ISoDRule, PensionMS.Infrastructure.Services.SoDRules.DocumentUploaderCannotApproveRule>();
+builder.Services.AddScoped<ISoDRule, PensionMS.Infrastructure.Services.SoDRules.FinancialEditorCannotApproveRule>();
+builder.Services.AddScoped<ISoDRule, PensionMS.Infrastructure.Services.SoDRules.OverrideSoDRule>();
+builder.Services.AddScoped<IWorkflowEngine, WorkflowEngine>();
+
+
+builder.Services.AddHostedService<ExpiredPledgesJob>();
+builder.Services.AddHostedService<NotificationOutboxProcessor>();
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
@@ -106,7 +237,10 @@ builder.Services.AddAuthentication(options =>
 
     options.Events = new JwtBearerEvents
     {
+<<<<<<< HEAD
         OnTokenValidated = ActiveUserValidation.ValidateAsync,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         OnAuthenticationFailed = context =>
         {
             if (context.Exception is SecurityTokenExpiredException)
@@ -166,7 +300,10 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("File.Documents.Upload",      p => p.AddRequirements(new PermissionRequirement("File.Documents.Upload")));
     options.AddPolicy("File.Documents.Update",      p => p.AddRequirements(new PermissionRequirement("File.Documents.Update")));
     options.AddPolicy("File.Edit.BasicData",        p => p.AddRequirements(new PermissionRequirement("File.Edit.BasicData")));
+<<<<<<< HEAD
     options.AddPolicy("File.Transfer",              p => p.AddRequirements(new PermissionRequirement("File.Transfer")));
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     options.AddPolicy("File.Edit.FinancialData",    p => p.AddRequirements(new PermissionRequirement("File.Edit.FinancialData")));
     options.AddPolicy("File.Override",              p => p.AddRequirements(new PermissionRequirement("File.Override")));
     options.AddPolicy("File.View",                  p => p.AddRequirements(new PermissionRequirement("File.View")));
@@ -283,7 +420,11 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("Accounting.View",            p => p.AddRequirements(new PermissionRequirement("Accounting.View")));
     options.AddPolicy("Accounting.Manage",          p => p.AddRequirements(new PermissionRequirement("Accounting.Manage")));
     options.AddPolicy("Accounting.Reports",         p => p.AddRequirements(new PermissionRequirement("Accounting.Reports")));
+<<<<<<< HEAD
     options.AddPolicy("Accounting.CloseYear",       p => p.AddRequirements(new PermissionRequirement("Accounting.CloseYear")));
+=======
+    options.AddPolicy("Accounting.CloseYear",       p => p.RequireRole("Admin", "AccountingManager"));
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     // ── Inventory ──
     options.AddPolicy("Inventory.Item.View",        p => p.AddRequirements(new PermissionRequirement("Inventory.Item.View")));
@@ -332,6 +473,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("Report.Admin.View",          p => p.AddRequirements(new PermissionRequirement("Report.Admin.View")));
 
     // ── Granular Micro-Permissions (Batch Registration) ──
+<<<<<<< HEAD
     // Note: do NOT duplicate permissions already registered above via AddPolicy()
     var granularPermissions = new[] {
         "Agent.Delete",
@@ -349,6 +491,26 @@ builder.Services.AddAuthorization(options =>
         "Inventory.Item.Create", "Inventory.Item.Edit", "Inventory.Item.Delete",
         "Inventory.Custody.Create", "Inventory.Custody.Return",
         "Inventory.Transaction.Create"
+=======
+    var granularPermissions = new[] {
+        "Agent.Delete",
+        "FileNote.Add", "FileNote.Delete",
+        "AchievementObstacle.View", "AchievementObstacle.Manage",
+        "AchievementObstacle.Add", "AchievementObstacle.Edit", "AchievementObstacle.Delete",
+        "Investment.Add", "Investment.Delete", "Investment.Edit",
+        "Ministry.Add", "Ministry.Delete", 
+        "OperationalBudget.Add", "OperationalBudget.Delete", "OperationalBudget.Edit",
+        "PaymentBook.Delete", "Payroll.ExcludeBeneficiary", "Payroll.ManageDeductions",
+        "SalaryRecipient.Delete", "Settlement.Add", "Settlement.Delete", "Suspension.Delete",
+        "System.Settings.Banks", "System.Settings.DocumentTypes", 
+        "System.Settings.InvestmentTypes", "System.Settings.JobTitles",
+
+        // ── Inventory ──
+        "Inventory.Item.View", "Inventory.Item.Create", "Inventory.Item.Edit", "Inventory.Item.Delete",
+        "Inventory.Custody.View", "Inventory.Custody.Create", "Inventory.Custody.Return",
+        "Inventory.Transaction.View", "Inventory.Transaction.Create",
+        "Inventory.Stocktake"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     };
 
     foreach (var permission in granularPermissions)
@@ -431,7 +593,11 @@ builder.Services.AddControllers(options =>
     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
     options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+<<<<<<< HEAD
     options.JsonSerializerOptions.Converters.Add(new PensionMS.API.Converters.YemenDateTimeConverter());
+=======
+    // Ensure dates are serialized in ISO 8601 format with UTC indicator if Kind is Utc
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
 
@@ -492,6 +658,7 @@ using (var scope = app.Services.CreateScope())
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
     // Ensure IIS APPPOOL\PensionAPI has database access (login + db user)
+<<<<<<< HEAD
     // Only runs in non-development environments (IIS App Pool does not exist locally)
     if (!app.Environment.IsDevelopment())
     {
@@ -502,11 +669,21 @@ using (var scope = app.Services.CreateScope())
             await adminConn.OpenAsync();
             using var cmd = adminConn.CreateCommand();
             cmd.CommandText = @"
+=======
+    try
+    {
+        var connStr = builder.Configuration.GetConnectionString("DefaultConnection");
+        using var adminConn = new Microsoft.Data.SqlClient.SqlConnection(connStr);
+        await adminConn.OpenAsync();
+        using var cmd = adminConn.CreateCommand();
+        cmd.CommandText = @"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 IF NOT EXISTS (SELECT name FROM sys.server_principals WHERE name = 'IIS APPPOOL\PensionAPI')
     CREATE LOGIN [IIS APPPOOL\PensionAPI] FROM WINDOWS;
 IF NOT EXISTS (SELECT name FROM sys.database_principals WHERE name = 'IIS APPPOOL\PensionAPI')
 BEGIN
     CREATE USER [IIS APPPOOL\PensionAPI] FOR LOGIN [IIS APPPOOL\PensionAPI];
+<<<<<<< HEAD
     ALTER ROLE db_datareader ADD MEMBER [IIS APPPOOL\PensionAPI];
     ALTER ROLE db_datawriter ADD MEMBER [IIS APPPOOL\PensionAPI];
 END";
@@ -516,6 +693,15 @@ END";
         {
             logger.LogWarning("⚠️ تعذر التأكد من صلاحية IIS APPPOOL\\PensionAPI: {Message}", ex.Message);
         }
+=======
+    ALTER ROLE db_owner ADD MEMBER [IIS APPPOOL\PensionAPI];
+END";
+        await cmd.ExecuteNonQueryAsync();
+    }
+    catch (Exception ex)
+    {
+        logger.LogWarning("⚠️ تعذر التأكد من صلاحية IIS APPPOOL\\PensionAPI: {Message}", ex.Message);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 
     for (int attempt = 1; attempt <= 3; attempt++)
@@ -530,15 +716,31 @@ END";
 
             try
             {
+<<<<<<< HEAD
                 await db.Database.MigrateAsync();
+=======
+                db.Database.Migrate();
+                logger.LogInformation("✅ تم تحديث قاعدة البيانات بنجاح");
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             }
             catch (SqlException ex) when (ex.Number == 2714)
             {
                 logger.LogWarning("⚠️ قاعدة البيانات تحتوي بالفعل على جداول؛ سيتم الاستمرار في عملية الـ Seed فقط.");
             }
+<<<<<<< HEAD
 
             logger.LogInformation("✅ تم تحديث قاعدة البيانات بنجاح");
             break; // success — only reached when MigrateAsync completes without fatal exception
+=======
+            catch (Exception ex)
+            {
+                logger.LogWarning("⚠️ تنبيه أثناء Migration: {Message}", ex.Message);
+            }
+
+            await PensionMS.Infrastructure.Data.Seeders.PrimaryDataSeeder.SeedAllAsync(db, logger);
+
+            break; // success
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
         catch (Exception ex)
         {
@@ -561,6 +763,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+<<<<<<< HEAD
+=======
+if (!app.Environment.IsDevelopment())
+{
+
+}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 app.UseResponseCompression();
 app.UseCors("AllowFrontend");
 var wwwrootPath = Path.Combine(app.Environment.ContentRootPath, "wwwroot");
@@ -578,6 +787,7 @@ if (!Directory.Exists(uploadsPath))
 // ✅ يطابق URL القديم: {origin}/uploads/{path}
 // ═══════════════════════════════════════════════════════════════
 {
+<<<<<<< HEAD
     app.Map("/uploads", (IApplicationBuilder uploadsBranch) =>
     {
         uploadsBranch.UseAuthentication();
@@ -587,6 +797,55 @@ if (!Directory.Exists(uploadsPath))
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PensionMS.API.Files.PublicWebRootFileProvider(wwwrootPath),
+=======
+    var uploadExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    {
+        ".pdf", ".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg",
+        ".doc", ".docx", ".xls", ".xlsx", ".csv", ".txt"
+    };
+
+    app.Map("/uploads", (IApplicationBuilder uploadsBranch) =>
+    {
+        uploadsBranch.Use(async (HttpContext context, RequestDelegate next) =>
+        {
+            var env = context.RequestServices.GetRequiredService<IWebHostEnvironment>();
+            var dir = Path.Combine(env.WebRootPath, "uploads");
+            var reqPath = context.Request.Path.Value?.TrimStart('/') ?? "";
+            var sanitized = reqPath.Replace('/', Path.DirectorySeparatorChar);
+            var fullPath = Path.GetFullPath(Path.Combine(dir, sanitized));
+
+            // منع path traversal
+            if (!fullPath.StartsWith(dir) || !System.IO.File.Exists(fullPath))
+            {
+                context.Response.StatusCode = 404;
+                return;
+            }
+
+            // فحص الامتداد
+            var ext = Path.GetExtension(fullPath);
+            if (!uploadExtensions.Contains(ext))
+            {
+                context.Response.StatusCode = 403;
+                return;
+            }
+
+            // Content-Type
+            var provider = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(fullPath, out var contentType))
+                contentType = "application/octet-stream";
+
+            context.Response.Headers["Cache-Control"] = "private, max-age=86400";
+            context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+
+            await context.Response.SendFileAsync(fullPath);
+        });
+    });
+}
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(wwwrootPath),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     OnPrepareResponse = ctx =>
     {
         ctx.Context.Response.Headers.Append("Access-Control-Allow-Origin", "*");

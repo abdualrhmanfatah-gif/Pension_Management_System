@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { type ReactNode,useEffect } from "react";
+=======
+import { useEffect, type ReactNode } from "react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 import { useThemeStore } from "@/stores/themeStore";
 

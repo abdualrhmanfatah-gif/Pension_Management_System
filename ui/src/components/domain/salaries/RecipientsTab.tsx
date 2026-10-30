@@ -6,11 +6,18 @@ import { salaryRecipientApi, type SalaryRecipientDto } from "@/api/salary-recipi
 import {
     Badge,
     Button,
+<<<<<<< HEAD
     Card,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     type CustomColumnDef,
     DataTable,
     EditableImage,
     Heading,
+<<<<<<< HEAD
+=======
+    Text,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     useConfirm} from "@/components/ui";
 import { useApiMutation } from "@/hooks";
 import { formatDate, getPhotoUrl } from "@/lib/utils";
@@ -115,11 +122,14 @@ export function RecipientsTab({ fileId, retireeId, retireeName }: RecipientsTabP
             render: (row) => <span className="font-mono text-xs">{formatDate(row.startDate)}</span>,
         },
         {
+<<<<<<< HEAD
             key: "sharePercent",
             header: "حصة المعاش",
             render: (row) => row.sharePercent == null ? "—" : `${row.sharePercent}%`,
         },
         {
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             key: "status",
             header: "الحالة",
             render: (row) => (
@@ -161,6 +171,7 @@ export function RecipientsTab({ fileId, retireeId, retireeName }: RecipientsTabP
         <div className="space-y-6 animate-in fade-in duration-500">
             {ConfirmDialogElement}
 
+<<<<<<< HEAD
             <Card className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-4 bg-muted/30 p-3 md:p-5">
                 <div className="space-y-0.5 md:space-y-1 text-start">
                     <Heading level="h3" className="font-bold flex items-center gap-1.5 md:gap-2 text-sm md:text-base">
@@ -180,6 +191,24 @@ export function RecipientsTab({ fileId, retireeId, retireeName }: RecipientsTabP
                     </Button>
                 )}
             </Card>
+=======
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="space-y-1">
+                    <Heading level="h3" className="text-lg font-black flex items-center gap-2 text-foreground tracking-tight">
+                        <Wallet className="w-5 h-5 text-primary" /> مستلمو المعاش
+                    </Heading>
+                    <Text variant="caption" className="font-medium">تحديد المستحقين الماليين ونسب توزيع المعاش التقاعدي</Text>
+                </div>
+
+                <div className="flex items-center gap-3">
+                    {canAdd && (
+                        <Button onClick={() => setIsFormOpen(true)} className="gap-2 rounded-2xl h-11 font-bold">
+                            <Plus className="w-4 h-4" /> إضافة مستلم
+                        </Button>
+                    )}
+                </div>
+            </div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
             <div className="bg-card border rounded-2xl overflow-hidden">
                 <DataTable

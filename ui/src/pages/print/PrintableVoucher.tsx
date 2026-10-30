@@ -2,8 +2,13 @@ import { forwardRef } from "react";
 
 import type { VoucherDto } from "@/api/vouchers";
 import { PrintLayout } from "@/components/ui/print/PrintLayout";
+<<<<<<< HEAD
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { useAuthStore } from "@/stores/authStore";
+=======
+import { useAuthStore } from "@/stores/authStore";
+import { formatCurrency, formatDate } from "@/lib/utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface PrintableVoucherProps {
     voucher: VoucherDto;

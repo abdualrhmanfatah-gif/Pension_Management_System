@@ -1,5 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+<<<<<<< HEAD
 using PensionMS.Core.Interfaces;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 namespace PensionMS.Core.DTOs.Documents;
 
@@ -10,6 +13,7 @@ public class UpdateDocumentDto
     [Required]
     public int DocumentTypeID { get; set; }
 
+<<<<<<< HEAD
     // ملف جديد بديل (اختياري) — الحقول القياسية تُعامل كتحديث جزئي: null يعني عدم الإرسال
     public IRemoteFile? File { get; set; }
 
@@ -19,6 +23,14 @@ public class UpdateDocumentDto
     public DateOnly? ExpiryDate { get; set; }
 
     // مالك الوثيقة (واحد فقط مطلوب) — لا تُغيَّر إلا عند إرسال أحدها
+=======
+    public string? Notes { get; set; }
+    public string? DocumentNumber { get; set; }
+    public DateTime? IssueDate { get; set; }
+    public DateTime? ExpiryDate { get; set; }
+
+    // مالك الوثيقة (واحد فقط مطلوب)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public int? RetirementFileID { get; set; }
     public int? RetireeID { get; set; }
     public int? EntitledPersonID { get; set; }
@@ -51,13 +63,22 @@ public class DocumentDto
     public DateTime CreatedAt { get; set; }
 
     // Document lifecycle
+<<<<<<< HEAD
     public DateOnly? IssueDate { get; set; }
     public DateOnly? ExpiryDate { get; set; }
+=======
+    public DateTime? IssueDate { get; set; }
+    public DateTime? ExpiryDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? DocumentNumber { get; set; }
     public bool Verified { get; set; }
     public bool HasExpiry { get; set; }
     public bool IsRequired { get; set; }
+<<<<<<< HEAD
     public bool IsExpired => ExpiryDate.HasValue && ExpiryDate.Value < PensionMS.Core.Time.YemenTime.Today;
+=======
+    public bool IsExpired => ExpiryDate.HasValue && ExpiryDate.Value < DateTime.UtcNow;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     // Owner IDs for filtering
     public int? AgentID { get; set; }

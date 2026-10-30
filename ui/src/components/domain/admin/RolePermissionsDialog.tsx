@@ -4,8 +4,13 @@ import { useEffect, useMemo, useState } from "react";
 
 import { usersApi } from "@/api/users";
 import { Badge, BaseFormDialog, Button, Input, Text } from "@/components/ui";
+<<<<<<< HEAD
 import { queryKeys } from "@/constants/queryKeys";
 import { useApiMutation } from "@/hooks";
+=======
+import { useApiMutation } from "@/hooks";
+import { queryKeys } from "@/constants/queryKeys";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 import { categoryColors,categoryLabels, getPermissionName } from "./permission-utils";
 
@@ -181,7 +186,11 @@ export function RolePermissionsDialog({
                                                 </div>
                                                 <div className="flex-1 min-w-0 text-start">
                                                     <Text variant="label" className="leading-tight">{getPermissionName(p.code)}</Text>
+<<<<<<< HEAD
                                                     <p className="text-[10px] sm:text-xs text-muted-foreground font-mono mt-0.5">{p.code}</p>
+=======
+                                                    <p className="text-[10px] sm:text-xs text-muted-foreground/70 font-mono mt-0.5">{p.code}</p>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                     {p.description && (
                                                         <p className="text-[11px] text-muted-foreground truncate mt-1">{p.description}</p>
                                                     )}

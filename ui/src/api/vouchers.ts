@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import type { ApiResponse, PagedResult } from "@/types/api";
 
 import api from "./axios";
+=======
+import api from "./axios";
+import type { ApiResponse, PagedResult } from "@/types/api";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ═══════════════════════════════════════
 // TYPES

@@ -5,9 +5,15 @@ import { toast } from "sonner";
 
 import type { InvestmentPlanDto } from "@/api/investment";
 import { investmentApi } from "@/api/investment";
+<<<<<<< HEAD
 import { InvestmentDocsViewerDialog } from "@/components/domain/investment/InvestmentDocsViewerDialog";
 import { InvestmentPlanDialog } from "@/components/domain/investment/InvestmentPlanDialog";
 import { Button, CrudPageLayout, ErrorState, useConfirm } from "@/components/ui";
+=======
+import { Button, CrudPageLayout, ErrorState, useConfirm } from "@/components/ui";
+import { InvestmentDocsViewerDialog } from "@/components/domain/investment/InvestmentDocsViewerDialog";
+import { InvestmentPlanDialog } from "@/components/domain/investment/InvestmentPlanDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation,useCrudState } from "@/hooks";
 
 interface ProjectPlansTabProps {
@@ -62,7 +68,11 @@ export function ProjectPlansTab({ projectId }: ProjectPlansTabProps) {
             key: "plannedAmount",
             header: "المبلغ المخطط",
             render: (row: InvestmentPlanDto) => (
+<<<<<<< HEAD
                 <span className="font-semibold text-info font-mono">
+=======
+                <span className="font-semibold text-blue-600 font-mono">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {row.plannedAmount.toLocaleString()} ر.ي
                 </span>
             )
@@ -71,7 +81,11 @@ export function ProjectPlansTab({ projectId }: ProjectPlansTabProps) {
             key: "actualSpent",
             header: "الإنفاق الفعلي",
             render: (row: InvestmentPlanDto) => (
+<<<<<<< HEAD
                 <span className="font-semibold text-success font-mono">
+=======
+                <span className="font-semibold text-emerald-600 font-mono">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {row.actualSpent.toLocaleString()} ر.ي
                 </span>
             )
@@ -88,7 +102,11 @@ export function ProjectPlansTab({ projectId }: ProjectPlansTabProps) {
                         <Edit className="w-4 h-4 text-muted-foreground" />
                     </Button>
                     <Button variant="ghost" size="icon" onClick={() => handleDelete(row)} title="حذف">
+<<<<<<< HEAD
                         <Trash2 className="w-4 h-4 text-danger" />
+=======
+                        <Trash2 className="w-4 h-4 text-red-500" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     </Button>
                 </div>
             )

@@ -13,7 +13,11 @@ public class RetireeDiscrepancyDto
     // Phase 1: Approval Data (The Source)
     public string? ApprovalFullName { get; set; }
     public string? ApprovalRankName { get; set; }
+<<<<<<< HEAD
     public DateOnly? ApprovalRetirementDate { get; set; }
+=======
+    public DateTime? ApprovalRetirementDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? ApprovalUnitName { get; set; }
     public byte? Gender { get; set; }
     public decimal? Salary { get; set; }
@@ -27,7 +31,11 @@ public class RetireeDiscrepancyDto
     // Phase 3: File Data (The Final Output)
     public string? FileNumber { get; set; }
     public string? FileRankName { get; set; }
+<<<<<<< HEAD
     public DateOnly? FileRetirementDate { get; set; }
+=======
+    public DateTime? FileRetirementDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? FileStatusName { get; set; }
 
     // Discrepancy Flags (Calculated)
@@ -41,7 +49,11 @@ public class RetireeDiscrepancyDto
 
     public bool IsDateMismatch => ApprovalRetirementDate.HasValue &&
                                   FileRetirementDate.HasValue &&
+<<<<<<< HEAD
                                   ApprovalRetirementDate.Value != FileRetirementDate.Value;
+=======
+                                  ApprovalRetirementDate.Value.Date != FileRetirementDate.Value.Date;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     public bool HasAnyDiscrepancy => IsNameMismatch || IsRankMismatch || IsDateMismatch;
 

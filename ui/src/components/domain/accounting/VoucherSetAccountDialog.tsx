@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { Controller, type Resolver,useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -9,6 +10,17 @@ import { BaseFormDialog, FormField, NativeSelect } from "@/components/ui";
 import { queryKeys } from "@/constants/queryKeys";
 import { useApiMutation } from "@/hooks";
 import type { ChartOfAccountDto } from "@/types/accounting";
+=======
+import { Controller, useForm, type Resolver } from "react-hook-form";
+import { z } from "zod";
+
+import { accountsApi } from "@/api/accounting";
+import type { ChartOfAccountDto } from "@/types/accounting";
+import { vouchersApi } from "@/api/vouchers";
+import { BaseFormDialog, FormField, NativeSelect } from "@/components/ui";
+import { useApiMutation } from "@/hooks";
+import { queryKeys } from "@/constants/queryKeys";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 const schema = z.object({
   debitAccountID: z.coerce.number().min(1, "اختر حساب المصروف"),

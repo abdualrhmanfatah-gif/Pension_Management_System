@@ -5,6 +5,7 @@ namespace PensionMS.Core.DTOs.RetirementFiles;
 
 public class CreateRetirementFileDto
 {
+<<<<<<< HEAD
     /// <summary>عند إرساله يجب أن يطابق فرع المستخدم المسجل في الخادم.</summary>
     public int? BranchID { get; set; }
     public int RetireeID { get; set; }
@@ -12,6 +13,12 @@ public class CreateRetirementFileDto
     public DateOnly? RetirementDate { get; set; }
     public DateOnly? ServiceStartDate { get; set; }
     public DateOnly? ServiceEndDate { get; set; }
+=======
+    public int RetireeID { get; set; }
+    public DateTime? RetirementDate { get; set; }
+    public DateTime? ServiceStartDate { get; set; }
+    public DateTime? ServiceEndDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? Notes { get; set; }
 
     // Retiree Data Update
@@ -23,7 +30,11 @@ public class CreateRetirementFileDto
     public byte Gender { get; set; }
     public int? SocialStatusID { get; set; }
     public int? HealthStatusID { get; set; }
+<<<<<<< HEAD
     public DateOnly? BirthDate { get; set; }
+=======
+    public DateTime? BirthDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     public IRemoteFile? PersonalPhoto { get; set; }
     public IRemoteFile? IdDocument { get; set; }
@@ -32,6 +43,7 @@ public class CreateRetirementFileDto
 
     // Life Status
     public bool IsAlive { get; set; } = true;
+<<<<<<< HEAD
     public DateOnly? DeathDate { get; set; }
     public IRemoteFile? DeathCertificate { get; set; }
 }
@@ -46,13 +58,25 @@ public class CorrectRetireeLifeStatusDto
     public int HealthStatusID { get; set; }
 }
 
+=======
+    public DateTime? DeathDate { get; set; }
+    public IRemoteFile? DeathCertificate { get; set; }
+}
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 public class UpdateRetirementFileDto
 {
     public int? RankID { get; set; }
     public int? BranchID { get; set; }
+<<<<<<< HEAD
     public DateOnly? RetirementDate { get; set; }
     public DateOnly? ServiceStartDate { get; set; }
     public DateOnly? ServiceEndDate { get; set; }
+=======
+    public DateTime? RetirementDate { get; set; }
+    public DateTime? ServiceStartDate { get; set; }
+    public DateTime? ServiceEndDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     // FileStatusID removed — use PUT /{id}/status endpoint (ChangeStatusAsync) instead
     public string? Notes { get; set; }
 
@@ -66,12 +90,20 @@ public class UpdateRetirementFileDto
     public string? Address { get; set; }
     public string? City { get; set; }
     public string? Governorate { get; set; }
+<<<<<<< HEAD
     public DateOnly? BirthDate { get; set; }
+=======
+    public DateTime? BirthDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? MilitaryNumber { get; set; }
 
     // Life Status
     public bool? IsAlive { get; set; }
+<<<<<<< HEAD
     public DateOnly? DeathDate { get; set; }
+=======
+    public DateTime? DeathDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     // ملفات المتقاعد للتحديث
     public IRemoteFile? PersonalPhoto { get; set; }
@@ -86,7 +118,10 @@ public class UpdateRetirementFileDto
 
 public class RetirementFileDto
 {
+<<<<<<< HEAD
     public string SalaryStatus { get; set; } = string.Empty;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public int FileID { get; set; }
     public int RetireeID { get; set; }
     public string FileNumber { get; set; } = string.Empty;
@@ -100,9 +135,15 @@ public class RetirementFileDto
     public string? FileStatusName { get; set; }
     public string? PersonalPhotoPath { get; set; }
     public string? IdDocumentPath { get; set; }
+<<<<<<< HEAD
     public DateOnly? RetirementDate { get; set; }
     public DateOnly? ServiceStartDate { get; set; }
     public DateOnly? ServiceEndDate { get; set; }
+=======
+    public DateTime? RetirementDate { get; set; }
+    public DateTime? ServiceStartDate { get; set; }
+    public DateTime? ServiceEndDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public DateTime FileOpenDate { get; set; }
     public DateTime? ClosedDate { get; set; }
     public string? StatusReason { get; set; }
@@ -116,6 +157,7 @@ public class RetirementFileDto
 
     // Active Payment Book
     public string? ActivePaymentBookNumber { get; set; }
+<<<<<<< HEAD
     public DateOnly? ActivePaymentBookExpiry { get; set; }
     public string? ActivePaymentBookStatus { get; set; }
 
@@ -124,6 +166,16 @@ public class RetirementFileDto
     public byte Gender { get; set; }
     public string? Address { get; set; }
     public DateOnly? DeathDate { get; set; }
+=======
+    public DateTime? ActivePaymentBookExpiry { get; set; }
+    public string? ActivePaymentBookStatus { get; set; }
+
+    // Retiree Additional Info
+    public DateTime? BirthDate { get; set; }
+    public byte Gender { get; set; }
+    public string? Address { get; set; }
+    public DateTime? DeathDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public bool IsAlive { get; set; } = true;
 
     // Statistics
@@ -159,7 +211,10 @@ public class RetirementFileListDto
     public int? PreviousStatusID { get; set; }
     public string? FileStatusName { get; set; }
     public DateTime? FileOpenDate { get; set; }
+<<<<<<< HEAD
     public DateTime CreatedAt { get; set; }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? ActivePaymentBookNumber { get; set; }
     public int MissingDocumentsCount { get; set; }
     public bool HasDocuments { get; set; }

@@ -43,11 +43,16 @@ public class RetireesController : ControllerBase
         [FromQuery] int? rankId = null,
         [FromQuery] byte? gender = null,
         [FromQuery] bool? hasFiles = null,
+<<<<<<< HEAD
         [FromQuery] bool? isProcessed = null,
         [FromQuery] bool? hasSettlements = null,
         [FromQuery] string? unitName = null,
         [FromQuery] DateOnly? retirementDateFrom = null,
         [FromQuery] DateOnly? retirementDateTo = null)
+=======
+        [FromQuery] DateTime? retirementDateFrom = null,
+        [FromQuery] DateTime? retirementDateTo = null)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     {
         var filters = new SocialResearchQueryDto
         {
@@ -60,9 +65,12 @@ public class RetireesController : ControllerBase
             RankId = rankId,
             Gender = gender,
             HasFiles = hasFiles,
+<<<<<<< HEAD
             IsProcessed = isProcessed,
             HasSettlements = hasSettlements,
             UnitName = unitName,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             RetirementDateFrom = retirementDateFrom,
             RetirementDateTo = retirementDateTo
         };
@@ -131,8 +139,14 @@ public class RetireesController : ControllerBase
     [Authorize(Policy = PermissionConstants.RetireeEdit)]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateRetireeDto dto)
     {
+<<<<<<< HEAD
         var result = await _retireeService.UpdateAsync(id, dto, this.GetUserId());
         return result.ToActionResult();
+=======
+        var result = await _retireeService.UpdateAsync(id, dto);
+        if (!result.IsSuccess) return NotFound(result);
+        return Ok(result);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 
     /// <summary>

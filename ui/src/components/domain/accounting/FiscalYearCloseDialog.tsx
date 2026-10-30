@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { AlertTriangle, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -6,6 +7,15 @@ import { toast } from "sonner";
 import { accountsApi, closingApi, fiscalYearsApi,periodsApi } from "@/api/accounting";
 import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Text } from "@/components/ui";
 import type { ChartOfAccountDto, FiscalPeriodDto,FiscalYearSummaryDto } from "@/types/accounting";
+=======
+import { useState } from "react";
+import { toast } from "sonner";
+
+import { periodsApi, closingApi, accountsApi, fiscalYearsApi } from "@/api/accounting";
+import type { FiscalYearSummaryDto, ChartOfAccountDto, FiscalPeriodDto } from "@/types/accounting";
+import { AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Text } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface FiscalYearCloseDialogProps {
   open: boolean;
@@ -115,7 +125,11 @@ export function FiscalYearCloseDialog({ open, onOpenChange }: FiscalYearCloseDia
               <>
                 {/* Year selector */}
                 <div className="space-y-1.5">
+<<<<<<< HEAD
                   <label className="label-field">السنة المالية المراد إقفالها</label>
+=======
+                  <label className="text-sm font-medium">السنة المالية المراد إقفالها</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                   <Select value={String(selectedFiscalYearID ?? "")} onValueChange={(v) => setSelectedFiscalYearID(Number(v))}>
                     <SelectTrigger>
                       <SelectValue placeholder="اختر السنة المالية" />
@@ -141,7 +155,11 @@ export function FiscalYearCloseDialog({ open, onOpenChange }: FiscalYearCloseDia
                     </div>
 
                     <div className="space-y-1.5">
+<<<<<<< HEAD
                       <label className="label-field">حساب الأرباح المحتجزة (الفائض/العجز)</label>
+=======
+                      <label className="text-sm font-medium">حساب الأرباح المحتجزة (الفائض/العجز)</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                       <Select value={String(targetAccountID ?? surplusAccount?.accountID ?? "")} onValueChange={(v) => setTargetAccountID(Number(v))}>
                         <SelectTrigger>
                           <SelectValue placeholder="اختر الحساب" />
@@ -175,7 +193,11 @@ export function FiscalYearCloseDialog({ open, onOpenChange }: FiscalYearCloseDia
                 </div>
 
                 <div className="space-y-1.5">
+<<<<<<< HEAD
                   <label className="label-field">السنة المالية المستهدفة</label>
+=======
+                  <label className="text-sm font-medium">السنة المالية المستهدفة</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                   <Select value={targetFiscalYearID != null ? String(targetFiscalYearID) : undefined} onValueChange={(v) => setTargetFiscalYearID(Number(v))}>
                     <SelectTrigger>
                       <SelectValue placeholder="اختر السنة المالية" />

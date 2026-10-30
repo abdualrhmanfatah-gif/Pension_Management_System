@@ -5,10 +5,17 @@ import { toast } from "sonner";
 
 import type { RiskAssessmentDto } from "@/api/investment";
 import { investmentApi } from "@/api/investment";
+<<<<<<< HEAD
 import { InvestmentDocsViewerDialog } from "@/components/domain/investment/InvestmentDocsViewerDialog";
 import { RiskAssessmentDialog } from "@/components/domain/investment/RiskAssessmentDialog";
 import { Badge, Button, CrudPageLayout, ErrorState } from "@/components/ui";
 import { type CustomColumnDef } from "@/components/ui/DataTable";
+=======
+import { Badge, Button, CrudPageLayout, ErrorState } from "@/components/ui";
+import { type CustomColumnDef } from "@/components/ui/DataTable";
+import { InvestmentDocsViewerDialog } from "@/components/domain/investment/InvestmentDocsViewerDialog";
+import { RiskAssessmentDialog } from "@/components/domain/investment/RiskAssessmentDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useCrudState } from "@/hooks";
 import { useHasPermission } from "@/stores/authStore";
 

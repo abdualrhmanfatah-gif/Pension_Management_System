@@ -1,9 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { CalendarDays, DollarSign, ExternalLink,Eye, TrendingUp, Users } from "lucide-react";
 import { useRef,useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { salariesApi } from "@/api/salaries";
+=======
+import { CalendarDays, DollarSign, Users, TrendingUp, Eye, ExternalLink } from "lucide-react";
+import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { salariesApi } from "@/api/salaries";
+import type { SalaryBatch } from "@/types/salaries";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Badge,
     BaseFormDialog,
@@ -12,7 +21,10 @@ import {
     StatCard,
 } from "@/components/ui";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
+<<<<<<< HEAD
 import type { SalaryBatch } from "@/types/salaries";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function MonthlySummariesPage() {
     const navigate = useNavigate();

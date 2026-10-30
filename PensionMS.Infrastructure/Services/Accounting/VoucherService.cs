@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 using PensionMS.Infrastructure.Data;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using PensionMS.Core.DTOs.Accounting;
@@ -190,6 +193,10 @@ public class VoucherService : IVoucherService
         if (dto.ReferralSource != null) voucher.ReferralSource = dto.ReferralSource;
         voucher.UpdatedAt = DateTime.UtcNow;
 
+<<<<<<< HEAD
+=======
+        _unitOfWork.Vouchers.Update(voucher);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         await _unitOfWork.SaveChangesAsync();
 
         return ApiResponse<VoucherDto>.Success(
@@ -212,6 +219,10 @@ public class VoucherService : IVoucherService
         voucher.DeletedAt = DateTime.UtcNow;
         voucher.DeletedByUserID = userId;
 
+<<<<<<< HEAD
+=======
+        _unitOfWork.Vouchers.Update(voucher);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         await _unitOfWork.SaveChangesAsync();
 
         return ApiResponse<bool>.Success(true, "تم حذف السند بنجاح");
@@ -220,10 +231,14 @@ public class VoucherService : IVoucherService
     // ═══════════════════════════════════════
     // POST (Create + Post Journal Entry)
     // ═══════════════════════════════════════
+<<<<<<< HEAD
     public Task<ApiResponse<VoucherDto>> PostVoucherAsync(int id, int userId) =>
         UnitOfWorkTransaction.ExecuteAsync(_unitOfWork, () => PostVoucherCoreAsync(id, userId));
 
     private async Task<ApiResponse<VoucherDto>> PostVoucherCoreAsync(int id, int userId)
+=======
+    public async Task<ApiResponse<VoucherDto>> PostVoucherAsync(int id, int userId)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     {
         var voucher = await _unitOfWork.Vouchers.Query()
             .Include(v => v.DebitAccount)
@@ -271,22 +286,88 @@ public class VoucherService : IVoucherService
         if (!postResult.IsSuccess)
             return ApiResponse<VoucherDto>.Fail($"فشل ترحيل القيد: {postResult.Message}");
 
+<<<<<<< HEAD
+=======
+        // تسجيل معاملة بنكية إذا كان أحد الحسابات بنكاً
+        await CreateBankTransactionIfBankAccount(voucher, jeResult.Data.JournalEntryID);
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         // Update voucher
         voucher.Status = VoucherStatus.Posted;
         voucher.JournalEntryID = jeResult.Data.JournalEntryID;
         voucher.JournalEntryNumber = jeResult.Data.EntryNumber;
         voucher.UpdatedAt = DateTime.UtcNow;
 
+<<<<<<< HEAD
+=======
+        _unitOfWork.Vouchers.Update(voucher);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         await _unitOfWork.SaveChangesAsync();
 
         return ApiResponse<VoucherDto>.Success(
             await GetVoucherDtoAsync(id), "تم ترحيل السند وإنشاء القيد بنجاح");
     }
 
+<<<<<<< HEAD
     public Task<ApiResponse<VoucherDto>> CancelVoucherAsync(int id, int userId) =>
         UnitOfWorkTransaction.ExecuteAsync(_unitOfWork, () => CancelVoucherCoreAsync(id, userId));
 
     private async Task<ApiResponse<VoucherDto>> CancelVoucherCoreAsync(int id, int userId)
+=======
+    private async Task CreateBankTransactionIfBankAccount(Voucher voucher, int journalEntryId)
+    {
+        // البحث عن البنك المرتبط بالحساب الدائن (سند قبض) أو المدين (سند صرف)
+        int? bankId = null;
+        int? accountId = null;
+
+        if (voucher.VoucherType == VoucherType.Receipt)
+        {
+            // سند قبض: الحساب الدائن هو البنك
+            accountId = voucher.CreditAccountID;
+        }
+        else
+        {
+            // سند صرف: الحساب المدين هو البنك
+            accountId = voucher.DebitAccountID;
+        }
+
+        if (accountId.HasValue)
+        {
+            var bank = await _unitOfWork.Banks.Query()
+                .FirstOrDefaultAsync(b => b.AccountID == accountId.Value && b.IsActive);
+            if (bank != null)
+            {
+                bankId = bank.BankID;
+            }
+        }
+
+        // إذا وجدنا بنكاً، نسجل المعاملة
+        if (bankId.HasValue)
+        {
+            var transactionType = voucher.VoucherType == VoucherType.Payment ? "Withdrawal" : "Deposit";
+            var bankTransaction = new Core.Entities.Accounting.BankTransaction
+            {
+                BankID = bankId.Value,
+                JournalEntryID = journalEntryId,
+                LineID = 0,
+                TransactionDate = voucher.VoucherDate,
+                TransactionType = transactionType,
+                Amount = voucher.Amount,
+                Description = voucher.Description,
+                ReferenceNo = voucher.ChequeNumber,
+                IsReconciled = false,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _unitOfWork.BankTransactions.AddAsync(bankTransaction);
+        }
+    }
+
+    // ═══════════════════════════════════════
+    // CANCEL
+    // ═══════════════════════════════════════
+    public async Task<ApiResponse<VoucherDto>> CancelVoucherAsync(int id, int userId)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     {
         var voucher = await _unitOfWork.Vouchers.Query()
             .FirstOrDefaultAsync(v => v.VoucherID == id && !v.IsDeleted);
@@ -307,6 +388,10 @@ public class VoucherService : IVoucherService
         voucher.Status = VoucherStatus.Cancelled;
         voucher.UpdatedAt = DateTime.UtcNow;
 
+<<<<<<< HEAD
+=======
+        _unitOfWork.Vouchers.Update(voucher);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         await _unitOfWork.SaveChangesAsync();
 
         return ApiResponse<VoucherDto>.Success(

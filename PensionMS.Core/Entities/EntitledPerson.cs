@@ -26,7 +26,11 @@ public class EntitledPerson : ISoftDeletable
     // ─── البيانات الشخصية ────────────────────────────────────────
     public string FullName { get; set; } = string.Empty;
     public string NationalID { get; set; } = string.Empty;
+<<<<<<< HEAD
     public DateOnly BirthDate { get; set; }
+=======
+    public DateTime BirthDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? Phone { get; set; }
     public string? PersonalPhotoPath { get; set; }
 
@@ -41,6 +45,7 @@ public class EntitledPerson : ISoftDeletable
     /// </summary>
     public string? StopCode { get; set; }
 
+<<<<<<< HEAD
     // ─── الحصص ─────────────────────────────────────────────
     /// <summary>
     /// النسبة المئوية الافتراضية لهذا المستحق (0-100)
@@ -51,6 +56,11 @@ public class EntitledPerson : ISoftDeletable
     // ─── تسجيل الوفاة ────────────────────────────────────────────
     public bool IsDeceased { get; set; }
     public DateOnly? DeceasedDate { get; set; }
+=======
+    // ─── تسجيل الوفاة ────────────────────────────────────────────
+    public bool IsDeceased { get; set; }
+    public DateTime? DeceasedDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     // ─── استثناء الإعاقة/المرض النفسي (للابن فقط) ───────────────
     /// <summary>
@@ -75,7 +85,10 @@ public class EntitledPerson : ISoftDeletable
 
     public byte[]? RowVersion { get; set; }
 
+<<<<<<< HEAD
     public virtual ICollection<Agent> Agents { get; set; } = new List<Agent>();
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public virtual ICollection<Guardian> Guardians { get; set; } = new List<Guardian>();
     public virtual ICollection<GuardianEntitledPerson> GuardianEntitledPersons { get; set; } = new List<GuardianEntitledPerson>();
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();

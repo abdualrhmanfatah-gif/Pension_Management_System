@@ -6,16 +6,26 @@ import { useEffect, useMemo, useRef } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
+<<<<<<< HEAD
 import { DocumentChecklistField } from "@/components/domain/retirement/DocumentChecklistField";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { 
   BaseFormDialog, 
   FileField, 
   FormField, 
   FormSection,
   Input, 
+<<<<<<< HEAD
   NativeSelect, 
   NoteBox,
   Textarea} from "@/components/ui";
+=======
+  NoteBox,
+  NativeSelect, 
+  Textarea} from "@/components/ui";
+import { DocumentChecklistField } from "@/components/domain/retirement/DocumentChecklistField";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import type { MissingDocOption } from "@/utils/missing-documents";
 
 // ─── Validation Schema ─────────────────────────────────
@@ -41,7 +51,11 @@ interface PledgeDialogProps {
     isOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
     onClose?: () => void;
+<<<<<<< HEAD
     onSubmit: (values: PledgeFormValues, options?: { keepOpen?: boolean }) => Promise<void> | void;
+=======
+    onSubmit: (values: PledgeFormValues) => Promise<void> | void;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     onSaveAndAddAnother?: () => void;
     isLoading?: boolean;
     missingDocs: MissingDocOption[];
@@ -76,6 +90,7 @@ export function PledgeDialog({
     initialData,
     mode = "create"
 }: PledgeDialogProps) {
+<<<<<<< HEAD
     const freshCreateDefaults = useMemo(() => ({
         missingDocumentIDs: initialData?.missingDocumentIDs || [],
         deadlineMonths: initialData?.deadlineMonths || 3,
@@ -103,6 +118,29 @@ export function PledgeDialog({
         }
     }, [open, mode, reset]);
 
+=======
+    const form = useForm<PledgeFormValues>({
+        resolver: zodResolver(pledgeSchema),
+        defaultValues: useMemo(() => {
+            const saved = sessionStorage.getItem(DRAFT_KEY);
+            if (mode === "create" && saved) {
+                try {
+                    return JSON.parse(saved);
+                } catch { /* ignore */ }
+            }
+            return {
+                missingDocumentIDs: initialData?.missingDocumentIDs || [],
+                deadlineMonths: initialData?.deadlineMonths || 3,
+                pledgedByType: initialData?.pledgedByType || "retiree",
+                selectedID: initialData?.selectedID || (retireeId ? String(retireeId) : ""),
+                reason: initialData?.reason || "",
+                pledgeFile: null,
+            };
+        }, [mode, initialData, retireeId])
+    });
+
+    const { control, register, setValue, watch, formState: { errors, isDirty } } = form;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const watchedDocIDs = useWatch({ control, name: "missingDocumentIDs" });
     const selectedDocIDs = useMemo(() => watchedDocIDs || [], [watchedDocIDs]);
     const pledgedByType = useWatch({ control, name: "pledgedByType" });
@@ -114,6 +152,7 @@ export function PledgeDialog({
             const doc = missingDocs.find(d => String(d.id) === String(selectedDocIDs[0]));
             if (doc) {
                 if (doc.entitledID) {
+<<<<<<< HEAD
                     setValue("pledgedByType", "entitled", { shouldDirty: false });
                     setValue("selectedID", String(doc.entitledID), { shouldDirty: false });
                 } else if (doc.agentID) {
@@ -125,6 +164,19 @@ export function PledgeDialog({
                 } else if (doc.entityType === "Retiree") {
                     setValue("pledgedByType", "retiree", { shouldDirty: false });
                     setValue("selectedID", String(retireeId), { shouldDirty: false });
+=======
+                    setValue("pledgedByType", "entitled", { shouldDirty: true });
+                    setValue("selectedID", String(doc.entitledID), { shouldDirty: true });
+                } else if (doc.agentID) {
+                    setValue("pledgedByType", "agent", { shouldDirty: true });
+                    setValue("selectedID", String(doc.agentID), { shouldDirty: true });
+                } else if (doc.guardianID) {
+                    setValue("pledgedByType", "guardian", { shouldDirty: true });
+                    setValue("selectedID", String(doc.guardianID), { shouldDirty: true });
+                } else if (doc.entityType === "Retiree") {
+                    setValue("pledgedByType", "retiree", { shouldDirty: true });
+                    setValue("selectedID", String(retireeId), { shouldDirty: true });
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 }
             }
         }
@@ -149,6 +201,7 @@ export function PledgeDialog({
     const addAnotherRef = useRef(false);
 
     const handleFormSubmit = async (values: PledgeFormValues) => {
+<<<<<<< HEAD
         try {
             await onSubmit(values, { keepOpen: addAnotherRef.current });
         } catch (err) {
@@ -158,6 +211,12 @@ export function PledgeDialog({
         sessionStorage.removeItem(DRAFT_KEY);
         if (addAnotherRef.current) {
             form.reset(freshCreateDefaults);
+=======
+        await onSubmit(values);
+        if (addAnotherRef.current) {
+            form.reset();
+            sessionStorage.removeItem(DRAFT_KEY);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             addAnotherRef.current = false;
             onSaveAndAddAnother?.();
         }
@@ -165,9 +224,13 @@ export function PledgeDialog({
 
     const handleSaveAndAddAnother = () => {
         addAnotherRef.current = true;
+<<<<<<< HEAD
         return form.handleSubmit(handleFormSubmit, () => {
             addAnotherRef.current = false;
         })();
+=======
+        void form.handleSubmit(handleFormSubmit)();
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     };
 
     return (
@@ -281,12 +344,20 @@ export function PledgeDialog({
                                 size="sm"
                             />
                             
+<<<<<<< HEAD
                             <div className="flex items-center gap-3 p-4 rounded-2xl border border-primary bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer group mb-1">
+=======
+                            <div className="flex items-center gap-3 p-4 rounded-2xl border border-primary/20 bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer group mb-1">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 <input 
                                     type="checkbox" 
                                     id="issueOfficialPledge"
                                     {...register("issueOfficialPledge")}
+<<<<<<< HEAD
                                     className="min-h-[44px] min-w-[44px] w-6 h-6 rounded border-primary text-primary focus:ring-primary/20 cursor-pointer"
+=======
+                                    className="min-h-[44px] min-w-[44px] w-6 h-6 rounded border-primary/30 text-primary focus:ring-primary/20 cursor-pointer"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 />
                                 <label htmlFor="issueOfficialPledge" className="flex flex-col cursor-pointer select-none">
                                     <span className="text-sm font-black text-primary flex items-center gap-1.5">

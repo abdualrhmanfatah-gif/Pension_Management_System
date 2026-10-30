@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useMutation,useQuery } from "@tanstack/react-query";
 import {
 AlertTriangle,   ArrowRight,   Building2, Calculator,
@@ -16,16 +17,44 @@ import {
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+=======
+import { useState, useEffect } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { stocktakeApi, type AssetStocktakeLineDto } from "@/api/inventory/stocktake";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
+import { Heading, StatusBadge, Text } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Input } from "@/components/ui/Input";
 import { Loader } from "@/components/ui/Loader";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/Select";
+<<<<<<< HEAD
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/Table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import { STOCKTAKE_STATUS } from "@/constants/statusConfigs";
 import { cn } from "@/lib/utils";
+=======
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
+import {
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+} from "@/components/ui/Table";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { STOCKTAKE_STATUS } from "@/constants/statusConfigs";
+import {
+  ArrowRight, CheckCircle2, Package, AlertTriangle, Calculator,
+  Building2, Save, ClipboardCheck,
+} from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/AlertDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Shared Constants ───────────────────────────────────
 
@@ -131,7 +160,11 @@ function InventoryStocktakeTab({ fiscalYearId }: { fiscalYearId: string }) {
         <div className="flex items-center gap-2">
           <StatusBadge status={stocktake.status} config={STOCKTAKE_STATUS} />
           {stocktake.status === "Adjusted" && (
+<<<<<<< HEAD
             <Badge variant="success" className="bg-success text-white">
+=======
+            <Badge variant="success" className="bg-green-600">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               <CheckCircle2 className="w-3 h-3 ml-1" /> تمت التسوية
             </Badge>
           )}
@@ -161,9 +194,15 @@ function InventoryStocktakeTab({ fiscalYearId }: { fiscalYearId: string }) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">أصناف بها فروق</p>
+<<<<<<< HEAD
                 <p className="text-lg md:text-xl lg:text-2xl font-bold text-warning">{stocktake.itemsWithVariance}</p>
               </div>
               <AlertTriangle className="w-8 h-8 text-warning" />
+=======
+                <p className="text-lg md:text-xl lg:text-2xl font-bold text-yellow-600">{stocktake.itemsWithVariance}</p>
+              </div>
+              <AlertTriangle className="w-8 h-8 text-yellow-600" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             </div>
           </CardContent>
         </Card>
@@ -172,9 +211,15 @@ function InventoryStocktakeTab({ fiscalYearId }: { fiscalYearId: string }) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">قيمة الفروق</p>
+<<<<<<< HEAD
                 <p className="text-lg md:text-xl lg:text-2xl font-bold text-danger">{formatCurrency(stocktake.totalVarianceValue)}</p>
               </div>
               <Calculator className="w-8 h-8 text-danger" />
+=======
+                <p className="text-lg md:text-xl lg:text-2xl font-bold text-red-600">{formatCurrency(stocktake.totalVarianceValue)}</p>
+              </div>
+              <Calculator className="w-8 h-8 text-red-600" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             </div>
           </CardContent>
         </Card>
@@ -234,7 +279,11 @@ function InventoryStocktakeTab({ fiscalYearId }: { fiscalYearId: string }) {
                           )}
                         </TableCell>
                         <TableCell className="text-center">
+<<<<<<< HEAD
                           <span className={variance > 0 ? "text-success font-bold" : variance < 0 ? "text-danger font-bold" : ""}>
+=======
+                          <span className={variance > 0 ? "text-green-600 font-bold" : variance < 0 ? "text-red-600 font-bold" : ""}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             {variance > 0 ? `+${variance}` : variance}
                           </span>
                         </TableCell>
@@ -380,12 +429,20 @@ function AssetStocktakeTab({ fiscalYearId }: { fiscalYearId: string }) {
         <div className="flex items-center gap-2">
           <StatusBadge status={stocktake.status} config={STOCKTAKE_STATUS} />
           {stocktake.status === "Completed" && (
+<<<<<<< HEAD
             <Badge variant="success" className="bg-success text-white">
+=======
+            <Badge variant="success" className="bg-green-600">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               <CheckCircle2 className="w-3 h-3 ml-1" /> تم إتمام الجرد
             </Badge>
           )}
           {hasEdits && isInProgress && (
+<<<<<<< HEAD
             <Badge variant="outline" className="border-warning text-warning">
+=======
+            <Badge variant="outline" className="border-yellow-500 text-yellow-600">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               توجد تعديلات غير محفوظة
             </Badge>
           )}
@@ -420,9 +477,15 @@ function AssetStocktakeTab({ fiscalYearId }: { fiscalYearId: string }) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">موجودة</p>
+<<<<<<< HEAD
                 <p className="text-lg md:text-xl lg:text-2xl font-bold text-success">{stocktake.summary.presentAssets}</p>
               </div>
               <CheckCircle2 className="w-8 h-8 text-success" />
+=======
+                <p className="text-lg md:text-xl lg:text-2xl font-bold text-green-600">{stocktake.summary.presentAssets}</p>
+              </div>
+              <CheckCircle2 className="w-8 h-8 text-green-600" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             </div>
           </CardContent>
         </Card>
@@ -431,9 +494,15 @@ function AssetStocktakeTab({ fiscalYearId }: { fiscalYearId: string }) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">مفقودة</p>
+<<<<<<< HEAD
                 <p className="text-lg md:text-xl lg:text-2xl font-bold text-danger">{stocktake.summary.missingAssets}</p>
               </div>
               <AlertTriangle className="w-8 h-8 text-danger" />
+=======
+                <p className="text-lg md:text-xl lg:text-2xl font-bold text-red-600">{stocktake.summary.missingAssets}</p>
+              </div>
+              <AlertTriangle className="w-8 h-8 text-red-600" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             </div>
           </CardContent>
         </Card>
@@ -479,8 +548,13 @@ function AssetStocktakeTab({ fiscalYearId }: { fiscalYearId: string }) {
                         key={line.stocktakeLineID}
                         className={cn(
                           "transition-colors",
+<<<<<<< HEAD
                           edits[line.stocktakeLineID] ? "bg-warning/10 " : "hover:bg-muted/30",
                           isMissing && "bg-danger/10 "
+=======
+                          edits[line.stocktakeLineID] ? "bg-amber-50/80 dark:bg-amber-950/30" : "hover:bg-muted/30",
+                          isMissing && "bg-red-50/50 dark:bg-red-950/20"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         )}
                       >
                         <TableCell className="text-center">

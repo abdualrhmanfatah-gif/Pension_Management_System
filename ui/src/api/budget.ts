@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { ApiResponse } from "@/types/api";
 import type {
   BudgetFilterDto,
@@ -11,6 +12,22 @@ import type {
 
 import api from "./axios";
 
+=======
+import api from "./axios";
+
+import type { ApiResponse } from "@/types/api";
+
+import type {
+  BudgetItemDto,
+  BudgetReportDto,
+  QuarterlyBudgetReportDto,
+  MonthlyBudgetReportDto,
+  CreateBudgetItemDto,
+  UpdateBudgetItemDto,
+  BudgetFilterDto,
+} from "@/types/budget";
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 // ═══════════════════════════════════════
 // CRUD Operations
 // ═══════════════════════════════════════

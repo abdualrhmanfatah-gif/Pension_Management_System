@@ -8,9 +8,12 @@ public class CreateDocumentPledgeDto
     public string? PledgedByName { get; set; }
     public string? PledgedByType { get; set; }   // ذاتي | وكيل | ولي أمر
     public string? Reason { get; set; }
+<<<<<<< HEAD
 
     /// <summary>معرّف الإيقاف عند الإنشاء من مسار إيقاف المعاش؛ يُترك فارغًا في المسار المتخصص.</summary>
     public int? SuspensionID { get; set; }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 public class MissingDocumentInfo

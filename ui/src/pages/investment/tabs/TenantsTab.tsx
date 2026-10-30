@@ -5,8 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import { investmentApi,type TenantDto } from "@/api/investment";
+<<<<<<< HEAD
 import { InvestmentDocumentsManager } from "@/components/domain/investment/InvestmentDocumentsManager";
 import { TenantDialog } from "@/components/domain/investment/TenantDialog";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { 
     Badge, 
     BaseFormDialog,
@@ -15,9 +18,18 @@ import {
     type CustomColumnDef, 
     ErrorState,
     useConfirm} from "@/components/ui";
+<<<<<<< HEAD
 import { BADGE_VARIANT } from "@/constants";
 import { useApiMutation, useCrudState } from "@/hooks";
 
+=======
+import { TenantDialog } from "@/components/domain/investment/TenantDialog";
+import { BADGE_VARIANT } from "@/constants";
+import { useApiMutation, useCrudState } from "@/hooks";
+
+import { InvestmentDocumentsManager } from "@/components/domain/investment/InvestmentDocumentsManager";
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 export function TenantsTab() {
     const { confirm, ConfirmDialogElement } = useConfirm();
     const queryClient = useQueryClient();
@@ -77,7 +89,11 @@ export function TenantsTab() {
             render: (row: TenantDto) => (
                 <div className="flex items-center gap-1">
                     <span className="font-medium font-mono">{row.ratingScore}</span>
+<<<<<<< HEAD
                     <Star className="w-4 h-4 text-warning fill-warning" />
+=======
+                    <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 </div>
             )
         },
@@ -92,7 +108,11 @@ export function TenantsTab() {
                     <Button variant="ghost" size="sm" className="min-h-[44px] min-w-[44px] p-0" onClick={() => navigate(`/investment/leasing/tenants/${row.tenantID}`)}>
                         <Eye className="w-4 h-4" />
                     </Button>
+<<<<<<< HEAD
                     <Button variant="ghost" size="sm" className="min-h-[44px] min-w-[44px] p-0 text-info" onClick={() => crud.openEdit(row)}>
+=======
+                    <Button variant="ghost" size="sm" className="min-h-[44px] min-w-[44px] p-0 text-blue-600" onClick={() => crud.openEdit(row)}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <Edit className="w-4 h-4" />
                     </Button>
                     <Button variant="ghost" size="sm" className="min-h-[44px] min-w-[44px] p-0 text-destructive" onClick={() => handleDelete(row)}>

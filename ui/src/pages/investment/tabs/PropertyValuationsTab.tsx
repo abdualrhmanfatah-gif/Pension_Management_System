@@ -5,9 +5,15 @@ import { toast } from "sonner";
 
 import type { ValuationDto } from "@/api/investment";
 import { investmentApi } from "@/api/investment";
+<<<<<<< HEAD
 import { InvestmentDocsViewerDialog } from "@/components/domain/investment/InvestmentDocsViewerDialog";
 import { ValuationDialog } from "@/components/domain/investment/ValuationDialog";
 import { Button, CrudPageLayout, type CustomColumnDef, ErrorState, useConfirm } from "@/components/ui";
+=======
+import { Button, CrudPageLayout, type CustomColumnDef, ErrorState, useConfirm } from "@/components/ui";
+import { InvestmentDocsViewerDialog } from "@/components/domain/investment/InvestmentDocsViewerDialog";
+import { ValuationDialog } from "@/components/domain/investment/ValuationDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation, useCrudState } from "@/hooks";
 
 interface PropertyValuationsTabProps {
@@ -66,7 +72,11 @@ export function PropertyValuationsTab({ propertyId }: PropertyValuationsTabProps
             key: "marketValue",
             header: "القيمة السوقية",
             render: (row) => (
+<<<<<<< HEAD
                 <span className="font-bold text-success flex items-center gap-1 font-mono">
+=======
+                <span className="font-bold text-emerald-600 flex items-center gap-1 font-mono">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <TrendingUp className="w-3 h-3" />
                     {row.marketValue.toLocaleString()} ر.ي
                 </span>
@@ -79,7 +89,11 @@ export function PropertyValuationsTab({ propertyId }: PropertyValuationsTabProps
             render: (row) => (
                 <div className="flex items-center gap-2">
                     <Button variant="ghost" size="icon" onClick={() => crud.openViewer(row)} title="الوثائق والمستندات">
+<<<<<<< HEAD
                         <FileText className="w-4 h-4 text-info" />
+=======
+                        <FileText className="w-4 h-4 text-blue-500" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     </Button>
                     {row.valuationReportPath && (
                         <a
@@ -93,7 +107,11 @@ export function PropertyValuationsTab({ propertyId }: PropertyValuationsTabProps
                         </a>
                     )}
                     <Button variant="ghost" size="icon" onClick={() => handleDelete(row)} title="حذف">
+<<<<<<< HEAD
                         <Trash2 className="w-4 h-4 text-danger" />
+=======
+                        <Trash2 className="w-4 h-4 text-red-500" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     </Button>
                 </div>
             )

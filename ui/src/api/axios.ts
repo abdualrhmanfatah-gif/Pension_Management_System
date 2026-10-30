@@ -45,6 +45,7 @@ export function getFileBaseUrl(): string {
     }
 }
 
+<<<<<<< HEAD
 /** تطبيع مسار ملف مع منع الخروج من المجلد (نقاط وشرائح فارغة). */
 function normalizeFilePath(filePath: string): string | null {
     const normalized = filePath
@@ -63,18 +64,26 @@ function normalizeFilePath(filePath: string): string | null {
     return normalized || null;
 }
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 /**
  * بناء رابط ملف موحّد — يمر عبر FilesController (JWT authenticated).
  * يحل محل 51 استخدام مكرر لـ getFileBaseUrl() + بناء الـ URL يدوياً.
  *
+<<<<<<< HEAD
  * يرجع رابطاً كاملاً حتى لا يتكرر /api مع baseURL في axios ولا يبتلع # في أسماء الملفات.
  *
  * @param filePath - المسار النسبي (مثل "uploads/documents/abc.pdf")
  * @returns الرابط الكامل عبر api/files/
+=======
+ * @param filePath - المسار النسبي (مثل "uploads/documents/abc.pdf")
+ * @returns الرابط الكامل عبر /api/files/
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
  */
 export function getFileUrl(filePath: string | null | undefined): string | null {
     if (!filePath) return null;
     if (/^(https?:|blob:|data:)/i.test(filePath)) return filePath;
+<<<<<<< HEAD
     const normalized = normalizeFilePath(filePath);
     if (!normalized) return null;
     const base = API_BASE_URL.replace(/\/+$/, "");
@@ -99,6 +108,13 @@ export function getFileRelativeUrl(filePath: string | null | undefined): string 
     // "/api" من VITE_API_URL بعد تجريد الأصل إن كان مطلقاً
     const base = API_BASE_URL.replace(/\/+$/, "").replace(/^https?:\/\/[^/]+/i, "");
     return `${base}/files/${normalized}`;
+=======
+    const normalized = filePath
+        .replace(/\\/g, "/")
+        .replace(/^\/+/, "")
+        .replace(/\/{2,}/g, "/");
+    return `/api/files/${normalized}`;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 // ─── BroadcastChannel: cross-tab token sync ───────────
@@ -210,7 +226,11 @@ function logError(context: string, error: unknown) {
                 method: error.config?.method,
             };
         }
+<<<<<<< HEAD
          
+=======
+        // eslint-disable-next-line no-console
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         console.error(`[API Error] ${context}:`, safeError);
     }
     // TODO: Send to error tracking service in production (ensure PII stripping)

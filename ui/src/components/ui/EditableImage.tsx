@@ -1,5 +1,9 @@
 import { Camera } from "lucide-react";
+<<<<<<< HEAD
 import { useCallback, useEffect, useRef,useState } from "react";
+=======
+import { useCallback, useState, useEffect, useRef } from "react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 import { BaseFormDialog } from "@/components/ui/BaseFormDialog";
 import { Button } from "@/components/ui/Button";
@@ -159,7 +163,11 @@ export function EditableImage({
                     />
                 ) : (
                     <div 
+<<<<<<< HEAD
                         className={cn("flex items-center justify-center bg-muted/50 text-muted-foreground transition-all duration-300", className, canEdit && "cursor-pointer")}
+=======
+                        className={cn("flex items-center justify-center bg-muted/50 text-muted-foreground/40 transition-all duration-300", className, canEdit && "cursor-pointer")}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         onClick={canEdit ? () => { setUploadFile(null); setUploadDialogOpen(true); } : undefined}
                     >
                         {fallbackIcon}

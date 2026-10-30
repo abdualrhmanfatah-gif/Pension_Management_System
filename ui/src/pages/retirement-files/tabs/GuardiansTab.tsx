@@ -4,9 +4,15 @@ import { useEffect, useMemo,useState } from "react";
 import { toast } from "sonner";
 
 import { retirementApi } from "@/api/retirement";
+<<<<<<< HEAD
 import { AddGuardianMinorDialog } from "@/components/domain/retirement/AddGuardianMinorDialog";
 import { GuardianDialog } from "@/components/domain/retirement/GuardianDialog";
 import { Badge, Button, EditableImage, EmptyState, LoadingIndicator, TabHeader, useConfirm } from "@/components/ui";
+=======
+import { Badge, Button, Card, EditableImage, EmptyState, Heading, LoadingIndicator, useConfirm } from "@/components/ui";
+import { AddGuardianMinorDialog } from "@/components/domain/retirement/AddGuardianMinorDialog";
+import { GuardianDialog } from "@/components/domain/retirement/GuardianDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { PENDING_REVIEW_STATUS } from "@/constants";
 import { useApiMutation, useCreateShortcut } from "@/hooks";
 import { useEntitledPersonsQuery } from "@/hooks/queries";
@@ -70,7 +76,11 @@ export function GuardiansTab({ fileId }: GuardiansTabProps) {
         (params: { entityType: string; entityId: number }) =>
             retirementApi.acknowledgeEntityRejection(params.entityType, params.entityId),
         {
+<<<<<<< HEAD
             successMessage: "تم إعادة المراجعة وإعادة الكيان لحالته الطبيعية",
+=======
+            successMessage: "تم قبول الرفض وإعادة الكيان لحالته الطبيعية",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             invalidateKeys: [["guardians-tab", fileId], ["retirement-file"]]
         }
     );
@@ -150,6 +160,7 @@ export function GuardiansTab({ fileId }: GuardiansTabProps) {
     return (
         <div className="space-y-2 md:space-y-4 animate-in fade-in duration-500 text-start" dir="rtl">
             {ConfirmDialogElement}
+<<<<<<< HEAD
             <TabHeader
                 title="الأوصياء المعتمدون"
                 description="إدارة الأوصياء القانونيين على القاصرين من الورثة"
@@ -161,19 +172,42 @@ export function GuardiansTab({ fileId }: GuardiansTabProps) {
                     show: canCreate && !hasActiveGuardian,
                 }}
             />
+=======
+            <Card className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-4 bg-muted/30 p-3 md:p-5">
+                <div className="space-y-0.5 md:space-y-1">
+                    <Heading level="h3" className="font-bold flex items-center gap-1.5 md:gap-2 text-sm md:text-base">
+                        <ShieldCheck className="w-4 h-4 md:w-5 md:h-5 text-primary" /> الأوصياء المعتمدون
+                    </Heading>
+                    <p className="text-xs md:text-sm text-muted-foreground font-medium hidden sm:block">إدارة الأوصياء القانونيين على القاصرين من الورثة</p>
+                </div>
+                {canCreate && !hasActiveGuardian && (
+                    <Button size="sm" onClick={() => setAddOpen(true)} className="gap-1.5  font-bold h-8 md:h-auto text-xs md:text-sm px-3 md:px-4">
+                        تسجيل وصي جديد
+                    </Button>
+                )}
+            </Card>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
             {guardians.length === 0 ? (
                 <EmptyState icon={Inbox} title="لا يوجد أوصياء مسجلون لهذا الملف" />
             ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     {guardians.map(g => (
+<<<<<<< HEAD
                         <div key={g.guardianID} className={cn("border rounded-2xl p-5 bg-card  transition-all border-border", !g.isActive && "opacity-100 grayscale bg-muted/20")}>
+=======
+                        <div key={g.guardianID} className={cn("border rounded-2xl p-5 bg-card  transition-all border-border/60", !g.isActive && "opacity-75 grayscale bg-muted/20")}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <div className="flex gap-4 items-start mb-4">
                                 <div className="flex-shrink-0">
                                     <EditableImage
                                         src={getPhotoUrl(resolvePersonalPhotoPath(g))}
                                         alt={g.fullName}
+<<<<<<< HEAD
                                         fallbackIcon={<ShieldCheck className="w-8 h-8 opacity-100" />}
+=======
+                                        fallbackIcon={<ShieldCheck className="w-8 h-8 opacity-40" />}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                         className="w-16 h-16 rounded-xl object-cover border-2 border-background "
                                         canEdit={canEnd && g.isActive}
                                         onUpload={async (file) => {
@@ -198,13 +232,22 @@ export function GuardiansTab({ fileId }: GuardiansTabProps) {
                                         <Hash className="w-3 h-3 text-muted-primary" /> {g.nationalID}
                                     </p>
                                     <p className="text-[10px] sm:text-xs text-muted-foreground flex items-center gap-1.5 mt-1.5 font-medium">
+<<<<<<< HEAD
                                         <FileText className="w-3 h-3 text-muted-primary" /> صك وصاية رقم: <span className="font-mono font-black text-foreground">{g.guardianshipDocNumber}</span>
+=======
+                                        <FileText className="w-3 h-3 text-muted-primary" /> صك وصاية رقم: <span className="font-mono font-black text-foreground/80">{g.guardianshipDocNumber}</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     </p>
                                 </div>
                             </div>
 
+<<<<<<< HEAD
                             <div className="bg-muted/40 rounded-xl p-4 space-y-3 mb-4 border border-border">
                                 <p className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-widest flex items-center gap-2">
+=======
+                            <div className="bg-muted/40 rounded-xl p-4 space-y-3 mb-4 border border-border/40">
+                                <p className="text-[10px] sm:text-xs font-black text-primary/70 uppercase tracking-widest flex items-center gap-2">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                                     المستحقين تحت الوصاية
                                 </p>
@@ -212,15 +255,25 @@ export function GuardiansTab({ fileId }: GuardiansTabProps) {
                                     {g.minors.length === 0 ? (
                                         <p className="text-xs text-muted-foreground italic py-1">لا يوجد قاصرين مرتبطين حالياً</p>
                                     ) : g.minors.map(m => (
+<<<<<<< HEAD
                                         <div key={m.entitledID} className="flex items-center justify-between text-sm py-1.5 border-b border-border last:border-0">
                                             <span className={cn("font-bold", !m.isActive && "line-through text-muted-foreground opacity-100")}>{m.entitledPersonName}</span>
                                             <span className="text-[10px] sm:text-xs font-mono text-muted-foreground bg-background px-1.5 py-0.5 rounded border border-border">منذ: {formatDate(m.startDate)}</span>
+=======
+                                        <div key={m.entitledID} className="flex items-center justify-between text-sm py-1.5 border-b border-border/30 last:border-0">
+                                            <span className={cn("font-bold", !m.isActive && "line-through text-muted-foreground opacity-50")}>{m.entitledPersonName}</span>
+                                            <span className="text-[10px] sm:text-xs font-mono text-muted-foreground bg-background px-1.5 py-0.5 rounded border border-border/50">منذ: {formatDate(m.startDate)}</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                         </div>
                                     ))}
                                 </div>
                             </div>
 
+<<<<<<< HEAD
                             <div className="flex justify-between items-center pt-4 border-t border-dashed border-border">
+=======
+                            <div className="flex justify-between items-center pt-4 border-t border-dashed border-border/60">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 <span className="text-[10px] sm:text-xs text-muted-foreground flex items-center gap-1 font-medium">
                                     التسجيل: <span className="font-mono font-bold">{formatDate(g.createdAt)}</span>
                                 </span>
@@ -237,7 +290,11 @@ export function GuardiansTab({ fileId }: GuardiansTabProps) {
                                     )}
                                     {g.pendingReviewStatus === PENDING_REVIEW_STATUS.REJECTED && (
                                         <Button size="sm" variant="ghost" className="min-h-[44px] px-2.5 text-amber-600 hover:bg-amber-50 text-xs font-black" onClick={() => acknowledgeMutation.mutate({ entityType: "Guardian", entityId: g.guardianID })}>
+<<<<<<< HEAD
                                             <Check className="w-3.5 h-3.5 ms-1" /> إعادة المراجعة
+=======
+                                            <Check className="w-3.5 h-3.5 ms-1" /> قبول الرفض
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                         </Button>
                                     )}
                                 </div>

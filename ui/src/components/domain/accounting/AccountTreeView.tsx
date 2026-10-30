@@ -1,9 +1,17 @@
 import { ChevronDown, ChevronLeft, FileText, FolderOpen } from "lucide-react";
+<<<<<<< HEAD
 import { type MouseEvent,useState } from "react";
 
 import { Button } from "@/components/ui";
 import { cn } from "@/lib/utils";
 import type { AccountTreeNode } from "@/types/accounting";
+=======
+import { useState, type MouseEvent } from "react";
+
+import type { AccountTreeNode } from "@/types/accounting";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface AccountTreeViewProps {
   accounts: AccountTreeNode[];

@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 import type { ApiResponse, PagedResult } from "@/types/api";
 import type { ArchiveDocument, ArchiveFilters, DocumentReviewDto, DocumentReviewFilters, DocumentReviewItem } from "@/types/archive";
 
 import api from "./axios";
+=======
+import api from "./axios";
+import type { ArchiveDocument, ArchiveFilters, DocumentReviewDto, DocumentReviewFilters, DocumentReviewItem } from "@/types/archive";
+import type { ApiResponse, PagedResult } from "@/types/api";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 const OWNER_TYPE_LABELS: Record<number, string> = {
     1: "ملفات التقاعد",

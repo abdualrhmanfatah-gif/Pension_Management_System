@@ -1,5 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+<<<<<<< HEAD
 import { Calendar, Coins, FileText, Hash, Network, Package,Plus, StickyNote, Trash2 } from "lucide-react";
+=======
+import { Calendar, Coins, FileText, Hash, Network, Plus, StickyNote, Trash2, Package } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useMemo } from "react";
 import { type Resolver, useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -194,7 +198,11 @@ export function InventoryBulkTransactionFormDialog({ open, onOpenChange, onSaved
                             </div>
                             {fields.length > 1 && (
                                 <Button variant="ghost" size="icon" onClick={() => remove(index)}
+<<<<<<< HEAD
                                     className="mt-6 text-destructive hover:text-destructive min-h-[44px] min-w-[44px]">
+=======
+                                    className="mt-6 text-destructive hover:text-destructive/80 min-h-[44px] min-w-[44px]">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     <Trash2 className="w-4 h-4" />
                                 </Button>
                             )}

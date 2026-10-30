@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Calendar, Clock, Search } from "lucide-react";
+=======
+import { Calendar, Clock } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -28,7 +32,11 @@ const FormFieldWrapper: React.FC<FormFieldWrapperProps> = ({
     return (
         <div className="space-y-1">
             {label && (
+<<<<<<< HEAD
                 <label htmlFor={id} className="label-field">
+=======
+                <label htmlFor={id} className="block text-sm font-medium text-muted-foreground">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {label}
                 </label>
             )}
@@ -68,14 +76,19 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         const inputId = id || generatedId;
         const hasError = !!error;
 
+<<<<<<< HEAD
         const EffectiveIcon = Icon || (type === "search" ? Search : type === "time" ? Clock : undefined);
         const isSearchIcon = EffectiveIcon === Search;
+=======
+        const EffectiveIcon = Icon || (type === "time" ? Clock : undefined);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
         return (
             <FormFieldWrapper id={inputId} label={label} error={error} hint={hint}>
                 <div className="relative w-full group">
                     {EffectiveIcon && (
                         <div
+<<<<<<< HEAD
                             aria-hidden="true"
                             className={cn(
                                 "absolute flex items-center justify-center pointer-events-none transition-colors motion-reduce:transition-none",
@@ -88,6 +101,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                             )}
                         >
                             <EffectiveIcon className={isSearchIcon ? "h-[18px] w-[18px] shrink-0" : "h-4 w-4"} />
+=======
+                            className={cn(
+                                "absolute end-[1px] top-[1px] bottom-[1px] px-4 flex items-center justify-center border-s transition-colors pointer-events-none rounded-e-md",
+                                "text-muted-foreground/60 group-focus-within:text-primary group-focus-within:border-primary/30",
+                                type === "time" && "bg-muted/30 group-hover:bg-muted/50"
+                            )}
+                        >
+                            <EffectiveIcon className="h-4 w-4" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         </div>
                     )}
                     <input
@@ -96,16 +118,26 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                         ref={ref}
                         aria-label={!label && props.placeholder ? props.placeholder : undefined}
                         className={cn(
+<<<<<<< HEAD
                             "block h-11 sm:h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base font-sans transition-all",
+=======
+                            "block h-11 sm:h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition-all",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             "placeholder:text-muted-foreground",
                             "focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-primary focus:ring-offset-0",
                             "disabled:cursor-not-allowed disabled:opacity-50",
                             "file:border-0 file:bg-transparent file:text-sm file:font-medium",
+<<<<<<< HEAD
                             EffectiveIcon && (isSearchIcon ? "ps-10" : "pe-12"),
                             isSearchIcon && "border-2 border-primary enabled:hover:border-primary motion-reduce:transition-none",
                             type === "time" && "font-mono text-start cursor-pointer hover:bg-muted/5",
                             hasError && "border-destructive focus:ring-destructive/20",
                             isSearchIcon && hasError && "enabled:hover:border-destructive focus:border-destructive",
+=======
+                            EffectiveIcon && "pe-12",
+                            type === "time" && "font-mono text-start cursor-pointer hover:bg-muted/5",
+                            hasError && "border-destructive focus:ring-destructive/20",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             className
                         )}
                         aria-invalid={hasError}
@@ -407,8 +439,13 @@ const DateInput = React.forwardRef<HTMLInputElement, DateInputProps>(
                         onKeyDown={onKeyDown}
                         onClick={onClick}
                         className={cn(
+<<<<<<< HEAD
                             "block h-11 sm:h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base transition-all",
                             "placeholder:text-muted-foreground font-mono text-left",
+=======
+                            "block h-11 sm:h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition-all",
+                            "placeholder:text-muted-foreground/40 font-mono text-left",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             "focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-primary",
                             "disabled:cursor-not-allowed disabled:opacity-50",
                             "pl-14",
@@ -434,7 +471,11 @@ const DateInput = React.forwardRef<HTMLInputElement, DateInputProps>(
                         disabled={disabled}
                         className={cn(
                             "absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center transition-colors min-h-[44px] min-w-[44px]",
+<<<<<<< HEAD
                             "text-muted-foreground hover:text-primary",
+=======
+                            "text-muted-foreground/60 hover:text-primary",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             disabled && "opacity-50 cursor-not-allowed"
                         )}
                     >

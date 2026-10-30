@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { InvestmentDocumentsManager } from "@/components/domain/investment/InvestmentDocumentsManager";
 import { BaseFormDialog } from "@/components/ui/BaseFormDialog";
+=======
+import { BaseFormDialog } from "@/components/ui/BaseFormDialog";
+import { InvestmentDocumentsManager } from "@/components/domain/investment/InvestmentDocumentsManager";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface Props {
     open: boolean;

@@ -5,11 +5,19 @@ import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 import { investmentApi } from "@/api/investment";
+<<<<<<< HEAD
 import { InvestmentDocumentsManager } from "@/components/domain/investment/InvestmentDocumentsManager";
 import { TenantDialog } from "@/components/domain/investment/TenantDialog";
 import { Badge, Breadcrumb, Button, ErrorState, Heading, LoadingIndicator, PageLayout, StatCard, Tabs, TabsContent, TabsList, TabsTrigger, Text } from "@/components/ui";
 import { BADGE_VARIANT } from "@/constants";
 
+=======
+import { Badge, Breadcrumb, Button, ErrorState, Heading, LoadingIndicator, PageLayout, StatCard, Tabs, TabsContent, TabsList, TabsTrigger, Text } from "@/components/ui";
+import { BADGE_VARIANT } from "@/constants";
+
+import { InvestmentDocumentsManager } from "@/components/domain/investment/InvestmentDocumentsManager";
+import { TenantDialog } from "@/components/domain/investment/TenantDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { ContractsTab } from "./tabs/ContractsTab";
 import { TenantPropertiesTab } from "./tabs/TenantPropertiesTab";
 
@@ -85,24 +93,40 @@ export function TenantDetailPage() {
                 <StatCard
                     title="التقييم"
                     value={`${tenant.ratingScore}`}
+<<<<<<< HEAD
                     icon={<Star className="w-4 h-4 text-warning fill-warning" />}
+=======
+                    icon={<Star className="w-4 h-4 text-amber-500 fill-amber-500" />}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     variant="amber"
                 />
                 <StatCard
                     title="العقود النشطة"
                     value={tenant.activeContractsCount || 0}
+<<<<<<< HEAD
                     icon={<FileText className="w-4 h-4 text-info" />}
+=======
+                    icon={<FileText className="w-4 h-4 text-blue-500" />}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 />
                 <StatCard
                     title="رقم التواصل"
                     value={tenant.phone || "—"}
+<<<<<<< HEAD
                     icon={<Phone className="w-4 h-4 text-success" />}
+=======
+                    icon={<Phone className="w-4 h-4 text-emerald-500" />}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     variant="emerald"
                 />
                 <StatCard
                     title="العقارات المستأجرة"
                     value={properties?.length || 0}
+<<<<<<< HEAD
                     icon={<Building2 className="w-4 h-4 text-special" />}
+=======
+                    icon={<Building2 className="w-4 h-4 text-violet-500" />}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 />
             </div>
 

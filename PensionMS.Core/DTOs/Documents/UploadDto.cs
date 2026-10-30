@@ -16,7 +16,11 @@ public class UploadDocumentDto
     public string? Notes { get; set; }
     public string? DocumentNumber { get; set; }
 
+<<<<<<< HEAD
     public DateOnly? IssueDate { get; set; }    public DateOnly? ExpiryDate { get; set; }
+=======
+    public DateTime? IssueDate { get; set; }    public DateTime? ExpiryDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     // Polymorphic parent (one is required)
     public int? RetirementFileID { get; set; }

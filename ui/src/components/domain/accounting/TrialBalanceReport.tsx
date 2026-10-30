@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { AlertCircle,CheckCircle } from "lucide-react";
 import { useCallback,useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -11,16 +12,49 @@ import { type CustomColumnDef,DataTable } from "@/components/ui/DataTable";
 import { chartColors } from "@/lib/chartColors";
 import { formatCurrency } from "@/lib/utils";
 import type { TrialBalanceItemDto } from "@/types/accounting";
+=======
+import { useMemo, useState, useCallback } from "react";
+import { CheckCircle, AlertCircle } from "lucide-react";
+
+import { reportsApi } from "@/api/accounting";
+import type { TrialBalanceItemDto } from "@/types/accounting";
+import { formatCurrency } from "@/lib/utils";
+import { chartColors } from "@/lib/chartColors";
+import { DataTable, type CustomColumnDef } from "@/components/ui/DataTable";
+import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
+import { ReportFilters } from "@/components/common/ReportFilters";
+import { ReportBarChart, ReportPieChart } from "@/components/common/charts";
+import {
+  createWorkbook,
+  buildReportHeader,
+  buildTableHeader,
+  styleDataCell,
+  altRowFill,
+  buildTotalsRow,
+  buildReportFooter,
+  exportWorkbook,
+  autoFitColumns,
+} from "@/components/domain/print/excel.utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface TrialBalanceReportProps {
   fiscalYearId?: number;
   periodId?: number;
   fromDate?: string;
   toDate?: string;
+<<<<<<< HEAD
+=======
+  onExport?: (data: TrialBalanceItemDto[]) => void | Promise<void>;
+  exportLabel?: string;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   externalFilters?: { accountLevel?: string };
   hideInternalControls?: boolean;
 }
 
+<<<<<<< HEAD
+=======
+const COL_COUNT = 9;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function TrialBalanceReport({
   fiscalYearId,
@@ -92,6 +126,7 @@ export function TrialBalanceReport({
   }, []);
 
   const handleExportExcel = useCallback(async () => {
+<<<<<<< HEAD
     try {
       await reportsApi.exportTrialBalance({ periodId, fromDate, toDate,
         accountLevel: filters.accountLevel === "all" ? undefined : Number(filters.accountLevel) });
@@ -100,6 +135,57 @@ export function TrialBalanceReport({
       toast.error("فشل تصدير ميزان المراجعة");
     }
   }, [periodId, fromDate, toDate, filters.accountLevel]);
+=======
+    const { ws } = createWorkbook("ميزان المراجعه");
+    autoFitColumns(ws, { 1: 15, 2: 28, 3: 18, 4: 18, 5: 18, 6: 18, 7: 18, 8: 18, 9: 18 });
+
+    const levelLabel = filters.accountLevel === 'all' || !filters.accountLevel ? "جميع المستويات" : `المستوى ${filters.accountLevel}`;
+    const dataStartRow = await buildReportHeader(ws, "ميزان المراجعه", COL_COUNT, [
+      { label: "الفلتر", value: levelLabel },
+    ]);
+
+    buildTableHeader(ws, dataStartRow, [
+      "الكود", "الحساب", "افتتاحي مدين", "افتتاحي دائن",
+      "حركه مدين", "حركه دائن", "ختامي مدين", "ختامي دائن", "الرصيد",
+    ]);
+
+    filteredData.forEach((item: TrialBalanceItemDto, i) => {
+      const r = ws.getRow(dataStartRow + 1 + i);
+      r.getCell(1).value = item.accountCode;
+      r.getCell(2).value = item.accountName;
+      r.getCell(3).value = item.openingDebit;
+      r.getCell(4).value = item.openingCredit;
+      r.getCell(5).value = item.movementDebit;
+      r.getCell(6).value = item.movementCredit;
+      r.getCell(7).value = item.closingDebit;
+      r.getCell(8).value = item.closingCredit;
+      r.getCell(9).value = item.balance;
+
+      styleDataCell(r.getCell(1), { bold: true });
+      styleDataCell(r.getCell(2), { bold: true });
+      [3, 4, 5, 6, 7, 8].forEach(c => styleDataCell(r.getCell(c), { numFmt: "#,##0" }));
+      styleDataCell(r.getCell(9), { numFmt: "#,##0", bold: true });
+
+      for (let c = 1; c <= 9; c++) altRowFill(r.getCell(c), i);
+    });
+
+    const totalRowNum = dataStartRow + 1 + filteredData.length;
+    buildTotalsRow(ws, totalRowNum, [
+      { value: "الإجمالي" },
+      undefined,
+      { value: filteredData.reduce((s: number, i: TrialBalanceItemDto) => s + i.openingDebit, 0), numFmt: "#,##0" },
+      { value: filteredData.reduce((s: number, i: TrialBalanceItemDto) => s + i.openingCredit, 0), numFmt: "#,##0" },
+      { value: filteredData.reduce((s: number, i: TrialBalanceItemDto) => s + i.movementDebit, 0), numFmt: "#,##0" },
+      { value: filteredData.reduce((s: number, i: TrialBalanceItemDto) => s + i.movementCredit, 0), numFmt: "#,##0" },
+      { value: filteredData.reduce((s: number, i: TrialBalanceItemDto) => s + i.closingDebit, 0), numFmt: "#,##0" },
+      { value: filteredData.reduce((s: number, i: TrialBalanceItemDto) => s + i.closingCredit, 0), numFmt: "#,##0" },
+      { value: grandTotalDebit, numFmt: "#,##0" },
+    ]);
+
+    buildReportFooter(ws, COL_COUNT);
+    await exportWorkbook(ws.workbook, `ميزان_المراجعه_${new Date().toISOString().slice(0, 10)}`);
+  }, [filteredData, grandTotalDebit, filters.accountLevel]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
   const handlePrint = useCallback(() => {
     const params = new URLSearchParams();
@@ -149,7 +235,11 @@ export function TrialBalanceReport({
       header: "افتتاحي مدين",
       className: "text-center",
       render: (row) => (
+<<<<<<< HEAD
         <span className="font-mono font-bold text-sm text-info">
+=======
+        <span className="font-mono font-bold text-sm text-blue-600">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           {row.openingDebit > 0 ? formatCurrency(row.openingDebit) : "-"}
         </span>
       ),
@@ -159,7 +249,11 @@ export function TrialBalanceReport({
       header: "افتتاحي دائن",
       className: "text-center",
       render: (row) => (
+<<<<<<< HEAD
         <span className="font-mono font-bold text-sm text-success">
+=======
+        <span className="font-mono font-bold text-sm text-green-600">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           {row.openingCredit > 0 ? formatCurrency(row.openingCredit) : "-"}
         </span>
       ),
@@ -169,7 +263,11 @@ export function TrialBalanceReport({
       header: "حركه مدين",
       className: "text-center",
       render: (row) => (
+<<<<<<< HEAD
         <span className="font-mono font-bold text-sm text-info">
+=======
+        <span className="font-mono font-bold text-sm text-blue-600">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           {row.movementDebit > 0 ? formatCurrency(row.movementDebit) : "-"}
         </span>
       ),
@@ -179,7 +277,11 @@ export function TrialBalanceReport({
       header: "حركه دائن",
       className: "text-center",
       render: (row) => (
+<<<<<<< HEAD
         <span className="font-mono font-bold text-sm text-success">
+=======
+        <span className="font-mono font-bold text-sm text-green-600">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           {row.movementCredit > 0 ? formatCurrency(row.movementCredit) : "-"}
         </span>
       ),
@@ -189,7 +291,11 @@ export function TrialBalanceReport({
       header: "ختامي مدين",
       className: "text-center",
       render: (row) => (
+<<<<<<< HEAD
         <span className="font-mono font-bold text-sm text-info">
+=======
+        <span className="font-mono font-bold text-sm text-blue-700">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           {row.closingDebit > 0 ? formatCurrency(row.closingDebit) : "-"}
         </span>
       ),
@@ -199,7 +305,11 @@ export function TrialBalanceReport({
       header: "ختامي دائن",
       className: "text-center",
       render: (row) => (
+<<<<<<< HEAD
         <span className="font-mono font-bold text-sm text-success">
+=======
+        <span className="font-mono font-bold text-sm text-green-700">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           {row.closingCredit > 0 ? formatCurrency(row.closingCredit) : "-"}
         </span>
       ),
@@ -211,15 +321,24 @@ export function TrialBalanceReport({
       render: (row) => (
         <div className="flex items-center justify-center gap-2">
           <span className={`font-mono font-bold text-lg ${
+<<<<<<< HEAD
             row.balanceType === "Debit" ? "text-info" : "text-success"
+=======
+            row.balanceType === "Debit" ? "text-blue-600" : "text-green-600"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           }`}>
             {row.balance > 0 ? formatCurrency(row.balance) : "-"}
           </span>
           {row.balance > 0 && (
             <span className={`text-xs px-1.5 py-0.5 rounded ${
               row.balanceType === "Debit"
+<<<<<<< HEAD
                 ? "bg-info/10 text-info"
                 : "bg-success/10 text-success"
+=======
+                ? "bg-blue-100 text-blue-700"
+                : "bg-green-100 text-green-700"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             }`}>
               {row.balanceType === "Debit" ? "مدين" : "دائن"}
             </span>
@@ -245,10 +364,17 @@ export function TrialBalanceReport({
   );
 
   const customKPIs = [
+<<<<<<< HEAD
     { label: 'إجمالي الحسابات', value: totalAccounts, color: 'default' },
     { label: 'حسابات مدينة', value: debitAccounts, color: 'info' },
     { label: 'حسابات دائنة', value: creditAccounts, color: 'success' },
     { label: 'حسابات فرعية', value: postableAccounts, color: 'default' },
+=======
+    { label: 'إجمالي الحسابات', value: totalAccounts, color: 'text-foreground' },
+    { label: 'حسابات مدينة', value: debitAccounts, color: 'text-blue-600' },
+    { label: 'حسابات دائنة', value: creditAccounts, color: 'text-green-600' },
+    { label: 'حسابات فرعية', value: postableAccounts, color: 'text-foreground' },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   ];
 
   const chartContent = (
@@ -274,6 +400,7 @@ export function TrialBalanceReport({
   );
 
   const footer = filteredData.length > 0 ? (
+<<<<<<< HEAD
     <div className={`rounded-lg p-4 font-bold ${isBalanced ? 'bg-success/10 border border-success' : 'bg-danger/10 border border-danger'}`}>
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-3">
@@ -281,13 +408,26 @@ export function TrialBalanceReport({
             <CheckCircle className="w-6 h-6 text-success" />
           ) : (
             <AlertCircle className="w-6 h-6 text-danger" />
+=======
+    <div className={`rounded-lg p-4 font-bold ${isBalanced ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <div className="flex items-center gap-3">
+          {isBalanced ? (
+            <CheckCircle className="w-6 h-6 text-green-600" />
+          ) : (
+            <AlertCircle className="w-6 h-6 text-red-600" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           )}
           <div>
             <div className="text-lg">
               {isBalanced ? "الميزان متوازن ✓" : "الميزان غير متوازن ✗"}
             </div>
             {!isBalanced && (
+<<<<<<< HEAD
               <div className="text-sm font-normal text-danger">
+=======
+              <div className="text-sm font-normal text-red-600">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 الفرق: {formatCurrency(Math.abs(grandTotalDebit - grandTotalCredit))}
               </div>
             )}
@@ -297,29 +437,49 @@ export function TrialBalanceReport({
           <div className="text-center">
             <div className="text-xs text-muted-foreground">الافتتاحي</div>
             <div className="flex gap-3">
+<<<<<<< HEAD
               <div><span className="text-xs text-muted-foreground">م:</span> <span className="font-mono text-info">{formatCurrency(grandOpeningDebit)}</span></div>
               <div><span className="text-xs text-muted-foreground">د:</span> <span className="font-mono text-success">{formatCurrency(grandOpeningCredit)}</span></div>
+=======
+              <div><span className="text-xs text-muted-foreground">م:</span> <span className="font-mono text-blue-600">{formatCurrency(grandOpeningDebit)}</span></div>
+              <div><span className="text-xs text-muted-foreground">د:</span> <span className="font-mono text-green-600">{formatCurrency(grandOpeningCredit)}</span></div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             </div>
           </div>
           <div className="text-center">
             <div className="text-xs text-muted-foreground">الحركه</div>
             <div className="flex gap-3">
+<<<<<<< HEAD
               <div><span className="text-xs text-muted-foreground">م:</span> <span className="font-mono text-info">{formatCurrency(grandMovementDebit)}</span></div>
               <div><span className="text-xs text-muted-foreground">د:</span> <span className="font-mono text-success">{formatCurrency(grandMovementCredit)}</span></div>
+=======
+              <div><span className="text-xs text-muted-foreground">م:</span> <span className="font-mono text-blue-600">{formatCurrency(grandMovementDebit)}</span></div>
+              <div><span className="text-xs text-muted-foreground">د:</span> <span className="font-mono text-green-600">{formatCurrency(grandMovementCredit)}</span></div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             </div>
           </div>
           <div className="text-center">
             <div className="text-xs text-muted-foreground">الختامي</div>
             <div className="flex gap-3">
+<<<<<<< HEAD
               <div><span className="text-xs text-muted-foreground">م:</span> <span className="font-mono text-info">{formatCurrency(grandClosingDebit)}</span></div>
               <div><span className="text-xs text-muted-foreground">د:</span> <span className="font-mono text-success">{formatCurrency(grandClosingCredit)}</span></div>
+=======
+              <div><span className="text-xs text-muted-foreground">م:</span> <span className="font-mono text-blue-700">{formatCurrency(grandClosingDebit)}</span></div>
+              <div><span className="text-xs text-muted-foreground">د:</span> <span className="font-mono text-green-700">{formatCurrency(grandClosingCredit)}</span></div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             </div>
           </div>
           <div className="text-center">
             <div className="text-xs text-muted-foreground">الإجمالي</div>
             <div className="flex gap-3">
+<<<<<<< HEAD
               <div><span className="text-xs text-muted-foreground">م:</span> <span className="font-mono text-xl text-info">{formatCurrency(grandTotalDebit)}</span></div>
               <div><span className="text-xs text-muted-foreground">د:</span> <span className="font-mono text-xl text-success">{formatCurrency(grandTotalCredit)}</span></div>
+=======
+              <div><span className="text-xs text-muted-foreground">م:</span> <span className="font-mono text-xl text-blue-600">{formatCurrency(grandTotalDebit)}</span></div>
+              <div><span className="text-xs text-muted-foreground">د:</span> <span className="font-mono text-xl text-green-600">{formatCurrency(grandTotalCredit)}</span></div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             </div>
           </div>
         </div>

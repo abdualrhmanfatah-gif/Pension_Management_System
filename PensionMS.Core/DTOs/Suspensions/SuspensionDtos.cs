@@ -1,8 +1,11 @@
 namespace PensionMS.Core.DTOs.Suspensions;
 
+<<<<<<< HEAD
 /// <summary>نتيجة فحص موانع الصرف؛ لا تغني عن بقية فحوص تنفيذ العملية المالية.</summary>
 public sealed record PaymentHoldCheckDto(bool IsHeld, string? Reason, string SalaryStatus);
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 /// <summary>
 /// DTO لعرض بيانات الإيقاف
 /// </summary>
@@ -66,3 +69,32 @@ public class EndSuspensionDto
 {
     public string EndReason { get; set; } = string.Empty;
 }
+<<<<<<< HEAD
+=======
+
+/// <summary>
+/// DTO لإنشاء إعفاء وثيقة
+/// </summary>
+public class CreateExemptionDto
+{
+    public int FileID { get; set; }
+    public List<int> MissingDocumentIDs { get; set; } = new();
+    public string DirectiveSource { get; set; } = string.Empty;
+    public string? Notes { get; set; }
+}
+
+/// <summary>
+/// DTO لعرض إعفاء الوثيقة
+/// </summary>
+public class ExemptionDto
+{
+    public int ExemptionID { get; set; }
+    public int FileID { get; set; }
+    public string DirectiveSource { get; set; } = string.Empty;
+    public DateTime ExemptionDate { get; set; }
+    public string? Notes { get; set; }
+    public string? CreatedByUser { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public int ExemptedDocumentCount { get; set; }
+}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

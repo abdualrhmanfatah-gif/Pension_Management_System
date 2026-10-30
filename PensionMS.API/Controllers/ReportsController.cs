@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using PensionMS.Infrastructure.Reporting.Exporters;
 using PensionMS.Core.Interfaces.Reporting;
 using Microsoft.AspNetCore.Authorization;
@@ -6,6 +7,16 @@ using PensionMS.Core.Constants;
 using PensionMS.Core.Interfaces;
 using PensionMS.Core.Reporting;
 using PensionMS.API.Extensions;
+=======
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PensionMS.Core.Constants;
+using PensionMS.Core.DTOs.Common;
+using PensionMS.Core.Interfaces;
+using PensionMS.Core.Reporting;
+using PensionMS.API.Extensions;
+using PensionMS.Infrastructure.Reporting;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 using System;
 using System.Threading.Tasks;
 using ReportFilter = PensionMS.Core.DTOs.Reports.ReportFilter;
@@ -21,32 +32,49 @@ public class ReportsController : ControllerBase
     private readonly IReportRegistry _reportRegistry;
     private readonly IReportDataService _reportDataService;
     private readonly PdfReportExporter _pdfExporter;
+<<<<<<< HEAD
     private readonly ExcelReportExporter _excelExporter;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     public ReportsController(
         IReportService reportService,
         IReportRegistry reportRegistry,
         IReportDataService reportDataService,
+<<<<<<< HEAD
         PdfReportExporter pdfExporter,
         ExcelReportExporter excelExporter)
+=======
+        PdfReportExporter pdfExporter)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     {
         _reportService = reportService;
         _reportRegistry = reportRegistry;
         _reportDataService = reportDataService;
         _pdfExporter = pdfExporter;
+<<<<<<< HEAD
         _excelExporter = excelExporter;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 
     private IActionResult ReturnFile(byte[] bytes, string format, string baseName)
     {
         if (format.ToLower() == ExportFormatConstants.Pdf)
+<<<<<<< HEAD
             return File(bytes, "application/pdf", $"{baseName}_{PensionMS.Core.Time.YemenTime.Now:yyyyMMdd}.pdf");
 
         return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{baseName}_{PensionMS.Core.Time.YemenTime.Now:yyyyMMdd}.xlsx");
+=======
+            return File(bytes, "application/pdf", $"{baseName}_{DateTime.Now:yyyyMMdd}.pdf");
+
+        return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{baseName}_{DateTime.Now:yyyyMMdd}.xlsx");
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 
     private async Task<IActionResult> ExportWithFormatAsync(string reportId, string format, string baseName, ReportFilter filter)
     {
+<<<<<<< HEAD
         var definition = _reportRegistry.GetById(reportId);
         if (definition == null)
             return BadRequest("تقرير غير موجود");
@@ -56,6 +84,54 @@ public class ReportsController : ControllerBase
         return format.ToLower() == ExportFormatConstants.Pdf
             ? ReturnFile(_pdfExporter.Export(definition, data), format, baseName)
             : ReturnFile(_excelExporter.Export(definition, data), format, baseName);
+=======
+        if (format.ToLower() == ExportFormatConstants.Pdf)
+        {
+            var definition = _reportRegistry.GetById(reportId);
+            if (definition == null)
+                return BadRequest("تقرير غير موجود");
+
+            var data = await _reportDataService.GetDataAsync(reportId, filter);
+            var pdfBytes = _pdfExporter.Export(definition, data);
+            return ReturnFile(pdfBytes, format, baseName);
+        }
+
+        return await ExportExcelAsync(reportId, filter, baseName);
+    }
+
+    private async Task<IActionResult> ExportExcelAsync(string reportId, ReportFilter filter, string baseName)
+    {
+        byte[] bytes = reportId switch
+        {
+            "basic-retirees" => await _reportService.ExportRetireesAsync(filter.Search),
+            "basic-retirement-files" => await _reportService.ExportRetirementFilesAsync(filter.StatusId),
+            "basic-entitled-persons" => await _reportService.ExportEntitledPersonsAsync(filter.StatusId),
+            "basic-users" => await _reportService.ExportUsersAsync(),
+            "inv-01" => await _reportService.ExportPortfolioPerformanceAsync(filter),
+            "inv-02" => await _reportService.ExportOccupancyReportAsync(filter),
+            "inv-03" => await _reportService.ExportRentCollectionAsync(filter),
+            "inv-04" => await _reportService.ExportContractStatusAsync(filter),
+            "inv-05" => await _reportService.ExportRiskExposureAsync(filter),
+            "inv-06" => await _reportService.ExportMaintenanceSummaryAsync(filter),
+            "inv-07" => await _reportService.ExportBudgetVsActualAsync(filter),
+            "ret-01" => await _reportService.ExportFileStatusReportAsync(filter),
+            "ret-02" => await _reportService.ExportActiveRetireesAsync(filter),
+            "ret-03" => await _reportService.ExportSuspensionsReportAsync(filter),
+            "fin-01" => await _reportService.ExportSalaryBatchesAsync(filter),
+            "fin-02" => await _reportService.ExportSettlementsReportAsync(filter),
+            "fin-03" => await _reportService.ExportFiscalPeriodReportAsync(filter),
+            "doc-01" => await _reportService.ExportMissingDocsReportAsync(filter),
+            "doc-01b" => await _reportService.ExportMissingDocsByPersonReportAsync(filter),
+            "doc-02" => await _reportService.ExportExpiredDocsReportAsync(filter),
+            "dep-01" => await _reportService.ExportBeneficiariesReportAsync(filter),
+            "com-01" => await _reportService.ExportMinistryBatchesAsync(filter),
+            "com-02" => await _reportService.ExportPendingApprovalsAsync(filter),
+            "adm-01" => await _reportService.ExportAuditLogAsync(filter),
+            "adm-02" => await _reportService.ExportUserActivityAsync(filter),
+            _ => throw new InvalidOperationException($"Unknown report: {reportId}")
+        };
+        return ReturnFile(bytes, "excel", baseName);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 
     // ── Basic Entity Exports ──
@@ -172,10 +248,13 @@ public class ReportsController : ControllerBase
     [Authorize(Policy = "Report.Pension.View")]
     public async Task<IActionResult> GetActiveRetirees([FromQuery] ReportFilter filter) => (await _reportService.GetActiveRetireesAsync(filter)).ToActionResult();
 
+<<<<<<< HEAD
     [HttpGet("retirement/active-retirees/summary")]
     [Authorize(Policy = "Report.Pension.View")]
     public async Task<IActionResult> GetActiveRetireesSummary([FromQuery] ReportFilter filter) => (await _reportService.GetActiveRetireesSummaryAsync(filter)).ToActionResult();
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     [HttpGet("retirement/active-retirees/export")]
     [Authorize(Policy = "Report.Pension.View")]
     public async Task<IActionResult> ExportActiveRetirees([FromQuery] ReportFilter filter, [FromQuery] string format = "excel")
@@ -205,10 +284,13 @@ public class ReportsController : ControllerBase
     [Authorize(Policy = "Report.Financial.View")]
     public async Task<IActionResult> GetSettlementsReport([FromQuery] ReportFilter filter) => (await _reportService.GetSettlementsReportAsync(filter)).ToActionResult();
 
+<<<<<<< HEAD
     [HttpGet("financial/settlements/summary")]
     [Authorize(Policy = "Report.Financial.View")]
     public async Task<IActionResult> GetSettlementsSummary([FromQuery] ReportFilter filter) => (await _reportService.GetSettlementsSummaryAsync(filter)).ToActionResult();
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     [HttpGet("financial/settlements/export")]
     [Authorize(Policy = "Report.Financial.View")]
     public async Task<IActionResult> ExportSettlementsReport([FromQuery] ReportFilter filter, [FromQuery] string format = "excel")
@@ -263,6 +345,7 @@ public class ReportsController : ControllerBase
     public async Task<IActionResult> ExportBeneficiariesReport([FromQuery] ReportFilter filter, [FromQuery] string format = "excel")
         => await ExportWithFormatAsync("dep-01", format, "Beneficiaries", filter);
 
+<<<<<<< HEAD
     // ── Kashf Reports (كشوفات الإحالة) ──
 
     [HttpGet("kashf/report")]
@@ -278,6 +361,8 @@ public class ReportsController : ControllerBase
     public async Task<IActionResult> ExportKashfReport([FromQuery] ReportFilter filter, [FromQuery] string format = "excel")
         => await ExportWithFormatAsync("kashf-01", format, "KashfReport", filter);
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     // ── Compliance Reports ──
 
     [HttpGet("compliance/ministry-batches")]
@@ -287,10 +372,14 @@ public class ReportsController : ControllerBase
     [HttpGet("compliance/ministry-batches/export")]
     [Authorize(Policy = "Report.Admin.View")]
     public async Task<IActionResult> ExportMinistryBatches([FromQuery] ReportFilter filter, [FromQuery] string format = "excel")
+<<<<<<< HEAD
     {
         var bytes = await _reportService.ExportMinistryBatchesAsync(filter);
         return ReturnFile(bytes, "excel", "MinistryBatches");
     }
+=======
+        => await ExportWithFormatAsync("com-01", format, "MinistryBatches", filter);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     [HttpGet("compliance/pending-approvals")]
     [Authorize(Policy = "Report.Admin.View")]

@@ -4,8 +4,13 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 
 import { retirementApi } from "@/api/retirement";
+<<<<<<< HEAD
 import { NoteDialog } from "@/components/domain/retirement/NoteDialog";
 import { Button, EmptyState, TabHeader, useConfirm } from "@/components/ui";
+=======
+import { Button, Card, EmptyState, Heading, useConfirm } from "@/components/ui";
+import { NoteDialog } from "@/components/domain/retirement/NoteDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation, useCreateShortcut, useCrudState } from "@/hooks";
 import { formatDate } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
@@ -83,6 +88,7 @@ export function NotesTab({ fileId }: NotesTabProps) {
 
     return (
         <div className="space-y-2 md:space-y-4 animate-in fade-in duration-500 text-start">
+<<<<<<< HEAD
             <TabHeader
                 title="ملاحظات الملف"
                 description="التوثيق الإداري والملاحظات الهامة المتعلقة بسير معاملة الملف"
@@ -94,13 +100,32 @@ export function NotesTab({ fileId }: NotesTabProps) {
                     show: canCreate,
                 }}
             />
+=======
+            <Card className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-4 bg-muted/30 p-3 md:p-5">
+                <div className="space-y-0.5 md:space-y-1">
+                    <Heading level="h3" className="font-bold flex items-center gap-1.5 md:gap-2 text-sm md:text-base">
+                        <StickyNote className="w-4 h-4 md:w-5 md:h-5 text-amber-500" /> ملاحظات الملف
+                    </Heading>
+                    <p className="text-xs md:text-sm text-muted-foreground hidden sm:block">التوثيق الإداري والملاحظات الهامة المتعلقة بسير معاملة الملف</p>
+                </div>
+                {canCreate && (
+                    <Button size="sm" onClick={crud.openCreate} className="gap-1.5  bg-amber-600 hover:bg-amber-700 h-8 md:h-auto text-xs md:text-sm px-3 md:px-4">
+                        <Plus className="w-3.5 h-3.5 md:w-4 md:h-4" /> إضافة ملاحظة
+                    </Button>
+                )}
+            </Card>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
             {notes.length === 0 ? (
                 <EmptyState icon={Inbox} title="لا توجد ملاحظات مسجلة لهذا الملف" />
             ) : (
                 <div className="grid grid-cols-1 gap-3">
                     {notes.map(n => (
+<<<<<<< HEAD
                         <div key={n.noteID} className="group border rounded-xl p-5 bg-card  transition-all border-border">
+=======
+                        <div key={n.noteID} className="group border rounded-xl p-5 bg-card  transition-all border-border/60">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <div className="flex items-start justify-between gap-4">
                                 <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap flex-1">{n.content}</p>
                                 {canDelete && (
@@ -116,7 +141,11 @@ export function NotesTab({ fileId }: NotesTabProps) {
                                 )}
                             </div>
                             <div className="flex items-center gap-2 mt-4 pt-3 border-t border-dashed text-[10px] sm:text-xs text-muted-foreground">
+<<<<<<< HEAD
                                 <span className="font-bold text-foreground">{n.createdByUsername || "نظام"}</span>
+=======
+                                <span className="font-bold text-foreground/70">{n.createdByUsername || "نظام"}</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
                                 <span className="font-mono">{formatDate(n.createdAt, true)}</span>
                             </div>

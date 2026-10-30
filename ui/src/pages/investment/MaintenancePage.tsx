@@ -4,15 +4,27 @@ import { useState } from "react";
 
 import type { MaintenanceRequestDto } from "@/api/investment";
 import { investmentApi } from "@/api/investment";
+<<<<<<< HEAD
 import { InvestmentDocumentsManager } from "@/components/domain/investment/InvestmentDocumentsManager";
 import { MaintenanceRequestDialog } from "@/components/domain/investment/MaintenanceRequestDialog";
 import { WorkOrderDialog } from "@/components/domain/investment/WorkOrderDialog";
 import { Badge, BaseFormDialog, Button, CrudPageLayout } from "@/components/ui";
 import { type CustomColumnDef } from "@/components/ui/DataTable";
+=======
+import { Badge, BaseFormDialog, Button, CrudPageLayout } from "@/components/ui";
+import { type CustomColumnDef } from "@/components/ui/DataTable";
+import { MaintenanceRequestDialog } from "@/components/domain/investment/MaintenanceRequestDialog";
+import { WorkOrderDialog } from "@/components/domain/investment/WorkOrderDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { BADGE_VARIANT, BATCH_STATUS, PRIORITY } from "@/constants";
 import { useCrudState } from "@/hooks";
 import { useHasPermission } from "@/stores/authStore";
 
+<<<<<<< HEAD
+=======
+import { InvestmentDocumentsManager } from "@/components/domain/investment/InvestmentDocumentsManager";
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 export function MaintenancePage() {
     const canManage = useHasPermission("Investment.Manage");
 
@@ -33,6 +45,7 @@ export function MaintenancePage() {
     const getStatusBadge = (status: string) => {
         switch (status) {
             case BATCH_STATUS.COMPLETED:
+<<<<<<< HEAD
                 return <Badge variant={BADGE_VARIANT.SUCCESS} className="gap-1 bg-success/10 text-success border-success">
                     <CheckCircle2 className="w-3 h-3" /> مكتملة
                 </Badge>;
@@ -42,6 +55,17 @@ export function MaintenancePage() {
                 </Badge>;
             case BATCH_STATUS.NEW:
                 return <Badge variant={BADGE_VARIANT.DANGER} className="gap-1 bg-danger/10 text-danger border-danger">
+=======
+                return <Badge variant={BADGE_VARIANT.SUCCESS} className="gap-1 bg-emerald-100 text-emerald-700 border-emerald-200">
+                    <CheckCircle2 className="w-3 h-3" /> مكتملة
+                </Badge>;
+            case 'InProgress':
+                return <Badge variant={BADGE_VARIANT.INFO} className="gap-1 bg-blue-100 text-blue-700 border-blue-200">
+                    <Clock className="w-3 h-3" /> قيد التنفيذ
+                </Badge>;
+            case BATCH_STATUS.NEW:
+                return <Badge variant={BADGE_VARIANT.DANGER} className="gap-1 bg-red-100 text-red-700 border-red-200">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <AlertCircle className="w-3 h-3" /> جديدة
                 </Badge>;
             default:
@@ -74,8 +98,13 @@ export function MaintenancePage() {
             header: "الأولوية",
             render: (row) => (
                 <div className="flex items-center gap-1.5 text-start">
+<<<<<<< HEAD
                     <div className={`w-2 h-2 rounded-full ${row.priority === PRIORITY.URGENT ? 'bg-danger animate-pulse' :
                         row.priority === PRIORITY.HIGH ? 'bg-warning' : 'bg-muted'
+=======
+                    <div className={`w-2 h-2 rounded-full ${row.priority === PRIORITY.URGENT ? 'bg-red-500 animate-pulse' :
+                        row.priority === PRIORITY.HIGH ? 'bg-amber-500' : 'bg-slate-400'
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     }`} />
                     <span className="text-xs">{row.priority === PRIORITY.URGENT ? 'عاجل جداً' : row.priority === PRIORITY.HIGH ? 'مرتفعة' : 'عادي'}</span>
                 </div>
@@ -107,7 +136,11 @@ export function MaintenancePage() {
                                 setWorkOrderRequest(row);
                                 setWorkOrderOpen(true);
                             }}
+<<<<<<< HEAD
                             className="gap-1 border-success text-success hover:bg-success/10 font-bold"
+=======
+                            className="gap-1 border-emerald-200 text-emerald-700 hover:bg-emerald-50 font-bold"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         >
                             <Wrench className="w-3.5 h-3.5" /> أوامر العمل
                         </Button>

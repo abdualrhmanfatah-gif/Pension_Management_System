@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 using PensionMS.Infrastructure.Data;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 using Microsoft.EntityFrameworkCore;
 using PensionMS.Core.Constants;
 using PensionMS.Core.DTOs.Common;
@@ -72,10 +75,14 @@ public class HrAttendanceService : IHrAttendanceService
         return ApiResponse<PagedResult<AttendanceEventDto>>.Success(result);
     }
 
+<<<<<<< HEAD
     public Task<ApiResponse<AttendanceEventDto>> RecordAttendanceAsync(CreateAttendanceEventDto dto, int userId) =>
         UnitOfWorkTransaction.ExecuteAsync(_unitOfWork, () => RecordAttendanceCoreAsync(dto, userId));
 
     private async Task<ApiResponse<AttendanceEventDto>> RecordAttendanceCoreAsync(CreateAttendanceEventDto dto, int userId)
+=======
+    public async Task<ApiResponse<AttendanceEventDto>> RecordAttendanceAsync(CreateAttendanceEventDto dto, int userId)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     {
         var employee = await _unitOfWork.Employees.GetByIdAsync(dto.EmployeeID);
         if (employee == null || employee.IsDeleted) return ApiResponse<AttendanceEventDto>.Fail("الموظف غير موجود");
@@ -97,7 +104,10 @@ public class HrAttendanceService : IHrAttendanceService
         };
 
         await _unitOfWork.AttendanceEvents.AddAsync(attendance);
+<<<<<<< HEAD
         await _unitOfWork.SaveChangesAsync(); // Materialize Identity inside the operation transaction.
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         
         // Also add to service history
         var history = new ServiceHistoryEvent

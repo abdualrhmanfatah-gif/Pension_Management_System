@@ -1,11 +1,20 @@
+<<<<<<< HEAD
 import { AlertCircle, Check, ChevronDown, ChevronUp, Eye,FileEdit, Plus, X } from "lucide-react";
 import { useMemo, useState } from "react";
+=======
+import { useMemo, useState } from "react";
+import { Check, X, ChevronDown, ChevronUp, Plus, AlertCircle, FileEdit, Eye } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 import { Badge } from "@/components/ui";
 import { Button } from "@/components/ui";
 import { Dialog, DialogContent } from "@/components/ui/Dialog";
 import { cn, formatDate, getDocumentUrl } from "@/lib/utils";
+<<<<<<< HEAD
 import type { FieldChangeDetail,FileReviewItem } from "@/types/retirement";
+=======
+import type { FileReviewItem, FieldChangeDetail } from "@/types/retirement";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { REVIEW_ITEM_STATUS } from "@/types/retirement";
 
 interface ReviewItemCardProps {
@@ -101,7 +110,11 @@ export function ReviewItemCard({ item, onApprove, onReject }: ReviewItemCardProp
                     "rounded-xl border p-4 transition-all duration-200 shadow-sm w-full overflow-auto max-h-[80vh]",
                     isApproved && "border-emerald-200 bg-emerald-50/50 dark:border-emerald-800 dark:bg-emerald-950/20",
                     isRejected && "border-rose-200 bg-rose-50/50 dark:border-rose-800 dark:bg-rose-950/20",
+<<<<<<< HEAD
                     isPending && "border-border bg-card hover:border-primary hover:shadow-md"
+=======
+                    isPending && "border-border bg-card hover:border-primary/30 hover:shadow-md"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 )}
             >
                 {/* Header */}
@@ -207,7 +220,11 @@ export function ReviewItemCard({ item, onApprove, onReject }: ReviewItemCardProp
                         )}
                     </div>
                 ) : (
+<<<<<<< HEAD
                     <div className="bg-muted/40 rounded-lg p-3 border border-border space-y-2 w-max min-w-full">
+=======
+                    <div className="bg-muted/40 rounded-lg p-3 border border-border/50 space-y-2 w-max min-w-full">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <div className="flex items-start justify-between gap-4">
                             <span className="text-xs font-bold text-muted-foreground shrink-0">القيمة السابقة:</span>
                             {isMainOldMedia ? (
@@ -282,7 +299,11 @@ export function ReviewItemCard({ item, onApprove, onReject }: ReviewItemCardProp
                                                     <Button
                                                         variant="outline"
                                                         size="sm"
+<<<<<<< HEAD
                                                         className="h-auto gap-2 text-xs font-bold text-primary bg-primary/10 border-primary hover:bg-primary/20 w-max min-w-full justify-start"
+=======
+                                                        className="h-auto gap-2 text-xs font-bold text-primary bg-primary/10 border-primary/20 hover:bg-primary/20 w-max min-w-full justify-start"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                         onClick={() => setPreviewUrl(documentUrl)}
                                                     >
                                                         <Eye className="w-4 h-4 shrink-0" />

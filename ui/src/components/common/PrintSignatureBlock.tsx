@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import type { SignatureSlot } from "@/components/ui/print/PrintSignatureBlock";
 import { PrintSignatureBlock as NewPrintSignatureBlock } from "@/components/ui/print/PrintSignatureBlock";
+=======
+import { PrintSignatureBlock as NewPrintSignatureBlock } from "@/components/ui/print/PrintSignatureBlock";
+import type { SignatureSlot } from "@/components/ui/print/PrintSignatureBlock";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { cn } from "@/lib/utils";
 
 export interface Signature {

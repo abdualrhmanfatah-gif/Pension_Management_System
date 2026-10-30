@@ -8,6 +8,7 @@ using PensionMS.Core.DTOs.Documents;
 
 namespace PensionMS.API.Validators;
 
+<<<<<<< HEAD
 public class CreateAgentValidator : AbstractValidator<PensionMS.Core.DTOs.Agents.CreateAgentDto>
 {
     public CreateAgentValidator()
@@ -31,6 +32,8 @@ public class UpdateAgentValidator : AbstractValidator<PensionMS.Core.DTOs.Agents
     }
 }
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 // ═══════════════════════════════════════
 // AUTH
 // ═══════════════════════════════════════
@@ -72,9 +75,15 @@ public class CreateRetirementFileValidator : AbstractValidator<CreateRetirementF
             .Matches(@"^\d{12}$").WithMessage("الرقم الوطني يجب أن يحتوي على أرقام فقط")
             .When(x => !string.IsNullOrEmpty(x.NationalID));
 
+<<<<<<< HEAD
         // التحقق من رقم الهاتف — موبايل 7XXXXXXXX أو أرضي 0XXXXXXX
         RuleFor(x => x.Phone)
             .Matches(@"^(7\d{8}|0\d{7})$").WithMessage("رقم الهاتف غير صحيح (موبايل: 7XXXXXXXX / أرضي: 0XXXXXXX)")
+=======
+        // Phase 2.1: التحقق من رقم الهاتف — 9 أرقام ولا يبدأ بـ 07
+        RuleFor(x => x.Phone)
+            .Matches(@"^(?!07)\d{9}$").WithMessage("رقم الهاتف يجب أن يتكون من 9 أرقام ولا يبدأ بـ 07")
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .When(x => !string.IsNullOrEmpty(x.Phone));
 
         // Phase 2.1: تاريخ الوفاة مطلوب عند حالة متوفي
@@ -104,7 +113,11 @@ public class UpdateRetirementFileValidator : AbstractValidator<UpdateRetirementF
             .When(x => !string.IsNullOrEmpty(x.FullName));
 
         RuleFor(x => x.Phone)
+<<<<<<< HEAD
             .Matches(@"^(7\d{8}|0\d{7})$").WithMessage("رقم الهاتف غير صحيح (موبايل: 7XXXXXXXX / أرضي: 0XXXXXXX)")
+=======
+            .Matches(@"^(?!07)\d{9}$").WithMessage("رقم الهاتف يجب أن يتكون من 9 أرقام ")
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .When(x => !string.IsNullOrEmpty(x.Phone));
 
         RuleFor(x => x.ServiceEndDate)
@@ -132,15 +145,22 @@ public class CreateEntitledPersonValidator : AbstractValidator<CreateEntitledPer
             .Length(12).WithMessage("رقم الهوية يجب أن يكون 12 أرقام")
             .Matches(@"^\d{12}$").WithMessage("رقم الهوية يجب أن يحتوي على أرقام فقط")
             .When(x => !string.IsNullOrEmpty(x.NationalID));
+<<<<<<< HEAD
 
         RuleFor(x => x.Phone)
             .Matches(@"^(7\d{8}|0\d{7})$").WithMessage("رقم الهاتف غير صحيح (موبايل: 7XXXXXXXX / أرضي: 0XXXXXXX)")
             .When(x => !string.IsNullOrEmpty(x.Phone));
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 
     private static int CalculateAge(DateTime dateOfBirth)
     {
+<<<<<<< HEAD
         var today = PensionMS.Core.Time.YemenTime.TodayDateTime;
+=======
+        var today = DateTime.Today;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         var age = today.Year - dateOfBirth.Year;
         if (dateOfBirth.Date > today.AddYears(-age)) age--;
         return age;

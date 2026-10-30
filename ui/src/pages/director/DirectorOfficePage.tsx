@@ -1,14 +1,25 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { FileText, Inbox, LayoutDashboard, Plus,Send } from "lucide-react";
+=======
+import { FileText, Send, Inbox, LayoutDashboard, Plus } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { directorApi } from "@/api/director";
+<<<<<<< HEAD
+=======
+import { queryKeys } from "@/constants/queryKeys";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { DashboardHeader } from "@/components/common/dashboards";
 import { CorrespondenceFormDialog } from "@/components/domain/correspondence/CorrespondenceFormDialog";
 import { StatCard } from "@/components/ui";
 import { Badge, Button, Card, Heading, PageLayout, Text } from "@/components/ui";
+<<<<<<< HEAD
 import { queryKeys } from "@/constants/queryKeys";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { CorrespondenceDirection, type CorrespondenceListItemDto } from "@/types/correspondence";
 
 export function DirectorOfficePage() {
@@ -45,7 +56,11 @@ export function DirectorOfficePage() {
   const renderCorrespondenceItem = (item: CorrespondenceListItemDto) => (
     <div
       key={item.correspondenceID}
+<<<<<<< HEAD
       className="flex items-center justify-between py-2.5 border-b border-border last:border-0 cursor-pointer hover:bg-muted/50 rounded-lg px-3 transition-colors"
+=======
+      className="flex items-center justify-between py-2.5 border-b border-border/50 last:border-0 cursor-pointer hover:bg-muted/50 rounded-lg px-3 transition-colors"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       onClick={() => navigate(`/correspondence/${item.correspondenceID}`)}
     >
       <div className="flex-1 min-w-0">

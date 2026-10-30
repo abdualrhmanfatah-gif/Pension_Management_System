@@ -1,7 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 
 import { documentsApi } from "@/api/documents";
 import type { DocumentItem, DocumentTypeLookup,MissingDocumentSummary } from "@/types/retirement";
+=======
+import { documentsApi } from "@/api/documents";
+import type { DocumentItem, MissingDocumentSummary, DocumentTypeLookup } from "@/types/retirement";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export const DOCUMENTS_QUERY_KEY = "documents";
 

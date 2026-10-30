@@ -1,5 +1,8 @@
 import { Loader } from "lucide-react";
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { cn } from "@/lib/utils";
 
 interface LoadingIndicatorProps {
@@ -33,7 +36,11 @@ export function LoadingIndicator({
             role="status"
             aria-live="polite"
         >
+<<<<<<< HEAD
             <Loader className="w-6 h-6 animate-spin text-primary" aria-hidden="true" />
+=======
+            <Loader className="w-6 h-6 animate-spin text-primary/40" aria-hidden="true" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             <p>{message}</p>
         </div>
     );

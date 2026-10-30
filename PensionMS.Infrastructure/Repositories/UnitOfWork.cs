@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 using Microsoft.EntityFrameworkCore;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 using PensionMS.Core.Entities;
 using PensionMS.Core.Entities.Financial;
 using PensionMS.Core.Entities.OperationalBudget;
@@ -20,7 +23,10 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly PensionDbContext _context;
     private IDbContextTransaction? _transaction;
+<<<<<<< HEAD
     private readonly List<Func<Task>> _rollbackCompensations = [];
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     private bool _disposed;
 
     public UnitOfWork(PensionDbContext context)
@@ -445,6 +451,7 @@ public class UnitOfWork : IUnitOfWork
     public async Task<int> SaveChangesAsync()
         => await _context.SaveChangesAsync();
 
+<<<<<<< HEAD
     public bool HasActiveTransaction => _context.Database.CurrentTransaction != null;
 
     public Task LockFileReviewAsync(int fileId) => LockFileReviewAsync(_context, fileId);
@@ -497,16 +504,22 @@ public class UnitOfWork : IUnitOfWork
                 @LockOwner='Transaction', @LockTimeout=30000;
             IF @result < 0 THROW 51000, N'تعذر حجز استحقاقات المتقاعد؛ أعد المحاولة', 1;");
     }
+=======
+    public bool HasActiveTransaction => _transaction != null;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     public async Task BeginTransactionAsync()
         => _transaction = await _context.Database.BeginTransactionAsync();
 
+<<<<<<< HEAD
     public void OnRollback(Func<Task> compensation)
     {
         if (!HasActiveTransaction) throw new InvalidOperationException("تسجيل التعويض يستلزم معاملة نشطة");
         _rollbackCompensations.Add(compensation);
     }
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public async Task CommitAsync()
     {
         if (_transaction != null)
@@ -514,7 +527,10 @@ public class UnitOfWork : IUnitOfWork
             await _transaction.CommitAsync();
             await _transaction.DisposeAsync();
             _transaction = null;
+<<<<<<< HEAD
             _rollbackCompensations.Clear();
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
     }
 
@@ -525,9 +541,12 @@ public class UnitOfWork : IUnitOfWork
             await _transaction.RollbackAsync();
             await _transaction.DisposeAsync();
             _transaction = null;
+<<<<<<< HEAD
             var compensations = _rollbackCompensations.ToArray();
             _rollbackCompensations.Clear();
             foreach (var compensation in compensations.Reverse()) await compensation();
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
     }
 

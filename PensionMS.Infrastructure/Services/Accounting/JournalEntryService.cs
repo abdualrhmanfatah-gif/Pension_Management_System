@@ -209,6 +209,10 @@ public class JournalEntryService : IJournalEntryService
             entry.Status = "Posted";
             entry.PostedByUserID = userId;
             entry.PostedAt = DateTime.UtcNow;
+<<<<<<< HEAD
+=======
+            _unitOfWork.JournalEntries.Update(entry);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
             foreach (var line in entry.Lines)
             {
@@ -258,11 +262,19 @@ public class JournalEntryService : IJournalEntryService
             return ApiResponse<JournalEntryDto>.Fail("لا توجد فترة محاسبية مفتوحة حالياً لإنشاء قيد العكس");
 
         JournalEntry reversal;
+<<<<<<< HEAD
         var ownsTransaction = !_unitOfWork.HasActiveTransaction;
         if (ownsTransaction) await _unitOfWork.BeginTransactionAsync();
         try
         {
             entry.Status = "Reversed";
+=======
+        await _unitOfWork.BeginTransactionAsync();
+        try
+        {
+            entry.Status = "Reversed";
+            _unitOfWork.JournalEntries.Update(entry);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
             var reversalEntryNumber = await GenerateEntryNumberAsync(DateTime.UtcNow);
             reversal = new JournalEntry
@@ -306,7 +318,10 @@ public class JournalEntryService : IJournalEntryService
             foreach (var rl in reversalLines)
             {
                 await UpdateAccountBalanceAsync(reversal.PeriodID, rl.AccountID, rl.Debit, rl.Credit);
+<<<<<<< HEAD
                 await CreateBankTransactionIfBankAccount(reversal, rl);
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             }
 
             var receiptVoucherType = await _unitOfWork.JournalEntryTypes.Query()
@@ -325,15 +340,27 @@ public class JournalEntryService : IJournalEntryService
                 {
                     voucher.Status = VoucherStatus.Draft;
                     voucher.UpdatedAt = DateTime.UtcNow;
+<<<<<<< HEAD
+=======
+                    _unitOfWork.Vouchers.Update(voucher);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 }
             }
 
             await _unitOfWork.SaveChangesAsync();
+<<<<<<< HEAD
             if (ownsTransaction) await _unitOfWork.CommitAsync();
         }
         catch
         {
             if (ownsTransaction) await _unitOfWork.RollbackAsync();
+=======
+            await _unitOfWork.CommitAsync();
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             throw;
         }
 
@@ -369,8 +396,12 @@ public class JournalEntryService : IJournalEntryService
         if (!creditAccount.IsActive || !creditAccount.IsPostable)
             return new FinancialOperationResultDto { IsSuccess = false, Message = $"حساب الدائن '{mapping.CreditAccountCode}' غير نشط أو غير قابل للترحيل" };
 
+<<<<<<< HEAD
         var ownsTransaction = !_unitOfWork.HasActiveTransaction;
         if (ownsTransaction) await _unitOfWork.BeginTransactionAsync();
+=======
+        await _unitOfWork.BeginTransactionAsync();
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         try
         {
             var entryNumber = await GenerateEntryNumberAsync(request.OperationDate);
@@ -408,7 +439,11 @@ public class JournalEntryService : IJournalEntryService
             await UpdateAccountBalanceAsync(request.PeriodID, creditAccount.AccountID, 0, request.Amount);
             await _unitOfWork.SaveChangesAsync();
 
+<<<<<<< HEAD
             if (ownsTransaction) await _unitOfWork.CommitAsync();
+=======
+            await _unitOfWork.CommitAsync();
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
             return new FinancialOperationResultDto
             {
@@ -432,7 +467,11 @@ public class JournalEntryService : IJournalEntryService
         }
         catch
         {
+<<<<<<< HEAD
             if (ownsTransaction) await _unitOfWork.RollbackAsync();
+=======
+            await _unitOfWork.RollbackAsync();
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             throw;
         }
     }

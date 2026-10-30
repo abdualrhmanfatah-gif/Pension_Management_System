@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Eye, Inbox, Loader2,PauseCircle, PlayCircle, Search } from "lucide-react";
@@ -7,6 +8,17 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { retirementApi } from "@/api/retirement";
+=======
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { PauseCircle, PlayCircle, Eye, Inbox, Search, Loader2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+import { retirementApi } from "@/api/retirement";
+import type { RetirementFileListItem } from "@/types/retirement";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Badge,
     BaseFormDialog,
@@ -19,7 +31,11 @@ import {
     StatCard,
 } from "@/components/ui";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
+<<<<<<< HEAD
 import type { RetirementFileListItem } from "@/types/retirement";
+=======
+import { toast } from "sonner";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 const suspendSchema = z.object({
     fileID: z.string().min(1, "اختر ملف المتقاعد"),
@@ -312,7 +328,11 @@ export function PensionSuspensionsPage() {
 
                     {/* Selected File Display */}
                     {selectedFile && (
+<<<<<<< HEAD
                         <div className="bg-primary/5 border border-primary rounded-lg p-3 flex items-center gap-3">
+=======
+                        <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 flex items-center gap-3">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold shrink-0">
                                 {selectedFile.retireeFullName?.charAt(0)}
                             </div>

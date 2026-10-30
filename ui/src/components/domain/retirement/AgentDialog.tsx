@@ -1,31 +1,49 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { Calendar, FileText, RotateCw, Search, User, UserRoundCheck, Users, X } from "lucide-react";
 import { type MouseEvent,type PointerEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Controller,type Resolver, useForm } from "react-hook-form";
 import { toast } from "sonner";
+=======
+import { Calendar, FileText, Search, User, X } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent, type MouseEvent } from "react";
+import { createPortal } from "react-dom";
+import { type Resolver, useForm, Controller } from "react-hook-form";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { z } from "zod";
 
 import api from "@/api/axios";
 import { retirementApi } from "@/api/retirement";
 import {
+<<<<<<< HEAD
     Badge,
     BaseFormDialog,
     Button,
     DateInput,
+=======
+    BaseFormDialog,
+    Button,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     FileField,
     FormField,
     FormSection,
     Input,
+<<<<<<< HEAD
     nationalIdSchema,
     NativeSelect,
+=======
+    DateInput,
+    nationalIdSchema,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     RadioGroup,
     RadioGroupItem,
     Text,
     Textarea,
     yemenPhoneSchema,
 } from "@/components/ui";
+<<<<<<< HEAD
 import { useApiMutation, useRecordNavigation } from "@/hooks";
 import { AGENT_KEY } from "@/hooks/queries/useAgentQuery";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -36,12 +54,22 @@ import { cn } from "@/lib/utils";
 import { useAuthStore, useHasPermission } from "@/stores/authStore";
 import type { ApiResponse } from "@/types/api";
 import type { AgentDto, AgentSearchResult, EntitledPersonSummary } from "@/types/retirement";
+=======
+import { useApiMutation } from "@/hooks";
+import { useDebounce } from "@/hooks/useDebounce";
+import type { AgentDto, AgentSearchResult } from "@/types/retirement";
+import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/stores/authStore";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Validation Schema ─────────────────────────────────
 
 const baseAgentSchema = z.object({
+<<<<<<< HEAD
     scopeKind: z.enum(["retiree", "allEntitled", "specificEntitled", "legacy"]),
     entitledScope: z.string(),
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     hasAgency: z.enum(["yes", "no"]),
     fullName: z.string().trim().min(3, "اسم الوكيل مطلوب (3 أحرف على الأقل)"),
     nationalID: nationalIdSchema,
@@ -55,10 +83,13 @@ const baseAgentSchema = z.object({
     nationalIDDocument: z.instanceof(File).optional().nullable(),
     agencyDocument: z.instanceof(File).optional().nullable(),
 }).superRefine((data, ctx) => {
+<<<<<<< HEAD
     if (data.scopeKind === "specificEntitled" && !/^[1-9]\d*$/.test(data.entitledScope))
         ctx.addIssue({ code: "custom", message: "اختر المستحق الذي تمثله هذه الوكالة", path: ["entitledScope"] });
     if (data.agencyDate && data.agencyEndDate && data.agencyEndDate < data.agencyDate)
         ctx.addIssue({ code: "custom", message: "تاريخ الانتهاء يجب ألا يسبق تاريخ الإصدار", path: ["agencyEndDate"] });
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     if (data.hasAgency === "yes") {
         if (!data.agencyNumber || data.agencyNumber.trim().length === 0) {
             ctx.addIssue({ code: z.ZodIssueCode.custom, message: "رقم الوكالة مطلوب عند وجود وكالة", path: ["agencyNumber"] });
@@ -71,6 +102,7 @@ const baseAgentSchema = z.object({
 
 type AgentFormValues = z.infer<typeof baseAgentSchema>;
 
+<<<<<<< HEAD
 const createEmptyDefaults: AgentFormValues = {
     scopeKind: "retiree",
     entitledScope: "",
@@ -87,6 +119,8 @@ const createEmptyDefaults: AgentFormValues = {
     agencyDocument: null,
 };
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 interface AgentModalProps {
     open: boolean;
     onClose: () => void;
@@ -109,7 +143,10 @@ export function AgentDialog({
     mode
 }: AgentModalProps) {
     const userId = useAuthStore(s => s.user?.id);
+<<<<<<< HEAD
     const canViewEntitled = useHasPermission("EntitledPerson.View");
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const DRAFT_KEY = useMemo(() => `${BASE_DRAFT_KEY}_${userId || "anon"}_${fileId}`, [userId, fileId]);
     const [searchTerm, setSearchTerm] = useState("");
     const debouncedSearch = useDebounce(searchTerm, 400);
@@ -117,6 +154,7 @@ export function AgentDialog({
     const [selectedAgentId, setSelectedAgentId] = useState<number | null>(null);
     const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number; width: number } | null>(null);
     const inputWrapRef = useRef<HTMLDivElement>(null);
+<<<<<<< HEAD
     const bodyRef = useRef<HTMLDivElement>(null);
 
     // في وضع التعديل: معرّف الوكيل المفتوح (لبذر فهرس التنقل)
@@ -208,12 +246,29 @@ export function AgentDialog({
             onSuccess: (response) => {
                 if (response.data.errors?.length) toast.warning("تم حفظ الوكيل مع نواقص في المرفقات", { description: response.data.errors.join("؛ ") });
                 if (effectiveMode === "create") {
+=======
+
+    const mutation = useApiMutation(
+        async (formData: FormData) => {
+            if (mode === "create") {
+                return api.post("/agents", formData, { headers: { "Content-Type": "multipart/form-data" } });
+            } else {
+                return api.put(`/agents/${initialData?.agentID}`, formData, { headers: { "Content-Type": "multipart/form-data" } });
+            }
+        },
+        {
+            invalidateKeys: [["agents"], ["retirement-file", fileId]],
+            successMessage: mode === "create" ? "تم إضافة الوكيل بنجاح" : "تم تحديث الوكيل بنجاح",
+            onSuccess: () => {
+                if (mode === "create") {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     sessionStorage.removeItem(DRAFT_KEY);
                 }
             }
         }
     );
 
+<<<<<<< HEAD
     // مزامنة حارس التنقل مع حالة الحفظ (يُقرأ عند الضغط فقط)
     useEffect(() => {
         savingRef.current = mutation.isPending;
@@ -222,10 +277,44 @@ export function AgentDialog({
     const allValues = watch();
     useEffect(() => {
         if (effectiveMode === "create" && isDirty) {
+=======
+    const form = useForm<AgentFormValues>({
+        resolver: zodResolver(baseAgentSchema) as Resolver<z.infer<typeof baseAgentSchema>>,
+        defaultValues: useMemo(() => {
+            const saved = sessionStorage.getItem(DRAFT_KEY);
+            if (mode === "create" && saved) {
+                try {
+                    return JSON.parse(saved);
+                } catch { /* ignore */ }
+            }
+            return {
+                hasAgency: "yes" as const,
+                fullName: "",
+                nationalID: "",
+                phone: "",
+                agencyNumber: "",
+                agencyDate: "",
+                agencyEndDate: "",
+                notes: "",
+                personalPhoto: null,
+                nationalIDDocument: null,
+                agencyDocument: null,
+            };
+        }, [mode])
+    });
+
+    const { control, register, reset, watch, setValue, formState: { errors, isDirty } } = form;
+    const hasAgency = watch("hasAgency");
+
+    const allValues = watch();
+    useEffect(() => {
+        if (mode === "create" && isDirty) {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             const { personalPhoto: _p, nationalIDDocument: _n, agencyDocument: _a, ...textFields } = allValues;
             void _p; void _n; void _a;
             sessionStorage.setItem(DRAFT_KEY, JSON.stringify(textFields));
         }
+<<<<<<< HEAD
     }, [allValues, effectiveMode, isDirty]);
 
     // ─── Fill From Entitled Person ───────────────
@@ -327,12 +416,19 @@ export function AgentDialog({
     const safeEntitledIndex = filteredEntitled.length === 0
         ? 0
         : Math.min(entitledActiveIndex, filteredEntitled.length - 1);
+=======
+    }, [allValues, mode, isDirty]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     // ─── Agent Search ──────────────────────────────────
     const { data: searchResults, isLoading: isSearching } = useQuery<AgentSearchResult[]>({
         queryKey: ["agents-search", debouncedSearch],
         queryFn: () => retirementApi.searchAgents(debouncedSearch, 8),
+<<<<<<< HEAD
         enabled: showSuggestions && debouncedSearch.length >= 2 && effectiveMode === "create",
+=======
+        enabled: showSuggestions && debouncedSearch.length >= 2 && mode === "create",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     });
 
     const updateDropdownPos = useCallback(() => {
@@ -346,6 +442,7 @@ export function AgentDialog({
         if (showSuggestions) updateDropdownPos();
     }, [showSuggestions, updateDropdownPos]);
 
+<<<<<<< HEAD
     // Close lists on outside click
     useEffect(() => {
         const handleClickOutside = (e: globalThis.MouseEvent) => {
@@ -355,6 +452,14 @@ export function AgentDialog({
                 setShowSuggestions(false);
                 setEntitledListOpen(false);
                 setEntitledNavigated(false);
+=======
+    // Close suggestions on outside click
+    useEffect(() => {
+        const handleClickOutside = (e: globalThis.MouseEvent) => {
+            const target = e.target as Node;
+            if (inputWrapRef.current && !inputWrapRef.current.contains(target)) {
+                setShowSuggestions(false);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             }
         };
         document.addEventListener("mousedown", handleClickOutside);
@@ -367,7 +472,10 @@ export function AgentDialog({
             setSearchTerm("");
             setShowSuggestions(false);
             setSelectedAgentId(null);
+<<<<<<< HEAD
             setEntitledNavigated(false);
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
     }, [open]);
 
@@ -398,6 +506,7 @@ export function AgentDialog({
     };
 
     const performSubmit = async (values: AgentFormValues, keepOpen = false) => {
+<<<<<<< HEAD
         const scope = agentScopePayload(values.scopeKind, values.entitledScope);
         const scopeChanged = values.scopeKind !== (effectiveData ? agentScopeKind(effectiveData) : "retiree")
             || scope.entitledID !== String(effectiveData?.entitledID ?? "");
@@ -413,6 +522,10 @@ export function AgentDialog({
         if (scope.agencyScope) formData.append("agencyScope", String(scope.agencyScope));
         if (scope.entitledID) formData.append("entitledID", scope.entitledID);
         if (effectiveMode === "edit") formData.append("updateEntitledScope", String(scopeChanged));
+=======
+        const formData = new FormData();
+        if (mode === "create") formData.append("fileID", fileId.toString());
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
         formData.append("fullName", values.fullName);
         formData.append("nationalID", values.nationalID);
@@ -430,7 +543,11 @@ export function AgentDialog({
         if (values.personalPhoto) formData.append("personalPhoto", values.personalPhoto);
         if (values.nationalIDDocument) formData.append("nationalIDDocument", values.nationalIDDocument);
         if (values.hasAgency === "yes" && values.agencyDocument) formData.append("agencyDocument", values.agencyDocument);
+<<<<<<< HEAD
         if (effectiveMode === "edit" && effectiveData?.updatedAt) formData.append("updatedAt", effectiveData.updatedAt);
+=======
+        if (mode === "edit" && initialData?.updatedAt) formData.append("updatedAt", initialData.updatedAt);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
         await mutation.mutateAsync(formData);
 
@@ -438,12 +555,17 @@ export function AgentDialog({
         if (!keepOpen) {
             onClose();
         } else {
+<<<<<<< HEAD
             reset({ ...createEmptyDefaults });
+=======
+            reset();
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             setSelectedAgentId(null);
         }
     };
 
     const onFormSubmit = (values: AgentFormValues) => {
+<<<<<<< HEAD
         return performSubmit(values, false);
     };
 
@@ -461,18 +583,60 @@ export function AgentDialog({
     const suggestions = searchResults?.filter(a => a.agentID !== selectedAgentId) ?? [];
 
     const suggestionsDropdown = showSuggestions && effectiveMode === "create" && dropdownPos && createPortal(
+=======
+        performSubmit(values, false);
+    };
+
+    const handleSaveAndNew = () => {
+        form.handleSubmit((values) => {
+            performSubmit(values, true);
+        })();
+    };
+
+    const initialValues = useMemo(() => {
+        if (!initialData) return undefined;
+        const hasExistingAgency = !!(initialData.agencyNumber && initialData.agencyNumber.trim().length > 0);
+        return {
+            hasAgency: (hasExistingAgency ? "yes" : "no") as "yes" | "no",
+            fullName: initialData.fullName,
+            nationalID: initialData.nationalID,
+            phone: initialData.phone || "",
+            agencyNumber: initialData.agencyNumber || "",
+            agencyDate: initialData.agencyDate ? initialData.agencyDate.split('T')[0] : "",
+            agencyEndDate: (initialData.agencyEndDate && initialData.agencyEndDate !== "0001-01-01T00:00:00")
+                ? initialData.agencyEndDate.split('T')[0]
+                : "",
+            personalPhoto: null,
+            nationalIDDocument: null,
+            agencyDocument: null,
+            notes: initialData.notes || "",
+        };
+    }, [initialData]);
+
+    const suggestions = searchResults?.filter(a => a.agentID !== selectedAgentId) ?? [];
+
+    const suggestionsDropdown = showSuggestions && mode === "create" && dropdownPos && createPortal(
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         <div
             className="fixed z-dialog bg-card border border-border rounded-xl overflow-hidden"
             style={{ top: dropdownPos.top, left: dropdownPos.left, width: dropdownPos.width, direction: "rtl" }}
         >
             {debouncedSearch.length < 2 ? (
                 <div className="p-3 text-center text-sm text-muted-foreground">
+<<<<<<< HEAD
                     <Search className="w-4 h-4 mx-auto mb-1 opacity-100" />
+=======
+                    <Search className="w-4 h-4 mx-auto mb-1 opacity-40" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     اكتب حرفين على الأقل للبحث عن وكيل موجود...
                 </div>
             ) : isSearching ? (
                 <div className="p-3 text-center text-sm text-muted-foreground">
+<<<<<<< HEAD
                     <div className="w-4 h-4 border-2 border-primary border-t-primary rounded-full animate-spin mx-auto mb-1" />
+=======
+                    <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-1" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     جاري البحث...
                 </div>
             ) : suggestions.length === 0 ? (
@@ -489,7 +653,11 @@ export function AgentDialog({
                             key={agent.agentID}
                             type="button"
                             variant="ghost"
+<<<<<<< HEAD
                             className="w-full justify-start p-3 h-auto border-b border-border last:border-0"
+=======
+                            className="w-full justify-start p-3 h-auto border-b border-border/30 last:border-0"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             onPointerDown={(e: PointerEvent) => e.stopPropagation()}
                             onMouseDown={(e: MouseEvent) => e.stopPropagation()}
                             onClick={() => handleSelectAgent(agent)}
@@ -502,7 +670,11 @@ export function AgentDialog({
                                     <Text variant="body" className="font-bold truncate">{agent.fullName}</Text>
                                     <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-0.5 text-xs text-muted-foreground">
                                         <span className="font-mono">{agent.nationalID}</span>
+<<<<<<< HEAD
                                         {agent.phone && <span>{agent.phone}</span>}
+=======
+                                        {agent.phone && <span className="font-mono">{agent.phone}</span>}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     </div>
                                     <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-0.5 text-xs text-muted-foreground">
                                         <span>وكالة: {agent.agencyNumber}</span>
@@ -522,22 +694,36 @@ export function AgentDialog({
         <BaseFormDialog
             isOpen={open}
             onClose={onClose}
+<<<<<<< HEAD
             title={effectiveMode === "create" ? "تسجيل وكيل جديد" : "تعديل بيانات الوكيل"}
             description={
                 effectiveMode === "create"
+=======
+            title={mode === "create" ? "تسجيل وكيل جديد" : "تعديل بيانات الوكيل"}
+            description={
+                mode === "create"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     ? `إضافة وكيل قانوني لاستلام المستحقات نيابة عن صاحب الملف ${fileNumber ? `(${fileNumber})` : ""}`
                     : `تحديث بيانات الوكيل والوكالة القانونية ${fileNumber ? `(${fileNumber})` : ""}`
             }
             size="full"
+<<<<<<< HEAD
             isLoading={mutation.isPending || !detailReady}
             isDirty={isDirty}
             onSubmit={form.handleSubmit(onFormSubmit)}
             onSaveAndNew={effectiveMode === "create" ? handleSaveAndNew : undefined}
+=======
+            isLoading={mutation.isPending}
+            isDirty={isDirty}
+            onSubmit={form.handleSubmit(onFormSubmit)}
+            onSaveAndNew={mode === "create" ? handleSaveAndNew : undefined}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             resetOnOpen={true}
             reset={form.reset}
             initialValues={initialValues}
             showGlobalError
             formErrors={errors}
+<<<<<<< HEAD
             submitLabel={effectiveMode === "create" ? "تسجيل الوكيل" : "حفظ التعديلات"}
         >
             <div className="space-y-4" ref={bodyRef} onKeyDown={handleEnterChain}>
@@ -631,12 +817,29 @@ export function AgentDialog({
                                     aria-controls="entitled-listbox"
                                     onFocus={() => {
                                         if (effectiveMode === "create" && !entitledListOpen && watch("fullName").length >= 2) {
+=======
+            submitLabel={mode === "create" ? "تسجيل الوكيل" : "حفظ التعديلات"}
+        >
+            <div className="space-y-4">
+                <FormSection title="بيانات الوكيل الأساسية" icon={User}>
+                    <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+                        <FormField label="الاسم الكامل للوكيل" required error={errors.fullName?.message} className="md:col-span-3">
+                            <div className="relative" ref={inputWrapRef}>
+                                <Input
+                                    {...register("fullName")}
+                                    autoFocus
+                                    placeholder="الاسم الرباعي واللقب"
+                                    autoComplete="off"
+                                    onFocus={() => {
+                                        if (mode === "create" && watch("fullName").length >= 2) {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             setShowSuggestions(true);
                                         }
                                     }}
                                     onChange={(e) => {
                                         register("fullName").onChange(e);
                                         setSearchTerm(e.target.value);
+<<<<<<< HEAD
                                         if (!entitledListOpen) setShowSuggestions(true);
                                         setSelectedAgentId(null);
                                         setEntitledNavigated(false);
@@ -670,6 +873,14 @@ export function AgentDialog({
                                     className={cn(selectedAgentId && "border-primary bg-primary/5")}
                                 />
                                 {selectedAgentId && effectiveMode === "create" && (
+=======
+                                        setShowSuggestions(true);
+                                        setSelectedAgentId(null);
+                                    }}
+                                    className={cn(selectedAgentId && "border-primary/50 bg-primary/5")}
+                                />
+                                {selectedAgentId && mode === "create" && (
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     <Button
                                         type="button"
                                         variant="ghost"
@@ -682,6 +893,7 @@ export function AgentDialog({
                                         <X className="w-3 h-3" />
                                     </Button>
                                 )}
+<<<<<<< HEAD
                                 </div>
 
                                 {effectiveMode === "create" && canViewEntitled && entitledListOpen && (
@@ -730,15 +942,25 @@ export function AgentDialog({
                                     </div>
                                 )}
                             </div>
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             </div>
                         </FormField>
 
                         <FormField label="الرقم الوطني" required error={errors.nationalID?.message} className="md:col-span-2">
+<<<<<<< HEAD
                             <Input {...register("nationalID")} placeholder="12xxxxxxxxxx" />
                         </FormField>
 
                         <FormField label="رقم الهاتف للتواصل" error={errors.phone?.message} className="md:col-span-1">
                             <Input {...register("phone")} placeholder="7xxxxxxx" />
+=======
+                            <Input {...register("nationalID")} className="font-mono font-bold" placeholder="12xxxxxxxxxx" />
+                        </FormField>
+
+                        <FormField label="رقم الهاتف للتواصل" error={errors.phone?.message} className="md:col-span-1">
+                            <Input {...register("phone")} placeholder="7xxxxxxx" className="font-mono font-bold" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         </FormField>
                     </div>
                 </FormSection>
@@ -754,7 +976,11 @@ export function AgentDialog({
                                 setValue("agencyEndDate", "", { shouldDirty: true });
                             }
                         }}
+<<<<<<< HEAD
                         className="flex w-fit ms-auto items-center gap-6 h-10 border rounded-md px-4 bg-muted/5"
+=======
+                        className="flex items-center gap-6 h-10 border rounded-md px-4 bg-muted/5"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     >
                         <label className="flex items-center gap-2 cursor-pointer">
                             <RadioGroupItem value="yes" className="accent-primary" />
@@ -766,11 +992,18 @@ export function AgentDialog({
                         </label>
                     </RadioGroup>
 
+<<<<<<< HEAD
 
                     {hasAgency === "yes" && (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <FormField label="رقم الوكالة الرسمية" required error={errors.agencyNumber?.message}>
                                 <Input {...register("agencyNumber")} className="font-bold" placeholder="أدخل رقم الوكالة" />
+=======
+                    {hasAgency === "yes" && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <FormField label="رقم الوكالة الرسمية" required error={errors.agencyNumber?.message}>
+                                <Input {...register("agencyNumber")} className="font-mono font-bold" placeholder="أدخل رقم الوكالة" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             </FormField>
 
                             <FormField label="تاريخ الصدور" required error={errors.agencyDate?.message}>
@@ -820,7 +1053,11 @@ export function AgentDialog({
                     )}
                 </FormSection>
 
+<<<<<<< HEAD
                 <FormSection title="الوثائق والمرفقات" icon={FileText}>
+=======
+                <FormSection title="الوثائق الثبوتية والمرفقات" icon={FileText}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <FileField
                             name="personalPhoto"

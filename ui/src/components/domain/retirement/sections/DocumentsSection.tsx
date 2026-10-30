@@ -1,11 +1,17 @@
+<<<<<<< HEAD
 import { useQueryClient } from "@tanstack/react-query";
 import { FileText, FileWarning, Loader2,Upload, X } from "lucide-react";
 import { useCallback,useState } from "react";
+=======
+import { useState, useCallback } from "react";
+import { FileText, Upload, FileWarning, X, Loader2 } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 import { Heading } from "@/components/ui";
 import { Button } from "@/components/ui";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui";
 import { EmptyState } from "@/components/ui";
+<<<<<<< HEAD
 import { useDocumentsByFileQuery } from "@/hooks/queries/useDocumentsByFileQuery";
 import { useMissingDocumentsQuery } from "@/hooks/queries/useMissingDocumentsQuery";
 import { useDocumentBlob } from "@/hooks/useDocumentBlob";
@@ -16,6 +22,18 @@ import type { DocumentItem } from "@/types/retirement";
 import { DocumentActions } from "../DocumentActions";
 import { UploadDocumentDialog } from "../UploadDocumentDialog";
 
+=======
+import { useQueryClient } from "@tanstack/react-query";
+import { UploadDocumentDialog } from "../UploadDocumentDialog";
+import { DocumentActions } from "../DocumentActions";
+import { useHasPermission } from "@/stores/authStore";
+import { cn } from "@/lib/utils";
+import { useDocumentsByFileQuery } from "@/hooks/queries/useDocumentsByFileQuery";
+import { useMissingDocumentsQuery } from "@/hooks/queries/useMissingDocumentsQuery";
+import { useDocumentBlob } from "@/hooks/useDocumentBlob";
+import type { DocumentItem } from "@/types/retirement";
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 interface DocumentsSectionProps {
     fileId: number;
 }
@@ -68,7 +86,11 @@ function DocumentPreview({ doc }: { doc: DocumentItem }) {
 
     return (
         <div className="flex flex-col items-center justify-center h-full gap-4 p-6">
+<<<<<<< HEAD
             <FileText className="w-16 h-16 text-muted-foreground" />
+=======
+            <FileText className="w-16 h-16 text-muted-foreground/40" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             <div className="text-center">
                 <p className="font-medium">{doc.documentTypeName}</p>
                 <p className="text-sm text-muted-foreground mt-1">
@@ -186,7 +208,11 @@ export function DocumentsSection({ fileId }: DocumentsSectionProps) {
                                                 "flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors",
                                                 selectedDoc?.documentID === doc.documentID
                                                     ? "border-primary bg-primary/5"
+<<<<<<< HEAD
                                                     : "border-border bg-card hover:border-muted-foreground"
+=======
+                                                    : "border-border bg-card hover:border-muted-foreground/30"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             )}
                                         >
                                             <FileText className={cn(

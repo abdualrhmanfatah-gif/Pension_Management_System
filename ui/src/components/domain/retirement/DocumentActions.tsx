@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useQueryClient } from "@tanstack/react-query";
 import { Download, Pencil, Settings, StickyNote, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -13,6 +14,21 @@ import type { DocumentItem } from "@/types/retirement";
 import { DocumentProcessDialog } from "./DocumentProcessDialog";
 import { EditDocumentDialog } from "./EditDocumentDialog";
 import { NoteDialog } from "./NoteDialog";
+=======
+import { useState } from "react";
+import { Download, Pencil, StickyNote, Settings, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui";
+import { useHasPermission } from "@/stores/authStore";
+import { useApiMutation, useConfirm } from "@/hooks";
+import { useQueryClient } from "@tanstack/react-query";
+import { documentsApi } from "@/api/documents";
+import api, { getFileUrl } from "@/api/axios";
+import { cn } from "@/lib/utils";
+import { EditDocumentDialog } from "./EditDocumentDialog";
+import { NoteDialog } from "./NoteDialog";
+import { DocumentProcessDialog } from "./DocumentProcessDialog";
+import type { DocumentItem } from "@/types/retirement";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface DocumentActionsProps {
     document: DocumentItem;

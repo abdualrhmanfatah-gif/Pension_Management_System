@@ -13,9 +13,14 @@ import {
     FormField,
     FormSection,
     Input,
+<<<<<<< HEAD
     NativeSelect,
     NoteBox,
     yemenPhoneSchema,
+=======
+    NoteBox,
+    NativeSelect
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 } from "@/components/ui";
 import { useApiMutation } from "@/hooks";
 
@@ -26,7 +31,11 @@ const tenantSchema = z.object({
     tenantType: z.enum(["Individual", "Company", "Merchant"]),
     nationalID: z.string().trim().optional(),
     commercialRegister: z.string().trim().optional(),
+<<<<<<< HEAD
     phone: yemenPhoneSchema,
+=======
+    phone: z.string().min(7, "رقم الهاتف غير صحيح"),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     address: z.string().trim().optional(),
 }).superRefine((data, ctx) => {
     if (data.tenantType === "Individual" && (!data.nationalID || data.nationalID.length < 5)) {
@@ -172,7 +181,11 @@ export function TenantDialog({
                         </FormField>
                         {selectedType === "Individual" ? (
                             <FormField label="الرقم الوطني" required error={errors.nationalID?.message}>
+<<<<<<< HEAD
                                 <Input {...register("nationalID")} />
+=======
+                                <Input {...register("nationalID")} className="font-mono" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             </FormField>
                         ) : (
                             <FormField label="السجل التجاري" required error={errors.commercialRegister?.message}>
@@ -180,7 +193,11 @@ export function TenantDialog({
                             </FormField>
                         )}
                         <FormField label="رقم الهاتف" required error={errors.phone?.message}>
+<<<<<<< HEAD
                             <Input {...register("phone")} placeholder="7xxxxxxx" />
+=======
+                            <Input {...register("phone")} className="font-mono" dir="ltr" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         </FormField>
                     </div>
                 </FormSection>

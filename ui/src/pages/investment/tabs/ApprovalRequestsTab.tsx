@@ -5,8 +5,13 @@ import { toast } from "sonner";
 
 import type { ApprovalRequestDto } from "@/api/investment";
 import { investmentApi } from "@/api/investment";
+<<<<<<< HEAD
 import { ApprovalRequestDialog } from "@/components/domain/investment/ApprovalRequestDialog";
 import { Badge, Button, CrudPageLayout, type CustomColumnDef, ErrorState } from "@/components/ui";
+=======
+import { Badge, Button, CrudPageLayout, type CustomColumnDef, ErrorState } from "@/components/ui";
+import { ApprovalRequestDialog } from "@/components/domain/investment/ApprovalRequestDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { APPROVAL_STATUS } from "@/constants";
 import { useApiMutation,useCrudState } from "@/hooks";
 import { useHasPermission } from "@/stores/authStore";
@@ -90,7 +95,11 @@ export function ApprovalRequestsTab() {
                     <Button
                         variant="ghost"
                         size="sm"
+<<<<<<< HEAD
                         className="text-success hover:text-success hover:bg-success/10 gap-1"
+=======
+                        className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 gap-1"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         onClick={() => updateStatusMutation.mutate({ id: row.approvalID, status: APPROVAL_STATUS.APPROVED, note: "تم الاعتماد من خلال النظام" })}
                         loading={updateStatusMutation.isPending}
                     >
@@ -99,7 +108,11 @@ export function ApprovalRequestsTab() {
                     <Button
                         variant="ghost"
                         size="sm"
+<<<<<<< HEAD
                         className="text-danger hover:text-danger hover:bg-danger/10 gap-1"
+=======
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50 gap-1"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         onClick={() => updateStatusMutation.mutate({ id: row.approvalID, status: APPROVAL_STATUS.REJECTED, note: "تم الرفض من خلال النظام" })}
                         loading={updateStatusMutation.isPending}
                     >

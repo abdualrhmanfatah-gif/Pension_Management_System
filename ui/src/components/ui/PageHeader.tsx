@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+=======
+import { cn } from "@/lib/utils";
+import * as React from "react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface PageHeaderProps {
     title: string;

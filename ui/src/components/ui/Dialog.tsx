@@ -2,8 +2,11 @@ import { X } from 'lucide-react';
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 
+<<<<<<< HEAD
 import { claimDialogEvent, type DialogLayer,isTopmostDialog, registerDialogLayer } from '@/lib/dialog-stack';
 import { handleDialogEnter } from '@/lib/enterFocus';
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { cn } from '@/lib/utils';
 
 // ─── Context ──────────────────────────────────────────
@@ -11,13 +14,19 @@ import { cn } from '@/lib/utils';
 interface DialogContextValue {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+<<<<<<< HEAD
   layer: DialogLayer | null;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 const DialogContext = React.createContext<DialogContextValue>({
   open: false,
   onOpenChange: () => {},
+<<<<<<< HEAD
   layer: null,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 });
 
 // ─── Root ─────────────────────────────────────────────
@@ -30,6 +39,7 @@ const Dialog = ({
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   children?: React.ReactNode;
+<<<<<<< HEAD
 }) => {
   const { layer: parent } = React.useContext(DialogContext);
   const layer = React.useMemo<DialogLayer>(() => ({ parent, element: null }), [parent]);
@@ -37,6 +47,13 @@ const Dialog = ({
     {children}
   </DialogContext.Provider>;
 };
+=======
+}) => (
+  <DialogContext.Provider value={{ open, onOpenChange }}>
+    {children}
+  </DialogContext.Provider>
+);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Trigger & Close ──────────────────────────────────
 
@@ -144,7 +161,11 @@ function useFocusTrap(containerRef: React.RefObject<HTMLElement | null>, enabled
       );
 
     const handleTabKey = (e: KeyboardEvent) => {
+<<<<<<< HEAD
       if (e.key !== 'Tab' || !isTopmostDialog(container)) return;
+=======
+      if (e.key !== 'Tab') return;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
       // Recompute on every Tab press so dynamic content (steps, dropdowns,
       // disabled buttons) is always accounted for.
@@ -178,13 +199,17 @@ function useFocusTrap(containerRef: React.RefObject<HTMLElement | null>, enabled
 
 // ─── Scroll Lock Hook ─────────────────────────────────
 
+<<<<<<< HEAD
 let scrollLockCount = 0;
 let restoreScrollLock: (() => void) | null = null;
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 function useScrollLock(enabled: boolean) {
   React.useEffect(() => {
     if (!enabled) return;
 
+<<<<<<< HEAD
     if (scrollLockCount++ === 0) {
       const htmlDir = document.documentElement.getAttribute('dir') || 'rtl';
       const cssProp = htmlDir === 'rtl' ? 'padding-left' : 'padding-right';
@@ -207,6 +232,21 @@ function useScrollLock(enabled: boolean) {
         restoreScrollLock?.();
         restoreScrollLock = null;
       }
+=======
+    const htmlDir = document.documentElement.getAttribute('dir') || 'rtl';
+    const cssProp = htmlDir === 'rtl' ? 'padding-left' : 'padding-right';
+    const originalPadding = document.body.style.getPropertyValue(cssProp);
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+    document.body.style.overflow = 'hidden';
+    if (scrollbarWidth > 0) {
+      document.body.style.setProperty(cssProp, `${scrollbarWidth}px`);
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.setProperty(cssProp, originalPadding);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     };
   }, [enabled]);
 }
@@ -239,11 +279,16 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
     },
     ref
   ) => {
+<<<<<<< HEAD
     const { open, onOpenChange, layer } = React.useContext(DialogContext);
+=======
+    const { open, onOpenChange } = React.useContext(DialogContext);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const dialogRef = React.useRef<HTMLDivElement>(null);
     const [isVisible, setIsVisible] = React.useState(false);
     const [isAnimating, setIsAnimating] = React.useState(false);
 
+<<<<<<< HEAD
     React.useLayoutEffect(() => {
       if (open && layer && dialogRef.current) return registerDialogLayer(layer, dialogRef.current);
     }, [open, layer]);
@@ -262,6 +307,10 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
       },
       [ref]
     );
+=======
+    // Merge refs
+    React.useImperativeHandle(ref, () => dialogRef.current!, []);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     // Scroll lock
     useScrollLock(open);
@@ -281,7 +330,11 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
         // Auto focus after animation starts
         const timer = setTimeout(() => {
           const dialogEl = dialogRef.current;
+<<<<<<< HEAD
           if (!dialogEl || !isTopmostDialog(dialogEl)) return;
+=======
+          if (!dialogEl) return;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
           if (onOpenAutoFocus) {
             onOpenAutoFocus({
@@ -320,6 +373,7 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
       if (!open) return;
 
       const handleEscape = (e: KeyboardEvent) => {
+<<<<<<< HEAD
         if (e.key !== 'Escape' || e.defaultPrevented || !isTopmostDialog(dialogRef.current)) return;
         if (document.querySelector('[data-radix-popper-content-wrapper]')) return;
         if (!claimDialogEvent(e)) return;
@@ -327,6 +381,14 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
         onEscapeKeyDown?.({ preventDefault: () => { prevented = true; } });
         e.preventDefault();
         if (!prevented) onOpenChange(false);
+=======
+        if (e.key === 'Escape') {
+          if (onEscapeKeyDown) {
+            onEscapeKeyDown({ preventDefault: () => {} });
+          }
+          onOpenChange(false);
+        }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       };
 
       document.addEventListener('keydown', handleEscape);
@@ -336,7 +398,11 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
     if (!isVisible && !open) return null;
 
     const handleOverlayClick = (e: React.MouseEvent) => {
+<<<<<<< HEAD
       if (e.target === e.currentTarget && isTopmostDialog(dialogRef.current)) {
+=======
+      if (e.target === e.currentTarget) {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         let prevented = false;
         if (onInteractOutside) {
           onInteractOutside({ preventDefault: () => { prevented = true; } });
@@ -349,9 +415,12 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
       onKeyDown?.(e);
+<<<<<<< HEAD
       if (open && isTopmostDialog(dialogRef.current)) {
         handleDialogEnter(e.currentTarget as HTMLElement, e.nativeEvent);
       }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     };
 
     const content = (
@@ -365,7 +434,11 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
         aria-hidden={!open && !isAnimating}
       >
         <div
+<<<<<<< HEAD
           ref={setDialogRef}
+=======
+          ref={dialogRef}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           id={id}
           role={role}
           aria-modal="true"
@@ -408,7 +481,11 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
               onClick={() => onOpenChange(false)}
               className={cn(
                 'absolute end-2 top-2',
+<<<<<<< HEAD
                 'rounded-full opacity-100 ring-offset-background transition-all duration-200',
+=======
+                'rounded-full opacity-60 ring-offset-background transition-all duration-200',
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 'hover:opacity-100 hover:bg-accent hover:text-accent-foreground',
                 'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
                 'disabled:pointer-events-none z-50',
@@ -447,7 +524,11 @@ const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
     className={cn(
       'flex flex-col gap-1 text-center sm:text-[start]',
       'px-[var(--dlg-section-p)] py-3',
+<<<<<<< HEAD
       'font-sans',
+=======
+      'border-b font-sans',
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       className
     )}
     {...props}
@@ -460,7 +541,11 @@ const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
     className={cn(
       'flex flex-col-reverse gap-1.5 sm:flex-row sm:justify-end sm:gap-2',
       'px-[var(--dlg-section-p)] py-[var(--dlg-footer-py)]',
+<<<<<<< HEAD
       'bg-muted/5 font-sans',
+=======
+      'border-t bg-muted/5 font-sans',
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       className
     )}
     {...props}
@@ -503,4 +588,8 @@ export {
   DialogTitle,
   DialogTrigger,
 };
+<<<<<<< HEAD
 export type { DialogContentProps };
+=======
+export type { DialogContentProps };
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

@@ -4,9 +4,13 @@ namespace PensionMS.Core.DTOs.Agents;
 
 public class CreateAgentDto
 {
+<<<<<<< HEAD
     public int? AgencyScope { get; set; }
     public int FileID { get; set; }
     public int? EntitledID { get; set; }
+=======
+    public int FileID { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string FullName { get; set; } = string.Empty;
     public string NationalID { get; set; } = string.Empty;
     public IRemoteFile? PersonalPhoto { get; set; }
@@ -22,9 +26,12 @@ public class CreateAgentDto
 
 public class UpdateAgentDto
 {
+<<<<<<< HEAD
     public int? AgencyScope { get; set; }
     public bool UpdateEntitledScope { get; set; }
     public int? EntitledID { get; set; }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string FullName { get; set; } = string.Empty;
     public string NationalID { get; set; } = string.Empty;
     public IRemoteFile? PersonalPhoto { get; set; }
@@ -45,12 +52,18 @@ public class UpdateAgentDto
 
 public class AgentDto
 {
+<<<<<<< HEAD
     public int? AgencyScope { get; set; }
     public int AgentID { get; set; }
     public int FileID { get; set; }
     public string FileNumber { get; set; } = string.Empty;
     public int? EntitledID { get; set; }
     public string? EntitledPersonName { get; set; }
+=======
+    public int AgentID { get; set; }
+    public int FileID { get; set; }
+    public string FileNumber { get; set; } = string.Empty;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string FullName { get; set; } = string.Empty;
     public string NationalID { get; set; } = string.Empty;
     public string? PersonalPhotoPath { get; set; }
@@ -67,8 +80,11 @@ public class AgentDto
 
 public class AgentSearchResultDto
 {
+<<<<<<< HEAD
     public int? AgencyScope { get; set; }
     public bool IsActive { get; set; }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public int AgentID { get; set; }
     public string FullName { get; set; } = string.Empty;
     public string NationalID { get; set; } = string.Empty;
@@ -82,7 +98,10 @@ public class AgentSearchResultDto
     public string? AgencyDocumentPath { get; set; }
     public int FileID { get; set; }
     public string FileNumber { get; set; } = string.Empty;
+<<<<<<< HEAD
     public int? EntitledID { get; set; }
     public string? EntitledPersonName { get; set; }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? RetireeMilitaryNumber { get; set; }
 }

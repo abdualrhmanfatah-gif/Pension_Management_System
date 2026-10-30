@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+<<<<<<< HEAD
 import {
   BarChart3,
   Database,
@@ -15,6 +16,23 @@ import { fiscalYearsApi, periodsApi } from "@/api/accounting";
 import { budgetApi } from "@/api/budget";
 import { BudgetFormDialog } from "@/components/domain/accounting/BudgetFormDialog";
 import { BudgetReport } from "@/components/domain/accounting/BudgetReport";
+=======
+import { useEffect, useState } from "react";
+import {
+  BarChart3,
+  Database,
+  Plus,
+  RefreshCw,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+} from "lucide-react";
+
+import { budgetApi } from "@/api/budget";
+import { fiscalYearsApi, periodsApi } from "@/api/accounting";
+import { useHasPermission } from "@/stores/authStore";
+import { toast } from "sonner";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
   Button,
   Card,
@@ -26,18 +44,32 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+<<<<<<< HEAD
   StickyHeader,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
+<<<<<<< HEAD
+=======
+  StickyHeader,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   Text,
   useConfirm,
 } from "@/components/ui";
 import { formatCurrency } from "@/lib/utils";
+<<<<<<< HEAD
 import { useHasPermission } from "@/stores/authStore";
 import type { FiscalPeriodDto,FiscalYearSummaryDto } from "@/types/accounting";
 import type { BudgetReportDto, MonthlyBudgetReportDto,QuarterlyBudgetReportDto } from "@/types/budget";
+=======
+import { BudgetFormDialog } from "@/components/domain/accounting/BudgetFormDialog";
+import { BudgetReport } from "@/components/domain/accounting/BudgetReport";
+import type { BudgetReportDto, QuarterlyBudgetReportDto, MonthlyBudgetReportDto } from "@/types/budget";
+import type { FiscalYearSummaryDto, FiscalPeriodDto } from "@/types/accounting";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function BudgetPage() {
   const canManage = useHasPermission("Accounting.Manage", "System.Admin");

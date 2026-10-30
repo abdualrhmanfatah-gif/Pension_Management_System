@@ -1,10 +1,17 @@
 import { useMemo } from 'react';
 
+<<<<<<< HEAD
 import type { ChartColorConfig,ChartConfig } from '@/api/reports';
 
 import { ReportBarChart } from './ReportBarChart';
 import { ReportLineChart } from './ReportLineChart';
 import { ReportPieChart } from './ReportPieChart';
+=======
+import { ReportBarChart } from './ReportBarChart';
+import { ReportPieChart } from './ReportPieChart';
+import { ReportLineChart } from './ReportLineChart';
+import type { ChartConfig, ChartColorConfig } from '@/api/reports';
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface ReportChartSectionProps {
     charts: ChartConfig[];

@@ -2,6 +2,7 @@ using PensionMS.Core.Interfaces;
 
 namespace PensionMS.Core.Entities;
 
+<<<<<<< HEAD
 public enum AgentScope
 {
     Retiree = 1,
@@ -9,6 +10,8 @@ public enum AgentScope
     SpecificEntitled = 3
 }
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 /// <summary>
 /// الوكلاء
 /// </summary>
@@ -19,6 +22,7 @@ public class Agent : ISoftDeletable
     public int FileID { get; set; }
     public virtual RetirementFile RetirementFile { get; set; } = null!;
 
+<<<<<<< HEAD
     /// <summary>
     /// المستحق المرتبط — NULL = وكيل عام للملف
     /// </summary>
@@ -27,6 +31,8 @@ public class Agent : ISoftDeletable
     public AgentScope? AgencyScope { get; set; }
     public virtual EntitledPerson? EntitledPerson { get; set; }
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string FullName { get; set; } = string.Empty;
     public string NationalID { get; set; } = string.Empty;
     public string? PersonalPhotoPath { get; set; }

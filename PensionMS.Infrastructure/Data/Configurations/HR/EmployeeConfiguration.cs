@@ -72,7 +72,11 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
                 JobTitleID = 1, JobPositions = "المدير العام",
                 DepartmentID = 6, EmploymentStatusID = 1,
                 AcademicQualifications = "جامعي",
+<<<<<<< HEAD
                 BirthDate = new DateOnly(1966, 12, 31),
+=======
+                BirthDate = new DateTime(1966, 12, 31, 0, 0, 0, DateTimeKind.Utc),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 Address = "المنصورة", MaritalStatus = "متزوج", Gender = 1,
                 HireDate = new DateTime(1984, 8, 4, 0, 0, 0, DateTimeKind.Utc),
                 CreatedAt = seedDate
@@ -86,7 +90,11 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
                 JobTitleID = 2, JobPositions = "نائب المدير العام المدير المالي",
                 DepartmentID = 6, EmploymentStatusID = 1,
                 Phone = "777618680", AcademicQualifications = "دكتوراه إدارة أعمال",
+<<<<<<< HEAD
                 BirthDate = new DateOnly(1990, 1, 28),
+=======
+                BirthDate = new DateTime(1990, 1, 28, 0, 0, 0, DateTimeKind.Utc),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 BirthPlace = "بيت الفقيه/الحديدة", Address = "المنصورة", MaritalStatus = "متزوج", Gender = 1,
                 HireDate = new DateTime(2009, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 CreatedAt = seedDate
@@ -100,7 +108,11 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
                 JobTitleID = 6, JobPositions = "مساعد المدير العام",
                 DepartmentID = 6, EmploymentStatusID = 1,
                 AcademicQualifications = "بكالوريوس قانون",
+<<<<<<< HEAD
                 BirthDate = new DateOnly(1986, 5, 20),
+=======
+                BirthDate = new DateTime(1986, 5, 20, 0, 0, 0, DateTimeKind.Utc),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 BirthPlace = "عدن", Address = "خورمكسر/العريش", MaritalStatus = "متزوج", Gender = 1,
                 HireDate = new DateTime(2010, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 CreatedAt = seedDate
@@ -137,7 +149,11 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
                 JobTitleID = 6, JobPositions = "مدير التخطيط",
                 DepartmentID = 6, EmploymentStatusID = 1,
                 Phone = "771985009", AcademicQualifications = "ماجستير نظم معلومات",
+<<<<<<< HEAD
                 BirthDate = new DateOnly(1991, 7, 30),
+=======
+                BirthDate = new DateTime(1991, 7, 30, 0, 0, 0, DateTimeKind.Utc),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 BirthPlace = "بيت الفقيه/الحديدة", Address = "المنصورة", MaritalStatus = "متزوج", Gender = 1,
                 HireDate = new DateTime(2014, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 CreatedAt = seedDate
@@ -151,7 +167,11 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
                 JobTitleID = 5, JobPositions = "نائب المدير المالي رئيس الحاسب الآلي والحسابات",
                 DepartmentID = 4, SectionID = 14, EmploymentStatusID = 1,
                 Phone = "778306198", AcademicQualifications = "دبلوم + 7 دورات كمبيوتر",
+<<<<<<< HEAD
                 BirthDate = new DateOnly(1973, 3, 6),
+=======
+                BirthDate = new DateTime(1973, 3, 6, 0, 0, 0, DateTimeKind.Utc),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 BirthPlace = "عدن/صيرة", Address = "مديرية الشيخ عثمان/الممدارة", MaritalStatus = "متزوج", Gender = 1,
                 HireDate = new DateTime(1991, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 CreatedAt = seedDate
@@ -165,7 +185,11 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
                 JobTitleID = 5, JobPositions = "رئيس قسم الأرشيف",
                 DepartmentID = 1, SectionID = 6, EmploymentStatusID = 1,
                 Phone = "783421792", AcademicQualifications = "ثانوية عامة",
+<<<<<<< HEAD
                 BirthDate = new DateOnly(1987, 8, 13),
+=======
+                BirthDate = new DateTime(1987, 8, 13, 0, 0, 0, DateTimeKind.Utc),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 BirthPlace = "عدن/دار سعد", Address = "عدن/دار سعد/الميدان", MaritalStatus = "متزوجة", Gender = 0,
                 HireDate = new DateTime(2008, 1, 5, 0, 0, 0, DateTimeKind.Utc),
                 CreatedAt = seedDate
@@ -179,7 +203,11 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
                 JobTitleID = 6, JobPositions = "مختص البحث الاجتماعي",
                 DepartmentID = 1, SectionID = 1, EmploymentStatusID = 1,
                 Phone = "772373136", AcademicQualifications = "بكالوريوس قسم حاسوب",
+<<<<<<< HEAD
                 BirthDate = new DateOnly(1994, 5, 18),
+=======
+                BirthDate = new DateTime(1994, 5, 18, 0, 0, 0, DateTimeKind.Utc),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 BirthPlace = "عدن/صيرة", Address = "خورمكسر/العريش", MaritalStatus = "عازبة", Gender = 0,
                 HireDate = new DateTime(2015, 12, 1, 0, 0, 0, DateTimeKind.Utc),
                 CreatedAt = seedDate
@@ -204,7 +232,11 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
                 JobTitleID = 5, JobPositions = "رئيس قسم المخازن",
                 DepartmentID = 4, SectionID = 18, EmploymentStatusID = 1,
                 Phone = "784881417", AcademicQualifications = "ثانوية",
+<<<<<<< HEAD
                 BirthDate = new DateOnly(1988, 1, 2),
+=======
+                BirthDate = new DateTime(1988, 1, 2, 0, 0, 0, DateTimeKind.Utc),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 BirthPlace = "الحديدة", Address = "الثقنية", MaritalStatus = "عازب", Gender = 1,
                 HireDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 CreatedAt = seedDate
@@ -217,7 +249,11 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
                 JobTitleID = 5, JobPositions = "رئيس قسم المراجعة",
                 DepartmentID = 4, SectionID = 17, EmploymentStatusID = 1,
                 AcademicQualifications = "بكالوريوس هندسة مدنية",
+<<<<<<< HEAD
                 BirthDate = new DateOnly(2003, 7, 24),
+=======
+                BirthDate = new DateTime(2003, 7, 24, 0, 0, 0, DateTimeKind.Utc),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 BirthPlace = "عدن", Address = "عدن/الشيخ عثمان/الممدارة", MaritalStatus = "عازب", Gender = 1,
                 HireDate = seedDate,
                 CreatedAt = seedDate

@@ -1,9 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+<<<<<<< HEAD
 import { useQuery } from "@tanstack/react-query";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { BarChart3 } from "lucide-react";
 import { useEffect } from "react";
 import { type Resolver, useForm } from "react-hook-form";
 
+<<<<<<< HEAD
 import { accountsApi, periodsApi,quartersApi } from "@/api/accounting";
 import { budgetApi } from "@/api/budget";
 import { BaseFormDialog, FormField, FormSection, Input, NativeSelect } from "@/components/ui";
@@ -13,6 +17,18 @@ import {
   type CreateBudgetItemForm,
   createBudgetItemSchema,
 } from "@/types/budget";
+=======
+import { budgetApi } from "@/api/budget";
+import { accountsApi, quartersApi, periodsApi } from "@/api/accounting";
+import { BaseFormDialog, FormField, FormSection, Input, NativeSelect } from "@/components/ui";
+import { useApiMutation } from "@/hooks";
+import {
+  createBudgetItemSchema,
+  type CreateBudgetItemForm,
+} from "@/types/budget";
+import { useQuery } from "@tanstack/react-query";
+import type { ChartOfAccountDto, QuarterDto, FiscalPeriodDto } from "@/types/accounting";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface Props {
   open: boolean;

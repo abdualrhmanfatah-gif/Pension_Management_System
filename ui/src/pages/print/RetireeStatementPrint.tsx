@@ -4,6 +4,7 @@ import { useNavigate,useParams } from "react-router-dom";
 
 import api from "@/api/axios";
 import { ministryApi } from "@/api/ministry";
+<<<<<<< HEAD
 import { UnifiedRetireeStatement } from "@/components/common/UnifiedRetireeStatement";
 import type { Statement } from "@/components/domain/print/print.types";
 import { fetchFileDetails } from "@/components/domain/print/print.utils";
@@ -11,6 +12,16 @@ import { Button } from "@/components/ui/Button";
 import { PrintLayout } from "@/components/ui/print/PrintLayout";
 import { useApiMutation, useRoleBasedUI } from "@/hooks";
 import { useConfirm } from "@/hooks/useConfirm";
+=======
+import { Button } from "@/components/ui/Button";
+import { useConfirm } from "@/hooks/useConfirm";
+import { useApiMutation, useRoleBasedUI } from "@/hooks";
+import { PrintLayout } from "@/components/ui/print/PrintLayout";
+
+import { UnifiedRetireeStatement } from "@/components/common/UnifiedRetireeStatement";
+import type { Statement } from "@/components/domain/print/print.types";
+import { fetchFileDetails } from "@/components/domain/print/print.utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 /**
  * صفحة مباينة بيانات المتقاعد للطباعة

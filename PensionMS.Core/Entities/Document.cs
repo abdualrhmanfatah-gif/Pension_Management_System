@@ -127,8 +127,13 @@ public class Document : ISoftDeletable
     public virtual User UploadedByUser { get; set; } = null!;
 
     public string? DocumentNumber { get; set; }
+<<<<<<< HEAD
     public DateOnly? IssueDate { get; set; }
     public DateOnly? ExpiryDate { get; set; }
+=======
+    public DateTime? IssueDate { get; set; }
+    public DateTime? ExpiryDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string FilePath { get; set; } = string.Empty;
     public string FileName { get; set; } = string.Empty;
     public long? FileSize { get; set; }

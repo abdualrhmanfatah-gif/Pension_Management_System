@@ -6,8 +6,13 @@ import { useNavigate,useSearchParams } from "react-router-dom";
 import { discrepancyApi } from "@/api/discrepancy";
 import { PrintSignatureBlock } from "@/components/common/PrintSignatureBlock";
 import { Button } from "@/components/ui/Button";
+<<<<<<< HEAD
 import { PrintLayout } from "@/components/ui/print/PrintLayout";
 import { formatDate } from "@/lib/utils";
+=======
+import { formatDate } from "@/lib/utils";
+import { PrintLayout } from "@/components/ui/print/PrintLayout";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function DiscrepancyPrintPage() {
   const [searchParams] = useSearchParams();

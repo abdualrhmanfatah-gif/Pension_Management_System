@@ -4,6 +4,7 @@ import { Fragment,useState } from "react";
 import { Link } from "react-router-dom";
 
 import api from "@/api/axios";
+<<<<<<< HEAD
 import { PageLayout } from "@/components/layout/PageLayout";
 import { StickyHeader } from "@/components/layout/PageLayout";
 import { Heading, Text } from "@/components/ui";
@@ -13,6 +14,17 @@ import { Card } from "@/components/ui/Card";
 import { type CustomColumnDef,DataTable } from "@/components/ui/DataTable";
 import { InfoPair } from "@/components/ui/InfoPair";
 import { DateInput,Input } from "@/components/ui/Input";
+=======
+import { Badge } from "@/components/ui/Badge";
+import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { DataTable, type CustomColumnDef } from "@/components/ui/DataTable";
+import { DateInput,Input } from "@/components/ui/Input";
+import { InfoPair } from "@/components/ui/InfoPair";
+import { PageLayout } from "@/components/layout/PageLayout";
+import { StickyHeader } from "@/components/layout/PageLayout";
+import { Heading, Text } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
   Select,
   SelectContent,
@@ -85,9 +97,15 @@ function JsonDataViewer({ oldJson, newJson }: { oldJson?: string | null, newJson
         <Card className="w-full overflow-hidden mt-6">
             <DataTable
                 columns={[
+<<<<<<< HEAD
                     { key: "key", header: "الحقل (Property)", render: (row) => <div><div className="font-semibold text-sm text-foreground mb-0.5">{translateFieldName(row.key)}</div>{translateFieldName(row.key) !== row.key && <div className="text-xs font-mono text-muted-foreground opacity-100" dir="ltr">{row.key}</div>}</div> },
                     ...(oldJson ? [{ key: "oldVal", header: <span className="text-red-600 dark:text-red-400">القيمة القديمة</span>, render: (row: typeof data[number]) => <td className={cn("break-all font-mono text-xs", row.hasChanged ? "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-300" : "")} dir="auto">{typeof row.oldVal !== 'undefined' ? renderValue(row.oldVal) : <span className="text-muted-foreground opacity-100">—</span>}</td> }] : []),
                     ...(newJson ? [{ key: "newVal", header: <span className="text-emerald-600 dark:text-emerald-400">القيمة الجديدة</span>, render: (row: typeof data[number]) => <td className={cn("break-all font-mono text-xs", row.hasChanged ? "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-300 font-bold" : "")} dir="auto">{typeof row.newVal !== 'undefined' ? renderValue(row.newVal) : <span className="text-muted-foreground opacity-100">—</span>}</td> }] : []),
+=======
+                    { key: "key", header: "الحقل (Property)", render: (row) => <div><div className="font-semibold text-sm text-foreground mb-0.5">{translateFieldName(row.key)}</div>{translateFieldName(row.key) !== row.key && <div className="text-xs font-mono text-muted-foreground opacity-60" dir="ltr">{row.key}</div>}</div> },
+                    ...(oldJson ? [{ key: "oldVal", header: <span className="text-red-600 dark:text-red-400">القيمة القديمة</span>, render: (row: typeof data[number]) => <td className={cn("break-all font-mono text-xs", row.hasChanged ? "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-300" : "")} dir="auto">{typeof row.oldVal !== 'undefined' ? renderValue(row.oldVal) : <span className="text-muted-foreground opacity-50">—</span>}</td> }] : []),
+                    ...(newJson ? [{ key: "newVal", header: <span className="text-emerald-600 dark:text-emerald-400">القيمة الجديدة</span>, render: (row: typeof data[number]) => <td className={cn("break-all font-mono text-xs", row.hasChanged ? "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-300 font-bold" : "")} dir="auto">{typeof row.newVal !== 'undefined' ? renderValue(row.newVal) : <span className="text-muted-foreground opacity-50">—</span>}</td> }] : []),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 ] as CustomColumnDef<typeof data[number]>[]}
                 data={data}
                 rowKey={(row) => row.key}
@@ -231,7 +249,11 @@ export function AuditLogsPage() {
             {loading ? (
                 <div className="py-16 text-center text-muted-foreground">جاري تحميل سجلات التدقيق...</div>
             ) : logsError ? (
+<<<<<<< HEAD
                 <div className="border-2 border-destructive rounded-xl py-16 text-center text-destructive">تعذر تحميل سجلات التدقيق</div>
+=======
+                <div className="border-2 border-destructive/20 rounded-xl py-16 text-center text-destructive">تعذر تحميل سجلات التدقيق</div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             ) : logs.length === 0 ? (
                 <div className="border-2 border-dashed rounded-xl py-16 text-center text-muted-foreground">لا توجد سجلات مطابقة</div>
             ) : (
@@ -318,7 +340,11 @@ export function AuditLogsPage() {
                                                             <InfoPair label="معرّف الارتباط" value={log.correlationId ?? "—"} mono className="sm:col-span-2" />
                                                         </div>
                                                         {log.affectedFileId != null && (
+<<<<<<< HEAD
                                                             <div className="mt-4 p-3 rounded-lg bg-primary/5 border border-primary">
+=======
+                                                            <div className="mt-4 p-3 rounded-lg bg-primary/5 border border-primary/20">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                                 <p className="text-xs font-semibold text-muted-foreground mb-1.5 flex items-center gap-1.5">
                                                                     <FolderOpen className="w-4 h-4" /> الملف المتأثر
                                                                 </p>
@@ -328,7 +354,11 @@ export function AuditLogsPage() {
                                                                     onClick={e => e.stopPropagation()}
                                                                 >
                                                                     ملف التقاعد {log.affectedFileNumber ? `رقم ${log.affectedFileNumber}` : `#${log.affectedFileId}`}
+<<<<<<< HEAD
                                                                     <span className="text-xs opacity-100">→</span>
+=======
+                                                                    <span className="text-xs opacity-80">→</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                                 </Link>
                                                             </div>
                                                         )}

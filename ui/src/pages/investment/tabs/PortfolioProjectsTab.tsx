@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Eye } from "lucide-react";
 import { useEffect, useMemo } from "react";
+<<<<<<< HEAD
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -8,6 +9,15 @@ import type { ProjectDto } from "@/api/investment";
 import { investmentApi } from "@/api/investment";
 import { ProjectDialog } from "@/components/domain/investment/ProjectDialog";
 import { Badge, CrudPageLayout, type CustomColumnDef, ErrorState } from "@/components/ui";
+=======
+import { toast } from "sonner";
+import { Link, useNavigate } from "react-router-dom";
+
+import type { ProjectDto } from "@/api/investment";
+import { investmentApi } from "@/api/investment";
+import { Badge, CrudPageLayout, type CustomColumnDef, ErrorState } from "@/components/ui";
+import { ProjectDialog } from "@/components/domain/investment/ProjectDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { PROJECT_STATUS } from "@/constants";
 import { useCrudState } from "@/hooks";
 import { useHasPermission } from "@/stores/authStore";
@@ -53,7 +63,11 @@ export function PortfolioProjectsTab({ portfolioId }: PortfolioProjectsTabProps)
             key: "plannedBudget",
             header: "الميزانية المخططة",
             render: (row) => (
+<<<<<<< HEAD
                 <span className="font-semibold text-info font-mono">
+=======
+                <span className="font-semibold text-blue-600 font-mono">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {row.plannedBudget.toLocaleString()} ر.ي
                 </span>
             )

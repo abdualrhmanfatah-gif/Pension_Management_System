@@ -1,10 +1,20 @@
+<<<<<<< HEAD
+=======
+import { formatDate, getDocumentUrl } from "@/lib/utils";
+import { useAuthStore } from "@/stores/authStore";
+import { Heading } from "@/components/ui";
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import type {
     FileDetailsForPrint,
     Statement} from "@/components/domain/print/print.types";
 import { PRINT_STYLES } from "@/components/domain/print/print.utils";
+<<<<<<< HEAD
 import { Heading } from "@/components/ui";
 import { formatDate, getDocumentUrl } from "@/lib/utils";
 import { useAuthStore } from "@/stores/authStore";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 const { TB, CELL, LBL, VAL, SECTION_HEADER } = PRINT_STYLES;
 
@@ -73,7 +83,11 @@ export function UnifiedRetireeStatement({
                                 {fileDetail.file.personalPhotoPath ? (
                                     <img src={getUrl(fileDetail.file.personalPhotoPath)} alt="صورة المتقاعد" className="w-16 h-20 object-cover border-2 border-black rounded" loading="lazy" />
                                 ) : (
+<<<<<<< HEAD
                                     <div className="w-16 h-20 border-2 border-black rounded bg-muted/50 flex items-center justify-center text-[9px] text-muted-foreground">لا توجد</div>
+=======
+                                    <div className="w-16 h-20 border-2 border-black rounded bg-muted/50 flex items-center justify-center text-[9px] text-muted-foreground/60">لا توجد</div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 )}
                             </div>
                             <div className="flex flex-col items-center w-16">
@@ -81,7 +95,11 @@ export function UnifiedRetireeStatement({
                                 {activeRecipientPhotoPath ? (
                                     <img src={getUrl(activeRecipientPhotoPath)} alt="صورة الوكيل أو الوصي" className="w-16 h-20 object-cover border-2 border-black rounded" loading="lazy" />
                                 ) : (
+<<<<<<< HEAD
                                     <div className="w-16 h-20 border-2 border-black rounded bg-muted/50 flex items-center justify-center text-[9px] text-muted-foreground">لا توجد</div>
+=======
+                                    <div className="w-16 h-20 border-2 border-black rounded bg-muted/50 flex items-center justify-center text-[9px] text-muted-foreground/60">لا توجد</div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 )}
                             </div>
                         </>

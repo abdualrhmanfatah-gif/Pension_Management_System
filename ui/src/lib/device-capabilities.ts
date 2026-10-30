@@ -1,8 +1,11 @@
 export interface DeviceCapabilities {
     tier: 'low' | 'medium' | 'high';
     maxTextureSize: number;
+<<<<<<< HEAD
     /** سقف عدد بكسلات الصورة الناتجة عن المعالجة (ميزانية ذاكرة، لا بعد فقط) */
     maxPixels: number;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     isMobile: boolean;
     gpu: string;
     hasWebGL2: boolean;
@@ -14,6 +17,7 @@ export interface DeviceCapabilities {
 
 let cachedCapabilities: DeviceCapabilities | null = null;
 
+<<<<<<< HEAD
 /** ميزانية البكسلات حسب الذاكرة المعلنة (deviceMemory بالجيغابايت) */
 const MAX_PIXELS_BY_DEVICE_MEMORY: ReadonlyArray<readonly [number, number]> = [
     [8, 6_000_000],
@@ -58,6 +62,8 @@ function readDeviceMemory(): number | undefined {
     return typeof value === 'number' && Number.isFinite(value) && value > 0 ? value : undefined;
 }
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 export function getDeviceCapabilities(): DeviceCapabilities {
     if (cachedCapabilities) return cachedCapabilities;
 
@@ -65,11 +71,17 @@ export function getDeviceCapabilities(): DeviceCapabilities {
     const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
 
     if (!gl) {
+<<<<<<< HEAD
         const tier = 'low' as const;
         cachedCapabilities = {
             tier,
             maxTextureSize: 4096,
             maxPixels: resolveMaxPixels(tier, readDeviceMemory()),
+=======
+        cachedCapabilities = {
+            tier: 'low',
+            maxTextureSize: 4096,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             isMobile: /Mobi|Android/i.test(navigator.userAgent),
             gpu: 'none',
             hasWebGL2: false,
@@ -114,7 +126,10 @@ export function getDeviceCapabilities(): DeviceCapabilities {
 
     const maxVertexUniforms = gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS);
     const maxFragmentUniforms = gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS);
+<<<<<<< HEAD
     const maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     // Cleanup
     const loseContext = gl.getExtension('WEBGL_lose_context');
@@ -124,8 +139,12 @@ export function getDeviceCapabilities(): DeviceCapabilities {
 
     cachedCapabilities = {
         tier,
+<<<<<<< HEAD
         maxTextureSize: maxTextureSize || 4096,
         maxPixels: resolveMaxPixels(tier, readDeviceMemory()),
+=======
+        maxTextureSize: gl.getParameter(gl.MAX_TEXTURE_SIZE),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         isMobile,
         gpu,
         hasWebGL2,

@@ -37,7 +37,11 @@ public class ExpiredPledgesJob : BackgroundService
                 _logger.LogInformation("ExpiredPledgesJob: بدء فحص التعهدات المنتهية - {Time}", DateTime.UtcNow);
 
                 using var scope = _scopeFactory.CreateScope();
+<<<<<<< HEAD
                 var fileStatusService = scope.ServiceProvider.GetRequiredService<IExpiredPledgeProcessor>();
+=======
+                var fileStatusService = scope.ServiceProvider.GetRequiredService<IFileStatusService>();
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
                 await fileStatusService.ProcessExpiredPledgesAsync();
 

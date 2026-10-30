@@ -29,7 +29,11 @@
     <None Include="..\ui\public\*.png" Link="wwwroot\%(Filename)%(Extension)">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+<<<<<<< HEAD
     <None Include="fonts\*.ttf" Link="fonts\%(Filename)%(Extension)">
+=======
+    <None Include="..\ui\src\assets\fonts\noto-kufi-arabic\*.ttf" Link="fonts\%(Filename)%(Extension)">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

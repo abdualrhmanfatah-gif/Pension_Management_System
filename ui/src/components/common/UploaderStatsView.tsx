@@ -1,10 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { AlertCircle, BarChart3, CheckCircle, Clock, Download, Eye, FileDown,FileText, Keyboard, Users, X, XCircle } from "lucide-react";
+=======
+import { BarChart3, Calendar, Clock, FileText, Eye, Users, X, Keyboard, CheckCircle, XCircle, AlertCircle, Download, FileDown } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import api from "@/api/axios";
+<<<<<<< HEAD
 import { exportReportFile } from "@/api/reportExport";
 import { Badge, Button, Card, CardContent, Heading, StatCard, Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
 import type { CustomColumnDef } from "@/components/ui/DataTable";
@@ -12,6 +17,13 @@ import { DataTable } from "@/components/ui/DataTable";
 import { DateInput, Input } from "@/components/ui/Input";
 import { PrintLayout } from "@/components/ui/print/PrintLayout";
 import { addDaysToDateOnly, addMonthsToDateOnly, formatYemenDateTime, todayYemen } from "@/lib/date";
+=======
+import { Badge, Button, Card, CardContent, DateInput, Heading, StatCard, Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
+import type { CustomColumnDef } from "@/components/ui/DataTable";
+import { DataTable } from "@/components/ui/DataTable";
+import { createWorkbook, buildReportHeader, buildTableHeader, styleDataCell, altRowFill, buildTotalsRow, buildReportFooter, exportWorkbook, autoFitColumns } from "@/components/domain/print/excel.utils";
+import { PrintLayout } from "@/components/ui/print/PrintLayout";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface UploaderStats {
     userID: number;
@@ -37,7 +49,10 @@ interface UploaderFileItem {
     fileID: number;
     fileNumber: string;
     retireeFullName: string;
+<<<<<<< HEAD
     createdAt: string;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     missingDocumentsCount: number;
     hasDocuments: boolean;
     lastUploadedByUserName: string | null;
@@ -53,12 +68,18 @@ export function UploaderStatsView() {
     const navigate = useNavigate();
     const [filter, setFilter] = useState<UploaderStatsFilter>({});
     const [selectedPeriod, setSelectedPeriod] = useState<string>("");
+<<<<<<< HEAD
     const [selectedMonth, setSelectedMonth] = useState("");
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const [customDateRange, setCustomDateRange] = useState({ from: "", to: "" });
     const [selectedUser, setSelectedUser] = useState<UploaderStats | null>(null);
     const [selectedDataEntryUser, setSelectedDataEntryUser] = useState<DataEntryStats | null>(null);
     const [activeTab, setActiveTab] = useState("uploaders");
+<<<<<<< HEAD
     const [isExporting, setIsExporting] = useState(false);
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     const { data: stats = [], isLoading, isError: isStatsError } = useQuery({
         queryKey: ["uploader-stats", filter],
@@ -159,13 +180,19 @@ export function UploaderStatsView() {
 
     const handlePeriodChange = useCallback((period: string) => {
         setSelectedPeriod(period);
+<<<<<<< HEAD
         setSelectedMonth("");
         const today = todayYemen();
         const [year, month] = today.split("-");
+=======
+        const now = new Date();
+        const today = now.toISOString().split("T")[0];
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
         if (period === "today") {
             setFilter({ fromDate: today, toDate: today });
         } else if (period === "yesterday") {
+<<<<<<< HEAD
             const y = addDaysToDateOnly(today, -1);
             setFilter({ fromDate: y, toDate: y });
         } else if (period === "week") {
@@ -174,12 +201,31 @@ export function UploaderStatsView() {
             setFilter({ fromDate: `${year}-${month}-01`, toDate: today });
         } else if (period === "year") {
             setFilter({ fromDate: `${year}-01-01`, toDate: today });
+=======
+            const yesterday = new Date(now);
+            yesterday.setDate(yesterday.getDate() - 1);
+            const y = yesterday.toISOString().split("T")[0];
+            setFilter({ fromDate: y, toDate: y });
+        } else if (period === "week") {
+            const weekAgo = new Date(now);
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            setFilter({ fromDate: weekAgo.toISOString().split("T")[0], toDate: today });
+        } else if (period === "month") {
+            const monthAgo = new Date(now);
+            monthAgo.setMonth(monthAgo.getMonth() - 1);
+            setFilter({ fromDate: monthAgo.toISOString().split("T")[0], toDate: today });
+        } else if (period === "year") {
+            const yearAgo = new Date(now);
+            yearAgo.setFullYear(yearAgo.getFullYear() - 1);
+            setFilter({ fromDate: yearAgo.toISOString().split("T")[0], toDate: today });
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         } else {
             setFilter({});
         }
         setCustomDateRange({ from: "", to: "" });
     }, []);
 
+<<<<<<< HEAD
     const handleMonthChange = useCallback((month: string) => {
         if (!month) {
             handlePeriodChange("");
@@ -195,6 +241,8 @@ export function UploaderStatsView() {
         setFilter({ fromDate, toDate });
     }, [handlePeriodChange]);
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const handleCustomDateApply = useCallback(() => {
         if (customDateRange.from && customDateRange.to) {
             if (customDateRange.from > customDateRange.to) {
@@ -202,7 +250,10 @@ export function UploaderStatsView() {
                 return;
             }
             setSelectedPeriod("");
+<<<<<<< HEAD
             setSelectedMonth("");
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             setFilter({
                 fromDate: customDateRange.from,
                 toDate: customDateRange.to,
@@ -212,6 +263,7 @@ export function UploaderStatsView() {
 
     const formatDate = useCallback((dateString: string | null) => {
         if (!dateString) return "---";
+<<<<<<< HEAD
         const out = formatYemenDateTime(dateString, {
             year: "numeric",
             month: "short",
@@ -220,6 +272,21 @@ export function UploaderStatsView() {
             minute: "2-digit",
         });
         return out || "---";
+=======
+        try {
+            const d = new Date(dateString);
+            if (isNaN(d.getTime())) return "---";
+            return d.toLocaleDateString("ar-YE", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+            });
+        } catch {
+            return "---";
+        }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }, []);
 
     // ── Summary Calculations ──
@@ -230,6 +297,7 @@ export function UploaderStatsView() {
     const totalPending = dataEntryStats.reduce((sum, s) => sum + s.pendingFiles, 0);
     const totalRejected = dataEntryStats.reduce((sum, s) => sum + s.rejectedFiles, 0);
 
+<<<<<<< HEAD
     const handleExportStats = useCallback(async () => {
         const uploads = activeTab === "uploaders";
         if ((uploads ? stats.length : dataEntryStats.length) === 0) {
@@ -247,6 +315,163 @@ export function UploaderStatsView() {
             setIsExporting(false);
         }
     }, [activeTab, filter, stats.length, dataEntryStats.length]);
+=======
+    // ── Export Uploaders Stats to Excel ──
+    const handleExportUploaders = useCallback(async () => {
+        if (stats.length === 0) {
+            toast.error("لا توجد بيانات للتصدير");
+            return;
+        }
+
+        try {
+            const { wb, ws } = createWorkbook("إحصائيات مدخلي الوثائق");
+            const cols = 5;
+
+            // Build header
+            const dataStartRow = await buildReportHeader(ws, "إحصائيات مدخلي الوثائق", cols, [
+                { label: "الفترة", value: filter.fromDate && filter.toDate ? `${filter.fromDate} - ${filter.toDate}` : "الكل" },
+            ]);
+
+            // Table headers
+            buildTableHeader(ws, dataStartRow, ["#", "المستخدم", "عدد الوثائق", "عدد الملفات", "آخر رفع"]);
+
+            // Data rows
+            let currentRow = dataStartRow + 1;
+            stats.forEach((stat, index) => {
+                const row = ws.getRow(currentRow);
+                row.height = 24;
+
+                row.getCell(1).value = index + 1;
+                styleDataCell(row.getCell(1), { align: "center" });
+                altRowFill(row.getCell(1), index);
+
+                row.getCell(2).value = stat.fullName || stat.userName;
+                styleDataCell(row.getCell(2), { align: "start" });
+                altRowFill(row.getCell(2), index);
+
+                row.getCell(3).value = stat.totalUploads;
+                styleDataCell(row.getCell(3), { align: "center" });
+                altRowFill(row.getCell(3), index);
+
+                row.getCell(4).value = stat.uniqueFiles;
+                styleDataCell(row.getCell(4), { align: "center" });
+                altRowFill(row.getCell(4), index);
+
+                row.getCell(5).value = stat.lastUploadDate ? formatDate(stat.lastUploadDate) : "---";
+                styleDataCell(row.getCell(5), { align: "center" });
+                altRowFill(row.getCell(5), index);
+
+                currentRow++;
+            });
+
+            // Totals row
+            buildTotalsRow(ws, currentRow, [
+                { value: "الإجمالي", bold: true, colSpan: 2 },
+                undefined,
+                { value: totalUploads },
+                { value: totalUniqueFiles },
+                undefined,
+            ]);
+
+            // Footer
+            buildReportFooter(ws, cols);
+
+            // Auto-fit columns
+            autoFitColumns(ws, { 1: 6, 2: 25, 3: 15, 4: 15, 5: 20 });
+
+            // Export
+            const filename = `إحصائيات_مدخلي_الوثائق_${new Date().toISOString().split("T")[0]}`;
+            await exportWorkbook(wb, filename);
+            toast.success("تم التصدير بنجاح");
+        } catch (error) {
+            console.error("Export error:", error);
+            toast.error("فشل التصدير");
+        }
+    }, [stats, filter, totalUploads, totalUniqueFiles, formatDate]);
+
+    // ── Export Data Entry Stats to Excel ──
+    const handleExportDataEntry = useCallback(async () => {
+        if (dataEntryStats.length === 0) {
+            toast.error("لا توجد بيانات للتصدير");
+            return;
+        }
+
+        try {
+            const { wb, ws } = createWorkbook("إحصائيات مدخلي البيانات");
+            const cols = 7;
+
+            // Build header
+            const dataStartRow = await buildReportHeader(ws, "إحصائيات مدخلي البيانات", cols, [
+                { label: "الفترة", value: filter.fromDate && filter.toDate ? `${filter.fromDate} - ${filter.toDate}` : "الكل" },
+            ]);
+
+            // Table headers
+            buildTableHeader(ws, dataStartRow, ["#", "المستخدم", "إجمالي الملفات", "مكتملة", "قيد المعالجة", "مرفوضة", "آخر إدخال"]);
+
+            // Data rows
+            let currentRow = dataStartRow + 1;
+            dataEntryStats.forEach((stat, index) => {
+                const row = ws.getRow(currentRow);
+                row.height = 24;
+
+                row.getCell(1).value = index + 1;
+                styleDataCell(row.getCell(1), { align: "center" });
+                altRowFill(row.getCell(1), index);
+
+                row.getCell(2).value = stat.fullName || stat.userName;
+                styleDataCell(row.getCell(2), { align: "start" });
+                altRowFill(row.getCell(2), index);
+
+                row.getCell(3).value = stat.totalFilesCreated;
+                styleDataCell(row.getCell(3), { align: "center" });
+                altRowFill(row.getCell(3), index);
+
+                row.getCell(4).value = stat.completedFiles;
+                styleDataCell(row.getCell(4), { align: "center" });
+                altRowFill(row.getCell(4), index);
+
+                row.getCell(5).value = stat.pendingFiles;
+                styleDataCell(row.getCell(5), { align: "center" });
+                altRowFill(row.getCell(5), index);
+
+                row.getCell(6).value = stat.rejectedFiles;
+                styleDataCell(row.getCell(6), { align: "center" });
+                altRowFill(row.getCell(6), index);
+
+                row.getCell(7).value = stat.lastCreatedDate ? formatDate(stat.lastCreatedDate) : "---";
+                styleDataCell(row.getCell(7), { align: "center" });
+                altRowFill(row.getCell(7), index);
+
+                currentRow++;
+            });
+
+            // Totals row
+            buildTotalsRow(ws, currentRow, [
+                { value: "الإجمالي", bold: true, colSpan: 2 },
+                undefined,
+                { value: totalFilesCreated },
+                { value: totalCompleted },
+                { value: totalPending },
+                { value: totalRejected },
+                undefined,
+            ]);
+
+            // Footer
+            buildReportFooter(ws, cols);
+
+            // Auto-fit columns
+            autoFitColumns(ws, { 1: 6, 2: 25, 3: 15, 4: 12, 5: 14, 6: 12, 7: 20 });
+
+            // Export
+            const filename = `إحصائيات_مدخلي_البيانات_${new Date().toISOString().split("T")[0]}`;
+            await exportWorkbook(wb, filename);
+            toast.success("تم التصدير بنجاح");
+        } catch (error) {
+            console.error("Export error:", error);
+            toast.error("فشل التصدير");
+        }
+    }, [dataEntryStats, filter, totalFilesCreated, totalCompleted, totalPending, totalRejected, formatDate]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     const handlePrint = useCallback(() => window.print(), []);
 
@@ -484,6 +709,7 @@ export function UploaderStatsView() {
         [formatDate, navigate]
     );
 
+<<<<<<< HEAD
     const dataEntryFileColumns = useMemo<CustomColumnDef<UploaderFileItem>[]>(
         () => fileColumns.map((column) => column.key === "lastUploadDate" ? {
             ...column,
@@ -501,6 +727,11 @@ export function UploaderStatsView() {
     return (
         <>
         <div className="space-y-3 screen-only">
+=======
+    return (
+        <>
+        <div className="space-y-6 screen-only">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             {/* Header */}
             <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -516,14 +747,22 @@ export function UploaderStatsView() {
 
             {/* Period Filter */}
             <Card>
+<<<<<<< HEAD
                 <CardContent className="flex flex-wrap items-center gap-2 px-2 py-1 sm:px-2 sm:py-1">
                     <div className="flex flex-wrap items-center gap-1.5">
+=======
+                <CardContent className="p-4">
+                    <div className="flex flex-wrap items-center gap-3">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <span className="text-sm font-medium text-muted-foreground">الفترة:</span>
 
                         <Button
                             variant={selectedPeriod === "today" ? "primary" : "outline"}
                             size="sm"
+<<<<<<< HEAD
                             className="min-h-0 h-8 px-2.5"
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             onClick={() => handlePeriodChange("today")}
                         >
                             اليوم
@@ -531,7 +770,10 @@ export function UploaderStatsView() {
                         <Button
                             variant={selectedPeriod === "yesterday" ? "primary" : "outline"}
                             size="sm"
+<<<<<<< HEAD
                             className="min-h-0 h-8 px-2.5"
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             onClick={() => handlePeriodChange("yesterday")}
                         >
                             أمس
@@ -539,7 +781,10 @@ export function UploaderStatsView() {
                         <Button
                             variant={selectedPeriod === "week" ? "primary" : "outline"}
                             size="sm"
+<<<<<<< HEAD
                             className="min-h-0 h-8 px-2.5"
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             onClick={() => handlePeriodChange("week")}
                         >
                             هذا الأسبوع
@@ -547,7 +792,10 @@ export function UploaderStatsView() {
                         <Button
                             variant={selectedPeriod === "month" ? "primary" : "outline"}
                             size="sm"
+<<<<<<< HEAD
                             className="min-h-0 h-8 px-2.5"
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             onClick={() => handlePeriodChange("month")}
                         >
                             هذا الشهر
@@ -555,7 +803,10 @@ export function UploaderStatsView() {
                         <Button
                             variant={selectedPeriod === "year" ? "primary" : "outline"}
                             size="sm"
+<<<<<<< HEAD
                             className="min-h-0 h-8 px-2.5"
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             onClick={() => handlePeriodChange("year")}
                         >
                             هذا العام
@@ -563,12 +814,17 @@ export function UploaderStatsView() {
                         <Button
                             variant={!selectedPeriod && !customDateRange.from ? "primary" : "outline"}
                             size="sm"
+<<<<<<< HEAD
                             className="min-h-0 h-8 px-2.5"
                             onClick={() => handlePeriodChange("")}
+=======
+                            onClick={() => { setFilter({}); setSelectedPeriod(""); }}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         >
                             الكل
                         </Button>
 
+<<<<<<< HEAD
                     </div>
 
                         <div className="flex w-full items-center gap-1.5 sm:w-auto">
@@ -610,6 +866,31 @@ export function UploaderStatsView() {
                         >
                             تطبيق
                         </Button>
+=======
+                        <div className="mr-4 flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-muted-foreground" />
+                            <DateInput
+                                value={customDateRange.from}
+                                onChange={(v) => setCustomDateRange(prev => ({ ...prev, from: v || "" }))}
+                                placeholder="من"
+                            />
+                            <span className="text-muted-foreground">إلى</span>
+                            <DateInput
+                                value={customDateRange.to}
+                                onChange={(v) => setCustomDateRange(prev => ({ ...prev, to: v || "" }))}
+                                placeholder="إلى"
+                            />
+                            <Button
+                                variant="secondary"
+                                size="sm"
+                                onClick={handleCustomDateApply}
+                                disabled={!customDateRange.from || !customDateRange.to}
+                            >
+                                تطبيق
+                            </Button>
+                        </div>
+                    </div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 </CardContent>
             </Card>
 
@@ -627,9 +908,14 @@ export function UploaderStatsView() {
                     <Button
                         variant="outline"
                         size="sm"
+<<<<<<< HEAD
                         className="mr-auto gap-2 min-h-0 h-8 px-2.5"
                         disabled={isExporting}
                         onClick={handleExportStats}
+=======
+                        className="mr-auto gap-2"
+                        onClick={activeTab === "uploaders" ? handleExportUploaders : handleExportDataEntry}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     >
                         <Download className="w-4 h-4" />
                         تصدير Excel
@@ -637,7 +923,11 @@ export function UploaderStatsView() {
                     <Button
                         variant="outline"
                         size="sm"
+<<<<<<< HEAD
                         className="gap-2 min-h-0 h-8 px-2.5"
+=======
+                        className="gap-2"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         onClick={handlePrint}
                     >
                         <FileDown className="w-4 h-4" />
@@ -646,15 +936,23 @@ export function UploaderStatsView() {
                 </TabsList>
 
                 {/* Uploaders Tab */}
+<<<<<<< HEAD
                 <TabsContent value="uploaders" className="space-y-3">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+=======
+                <TabsContent value="uploaders" className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <StatCard
                             title="إجمالي الرفعات"
                             value={totalUploads.toLocaleString()}
                             icon={<BarChart3 className="w-5 h-5" />}
                             variant="blue"
                             isLoading={isLoading}
+<<<<<<< HEAD
                             className="p-2 sm:p-2.5"
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         />
                         <StatCard
                             title="عدد الملفات"
@@ -662,7 +960,10 @@ export function UploaderStatsView() {
                             icon={<FileText className="w-5 h-5" />}
                             variant="emerald"
                             isLoading={isLoading}
+<<<<<<< HEAD
                             className="p-2 sm:p-2.5"
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         />
                         <StatCard
                             title="عدد المدخلين"
@@ -670,7 +971,10 @@ export function UploaderStatsView() {
                             icon={<Users className="w-5 h-5" />}
                             variant="amber"
                             isLoading={isLoading}
+<<<<<<< HEAD
                             className="p-2 sm:p-2.5"
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         />
                     </div>
 
@@ -689,15 +993,23 @@ export function UploaderStatsView() {
                 </TabsContent>
 
                 {/* Data Entry Tab */}
+<<<<<<< HEAD
                 <TabsContent value="data-entry" className="space-y-3">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
+=======
+                <TabsContent value="data-entry" className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <StatCard
                             title="إجمالي الملفات"
                             value={totalFilesCreated.toLocaleString()}
                             icon={<FileText className="w-5 h-5" />}
                             variant="blue"
                             isLoading={loadingDataEntry}
+<<<<<<< HEAD
                             className="p-2 sm:p-2.5"
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         />
                         <StatCard
                             title="مكتملة"
@@ -705,7 +1017,10 @@ export function UploaderStatsView() {
                             icon={<CheckCircle className="w-5 h-5" />}
                             variant="emerald"
                             isLoading={loadingDataEntry}
+<<<<<<< HEAD
                             className="p-2 sm:p-2.5"
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         />
                         <StatCard
                             title="قيد المعالجة"
@@ -713,7 +1028,10 @@ export function UploaderStatsView() {
                             icon={<AlertCircle className="w-5 h-5" />}
                             variant="amber"
                             isLoading={loadingDataEntry}
+<<<<<<< HEAD
                             className="p-2 sm:p-2.5"
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         />
                         <StatCard
                             title="مرفوضة"
@@ -721,7 +1039,10 @@ export function UploaderStatsView() {
                             icon={<XCircle className="w-5 h-5" />}
                             variant="destructive"
                             isLoading={loadingDataEntry}
+<<<<<<< HEAD
                             className="p-2 sm:p-2.5"
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         />
                     </div>
 
@@ -804,7 +1125,11 @@ export function UploaderStatsView() {
                                 <p className="text-center text-destructive py-8">فشل تحميل البيانات</p>
                             ) : (
                                 <DataTable
+<<<<<<< HEAD
                                     columns={dataEntryFileColumns}
+=======
+                                    columns={fileColumns}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     data={dataEntryFiles}
                                     loading={loadingDataEntryFiles}
                                     rowKey={(row) => row.fileID}

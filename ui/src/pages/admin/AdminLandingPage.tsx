@@ -95,9 +95,15 @@ export function AdminLandingPage() {
                                                     "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
                                                 )}
                                             >
+<<<<<<< HEAD
                                                 <span className="text-muted-foreground">{link.icon}</span>
                                                 <span className="flex-1">{link.label}</span>
                                                 <ChevronLeft className="h-4 w-4 rotate-180 text-muted-foreground" />
+=======
+                                                <span className="text-muted-foreground/80">{link.icon}</span>
+                                                <span className="flex-1">{link.label}</span>
+                                                <ChevronLeft className="h-4 w-4 rotate-180 text-muted-foreground/60" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             </Link>
                                         </li>
                                     ))}

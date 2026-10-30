@@ -1,7 +1,10 @@
 import React, { useCallback,useEffect, useState } from "react";
 
 import { Tabs, TabsContent,TabsList, TabsTrigger } from "@/components/ui/Tabs";
+<<<<<<< HEAD
 import { matchesShortcut, SHORTCUT_NEXT_TAB, SHORTCUT_PREV_TAB } from "@/constants/shortcuts";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { cn } from "@/lib/utils";
 
 interface TabItem {
@@ -61,17 +64,32 @@ export function TabbedFormSection({
     });
   }, [tabs]);
 
+<<<<<<< HEAD
   // Keyboard navigation using central shortcuts registry
+=======
+  // Keyboard navigation logic mimicking useDialogKeyboard architecture
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   useEffect(() => {
     if (!isDialogOpen) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
+<<<<<<< HEAD
       if (matchesShortcut(event, SHORTCUT_PREV_TAB)) {
         event.preventDefault();
         handlePrevTab();
       } else if (matchesShortcut(event, SHORTCUT_NEXT_TAB)) {
         event.preventDefault();
         handleNextTab();
+=======
+      // Support Ctrl+Tab and Ctrl+Shift+Tab
+      if (event.ctrlKey && event.key === "Tab") {
+        event.preventDefault(); // Prevent browser tab switching where supported
+        if (event.shiftKey) {
+          handlePrevTab();
+        } else {
+          handleNextTab();
+        }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       }
     };
 
@@ -82,7 +100,11 @@ export function TabbedFormSection({
   return (
     <Tabs value={activeTab} onValueChange={handleTabChange} className={cn("w-full", className)} dir="rtl">
       <TabsList className={cn(
+<<<<<<< HEAD
         "glass border border-border p-1.5 w-full justify-start overflow-x-auto mb-6 rounded-xl bg-muted/30",
+=======
+        "glass border border-border/50 p-1.5 w-full justify-start overflow-x-auto mb-6 rounded-xl bg-muted/30",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         tabListClassName
       )}>
         {tabs.map(tab => {
@@ -93,7 +115,11 @@ export function TabbedFormSection({
               value={tab.id} 
               className="gap-2.5 min-w-[120px] rounded-lg transition-all duration-300 data-[state=active]:bg-background data-[state=active]:text-primary"
             >
+<<<<<<< HEAD
               {tab.icon && <span className="opacity-100 data-[state=active]:opacity-100">{tab.icon}</span>}
+=======
+              {tab.icon && <span className="opacity-80 data-[state=active]:opacity-100">{tab.icon}</span>}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               <span className="font-medium">{tab.label}</span>
               {errorCount > 0 && (
                 <span className="inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 rounded-full bg-destructive text-destructive-foreground text-caption-md font-bold leading-none">

@@ -5,6 +5,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { retirementApi } from "@/api/retirement";
 import {
     BaseFormDialog,
@@ -130,7 +134,11 @@ export function CreateSuspensionDialog({ open, onOpenChange, onCreated }: Create
                 {/* ── اختيار الملف ── */}
                 <FormSection title="اختيار ملف التقاعد" icon={FileText}>
                     {selectedFile ? (
+<<<<<<< HEAD
                         <div className="flex items-center justify-between p-3 bg-destructive/5 border border-destructive rounded-xl">
+=======
+                        <div className="flex items-center justify-between p-3 bg-destructive/5 border border-destructive/20 rounded-xl">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <div className="flex items-center gap-3">
                                 <div className="bg-destructive/10 p-2 rounded-lg">
                                     <FileText className="w-4 h-4 text-destructive" />

@@ -1,9 +1,15 @@
 import { forwardRef, type ReactNode } from "react";
+<<<<<<< HEAD
 
 import { PrintSignatureBlock, type Signature } from "@/components/common/PrintSignatureBlock";
 import { type PageOrientation,type PageSize, PrintLayout } from "@/components/ui/print/PrintLayout";
 import { cn } from "@/lib/utils";
 
+=======
+import { cn } from "@/lib/utils";
+import { PrintLayout, type PageSize, type PageOrientation } from "@/components/ui/print/PrintLayout";
+import { PrintSignatureBlock, type Signature } from "@/components/common/PrintSignatureBlock";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { PrintableReportTable, type TableCell } from "./PrintableReportTable";
 
 /* ═══════════════════════════════════════════════════════════

@@ -1,5 +1,6 @@
 namespace PensionMS.Core.DTOs.Users;
 
+<<<<<<< HEAD
 public class SetUserRoleAssignmentsDto
 {
     public List<UserRoleScopeDto> Assignments { get; set; } = new();
@@ -13,6 +14,8 @@ public class UserRoleScopeDto
     public bool IsCentral { get; set; }
 }
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 public class CreateUserDto
 {
     public string FullName { get; set; } = string.Empty;
@@ -30,7 +33,10 @@ public class UpdateUserDto
     public int? RoleID { get; set; }
     public int? BranchID { get; set; }
     public bool? IsActive { get; set; }
+<<<<<<< HEAD
     public bool? IsLocked { get; set; }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 public class ChangePasswordDto
@@ -74,9 +80,12 @@ public class UserAssignmentDto
     public string RoleName { get; set; } = string.Empty;
     public int? BranchId { get; set; }
     public string? BranchName { get; set; }
+<<<<<<< HEAD
     public int? RegionId { get; set; }
     public string? RegionName { get; set; }
     public bool IsCentral { get; set; }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public bool IsActive { get; set; }
     public DateTime CreatedAt { get; set; }
 }

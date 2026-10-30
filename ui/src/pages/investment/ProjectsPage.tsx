@@ -4,12 +4,19 @@ import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { investmentApi, type ProjectDto } from "@/api/investment";
+<<<<<<< HEAD
 import { ProjectDialog } from "@/components/domain/investment/ProjectDialog";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Badge,
     CrudPageLayout,
     type CustomColumnDef
 } from "@/components/ui";
+<<<<<<< HEAD
+=======
+import { ProjectDialog } from "@/components/domain/investment/ProjectDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { PROJECT_STATUS } from "@/constants";
 import { useCrudState } from "@/hooks";
 import { useHasPermission } from "@/stores/authStore";
@@ -62,7 +69,11 @@ export function ProjectsPage() {
             key: "plannedBudget",
             header: "الميزانية المخططة",
             render: (row) => (
+<<<<<<< HEAD
                 <span className="font-semibold text-info">
+=======
+                <span className="font-semibold text-blue-600">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {row.plannedBudget.toLocaleString()} ر.ي
                 </span>
             )

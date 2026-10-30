@@ -113,7 +113,11 @@ export function AuditTimeline({ logs, isLoading, hasCorrelation = true }: AuditT
     }, [logs]);
 
     const formatValue = (val: string | null) => {
+<<<<<<< HEAD
         if (val === null || val === "null" || val === "") return <span className="text-muted-foreground italic">فارغ</span>;
+=======
+        if (val === null || val === "null" || val === "") return <span className="text-muted-foreground/40 italic">فارغ</span>;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         
         // Arabic translation for booleans
         const v = val.toLowerCase();
@@ -145,10 +149,17 @@ export function AuditTimeline({ logs, isLoading, hasCorrelation = true }: AuditT
                 <div key={group.key} className="relative space-y-6">
                     {/* Date Header */}
                     <div className="relative flex items-center gap-4">
+<<<<<<< HEAD
                         <div className="z-10 w-10 h-10 rounded-full bg-background border-2 border-primary flex items-center justify-center">
                             <Clock className="w-4 h-4 text-primary" />
                         </div>
                         <div className="bg-primary/5 px-4 py-1.5 rounded-full border border-primary">
+=======
+                        <div className="z-10 w-10 h-10 rounded-full bg-background border-2 border-primary/30 flex items-center justify-center">
+                            <Clock className="w-4 h-4 text-primary" />
+                        </div>
+                        <div className="bg-primary/5 px-4 py-1.5 rounded-full border border-primary/10">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <span className="text-xs font-black text-primary tracking-tight">{group.key}</span>
                         </div>
                     </div>
@@ -169,7 +180,11 @@ export function AuditTimeline({ logs, isLoading, hasCorrelation = true }: AuditT
                                 {/* Bullet */}
                                 <div className={`z-10 w-2 h-2 rounded-full mt-5 shrink-0 ${isCreate ? "bg-emerald-500" : isDelete ? "bg-rose-500" : "bg-primary"}`} />
 
+<<<<<<< HEAD
                                 <Card className="flex-1 overflow-hidden border-border group">
+=======
+                                <Card className="flex-1 overflow-hidden border-border/60 group">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     <div className="p-4 sm:p-5 text-start">
                                         {/* Header */}
                                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
@@ -182,31 +197,51 @@ export function AuditTimeline({ logs, isLoading, hasCorrelation = true }: AuditT
                                                 <div>
                                                     <h4 className="font-bold text-sm text-foreground flex items-center gap-1.5">
                                                         {config.label}
+<<<<<<< HEAD
                                                         <span className="text-xs font-normal text-muted-foreground opacity-100">/</span>
                                                         <span className="text-xs font-bold text-primary">{item.entityName}</span>
+=======
+                                                        <span className="text-xs font-normal text-muted-foreground opacity-40">/</span>
+                                                        <span className="text-xs font-bold text-primary/80">{item.entityName}</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                     </h4>
                                                     <div className="flex items-center gap-2 mt-0.5">
                                                         <div className="flex items-center gap-1 text-caption sm:text-xs text-muted-foreground font-medium">
                                                             <User className="w-3 h-3" />
                                                             {item.changedByUser}
                                                         </div>
+<<<<<<< HEAD
                                                         <span className="text-caption sm:text-xs text-muted-foreground">•</span>
+=======
+                                                        <span className="text-caption sm:text-xs text-muted-foreground/30">•</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                         <span className="text-caption sm:text-xs font-mono text-muted-foreground">{new Date(item.changedAt).toLocaleTimeString("ar-YE", { hour: '2-digit', minute: '2-digit' })}</span>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div className="flex items-center gap-2 self-end sm:self-center">
+<<<<<<< HEAD
 <Badge variant="outline" className="font-mono text-xsmall h-5 opacity-100">ID: {item.recordId}</Badge>
                                                  {item.ipAddress && <Badge variant="ghost" className="font-mono text-xsmall h-5 opacity-100">IP: {item.ipAddress}</Badge>}
+=======
+<Badge variant="outline" className="font-mono text-xsmall h-5 opacity-60">ID: {item.recordId}</Badge>
+                                                 {item.ipAddress && <Badge variant="ghost" className="font-mono text-xsmall h-5 opacity-40">IP: {item.ipAddress}</Badge>}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             </div>
                                         </div>
 
                                         {/* Status Transition */}
                                         {item.changeType === AUDIT_CHANGE_TYPE.STATUS_CHANGE && (item.oldStatusName || item.newStatusName) && (
+<<<<<<< HEAD
                                             <div className="bg-primary/[0.03] border border-primary rounded-2xl p-4 mb-3 flex items-center justify-center gap-6">
                                                 <div className="text-center space-y-1">
                                                     <p className="text-xsmall uppercase font-black tracking-widest text-muted-foreground">الحالة السابقة</p>
+=======
+                                            <div className="bg-primary/[0.03] border border-primary/10 rounded-2xl p-4 mb-3 flex items-center justify-center gap-6">
+                                                <div className="text-center space-y-1">
+                                                    <p className="text-xsmall uppercase font-black tracking-widest text-muted-foreground/60">الحالة السابقة</p>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                     <Badge variant="outline" className="h-7 px-3">{item.oldStatusName || "—"}</Badge>
                                                 </div>
                                                 <div className="p-2 rounded-full bg-primary/10 text-primary">
@@ -221,23 +256,38 @@ export function AuditTimeline({ logs, isLoading, hasCorrelation = true }: AuditT
 
                                         {/* Field Changes Table */}
                                         {visibleChanges.length > 0 && (
+<<<<<<< HEAD
                                             <div className="mt-4 border border-border rounded-xl overflow-x-auto bg-muted/20">
                                                  <table className="w-full text-xs text-start" role="table" aria-label="مقارنة القيم">
                                                     <thead>
                                                         <tr className="bg-muted/40 border-b border-border">
+=======
+                                            <div className="mt-4 border border-border/50 rounded-xl overflow-x-auto bg-muted/20">
+                                                 <table className="w-full text-xs text-start" role="table" aria-label="مقارنة القيم">
+                                                    <thead>
+                                                        <tr className="bg-muted/40 border-b border-border/50">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                             <th className="px-3 py-2 font-bold text-muted-foreground w-1/3 text-start">الحقل</th>
                                                             <th className="px-3 py-2 font-bold text-muted-foreground text-start">القيمة السابقة</th>
                                                             <th className="px-3 py-2 font-bold text-primary text-start">القيمة الجديدة</th>
                                                         </tr>
                                                     </thead>
+<<<<<<< HEAD
                                                     <tbody className="divide-y divide-border">
+=======
+                                                    <tbody className="divide-y divide-border/40">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                         {visibleChanges.map((change, cIdx) => (
                                                             <tr key={cIdx} className="hover:bg-background/50 transition-colors">
                                                                 <td className="px-3 py-2 font-medium text-foreground">{change.displayName}</td>
                                                                 <td className="px-3 py-2 text-muted-foreground line-through decoration-muted-foreground/30">{formatValue(change.oldValue)}</td>
                                                                 <td className="px-3 py-2 font-bold text-foreground">
                                                                     <div className="flex items-center gap-1.5">
+<<<<<<< HEAD
                                                                         <ArrowDownRight className="w-3 h-3 text-emerald-500 opacity-100" />
+=======
+                                                                        <ArrowDownRight className="w-3 h-3 text-emerald-500 opacity-50" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                                         {formatValue(change.newValue)}
                                                                     </div>
                                                                 </td>
@@ -250,7 +300,11 @@ export function AuditTimeline({ logs, isLoading, hasCorrelation = true }: AuditT
                                         
                                         {/* No visible changes placeholder */}
                                         {!visibleChanges.length && item.changeType === "Update" && (
+<<<<<<< HEAD
                                             <div className="text-caption sm:text-xs text-muted-foreground italic text-center py-2 opacity-100">
+=======
+                                            <div className="text-caption sm:text-xs text-muted-foreground italic text-center py-2 opacity-60">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                 تحديث سجل (لم تتغير أي حقول عرض)
                                             </div>
                                         )}
@@ -268,7 +322,11 @@ export function AuditTimeline({ logs, isLoading, hasCorrelation = true }: AuditT
 
 function AuditTimelineSkeleton() {
     return (
+<<<<<<< HEAD
         <div className="space-y-12 pb-10 opacity-100" dir="rtl">
+=======
+        <div className="space-y-12 pb-10 opacity-50" dir="rtl">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             {[1, 2].map(g => (
                 <div key={g} className="space-y-6 text-start">
                     <div className="flex items-center gap-4">

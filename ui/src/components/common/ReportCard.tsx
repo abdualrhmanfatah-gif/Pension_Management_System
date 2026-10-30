@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 import { Ban, Banknote, BarChart3, Building2, Calculator, ClipboardList, Clock, CreditCard, FileMinus, FileText, FolderOpen, Library, type LucideIcon, PieChart, Presentation, Search, ShieldAlert, UserCircle, Users, Wrench } from 'lucide-react';
 
 import { Heading } from "@/components/ui";
 import { Card } from "@/components/ui/Card";
+=======
+import { Card } from "@/components/ui/Card";
+import { Heading } from "@/components/ui";
+import { Ban, Banknote, BarChart3, Building2, Calculator, ClipboardList, Clock, CreditCard, FileMinus, FileText, FolderOpen, Library, type LucideIcon, PieChart, Presentation, Search, ShieldAlert, UserCircle, Users, Wrench } from 'lucide-react';
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface ReportCardProps {
     title: string;
@@ -44,7 +50,11 @@ export function ReportCard({ title, description, icon, onClick }: ReportCardProp
             onKeyDown={(e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
             role="button"
             tabIndex={0}
+<<<<<<< HEAD
             className="p-6 hover:border-primary transition-all cursor-pointer group focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+=======
+            className="p-6 hover:border-primary/50 transition-all cursor-pointer group focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         >
             <div className="flex items-start gap-4">
                 <div className="p-3 bg-primary/10 text-primary rounded-xl group-hover:bg-primary group-hover:text-white transition-colors">

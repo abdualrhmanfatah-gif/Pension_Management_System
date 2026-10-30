@@ -12,9 +12,15 @@ import { useNavigate } from "react-router-dom";
 
 import { hrApi, type LeaveRequestListItemDto } from "@/api/hr";
 import { DashboardHeader } from "@/components/common/dashboards";
+<<<<<<< HEAD
 import { CreateEmployeeDialog } from "@/components/domain/hr/CreateEmployeeDialog";
 import { StatCard } from "@/components/ui";
 import { Badge, Button, Card, Heading, PageLayout, Skeleton } from "@/components/ui";
+=======
+import { StatCard } from "@/components/ui";
+import { Badge, Button, Card, Heading, PageLayout, Skeleton } from "@/components/ui";
+import { CreateEmployeeDialog } from "@/components/domain/hr/CreateEmployeeDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { LEAVE_STATUS } from "@/constants";
 import { formatDate, formatNumber } from "@/lib/utils";
 
@@ -46,7 +52,11 @@ export function HrDashboardPage() {
         icon={<LayoutDashboard className="h-6 w-6" />}
         actions={
           <>
+<<<<<<< HEAD
             <Button variant="outline" className="gap-2 border-primary bg-primary/5 hover:bg-primary/10 " onClick={() => navigate("/hr/employees")}>
+=======
+            <Button variant="outline" className="gap-2 border-primary/20 bg-primary/5 hover:bg-primary/10 " onClick={() => navigate("/hr/employees")}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               <Users className="h-4 w-4" />
               دليل الموظفين
             </Button>
@@ -89,12 +99,21 @@ export function HrDashboardPage() {
         <Card className="lg:col-span-2 p-6 border-border bg-card border-2">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
+<<<<<<< HEAD
               <div className="p-2 bg-warning/10 rounded-xl">
                 <Clock className="h-5 w-5 text-warning" />
               </div>
                <Heading level="h3" className="font-black text-lg">أحدث طلبات الإجازة</Heading>
             </div>
             <Button variant="ghost" size="sm" className="text-primary hover:text-primary gap-1 text-xs font-bold" onClick={() => navigate("/hr/leaves")}>
+=======
+              <div className="p-2 bg-orange-500/10 rounded-xl">
+                <Clock className="h-5 w-5 text-orange-500" />
+              </div>
+               <Heading level="h3" className="font-black text-lg">أحدث طلبات الإجازة</Heading>
+            </div>
+            <Button variant="ghost" size="sm" className="text-primary hover:text-primary/10 gap-1 text-xs font-bold" onClick={() => navigate("/hr/leaves")}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               عرض الكل
               <ArrowUpRight className="h-3 w-3" />
             </Button>
@@ -105,12 +124,20 @@ export function HrDashboardPage() {
               Array(3).fill(0).map((_, i) => <Skeleton key={i} className="h-16 w-full rounded-xl" />)
             ) : leaves?.items.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-muted-foreground bg-muted/5 rounded-2xl border-2 border-dashed">
+<<<<<<< HEAD
                 <CalendarDays className="h-10 w-10 opacity-100 mb-2" />
+=======
+                <CalendarDays className="h-10 w-10 opacity-10 mb-2" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <p className="text-sm italic font-medium">لا توجد طلبات إجازة حالياً</p>
               </div>
             ) : (
               leaves?.items.map((leave: LeaveRequestListItemDto) => (
+<<<<<<< HEAD
                 <div key={leave.leaveRequestID} className="flex items-center justify-between p-4 rounded-xl bg-background border border-border hover:border-primary transition-all group ">
+=======
+                <div key={leave.leaveRequestID} className="flex items-center justify-between p-4 rounded-xl bg-background border border-border hover:border-primary/30 transition-all group ">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black text-xs group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                       {leave.employeeFullName[0]}
@@ -136,8 +163,13 @@ export function HrDashboardPage() {
         <Card className="p-6 border-border bg-card border-2 relative overflow-hidden">
           <div className="relative z-10 flex flex-col h-full">
             <div className="flex items-center gap-3 mb-6">
+<<<<<<< HEAD
               <div className="p-2 bg-success/10 rounded-xl ">
                 <CheckCircle2 className="h-5 w-5 text-success" />
+=======
+              <div className="p-2 bg-emerald-500/10 rounded-xl ">
+                <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               </div>
                <Heading level="h3" className="font-black text-lg">المهام السريعة</Heading>
             </div>
@@ -157,7 +189,11 @@ export function HrDashboardPage() {
               />
             </div>
 
+<<<<<<< HEAD
             <div className="mt-8 p-4 rounded-2xl bg-primary/5 border border-primary border-dashed">
+=======
+            <div className="mt-8 p-4 rounded-2xl bg-primary/5 border border-primary/10 border-dashed">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               <p className="text-[10px] sm:text-xs font-black text-primary uppercase mb-1 flex items-center gap-1.5">
                 <span className="w-1 h-1 rounded-full bg-primary inline-block" /> نصيحة تقنية
               </p>
@@ -183,9 +219,15 @@ function QuickTask({ title, desc, icon, onClick }: { title: string, desc: string
     <Button
       variant="ghost"
       onClick={onClick}
+<<<<<<< HEAD
       className="w-full p-4 rounded-2xl bg-background border border-border flex items-center gap-4 hover:bg-primary/[0.02] hover:border-primary text-start group "
     >
       <div className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center text-muted-foreground group-hover:text-primary group-hover:bg-primary/10 transition-all  border border-transparent group-hover:border-primary">
+=======
+      className="w-full p-4 rounded-2xl bg-background border border-border flex items-center gap-4 hover:bg-primary/[0.02] hover:border-primary/30 text-start group "
+    >
+      <div className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center text-muted-foreground group-hover:text-primary group-hover:bg-primary/10 transition-all  border border-transparent group-hover:border-primary/10">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         {icon}
       </div>
       <div>

@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 import { forwardRef, type ReactNode, useCallback,useMemo } from 'react';
 
 import { REPORT_HEADER_TEXT } from '@/components/domain/print/reportHeader.shared';
 import { cn } from '@/lib/utils';
+=======
+import { forwardRef, type ReactNode, useMemo, useCallback } from 'react';
+import { cn } from '@/lib/utils';
+import { REPORT_HEADER_TEXT } from '@/components/domain/print/reportHeader.shared';
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 /* ═══════════════════════════════════════════════════════════
    الأنواع

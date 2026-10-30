@@ -5,8 +5,14 @@ import { useMemo } from "react";
 import { type Resolver, useForm } from "react-hook-form";
 import * as z from "zod";
 
+<<<<<<< HEAD
 import { accountsApi } from "@/api/accounting";
 import { type AssetCategoryDto,fixedAssetApi } from "@/api/fixedAssets";
+=======
+import { fixedAssetApi, type AssetCategoryDto } from "@/api/fixedAssets";
+import { accountsApi } from "@/api/accounting";
+import { queryKeys } from "@/constants/queryKeys";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     BaseFormDialog,
     Checkbox,
@@ -16,7 +22,10 @@ import {
     NativeSelect,
     Textarea
 } from "@/components/ui";
+<<<<<<< HEAD
 import { queryKeys } from "@/constants/queryKeys";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation } from "@/hooks";
 
 const schema = z.object({
@@ -218,7 +227,11 @@ export function AssetCategoryFormDialog({ open, onOpenChange, onSaved, category 
                 </FormSection>
 
                 <FormSection title="الحالة الإدارية" icon={Activity}>
+<<<<<<< HEAD
                     <div className="flex items-center gap-3 p-4 bg-muted/30 rounded-2xl border border-border">
+=======
+                    <div className="flex items-center gap-3 p-4 bg-muted/30 rounded-2xl border border-border/40">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <Checkbox
                             id="acat-active-check"
                             checked={watch("isActive")}

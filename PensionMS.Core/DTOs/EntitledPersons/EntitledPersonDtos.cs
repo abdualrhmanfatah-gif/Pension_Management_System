@@ -31,7 +31,11 @@ public class CreateEntitledPersonDto
     public string FullName { get; set; } = string.Empty;
     public string? NationalID { get; set; }
     public int? RelationshipID { get; set; }
+<<<<<<< HEAD
     public DateOnly? DateOfBirth { get; set; }
+=======
+    public DateTime? DateOfBirth { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? Phone { get; set; }
     public int? SocialStatusID { get; set; }
     public int? HealthStatusID { get; set; }
@@ -42,6 +46,7 @@ public class CreateEntitledPersonDto
     public bool HasDisabilityException { get; set; }
 
     /// <summary>
+<<<<<<< HEAD
     /// النسبة المئوية الافتراضية لهذا المستحق (0-100)
     /// </summary>
     public decimal? SharePercent { get; set; }
@@ -52,6 +57,8 @@ public class CreateEntitledPersonDto
     public decimal? EntitledAmount { get; set; }
 
     /// <summary>
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     /// صورة الهوية الوطنية للبالغين
     /// </summary>
     public IRemoteFile? NationalIdImage { get; set; }
@@ -65,17 +72,25 @@ public class UpdateEntitledPersonDto
     public string? Phone { get; set; }
     public int? SocialStatusID { get; set; }
     public int? HealthStatusID { get; set; }
+<<<<<<< HEAD
     /// <summary>حقل توافق قديم؛ تغيير قيمته مرفوض. تستخدم إجراءات دورة الحياة لتغيير الحالة.</summary>
     public bool? IsEligible { get; set; }
     public bool? HasDisabilityException { get; set; }
     public int? RelationshipID { get; set; }
     public DateOnly? DateOfBirth { get; set; }
+=======
+    public bool? IsEligible { get; set; }
+    public bool? HasDisabilityException { get; set; }
+    public int? RelationshipID { get; set; }
+    public DateTime? DateOfBirth { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public string? NationalID { get; set; }
     public IRemoteFile? NationalIdImage { get; set; }
     public IRemoteFile? NationalIdBackImage { get; set; }
     public IRemoteFile? PersonalPhoto { get; set; }
 
     /// <summary>
+<<<<<<< HEAD
     /// النسبة المئوية الافتراضية لهذا المستحق (0-100)
     /// </summary>
     public decimal? SharePercent { get; set; }
@@ -86,6 +101,8 @@ public class UpdateEntitledPersonDto
     public decimal? EntitledAmount { get; set; }
 
     /// <summary>
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     /// آخر تاريخ تعديل معروف للعميل — للتحقق من عدم التعارض
     /// </summary>
     public DateTime? UpdatedAt { get; set; }
@@ -101,7 +118,11 @@ public class EntitledPersonDto
     public string NationalID { get; set; } = string.Empty;
     public string? RelationshipName { get; set; }
     public int RelationshipID { get; set; }
+<<<<<<< HEAD
     public DateOnly? DateOfBirth { get; set; }
+=======
+    public DateTime? DateOfBirth { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public int? AgeYears { get; set; }
     public string? Phone { get; set; }
     public int? SocialStatusID { get; set; }
@@ -121,7 +142,10 @@ public class EntitledPersonDto
     public string? NationalIdImageUrl { get; set; }
     public int PendingReviewStatus { get; set; }
     public DateTime? UpdatedAt { get; set; }
+<<<<<<< HEAD
     public decimal? SharePercent { get; set; }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 // ─── Stop / Reactivate DTOs ────────────────────────────────────
@@ -165,7 +189,11 @@ public class ReactivateEntitledPersonDto
 
 public class RecordDeathDto
 {
+<<<<<<< HEAD
     public DateOnly DeathDate { get; set; }
+=======
+    public DateTime DeathDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     /// <summary>
     /// شهادة الوفاة — مطلوبة (DocumentTypeID=2)
@@ -194,7 +222,11 @@ public class EntitledPersonSearchResultDto
     public string NationalID { get; set; } = string.Empty;
     public string? Phone { get; set; }
     public string? RelationshipName { get; set; }
+<<<<<<< HEAD
     public DateOnly? DateOfBirth { get; set; }
+=======
+    public DateTime? DateOfBirth { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public bool IsActive { get; set; }
     public bool IsDeceased { get; set; }
     public string? PersonalPhotoPath { get; set; }

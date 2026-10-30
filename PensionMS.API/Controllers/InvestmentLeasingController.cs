@@ -139,6 +139,7 @@ public class InvestmentLeasingController : ControllerBase
         if (file == null || file.Length == 0)
             return ApiResponse<string>.Fail("لم يتم اختيار ملف").ToActionResult();
 
+<<<<<<< HEAD
         var userId = this.GetUserId();
         var contract = await _service.GetLeaseContractByIdAsync(id);
         if (!contract.IsSuccess)
@@ -163,6 +164,14 @@ public class InvestmentLeasingController : ControllerBase
         }
 
         if (!result.IsSuccess) await _fileStorage.DeleteFileAsync(filePath);
+=======
+        using var stream = file.OpenReadStream();
+        var filePath = await _fileStorage.SaveFileAsync(stream, file.FileName, "contracts");
+        
+        var userId = this.GetUserId();
+        var result = await _service.UpdateLeaseContractFilePathAsync(id, filePath, userId);
+        
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         return result.ToActionResult();
     }
 

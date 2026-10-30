@@ -5,9 +5,15 @@ import { toast } from "sonner";
 
 import type { LeaseContractDto } from "@/api/investment";
 import { investmentApi } from "@/api/investment";
+<<<<<<< HEAD
 import { ContractDialog } from "@/components/domain/investment/ContractDialog";
 import { InvestmentDocsViewerDialog } from "@/components/domain/investment/InvestmentDocsViewerDialog";
 import { Badge, Button, CrudPageLayout, type CustomColumnDef, ErrorState, useConfirm } from "@/components/ui";
+=======
+import { Badge, Button, CrudPageLayout, type CustomColumnDef, ErrorState, useConfirm } from "@/components/ui";
+import { ContractDialog } from "@/components/domain/investment/ContractDialog";
+import { InvestmentDocsViewerDialog } from "@/components/domain/investment/InvestmentDocsViewerDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation, useCrudState } from "@/hooks";
 import { useHasPermission } from "@/stores/authStore";
 
@@ -131,7 +137,11 @@ export function ContractsTab({ propertyId, tenantId }: ContractsTabProps) {
                         </a>
                     )}
                     <Button variant="ghost" size="icon" onClick={() => crud.openViewer(row)} title="الوثائق والمستندات">
+<<<<<<< HEAD
                         <FileText className="w-4 h-4 text-info" />
+=======
+                        <FileText className="w-4 h-4 text-blue-500" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     </Button>
                     {canManage && (
                         <>
@@ -139,7 +149,11 @@ export function ContractsTab({ propertyId, tenantId }: ContractsTabProps) {
                                 <Edit className="w-4 h-4 text-muted-foreground" />
                             </Button>
                             <Button variant="ghost" size="icon" onClick={() => handleDelete(row)} title="حذف">
+<<<<<<< HEAD
                                 <Trash2 className="w-4 h-4 text-danger" />
+=======
+                                <Trash2 className="w-4 h-4 text-red-500" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             </Button>
                         </>
                     )}

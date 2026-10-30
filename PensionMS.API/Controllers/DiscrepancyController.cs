@@ -49,7 +49,11 @@ public class DiscrepancyController : ControllerBase
         var bytes = await _service.ExportKashfReportAsync(filter, format);
         if (bytes == null || bytes.Length == 0) return NotFound();
 
+<<<<<<< HEAD
         var fileName = $"Kashf_Report_{PensionMS.Core.Time.YemenTime.Now:yyyyMMdd}";
+=======
+        var fileName = $"Kashf_Report_{DateTime.Now:yyyyMMdd}";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (format.ToLower() == ExportFormatConstants.Pdf)
         {
             return File(bytes, "application/pdf", $"{fileName}.pdf");

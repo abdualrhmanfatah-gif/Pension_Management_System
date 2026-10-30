@@ -1,10 +1,22 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { AlertCircle, CheckCircle2, Plus, Trash2, Wrench } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { accountsApi, closingApi,fiscalYearsApi } from "@/api/accounting";
 import { FixedAssetFormDialog } from "@/components/domain/assets/FixedAssetFormDialog";
+=======
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
+
+import { accountsApi, fiscalYearsApi, closingApi } from "@/api/accounting";
+import { queryKeys } from "@/constants/queryKeys";
+import { normalizeApiError } from "@/lib/errorUtils";
+import { FixedAssetFormDialog } from "@/components/domain/assets/FixedAssetFormDialog";
+import type { InitialOpeningBalanceLineDto, ChartOfAccountDto, FiscalYearSummaryDto } from "@/types/accounting";
+import { Plus, Trash2, CheckCircle2, AlertCircle, Wrench } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
   Button,
   Dialog,
@@ -20,9 +32,12 @@ import {
   SelectValue,
   Text,
 } from "@/components/ui";
+<<<<<<< HEAD
 import { queryKeys } from "@/constants/queryKeys";
 import { normalizeApiError } from "@/lib/errorUtils";
 import type { ChartOfAccountDto, FiscalYearSummaryDto,InitialOpeningBalanceLineDto } from "@/types/accounting";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface InitialOpeningBalanceDialogProps {
   open: boolean;
@@ -187,7 +202,11 @@ export function InitialOpeningBalanceDialog({ open, onOpenChange }: InitialOpeni
             {/* Year and Date */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
+<<<<<<< HEAD
                 <label className="label-field">السنة المالية</label>
+=======
+                <label className="text-sm font-medium">السنة المالية</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <Select value={String(fiscalYearID ?? "")} onValueChange={(v) => setFiscalYearID(Number(v))}>
                   <SelectTrigger>
                     <SelectValue placeholder="اختر السنة" />
@@ -202,7 +221,11 @@ export function InitialOpeningBalanceDialog({ open, onOpenChange }: InitialOpeni
                 </Select>
               </div>
               <div className="space-y-1.5">
+<<<<<<< HEAD
                 <label className="label-field">التاريخ</label>
+=======
+                <label className="text-sm font-medium">التاريخ</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <Input type="date" value={asOfDate} onChange={(e) => setAsOfDate(e.target.value)} />
               </div>
             </div>
@@ -219,7 +242,11 @@ export function InitialOpeningBalanceDialog({ open, onOpenChange }: InitialOpeni
             {/* Lines */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
+<<<<<<< HEAD
                 <label className="label-field">الحسابات وأرصدتها</label>
+=======
+                <label className="text-sm font-medium">الحسابات وأرصدتها</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <div className="flex gap-2">
                   <Button type="button" variant="outline" size="sm" onClick={() => setShowAssetForm(true)}>
                     <Wrench className="w-4 h-4 ml-1" /> إضافة أصل جديد
@@ -242,7 +269,11 @@ export function InitialOpeningBalanceDialog({ open, onOpenChange }: InitialOpeni
               {lines.map((line, index) => (
                 <div key={index} className="grid grid-cols-[1fr_120px_40px] gap-2 items-end p-2 bg-muted/30 rounded-lg">
                   <div className="space-y-1">
+<<<<<<< HEAD
                     {index === 0 && <label className="label-field">الحساب</label>}
+=======
+                    {index === 0 && <label className="text-xs text-muted-foreground">الحساب</label>}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <Select
                       value={String(line.accountID || "")}
                       onValueChange={(v) => updateLine(index, "accountID", Number(v))}
@@ -260,7 +291,11 @@ export function InitialOpeningBalanceDialog({ open, onOpenChange }: InitialOpeni
                     </Select>
                   </div>
                   <div className="space-y-1">
+<<<<<<< HEAD
                     {index === 0 && <label className="label-field">الرصيد</label>}
+=======
+                    {index === 0 && <label className="text-xs text-muted-foreground">الرصيد</label>}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <Input
                       type="number"
                       step="0.01"
@@ -271,7 +306,11 @@ export function InitialOpeningBalanceDialog({ open, onOpenChange }: InitialOpeni
                     />
                   </div>
                   <div className="space-y-1">
+<<<<<<< HEAD
                     {index === 0 && <label className="label-field">&nbsp;</label>}
+=======
+                    {index === 0 && <label className="text-xs text-muted-foreground">&nbsp;</label>}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <Button
                       type="button"
                       variant="ghost"

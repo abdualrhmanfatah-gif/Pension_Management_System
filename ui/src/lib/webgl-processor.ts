@@ -1,8 +1,11 @@
+<<<<<<< HEAD
 import { fitToBudget } from "./crop-region.ts";
 import { MAX_ALLOWED_PIXELS } from "./device-capabilities.ts";
 import { computeHomography, validateCorners } from "./homography.ts";
 import { createPixelBuffer, type PixelBuffer, type ProcessResult } from "./pixel-buffer.ts";
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 const WARP_VERTEX_SHADER = `
     attribute vec2 aPosition;
     varying vec2 vUv;
@@ -16,6 +19,7 @@ const WARP_VERTEX_SHADER = `
 const WARP_FRAGMENT_SHADER = `
     precision highp float;
     uniform sampler2D uTexture;
+<<<<<<< HEAD
     uniform mat3 uHomography;
     varying vec2 vUv;
     
@@ -23,6 +27,28 @@ const WARP_FRAGMENT_SHADER = `
         // منظور: مربع الوحدة (v=1 أعلى المخرج) إلى إحداثيات المصدر
         vec3 p = uHomography * vec3(vUv, 1.0);
         vec2 srcCoord = p.xy / p.z;
+=======
+    uniform vec2 uCorners[4];
+    uniform vec2 uResolution;
+    varying vec2 vUv;
+    
+    vec2 bilinearTransform(vec2 uv) {
+        vec2 tl = uCorners[0];
+        vec2 tr = uCorners[1];
+        vec2 br = uCorners[2];
+        vec2 bl = uCorners[3];
+        
+        float u = uv.x;
+        float v = uv.y;
+        
+        vec2 top = mix(tl, tr, u);
+        vec2 bottom = mix(bl, br, u);
+        return mix(top, bottom, v);
+    }
+    
+    void main() {
+        vec2 srcCoord = bilinearTransform(vUv);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         
         // Clamp to texture bounds
         srcCoord = clamp(srcCoord, vec2(0.0), vec2(1.0));
@@ -61,6 +87,7 @@ const ENHANCE_FRAGMENT_SHADER = `
     }
 `;
 
+<<<<<<< HEAD
 export interface WebGLProcessorOptions {
     maxTextureSize?: number;
     /** سقف البكسلات — ميزانية ذاكرة فوق سقف البعد/النص */
@@ -71,16 +98,42 @@ export interface WebGLProcessorOptions {
 /** عدد الأعطال الحقيقية المتتالية قبل تعطيل WebGL للجلسة */
 const MAX_CONSECUTIVE_GPU_FAILURES = 2;
 
+=======
+const RENDER_TO_OUTPUT_FRAGMENT = `
+    precision highp float;
+    uniform sampler2D uTexture;
+    varying vec2 vUv;
+    
+    void main() {
+        gl_FragColor = texture2D(uTexture, vUv);
+    }
+`;
+
+export interface WebGLProcessorOptions {
+    maxTextureSize?: number;
+    enhanceAmount?: number;
+}
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 export class WebGLProcessor {
     private gl: WebGLRenderingContext | WebGL2RenderingContext | null = null;
     private canvas: HTMLCanvasElement | null = null;
     private warpProgram: WebGLProgram | null = null;
     private enhanceProgram: WebGLProgram | null = null;
+<<<<<<< HEAD
     private positionBuffer: WebGLBuffer | null = null;
     private options: WebGLProcessorOptions;
     private consecutiveGpuFailures = 0;
     private gpuDisabled = false;
     private readonly onContextLost = () => this.handleContextLost();
+=======
+    private renderProgram: WebGLProgram | null = null;
+    private positionBuffer: WebGLBuffer | null = null;
+    private texture: WebGLTexture | null = null;
+    private framebuffer: WebGLFramebuffer | null = null;
+    private tempTexture: WebGLTexture | null = null;
+    private options: WebGLProcessorOptions;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     constructor(options: WebGLProcessorOptions = {}) {
         this.options = {
@@ -90,6 +143,7 @@ export class WebGLProcessor {
         };
     }
 
+<<<<<<< HEAD
     /** هل WebGL معطّل نهائياً لهذه الجلسة بعد أعطال متتالية */
     isPermanentlyDisabled(): boolean {
         return this.gpuDisabled;
@@ -118,6 +172,8 @@ export class WebGLProcessor {
         this.consecutiveGpuFailures = 0;
     }
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     private createShader(type: number, source: string): WebGLShader | null {
         if (!this.gl) return null;
         const shader = this.gl.createShader(type);
@@ -141,6 +197,7 @@ export class WebGLProcessor {
         const vertexShader = this.createShader(this.gl.VERTEX_SHADER, vertexSource);
         const fragmentShader = this.createShader(this.gl.FRAGMENT_SHADER, fragmentSource);
 
+<<<<<<< HEAD
         // إذا فشل أيٌّ منهما نحذف الآخر لمنع تسرب موارد GPU
         if (!vertexShader || !fragmentShader) {
             if (vertexShader) this.gl.deleteShader(vertexShader);
@@ -154,6 +211,12 @@ export class WebGLProcessor {
             this.gl.deleteShader(fragmentShader);
             return null;
         }
+=======
+        if (!vertexShader || !fragmentShader) return null;
+
+        const program = this.gl.createProgram();
+        if (!program) return null;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
         this.gl.attachShader(program, vertexShader);
         this.gl.attachShader(program, fragmentShader);
@@ -162,8 +225,11 @@ export class WebGLProcessor {
         if (!this.gl.getProgramParameter(program, this.gl.LINK_STATUS)) {
             console.error('Program link error:', this.gl.getProgramInfoLog(program));
             this.gl.deleteProgram(program);
+<<<<<<< HEAD
             this.gl.deleteShader(vertexShader);
             this.gl.deleteShader(fragmentShader);
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             return null;
         }
 
@@ -175,6 +241,7 @@ export class WebGLProcessor {
     }
 
     private initGL(): boolean {
+<<<<<<< HEAD
         if (this.gl) {
             // فحص context loss: وجود gl لا يعني أن context لا يزال حيًّا
             if (!this.gl.isContextLost()) return true;
@@ -182,6 +249,9 @@ export class WebGLProcessor {
             this.resetGLState();
         }
         if (typeof document === 'undefined') return false;
+=======
+        if (this.gl) return true;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
         this.canvas = document.createElement('canvas');
         this.canvas.width = 1;
@@ -191,6 +261,7 @@ export class WebGLProcessor {
         if (!gl) return false;
 
         this.gl = gl;
+<<<<<<< HEAD
         this.canvas.addEventListener('webglcontextlost', this.onContextLost);
 
         // Create shaders (2 passes فقط — لا يوجد render-to-canvas pass)
@@ -198,11 +269,21 @@ export class WebGLProcessor {
         this.enhanceProgram = this.createProgram(WARP_VERTEX_SHADER, ENHANCE_FRAGMENT_SHADER);
 
         if (!this.warpProgram || !this.enhanceProgram) {
+=======
+
+        // Create shaders
+        this.warpProgram = this.createProgram(WARP_VERTEX_SHADER, WARP_FRAGMENT_SHADER);
+        this.enhanceProgram = this.createProgram(WARP_VERTEX_SHADER, ENHANCE_FRAGMENT_SHADER);
+        this.renderProgram = this.createProgram(WARP_VERTEX_SHADER, RENDER_TO_OUTPUT_FRAGMENT);
+
+        if (!this.warpProgram || !this.enhanceProgram || !this.renderProgram) {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             this.destroy();
             return false;
         }
 
         // Create position buffer (fullscreen quad)
+<<<<<<< HEAD
         this.positionBuffer = gl.createBuffer();
         if (!this.positionBuffer) {
             this.destroy();
@@ -213,11 +294,20 @@ export class WebGLProcessor {
             gl.ARRAY_BUFFER,
             new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
             gl.STATIC_DRAW,
+=======
+        this.positionBuffer = this.gl.createBuffer();
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
+        this.gl.bufferData(
+            this.gl.ARRAY_BUFFER,
+            new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
+            this.gl.STATIC_DRAW,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         );
 
         return true;
     }
 
+<<<<<<< HEAD
     /** إعادة تعيين جميع مراجع GL بدون GL calls — للاستخدام بعد context loss أو destroy. */
     private resetGLState(): void {
         if (this.canvas) {
@@ -228,6 +318,29 @@ export class WebGLProcessor {
         this.warpProgram = null;
         this.enhanceProgram = null;
         this.positionBuffer = null;
+=======
+    private createTextureFromImageData(imageData: ImageData): WebGLTexture | null {
+        if (!this.gl) return null;
+
+        const texture = this.gl.createTexture();
+        if (!texture) return null;
+
+        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+        this.gl.texImage2D(
+            this.gl.TEXTURE_2D,
+            0,
+            this.gl.RGBA,
+            this.gl.RGBA,
+            this.gl.UNSIGNED_BYTE,
+            imageData,
+        );
+
+        return texture;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 
     private bindTexture(texture: WebGLTexture, unit: number): void {
@@ -236,6 +349,7 @@ export class WebGLProcessor {
         this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
     }
 
+<<<<<<< HEAD
     /** false إذا لم يُعثر على aPosition — الرسم عندها ينتج صورة فارغة بلا خطأ GL ظاهر */
     private setupVertexAttribs(program: WebGLProgram): boolean {
         if (!this.gl || !this.positionBuffer) return false;
@@ -253,10 +367,22 @@ export class WebGLProcessor {
      * يُرسم من inputTexture إلى outputTexture عبر framebuffer.
      * يتحقق من اكتمال الـframebuffer قبل الرسم — لا نرسم على target غير صالح.
      */
+=======
+    private setupVertexAttribs(program: WebGLProgram): void {
+        if (!this.gl || !this.positionBuffer) return;
+
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
+        const posLoc = this.gl.getAttribLocation(program, 'aPosition');
+        this.gl.enableVertexAttribArray(posLoc);
+        this.gl.vertexAttribPointer(posLoc, 2, this.gl.FLOAT, false, 0, 0);
+    }
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     private renderToTexture(
         program: WebGLProgram,
         inputTexture: WebGLTexture,
         outputTexture: WebGLTexture,
+<<<<<<< HEAD
         framebuffer: WebGLFramebuffer,
         width: number,
         height: number,
@@ -270,10 +396,24 @@ export class WebGLProcessor {
             gl.FRAMEBUFFER,
             gl.COLOR_ATTACHMENT0,
             gl.TEXTURE_2D,
+=======
+        width: number,
+        height: number,
+        uniforms?: Record<string, { type: string; value: number | number[] }>,
+    ): boolean {
+        if (!this.gl) return false;
+
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.framebuffer);
+        this.gl.framebufferTexture2D(
+            this.gl.FRAMEBUFFER,
+            this.gl.COLOR_ATTACHMENT0,
+            this.gl.TEXTURE_2D,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             outputTexture,
             0,
         );
 
+<<<<<<< HEAD
         // فحص اكتمال الـframebuffer قبل الرسم
         const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
         if (status !== gl.FRAMEBUFFER_COMPLETE) {
@@ -306,10 +446,35 @@ export class WebGLProcessor {
                     gl.uniform2f(loc, x, y);
                 } else if (uniform.type === 'Matrix3fv' && uniform.value instanceof Float32Array) {
                     gl.uniformMatrix3fv(loc, false, uniform.value);
+=======
+        this.gl.viewport(0, 0, width, height);
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+
+        this.gl.useProgram(program);
+        this.setupVertexAttribs(program);
+
+        this.bindTexture(inputTexture, 0);
+        const texLoc = this.gl.getUniformLocation(program, 'uTexture');
+        if (texLoc) this.gl.uniform1i(texLoc, 0);
+
+        if (uniforms) {
+            for (const [name, uniform] of Object.entries(uniforms)) {
+                const loc = this.gl.getUniformLocation(program, name);
+                if (!loc) continue;
+
+                if (uniform.type === '1f') {
+                    this.gl.uniform1f(loc, uniform.value as number);
+                } else if (uniform.type === '2f') {
+                    const [x, y] = uniform.value as number[];
+                    this.gl.uniform2f(loc, x, y);
+                } else if (uniform.type === '2fv' && Array.isArray(uniform.value)) {
+                    this.gl.uniform2fv(loc, uniform.value);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 }
             }
         }
 
+<<<<<<< HEAD
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
         // الرسم قد يفشل بصمت (فشل سائق أو attrib غير مربوط) وتبقى الـframebuffer
@@ -359,11 +524,27 @@ export class WebGLProcessor {
         }
     }
 
+=======
+        this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+
+        return this.gl.checkFramebufferStatus(this.gl.FRAMEBUFFER) === this.gl.FRAMEBUFFER_COMPLETE;
+    }
+
+    private readPixels(width: number, height: number): Uint8ClampedArray | null {
+        if (!this.gl) return null;
+
+        const pixels = new Uint8ClampedArray(width * height * 4);
+        this.gl.readPixels(0, 0, width, height, this.gl.RGBA, this.gl.UNSIGNED_BYTE, pixels);
+        return pixels;
+    }
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     process(
         srcData: Uint8ClampedArray,
         srcWidth: number,
         srcHeight: number,
         corners: { x: number; y: number }[],
+<<<<<<< HEAD
     ): ProcessResult | null {
         if (this.gpuDisabled) {
             console.warn('WebGL: معطّل لهذه الجلسة بعد أعطال متتالية');
@@ -401,6 +582,13 @@ export class WebGLProcessor {
             return this.finish(false, `source exceeds GPU texture limit (${srcWidth}x${srcHeight} > ${effectiveMaxTexture})`);
         }
 
+=======
+    ): { data: Uint8ClampedArray; width: number; height: number } | null {
+        if (!this.initGL() || !this.gl) return null;
+
+        const [tl, tr, br, bl] = corners;
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         // Calculate output dimensions
         const wTop = Math.hypot(tr.x - tl.x, tr.y - tl.y);
         const wBot = Math.hypot(br.x - bl.x, br.y - bl.y);
@@ -410,6 +598,7 @@ export class WebGLProcessor {
         const outH = Math.round((hL + hR) / 2);
 
         if (outW < 1 || outH < 1) {
+<<<<<<< HEAD
             return this.finish(false, 'degenerate output size');
         }
 
@@ -546,6 +735,148 @@ export class WebGLProcessor {
                 if (framebuffer) gl.deleteFramebuffer(framebuffer);
                 gl.bindFramebuffer(gl.FRAMEBUFFER, null);
             }
+=======
+            return { data: new Uint8ClampedArray(srcData), width: srcWidth, height: srcHeight };
+        }
+
+        // Scale to fit max texture size
+        const scale = Math.min(1, this.options.maxTextureSize! / Math.max(outW, outH));
+        const w = Math.max(1, Math.round(outW * scale));
+        const h = Math.max(1, Math.round(outH * scale));
+
+        // Normalize corners to 0-1 range
+        const normalizedCorners = [
+            tl.x / srcWidth, 1 - tl.y / srcHeight,
+            tr.x / srcWidth, 1 - tr.y / srcHeight,
+            br.x / srcWidth, 1 - br.y / srcHeight,
+            bl.x / srcWidth, 1 - bl.y / srcHeight,
+        ];
+
+        try {
+            // Create source texture - copy data to ensure proper ArrayBuffer type
+            const srcDataCopy = new Uint8ClampedArray(srcData);
+            const srcImageData = new ImageData(srcDataCopy, srcWidth, srcHeight);
+            const srcTexture = this.createTextureFromImageData(srcImageData);
+            if (!srcTexture) return null;
+
+            // Create output texture for warp
+            this.tempTexture = this.gl.createTexture();
+            if (!this.tempTexture) {
+                this.gl.deleteTexture(srcTexture);
+                return null;
+            }
+            this.gl.bindTexture(this.gl.TEXTURE_2D, this.tempTexture);
+            this.gl.texImage2D(
+                this.gl.TEXTURE_2D,
+                0,
+                this.gl.RGBA,
+                w,
+                h,
+                0,
+                this.gl.RGBA,
+                this.gl.UNSIGNED_BYTE,
+                null,
+            );
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+
+            // Create framebuffer
+            this.framebuffer = this.gl.createFramebuffer();
+
+            // Step 1: Warp
+            if (
+                !this.renderToTexture(this.warpProgram!, srcTexture, this.tempTexture, w, h, {
+                    uCorners: { type: '2fv', value: normalizedCorners },
+                    uResolution: { type: '2f', value: [srcWidth, srcHeight] },
+                })
+            ) {
+                this.gl.deleteTexture(srcTexture);
+                this.gl.deleteTexture(this.tempTexture);
+                this.gl.deleteFramebuffer(this.framebuffer);
+                return null;
+            }
+
+            // Step 2: Enhance
+            const enhancedTexture = this.gl.createTexture();
+            if (!enhancedTexture) {
+                this.gl.deleteTexture(srcTexture);
+                this.gl.deleteTexture(this.tempTexture);
+                this.gl.deleteFramebuffer(this.framebuffer);
+                return null;
+            }
+            this.gl.bindTexture(this.gl.TEXTURE_2D, enhancedTexture);
+            this.gl.texImage2D(
+                this.gl.TEXTURE_2D,
+                0,
+                this.gl.RGBA,
+                w,
+                h,
+                0,
+                this.gl.RGBA,
+                this.gl.UNSIGNED_BYTE,
+                null,
+            );
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+
+            if (
+                !this.renderToTexture(this.enhanceProgram!, this.tempTexture, enhancedTexture, w, h, {
+                    uResolution: { type: '2f', value: [w, h] },
+                    uAmount: { type: '1f', value: this.options.enhanceAmount! },
+                })
+            ) {
+                this.gl.deleteTexture(srcTexture);
+                this.gl.deleteTexture(this.tempTexture);
+                this.gl.deleteTexture(enhancedTexture);
+                this.gl.deleteFramebuffer(this.framebuffer);
+                return null;
+            }
+
+            // Step 3: Render to screen (to read pixels)
+            this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+            this.gl.viewport(0, 0, w, h);
+            this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+
+            this.gl.useProgram(this.renderProgram);
+            this.setupVertexAttribs(this.renderProgram!);
+
+            this.bindTexture(enhancedTexture, 0);
+            const texLoc = this.gl.getUniformLocation(this.renderProgram!, 'uTexture');
+            if (texLoc) this.gl.uniform1i(texLoc, 0);
+
+            this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+
+            // Read result
+            const resultData = this.readPixels(w, h);
+
+            // Cleanup
+            this.gl.deleteTexture(srcTexture);
+            this.gl.deleteTexture(this.tempTexture);
+            this.gl.deleteTexture(enhancedTexture);
+            this.gl.deleteFramebuffer(this.framebuffer);
+            this.tempTexture = null;
+            this.framebuffer = null;
+
+            if (!resultData) return null;
+
+            // Flip Y (WebGL reads bottom-up)
+            const flippedData = new Uint8ClampedArray(resultData.length);
+            const rowSize = w * 4;
+            for (let y = 0; y < h; y++) {
+                const srcRow = (h - 1 - y) * rowSize;
+                const dstRow = y * rowSize;
+                flippedData.set(resultData.subarray(srcRow, srcRow + rowSize), dstRow);
+            }
+
+            return { data: flippedData, width: w, height: h };
+        } catch (error) {
+            console.error('WebGL processing error:', error);
+            return null;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
     }
 
@@ -553,7 +884,15 @@ export class WebGLProcessor {
         if (this.gl) {
             if (this.warpProgram) this.gl.deleteProgram(this.warpProgram);
             if (this.enhanceProgram) this.gl.deleteProgram(this.enhanceProgram);
+<<<<<<< HEAD
             if (this.positionBuffer) this.gl.deleteBuffer(this.positionBuffer);
+=======
+            if (this.renderProgram) this.gl.deleteProgram(this.renderProgram);
+            if (this.positionBuffer) this.gl.deleteBuffer(this.positionBuffer);
+            if (this.texture) this.gl.deleteTexture(this.texture);
+            if (this.tempTexture) this.gl.deleteTexture(this.tempTexture);
+            if (this.framebuffer) this.gl.deleteFramebuffer(this.framebuffer);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
             const loseContext = this.gl.getExtension('WEBGL_lose_context');
             if (loseContext) {
@@ -561,8 +900,20 @@ export class WebGLProcessor {
             }
         }
 
+<<<<<<< HEAD
         this.gpuDisabled = false;
         this.consecutiveGpuFailures = 0;
         this.resetGLState();
+=======
+        this.gl = null;
+        this.canvas = null;
+        this.warpProgram = null;
+        this.enhanceProgram = null;
+        this.renderProgram = null;
+        this.positionBuffer = null;
+        this.texture = null;
+        this.tempTexture = null;
+        this.framebuffer = null;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 }

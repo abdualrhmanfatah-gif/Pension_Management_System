@@ -5,9 +5,15 @@ import { toast } from "sonner";
 
 import type { PaymentScheduleDto } from "@/api/investment";
 import { investmentApi } from "@/api/investment";
+<<<<<<< HEAD
 import { InvestmentDocsViewerDialog } from "@/components/domain/investment/InvestmentDocsViewerDialog";
 import { PaymentScheduleDialog } from "@/components/domain/investment/PaymentScheduleDialog";
 import { Badge, Button, CrudPageLayout, type CustomColumnDef, ErrorState } from "@/components/ui";
+=======
+import { Badge, Button, CrudPageLayout, type CustomColumnDef, ErrorState } from "@/components/ui";
+import { InvestmentDocsViewerDialog } from "@/components/domain/investment/InvestmentDocsViewerDialog";
+import { PaymentScheduleDialog } from "@/components/domain/investment/PaymentScheduleDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useCrudState } from "@/hooks";
 
 interface PaymentSchedulesTabProps {
@@ -68,7 +74,11 @@ export function PaymentSchedulesTab({ contractId }: PaymentSchedulesTabProps) {
         {
             key: "paidAmount",
             header: "المبلغ المدفوع",
+<<<<<<< HEAD
             render: (row) => <span className="text-success font-bold font-mono">{row.paidAmount.toLocaleString()} ر.ي</span>
+=======
+            render: (row) => <span className="text-emerald-600 font-bold font-mono">{row.paidAmount.toLocaleString()} ر.ي</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         },
         {
             key: "status",
@@ -84,7 +94,11 @@ export function PaymentSchedulesTab({ contractId }: PaymentSchedulesTabProps) {
             header: "الإجراءات",
             render: (row) => (
                 <div className="flex items-center gap-1">
+<<<<<<< HEAD
                     <Button variant="ghost" size="icon" onClick={() => crud.openViewer(row)} title="الوثائق والمستندات" className="text-warning hover:bg-warning/10">
+=======
+                    <Button variant="ghost" size="icon" onClick={() => crud.openViewer(row)} title="الوثائق والمستندات" className="text-amber-600 hover:bg-amber-50">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <FileText className="w-4 h-4" />
                     </Button>
                     <Button variant="ghost" size="sm" className="h-11 gap-2" onClick={() => crud.openEdit(row)}>

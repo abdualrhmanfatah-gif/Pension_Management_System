@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 using PensionMS.Infrastructure.Data;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 using Microsoft.EntityFrameworkCore;
 using PensionMS.Core.DTOs.Accounting;
 using PensionMS.Core.DTOs.Common;
@@ -129,10 +132,14 @@ public class SimpleStocktakeService : ISimpleStocktakeService
         return ApiResponse<bool>.Success(true);
     }
 
+<<<<<<< HEAD
     public Task<ApiResponse<JournalEntryDto>> AdjustStocktakeAsync(int stocktakeId, int userId) =>
         UnitOfWorkTransaction.ExecuteAsync(_unitOfWork, () => AdjustStocktakeCoreAsync(stocktakeId, userId));
 
     private async Task<ApiResponse<JournalEntryDto>> AdjustStocktakeCoreAsync(int stocktakeId, int userId)
+=======
+    public async Task<ApiResponse<JournalEntryDto>> AdjustStocktakeAsync(int stocktakeId, int userId)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     {
         var stocktake = await _unitOfWork.SimpleStocktakes. Query()
             .Include(s => s.Lines)
@@ -159,7 +166,11 @@ public class SimpleStocktakeService : ISimpleStocktakeService
             stocktake.CompletedByUserID = userId;
             stocktake.CompletedAt = DateTime.UtcNow;
             await _unitOfWork.SaveChangesAsync();
+<<<<<<< HEAD
             return ApiResponse<JournalEntryDto>.Success(null, "لا توجد فروق للتسوية");
+=======
+            return ApiResponse<JournalEntryDto>.Fail("لا توجد فروق للتسوية");
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
 
 
@@ -169,7 +180,11 @@ public class SimpleStocktakeService : ISimpleStocktakeService
 
         decimal totalDeficit = linesWithVariance
             .Where(l => l.PhysicalQuantity < l.SystemQuantity)
+<<<<<<< HEAD
             .Sum(l => -l.VarianceValue); // قيمة الفرق في الكيان مطلقة؛ العجز هنا يجب أن يكون سالباً.
+=======
+            .Sum(l => l.VarianceValue); // هذا سالب تلقائياً لأن VarianceValue سالب
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
    
         var inventoryAccount = await _unitOfWork.ChartOfAccounts. Query()
@@ -318,11 +333,14 @@ public class SimpleStocktakeService : ISimpleStocktakeService
     public async Task<List<SimpleStocktakeDto>> GetAllStocktakesAsync(int fiscalYearId)
     {
         var stocktakes = await _unitOfWork.SimpleStocktakes.Query()
+<<<<<<< HEAD
             .AsNoTracking()
             .Include(s => s.Lines)
             .Include(s => s.CreatedByUser)
             .Include(s => s.CompletedByUser)
             .Include(s => s.JournalEntry)
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Where(s => s.FiscalYearID == fiscalYearId && !s.IsDeleted)
             .OrderByDescending(s => s.StocktakeDate)
             .ToListAsync();
@@ -330,14 +348,24 @@ public class SimpleStocktakeService : ISimpleStocktakeService
         var result = new List<SimpleStocktakeDto>();
         foreach (var stocktake in stocktakes)
         {
+<<<<<<< HEAD
             result.Add(await MapToDtoAsync(stocktake, linesLoaded: true));
+=======
+            result.Add(await MapToDtoAsync(stocktake));
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
         return result;
     }
 
+<<<<<<< HEAD
     private async Task<SimpleStocktakeDto> MapToDtoAsync(SimpleStocktake stocktake, bool linesLoaded = false)
     {
         if (!linesLoaded && (stocktake.Lines == null || stocktake.Lines.Count == 0))
+=======
+    private async Task<SimpleStocktakeDto> MapToDtoAsync(SimpleStocktake stocktake)
+    {
+        if (stocktake.Lines == null || stocktake.Lines.Count == 0)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         {
             stocktake.Lines = await _unitOfWork.SimpleStocktakeLines.Query()
                 .Where(l => l.SimpleStocktakeID == stocktake.SimpleStocktakeID)
@@ -372,4 +400,8 @@ public class SimpleStocktakeService : ISimpleStocktakeService
             Lines = lines
         };
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

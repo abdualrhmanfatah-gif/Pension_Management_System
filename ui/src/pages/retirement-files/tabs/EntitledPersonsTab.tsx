@@ -4,15 +4,24 @@ import { useEffect, useMemo,useState } from "react";
 import { toast } from "sonner";
 
 import { retirementApi } from "@/api/retirement";
+<<<<<<< HEAD
+=======
+import { Badge, Button, Card, type CustomColumnDef, DataTable, EditableImage, Heading, useConfirm } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 // ─── Standalone Dialogs ───────────────────────────────
 import { EntitledPersonFormDialog } from "@/components/domain/retirement/EntitledPersonFormDialog";
 import { ReactivateEntitledPersonDialog } from "@/components/domain/retirement/ReactivateEntitledPersonDialog";
 import { StopEntitledPersonDialog } from "@/components/domain/retirement/StopEntitledPersonDialog";
 import { ViewEntitledPersonDialog } from "@/components/domain/retirement/ViewEntitledPersonDialog";
+<<<<<<< HEAD
 import { Badge, Button, type CustomColumnDef, DataTable, EditableImage, TabHeader, useConfirm } from "@/components/ui";
 import { PENDING_REVIEW_STATUS } from "@/constants";
 import { useApiMutation, useCreateShortcut } from "@/hooks";
 import { normalizeDateInputValue } from "@/lib/date";
+=======
+import { PENDING_REVIEW_STATUS } from "@/constants";
+import { useApiMutation, useCreateShortcut } from "@/hooks";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { cn, getPhotoUrl, resolvePersonalPhotoPath } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
 
@@ -40,7 +49,10 @@ export interface EntitledPerson {
     pendingReviewStatus?: number;
     relationshipID?: number;
     personalPhotoPath?: string | null;
+<<<<<<< HEAD
     sharePercent?: number | null;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 interface EntitledPersonsTabProps {
@@ -77,7 +89,11 @@ export function EntitledPersonsTab({ fileId }: EntitledPersonsTabProps) {
         (params: { entityType: string; entityId: number }) =>
             retirementApi.acknowledgeEntityRejection(params.entityType, params.entityId),
         {
+<<<<<<< HEAD
             successMessage: "تم إعادة المراجعة وإعادة الكيان لحالته الطبيعية",
+=======
+            successMessage: "تم قبول الرفض وإعادة الكيان لحالته الطبيعية",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             invalidateKeys: [["entitled-persons", fileId], ["retirement-file"]]
         }
     );
@@ -156,9 +172,18 @@ export function EntitledPersonsTab({ fileId }: EntitledPersonsTabProps) {
                         formData.append("nationalID", row.nationalID || "");
                         formData.append("relationshipID", (row.relationshipID || 0).toString());
                         if (row.dateOfBirth) {
+<<<<<<< HEAD
                             // DateOnly في الـAPI: "YYYY-MM-DD" فقط، بلا طابع زمني.
                             const dateOfBirth = normalizeDateInputValue(row.dateOfBirth);
                             if (dateOfBirth) formData.append("dateOfBirth", dateOfBirth);
+=======
+                            const d = new Date(row.dateOfBirth);
+                            if (!isNaN(d.getTime())) {
+                                formData.append("dateOfBirth", d.toISOString());
+                            } else {
+                                formData.append("dateOfBirth", row.dateOfBirth);
+                            }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         }
                         formData.append("phone", row.phone || "");
                         formData.append("socialStatusID", (row.socialStatusID || 0).toString());
@@ -192,11 +217,14 @@ export function EntitledPersonsTab({ fileId }: EntitledPersonsTabProps) {
             accessor: (row) => row.relationshipName || "—"
         },
         {
+<<<<<<< HEAD
             key: "sharePercent",
             header: "حصة المعاش",
             render: (row) => row.sharePercent == null ? "—" : `${row.sharePercent}%`
         },
         {
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             key: "nationalID",
             header: "الرقم الوطني",
             render: (row) => <span className="font-mono text-xs text-muted-foreground">{row.nationalID || "—"}</span>
@@ -293,7 +321,11 @@ export function EntitledPersonsTab({ fileId }: EntitledPersonsTabProps) {
                             variant="ghost-action"
                             className="min-h-[44px] min-w-[44px] rounded-xl text-amber-600 hover:bg-amber-50"
                             onClick={() => acknowledgeMutation.mutate({ entityType: "EntitledPerson", entityId: row.entitledID })}
+<<<<<<< HEAD
                             title="إعادة المراجعة"
+=======
+                            title="قبول الرفض"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         >
                             <Check className="w-4 h-4" />
                         </Button>
@@ -318,6 +350,7 @@ export function EntitledPersonsTab({ fileId }: EntitledPersonsTabProps) {
 
     return (
         <div className="space-y-2 md:space-y-4 animate-in fade-in duration-500">
+<<<<<<< HEAD
             <TabHeader
                 title="قائمة الورثة والمستحقين"
                 description="إدارة بيانات أفراد عائلة المتقاعد المستحقين للمعاش"
@@ -330,6 +363,28 @@ export function EntitledPersonsTab({ fileId }: EntitledPersonsTabProps) {
                     title: "إضافة مستحق (Alt+A)"
                 }}
             />
+=======
+            <Card className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-4 bg-muted/30 p-3 md:p-5">
+                <div className="space-y-0.5 md:space-y-1 text-start">
+                    <Heading level="h3" className="font-bold flex items-center gap-1.5 md:gap-2 text-sm md:text-base">
+                        <Users className="w-4 h-4 md:w-5 md:h-5 text-primary" /> قائمة الورثة والمستحقين
+                    </Heading>
+                    <p className="text-xs md:text-sm text-muted-foreground hidden sm:block">
+                        إدارة بيانات أفراد عائلة المتقاعد المستحقين للمعاش
+                    </p>
+                </div>
+                {canCreate && (
+                    <Button 
+                        size="sm" 
+                        onClick={handleOpenCreate} 
+                        title="إضافة مستحق (Ctrl+Alt+N)"
+                        className="gap-1 rounded-xl font-bold h-8 md:h-10 px-4 md:px-6 transition-all text-xs md:text-sm"
+                    >
+                        <UserPlus className="w-3.5 h-3.5 md:w-4 md:h-4 ms-1" /> إضافة مستحق
+                    </Button>
+                )}
+            </Card>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
             <DataTable
                 columns={columns}
@@ -352,9 +407,18 @@ export function EntitledPersonsTab({ fileId }: EntitledPersonsTabProps) {
                                     formData.append("nationalID", row.nationalID || "");
                                     formData.append("relationshipID", (row.relationshipID || 0).toString());
                                     if (row.dateOfBirth) {
+<<<<<<< HEAD
                                         // DateOnly في الـAPI: "YYYY-MM-DD" فقط، بلا طابع زمني.
                                         const dateOfBirth = normalizeDateInputValue(row.dateOfBirth);
                                         if (dateOfBirth) formData.append("dateOfBirth", dateOfBirth);
+=======
+                                        const d = new Date(row.dateOfBirth);
+                                        if (!isNaN(d.getTime())) {
+                                            formData.append("dateOfBirth", d.toISOString());
+                                        } else {
+                                            formData.append("dateOfBirth", row.dateOfBirth);
+                                        }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     }
                                     formData.append("phone", row.phone || "");
                                     formData.append("socialStatusID", (row.socialStatusID || 0).toString());
@@ -444,4 +508,8 @@ export function EntitledPersonsTab({ fileId }: EntitledPersonsTabProps) {
             {ConfirmDialogElement}
         </div>
     );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

@@ -1,20 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { useEffect,useMemo, useState } from "react";
+=======
+import { useMemo, useState, useEffect } from "react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import { salariesApi } from "@/api/salaries";
+<<<<<<< HEAD
 import { CreateSalaryBatchDialog } from "@/components/domain/salaries/CreateSalaryBatchDialog";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Badge,
     CrudPageLayout,
     type CustomColumnDef,
     NativeSelect} from "@/components/ui";
+<<<<<<< HEAD
 import { BATCH_STATUS } from "@/constants";
 import { queryKeys } from "@/constants/queryKeys";
 import { useCrudState } from "@/hooks";
 import { formatDate } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
+=======
+import { CreateSalaryBatchDialog } from "@/components/domain/salaries/CreateSalaryBatchDialog";
+import { BATCH_STATUS } from "@/constants";
+import { useCrudState } from "@/hooks";
+import { formatDate } from "@/lib/utils";
+import { useHasPermission } from "@/stores/authStore";
+import { queryKeys } from "@/constants/queryKeys";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import type { SalaryBatch } from "@/types/salaries";
 
 /**

@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+<<<<<<< HEAD
 import { useQuery } from "@tanstack/react-query";
 import { Activity, Hash, Landmark } from "lucide-react";
 import { useMemo } from "react";
@@ -7,15 +8,33 @@ import * as z from "zod";
 
 import { accountsApi } from "@/api/accounting";
 import { bankApi, type BankDto } from "@/api/banks";
+=======
+import { Activity, Hash, Landmark } from "lucide-react";
+import { useMemo } from "react";
+import { type Resolver, useForm } from "react-hook-form";
+import { useQuery } from "@tanstack/react-query";
+import * as z from "zod";
+
+import { bankApi, type BankDto } from "@/api/banks";
+import { accountsApi } from "@/api/accounting";
+import type { ChartOfAccountDto } from "@/types/accounting";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     BaseFormDialog,
     FormField,
     FormSection,
     Input,
+<<<<<<< HEAD
     NativeSelect,
     NoteBox} from "@/components/ui";
 import { useApiMutation } from "@/hooks";
 import type { ChartOfAccountDto } from "@/types/accounting";
+=======
+    NoteBox,
+    NativeSelect
+} from "@/components/ui";
+import { useApiMutation } from "@/hooks";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Validation Schema ─────────────────────────────────
 
@@ -147,7 +166,11 @@ export function BankFormDialog({ open, onOpenChange, onSaved, bank }: Props) {
                 </FormSection>
 
                 <FormSection title="الحالة الإدارية" icon={Activity}>
+<<<<<<< HEAD
                     <div className="flex items-center gap-3 p-4 bg-muted/30 rounded-2xl border border-border">
+=======
+                    <div className="flex items-center gap-3 p-4 bg-muted/30 rounded-2xl border border-border/40">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <input
                             type="checkbox"
                             id="bank-active-check"

@@ -1,12 +1,23 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { ClipboardList, FileText, FileUp, User } from "lucide-react";
+<<<<<<< HEAD
 import { useId, useMemo } from "react";
 import { Controller, type Resolver, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 import { documentsApi } from "@/api/documents";
 import { retirementApi } from "@/api/retirement";
+=======
+import { useMemo } from "react";
+import { Controller, type Resolver, useForm, useWatch } from "react-hook-form";
+import { z } from "zod";
+
+import { retirementApi } from "@/api/retirement";
+import { documentsApi } from "@/api/documents";
+import type { AgentSummary, EntitledPersonDto, EntitledPersonSummary, GuardianSummary } from "@/types/retirement";
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { 
   BaseFormDialog, 
   FileField, 
@@ -16,7 +27,10 @@ import {
   Textarea, 
 } from "@/components/ui";
 import { useApiMutation } from "@/hooks";
+<<<<<<< HEAD
 import type { AgentSummary, EntitledPersonDto, EntitledPersonSummary, GuardianSummary } from "@/types/retirement";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Validation Schema ─────────────────────────────────
 
@@ -24,8 +38,12 @@ const uploadSchema = z.object({
     documentTypeID: z.coerce.number().min(1, "نوع الوثيقة مطلوب"),
     ownerEntity: z.string().optional(),
     file: z.instanceof(File, { message: "يرجى اختيار ملف صالح للمتابعة" }),
+<<<<<<< HEAD
     // م33: حدود مطابقة للواجهة الخلفية
     notes: z.string().trim().max(2000, "الملاحظات تتجاوز الحد الأقصى (2000 حرف)").optional().or(z.literal("")),
+=======
+    notes: z.string().trim().optional().or(z.literal("")),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 });
 
 type UploadFormValues = z.infer<typeof uploadSchema>;
@@ -65,6 +83,7 @@ export function UploadDocumentDialog({
     isLoading: providedIsLoading,
     portal = true
 }: UploadDocumentModalProps) {
+<<<<<<< HEAD
     const documentTypeInputId = useId();
     const ownerInputId = useId();
     // 1. Fetch doc types if not provided
@@ -76,6 +95,16 @@ export function UploadDocumentDialog({
             return documentsApi.getTypesByOwner(String(ownerType));
         },
         enabled: open && !providedDocTypes
+=======
+    // 1. Fetch doc types if not provided
+    const { data: fetchedDocTypes } = useQuery({
+        queryKey: ["document-types", ownerType],
+        queryFn: async () => {
+            if (!ownerType) return [];
+            return documentsApi.getTypesByOwner(String(ownerType));
+        },
+        enabled: open && !!ownerType && !providedDocTypes
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     });
 
     const docTypes = providedDocTypes || fetchedDocTypes || [];
@@ -146,6 +175,7 @@ export function UploadDocumentDialog({
 
         const formData = new FormData();
         formData.append("File", values.file);
+<<<<<<< HEAD
         formData.append("DocumentTypeID", String(values.documentTypeID));
         if (values.notes) formData.append("Notes", values.notes);
 
@@ -178,6 +208,25 @@ export function UploadDocumentDialog({
 
         if (!ownerSent && fileId) {
             formData.append("RetirementFileID", String(fileId));
+=======
+        
+        if (fileId) formData.append("RetirementFileID", String(fileId));
+        formData.append("DocumentTypeID", String(values.documentTypeID));
+        if (values.notes) formData.append("Notes", values.notes);
+        
+        if (missingEntityIds) {
+            if (missingEntityIds.retireeID) formData.append("RetireeID", String(missingEntityIds.retireeID));
+            if (missingEntityIds.agentID) formData.append("AgentID", String(missingEntityIds.agentID));
+            if (missingEntityIds.guardianID) formData.append("GuardianID", String(missingEntityIds.guardianID));
+            if (missingEntityIds.entitledID) formData.append("EntitledPersonID", String(missingEntityIds.entitledID));
+            if (missingEntityIds.pledgeID) formData.append("PledgeID", String(missingEntityIds.pledgeID));
+            if (missingEntityIds.exemptionID) formData.append("ExemptionID", String(missingEntityIds.exemptionID));
+        } else if (values.ownerEntity && values.ownerEntity !== "retiree") {
+            const [type, id] = values.ownerEntity.split("_");
+            if (type === "agent" && id) formData.append("AgentID", id);
+            if (type === "guardian" && id) formData.append("GuardianID", id);
+            if (type === "entitled" && id) formData.append("EntitledPersonID", id);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
 
         await mutation.mutateAsync(formData);
@@ -208,17 +257,24 @@ export function UploadDocumentDialog({
             <div className="space-y-3 sm:space-y-4">
                 <FormSection title="تصنيف الوثيقة" icon={ClipboardList}>
                     <div className="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-4">
+<<<<<<< HEAD
                         <FormField htmlFor={documentTypeInputId} label="نوع الوثيقة المرفوعة" required error={errors.documentTypeID?.message}>
+=======
+                        <FormField label="نوع الوثيقة المرفوعة" required error={errors.documentTypeID?.message}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <Controller
                                 name="documentTypeID"
                                 control={control}
                                 render={({ field }) => (
                                     <NativeSelect 
+<<<<<<< HEAD
                                         id={documentTypeInputId}
                                         ref={field.ref}
                                         aria-labelledby={`${documentTypeInputId}-label`}
                                         aria-invalid={!!errors.documentTypeID || undefined}
                                         aria-describedby={errors.documentTypeID ? `${documentTypeInputId}-error` : undefined}
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                         options={docTypes.map((t) => ({ value: t.id.toString(), label: t.name }))}
                                         value={field.value?.toString() || ""}
                                         onChange={(val) => field.onChange(val ? Number(val) : 0)}
@@ -229,17 +285,24 @@ export function UploadDocumentDialog({
                         </FormField>
 
                         {showOwnerSelect && (
+<<<<<<< HEAD
                             <FormField htmlFor={ownerInputId} label="صاحب الوثيقة" error={errors.ownerEntity?.message} icon={User}>
+=======
+                            <FormField label="صاحب الوثيقة" error={errors.ownerEntity?.message} icon={User}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 <Controller
                                     name="ownerEntity"
                                     control={control}
                                     render={({ field }) => (
                                         <NativeSelect 
+<<<<<<< HEAD
                                             id={ownerInputId}
                                             ref={field.ref}
                                             aria-labelledby={`${ownerInputId}-label`}
                                             aria-invalid={!!errors.ownerEntity || undefined}
                                             aria-describedby={errors.ownerEntity ? `${ownerInputId}-error` : undefined}
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             options={fileEntities || [{ value: "retiree", label: "المتقاعد (صاحب الملف)" }]}
                                             value={field.value || "retiree"}
                                             onChange={field.onChange}

@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { CheckCircle2, Gavel, Scale, XCircle } from "lucide-react";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +7,15 @@ import { useNavigate } from "react-router-dom";
 import { retirementApi } from "@/api/retirement";
 import type { SettlementItemDto } from "@/api/settlements";
 import { Button, CrudPageLayout, type CustomColumnDef, TabHeader } from "@/components/ui";
+=======
+import { CheckCircle2, Gavel,XCircle } from "lucide-react";
+import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+
+import type { SettlementItemDto } from "@/api/settlements";
+import { retirementApi } from "@/api/retirement";
+import { Button, CrudPageLayout, type CustomColumnDef } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { formatDate } from "@/lib/utils";
 
 interface SettlementsTabProps {
@@ -58,7 +68,11 @@ export function SettlementsTab({ retireeId }: SettlementsTabProps) {
             header: "المعالجة",
             render: (row) => (
                 <div className="text-start text-xs">
+<<<<<<< HEAD
                     <div className="text-muted-foreground line-through opacity-100">{row.currentRankName}</div>
+=======
+                    <div className="text-muted-foreground line-through opacity-60">{row.currentRankName}</div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <div className="font-bold text-primary">{row.processedRankName}</div>
                 </div>
             )
@@ -94,6 +108,7 @@ export function SettlementsTab({ retireeId }: SettlementsTabProps) {
     ], [navigate]);
 
     return (
+<<<<<<< HEAD
         <div className="space-y-2 md:space-y-4 animate-in fade-in duration-500 text-start">
             <TabHeader
                 title="تسويات المعاش التقاعدي"
@@ -110,5 +125,15 @@ export function SettlementsTab({ retireeId }: SettlementsTabProps) {
                 emptyMessage="لا توجد تسويات مرتبطة بهذا المتقاعد."
             />
         </div>
+=======
+        <CrudPageLayout
+            title="تسويات المعاش"
+            description="سجل القرارات والتسويات المالية التي خضع لها المتقاعد"
+            columns={columns}
+            data={items}
+            loading={isLoading}
+            emptyMessage="لا توجد تسويات مرتبطة بهذا المتقاعد."
+        />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     );
 }

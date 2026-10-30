@@ -8,12 +8,22 @@ import {
     Shield,
     User as UserIcon,
 } from "lucide-react";
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 
 import { Badge, Card, CardContent, CardHeader, CardTitle, Heading, InfoPair, PageLayout } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
 import { BADGE_VARIANT } from "@/constants";
 import { useAuthStore } from "@/stores/authStore";
+=======
+
+import { Badge, Card, CardContent, CardHeader, CardTitle, Heading, InfoPair, PageLayout } from "@/components/ui";
+import { useNavigate } from "react-router-dom";
+
+import { Button } from "@/components/ui/Button";
+import { useAuthStore } from "@/stores/authStore";
+import { BADGE_VARIANT } from "@/constants";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 const formatDate = (dateStr: string | null | undefined) => {
     if (!dateStr) return "—";

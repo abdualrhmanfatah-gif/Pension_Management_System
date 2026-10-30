@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useQuery } from "@tanstack/react-query";
 import {
 AlertTriangle,   ArrowUpDown, Building2, Calculator,
@@ -12,10 +13,25 @@ import { itemApi, type ItemDto } from "@/api/inventory/items";
 import { stocktakeApi } from "@/api/inventory/stocktake";
 import { FixedAssetFormDialog } from "@/components/domain/assets/FixedAssetFormDialog";
 import { InventoryItemFormDialog } from "@/components/domain/inventory/InventoryItemFormDialog";
+=======
+import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import {
+  Package, Building2, AlertTriangle, ClipboardList, Edit, Trash2,
+  ArrowUpDown, Search, Plus,
+  ListTree, Calculator,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+
+import { itemApi, type ItemDto } from "@/api/inventory/items";
+import { fixedAssetApi, type FixedAssetDto } from "@/api/fixedAssets";
+import { stocktakeApi } from "@/api/inventory/stocktake";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
   Badge, Button, Card, CardContent, Heading, StatCard,
 } from "@/components/ui";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+<<<<<<< HEAD
 import { type CustomColumnDef,DataTable } from "@/components/ui/DataTable";
 import { Input } from "@/components/ui/Input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/Select";
@@ -24,6 +40,18 @@ import { ASSET_STATUS_CONFIG } from "@/constants/assets";
 import { INVENTORY_ITEM_STATUS } from "@/constants/inventory";
 import { useApiMutation } from "@/hooks";
 import { formatCurrency,formatDate } from "@/lib/utils";
+=======
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/Select";
+import { Input } from "@/components/ui/Input";
+import { DataTable, type CustomColumnDef } from "@/components/ui/DataTable";
+import { formatDate, formatCurrency } from "@/lib/utils";
+import { useApiMutation } from "@/hooks";
+import { INVENTORY_ITEM_STATUS } from "@/constants/inventory";
+import { ASSET_STATUS_CONFIG } from "@/constants/assets";
+import { InventoryItemFormDialog } from "@/components/domain/inventory/InventoryItemFormDialog";
+import { FixedAssetFormDialog } from "@/components/domain/assets/FixedAssetFormDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ═══════════════════════════════════════
 // تبويب الأصناف (with CRUD)

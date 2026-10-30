@@ -5,12 +5,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import { investmentApi, type PortfolioDto } from "@/api/investment";
+<<<<<<< HEAD
 import { PortfolioDialog } from "@/components/domain/investment/PortfolioDialog";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Button,
     CrudPageLayout,
     type CustomColumnDef,
     useConfirm} from "@/components/ui";
+<<<<<<< HEAD
+=======
+import { PortfolioDialog } from "@/components/domain/investment/PortfolioDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation,useCrudState } from "@/hooks";
 import { useHasPermission } from "@/stores/authStore";
 
@@ -73,7 +80,11 @@ export function PortfoliosPage() {
             key: "totalTargetCapital",
             header: "رأس المال المستهدف",
             render: (row) => (
+<<<<<<< HEAD
                 <span className="font-semibold text-success">
+=======
+                <span className="font-semibold text-emerald-600">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {row.totalTargetCapital.toLocaleString()} ر.ي
                 </span>
             )
@@ -97,10 +108,17 @@ export function PortfoliosPage() {
                     </Link>
                     {canManage && (
                         <>
+<<<<<<< HEAD
                             <Button variant="ghost" size="sm" className="text-info" title="تعديل" onClick={(e) => { e.stopPropagation(); crud.openEdit(row); }}>
                                 <Edit className="w-4 h-4" />
                             </Button>
                             <Button variant="ghost" size="sm" className="text-danger" title="حذف" onClick={(e) => { e.stopPropagation(); handleDelete(row); }}>
+=======
+                            <Button variant="ghost" size="sm" className="text-blue-600" title="تعديل" onClick={(e) => { e.stopPropagation(); crud.openEdit(row); }}>
+                                <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm" className="text-red-600" title="حذف" onClick={(e) => { e.stopPropagation(); handleDelete(row); }}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 <Trash2 className="w-4 h-4" />
                             </Button>
                         </>

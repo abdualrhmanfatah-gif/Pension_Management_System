@@ -6,16 +6,27 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 import { retirementApi } from "@/api/retirement";
+<<<<<<< HEAD
 import {
     BaseFormDialog,
     DateInput,
+=======
+import type { LookupDto } from "@/types/retirement";
+import {
+    BaseFormDialog,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     FileField,
     FormField,
     FormSection,
     Input,
+<<<<<<< HEAD
     NativeSelect} from "@/components/ui";
 import { todayYemen } from "@/lib/date";
 import type { LookupDto } from "@/types/retirement";
+=======
+    DateInput,
+    NativeSelect} from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Validation Schema ─────────────────────────────────
 
@@ -24,7 +35,10 @@ const recipientSchema = z.object({
         message: "نوع المستلم مطلوب",
     }),
     targetID: z.string().min(1, "يجب اختيار الشخص المستلم"),
+<<<<<<< HEAD
     coveredEntitledID: z.string().optional(),
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     startDate: z.string().min(1, "تاريخ بدء الصرف مطلوب"),
     notes: z.string().trim().optional().or(z.literal("")),
@@ -36,6 +50,7 @@ const recipientSchema = z.object({
     healthStatusID: z.number().optional(),
     personalPhoto: z.instanceof(File).optional(),
     nationalIdImage: z.instanceof(File).optional(),
+<<<<<<< HEAD
     sharePercent: z.string().optional().refine(value => !value || (Number(value) > 0 && Number(value) <= 100), "أدخل نسبة أكبر من صفر ولا تتجاوز ١٠٠٪"),
     entitledAmount: z.string().optional().refine(value => !value || Number(value) > 0, "أدخل مبلغاً أكبر من صفر"),
 }).refine(values => !(values.sharePercent && values.entitledAmount), {
@@ -43,6 +58,8 @@ const recipientSchema = z.object({
     path: ["entitledAmount"],
 }).refine(values => values.recipientType !== "guardian" || !!values.coveredEntitledID, {
     message: "اختر المستحق الذي ينوب عنه الوصي", path: ["coveredEntitledID"],
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 });
 
 export type RecipientFormValues = z.infer<typeof recipientSchema>;
@@ -89,10 +106,15 @@ export function RecipientsDialog({
             recipientType: "retiree",
             targetID: retireeId ? String(retireeId) : "",
 
+<<<<<<< HEAD
             startDate: todayYemen(),
             notes: "",
             sharePercent: "",
             entitledAmount: "",
+=======
+            startDate: new Date().toISOString().split('T')[0],
+            notes: "",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
     });
 
@@ -167,8 +189,11 @@ export function RecipientsDialog({
                                             setValue("birthDate", undefined);
                                             setValue("socialStatusID", undefined);
                                             setValue("healthStatusID", undefined);
+<<<<<<< HEAD
                                             setValue("sharePercent", "");
                                             setValue("entitledAmount", "");
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                         }}
                                         autoFocus
                                     />
@@ -205,6 +230,7 @@ export function RecipientsDialog({
                             />
                         </FormField>
                     </div>
+<<<<<<< HEAD
                     {recipientType === "guardian" && (
                         <FormField label="المستحق الذي ينوب عنه الوصي" required error={errors.coveredEntitledID?.message}>
                             <Controller name="coveredEntitledID" control={control} render={({ field }) => (
@@ -214,6 +240,8 @@ export function RecipientsDialog({
                             )} />
                         </FormField>
                     )}
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 </FormSection>
 
                 {/* استكمال البيانات والوثائق للمستحقين الموقوفين */}
@@ -223,7 +251,11 @@ export function RecipientsDialog({
                             <AlertTriangle className="w-5 h-5 flex-shrink-0" />
                             <div>
                                 <p className="text-sm font-black">تشديد متطلبات الصرف</p>
+<<<<<<< HEAD
                                 <p className="text-[10px] sm:text-xs font-bold opacity-100">المستحق المختار موقوف الصرف. يجب استكمال بياناته ووثائقه أدناه لإتمام التعيين.</p>
+=======
+                                <p className="text-[10px] sm:text-xs font-bold opacity-80">المستحق المختار موقوف الصرف. يجب استكمال بياناته ووثائقه أدناه لإتمام التعيين.</p>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             </div>
                         </div>
 
@@ -292,6 +324,7 @@ export function RecipientsDialog({
                 )}
 
                 <FormSection title="تفاصيل الاستحقاق المالي" icon={Percent}>
+<<<<<<< HEAD
                     {recipientType === "entitled" && (
                         <div className="space-y-3 mb-4">
                             <p className="text-sm text-muted-foreground">أدخل نسبة هذا المستلم أو مبلغه الشهري. إذا تركتهما فارغين تُستخدم حصة المستحق المحفوظة.</p>
@@ -311,6 +344,8 @@ export function RecipientsDialog({
                             </div>
                         </div>
                     )}
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField label="تاريخ بدء الاستلام" required error={errors.startDate?.message}>
                             <Controller

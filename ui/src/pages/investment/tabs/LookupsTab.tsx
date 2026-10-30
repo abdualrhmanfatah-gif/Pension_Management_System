@@ -4,10 +4,17 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 
 import type { InvestmentLookupDto } from "@/api/investment";
+<<<<<<< HEAD
 import { LookupDialog } from "@/components/domain/investment/LookupDialog";
 import { Badge, Button, CrudPageLayout, ErrorState } from "@/components/ui";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import type { CustomColumnDef } from "@/components/ui/DataTable";
+=======
+import { Badge, Button, CrudPageLayout, ErrorState } from "@/components/ui";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+import type { CustomColumnDef } from "@/components/ui/DataTable";
+import { LookupDialog } from "@/components/domain/investment/LookupDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation,useCrudState } from "@/hooks";
 
 interface LookupsTabProps {
@@ -116,7 +123,11 @@ export function LookupsTab({
                 )}
                 {deleteFn && (
                     <Button variant="ghost" size="icon" onClick={() => crud.openDelete(row)}>
+<<<<<<< HEAD
                         <Trash2 className="w-4 h-4 text-danger" />
+=======
+                        <Trash2 className="w-4 h-4 text-red-500" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     </Button>
                 )}
             </div>

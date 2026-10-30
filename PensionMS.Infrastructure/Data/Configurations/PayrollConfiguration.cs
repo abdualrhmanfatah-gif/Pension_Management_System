@@ -12,7 +12,10 @@ public class SalaryRecipientConfiguration : IEntityTypeConfiguration<SalaryRecip
 
         builder.Property(e => e.RecipientType).HasMaxLength(20).IsRequired();
         builder.Property(e => e.Notes).HasMaxLength(500);
+<<<<<<< HEAD
         builder.Property(e => e.SharePercent).HasPrecision(5, 2);
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
         builder.Property(e => e.PendingReviewStatus)
             .HasConversion<int>()
@@ -74,6 +77,10 @@ public class SalaryPaymentItemConfiguration : IEntityTypeConfiguration<SalaryPay
         builder.HasOne(s => s.PaymentBook).WithMany(pb => pb.SalaryPaymentItems).HasForeignKey(s => s.PaymentBookID);
         builder.HasOne(s => s.Recipient).WithMany(sr => sr.SalaryPaymentItems).HasForeignKey(s => s.RecipientID);
         builder.HasIndex(e => e.BatchID);
+<<<<<<< HEAD
         builder.HasIndex(e => new { e.FileID, e.BatchID, e.RecipientID }).IsUnique().HasFilter("[IsDeleted] = 0");
+=======
+        builder.HasIndex(e => new { e.FileID, e.BatchID }).IsUnique().HasFilter("[IsDeleted] = 0");
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 }

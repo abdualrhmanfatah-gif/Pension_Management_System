@@ -1,9 +1,19 @@
+<<<<<<< HEAD
 import type { EmployeeDetailsDto } from "@/api/hr";
 import { PrintSignatureBlock } from "@/components/common/PrintSignatureBlock";
 import { PRINT_STYLES } from "@/components/domain/print/print.utils";
 import { getDocumentUrl } from "@/lib/utils";
 import { formatDate } from "@/lib/utils";
 
+=======
+import { getDocumentUrl } from "@/lib/utils";
+import type { EmployeeDetailsDto } from "@/api/hr";
+import { PrintSignatureBlock } from "@/components/common/PrintSignatureBlock";
+import { formatDate } from "@/lib/utils";
+
+import { PRINT_STYLES } from "@/components/domain/print/print.utils";
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 const { TB, CELL, LBL, VAL, SECTION_HEADER } = PRINT_STYLES;
 
 interface PrintableEmployeeReportProps {
@@ -22,7 +32,11 @@ const getUrl = (p: string | null | undefined) => {
 export function PrintableEmployeeReport({ employee }: PrintableEmployeeReportProps) {
     const signatures = [
         { title: "حرره المختص", sub: "الاسم والتوقيع" },
+<<<<<<< HEAD
         { title: "ختم الإدارة العامة", sub: "الختم الرسمي", className: "opacity-100" },
+=======
+        { title: "ختم الإدارة العامة", sub: "الختم الرسمي", className: "opacity-30" },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         { title: "مدير إدارة الموارد البشرية", sub: "المصادقة والختم" },
     ];
 
@@ -47,7 +61,11 @@ export function PrintableEmployeeReport({ employee }: PrintableEmployeeReportPro
                                 onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder-user.png"; }}
                             />
                         ) : (
+<<<<<<< HEAD
                             <div className="w-16 h-20 border-2 border-black rounded bg-muted/50 text-muted-foreground">لا توجد</div>
+=======
+                            <div className="w-16 h-20 border-2 border-black rounded bg-muted/50 text-muted-foreground/60">لا توجد</div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         )}
                     </div>
                 </div>
@@ -208,7 +226,11 @@ export function PrintableEmployeeReport({ employee }: PrintableEmployeeReportPro
             <div className="flex-1" />
 
             {/* ═══ Signatures Block ═══ */}
+<<<<<<< HEAD
             <PrintSignatureBlock signatures={signatures} variant="default" className="mt-12 pt-4 border-t border-dashed border-black" />
+=======
+            <PrintSignatureBlock signatures={signatures} variant="default" className="mt-12 pt-4 border-t border-dashed border-black/10" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         </div>
     );
 }

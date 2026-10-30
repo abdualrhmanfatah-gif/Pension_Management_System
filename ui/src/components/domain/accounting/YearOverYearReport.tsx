@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
@@ -8,6 +9,18 @@ import { Card, Heading, Select, SelectContent, SelectItem, SelectTrigger, Select
 import { chartColors } from "@/lib/chartColors";
 import { formatCurrency } from "@/lib/utils";
 import type { FiscalYearSummaryDto } from "@/types/accounting";
+=======
+import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect, useCallback } from "react";
+
+import { reportsApi, fiscalYearsApi } from "@/api/accounting";
+import type { FiscalYearSummaryDto } from "@/types/accounting";
+import { formatCurrency } from "@/lib/utils";
+import { Card, Heading, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui";
+import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
+import { ReportBarChart } from "@/components/common/charts";
+import { chartColors } from "@/lib/chartColors";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface YearOverYearReportProps {
   fiscalYearId?: number;
@@ -80,7 +93,11 @@ export function YearOverYearReport({ fiscalYearId, externalFilters, hideInternal
     { label: 'الإيرادات', value: `${formatCurrency(income1.totalRevenue)} (${revenueChange >= 0 ? '+' : ''}${revenueChange.toFixed(1)}%)`, color: revenueChange >= 0 ? 'text-green-600' : 'text-red-600' },
     { label: 'المصروفات', value: `${formatCurrency(income1.totalExpenses)} (${expenseChange >= 0 ? '+' : ''}${expenseChange.toFixed(1)}%)`, color: expenseChange <= 0 ? 'text-green-600' : 'text-red-600' },
     { label: 'صافي الدخل', value: `${formatCurrency(income1.netIncome)} (${netIncomeChange >= 0 ? '+' : ''}${netIncomeChange.toFixed(1)}%)`, color: netIncomeChange >= 0 ? 'text-green-600' : 'text-red-600' },
+<<<<<<< HEAD
     { label: 'السنة المقارنة', value: `${year1?.yearName || ''} vs ${year2?.yearName || ''}`, color: 'primary' },
+=======
+    { label: 'السنة المقارنة', value: `${year1?.yearName || ''} vs ${year2?.yearName || ''}`, color: 'text-primary' },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   ] : [];
 
   const chartContent = income1 && income2 ? (
@@ -103,7 +120,11 @@ export function YearOverYearReport({ fiscalYearId, externalFilters, hideInternal
   const filterBar = hideInternalControls ? undefined : (
     <Card className="p-4 flex flex-wrap gap-4 items-end mb-6">
       <div className="w-full sm:w-48">
+<<<<<<< HEAD
         <label className="label-filter">السنة الحالية</label>
+=======
+        <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">السنة الحالية</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         <Select
           value={year1Id ? String(year1Id) : ''}
           onValueChange={(value) => setYear1Id(Number(value))}
@@ -121,7 +142,11 @@ export function YearOverYearReport({ fiscalYearId, externalFilters, hideInternal
         </Select>
       </div>
       <div className="w-full sm:w-48">
+<<<<<<< HEAD
         <label className="label-filter">السنة السابقة</label>
+=======
+        <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">السنة السابقة</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         <Select
           value={year2Id?.toString() ?? ''}
           onValueChange={(val) => setYear2Id(Number(val))}
@@ -167,7 +192,11 @@ export function YearOverYearReport({ fiscalYearId, externalFilters, hideInternal
               </tr>
             </thead>
             <tbody>
+<<<<<<< HEAD
               <tr className="border-t border-border bg-emerald-50/50 dark:bg-emerald-950/20">
+=======
+              <tr className="border-t border-border/50 bg-emerald-50/50 dark:bg-emerald-950/20">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <td className="p-3 font-medium">إجمالي الإيرادات</td>
                 <td className="p-3">{formatCurrency(income1.totalRevenue)}</td>
                 <td className="p-3">{formatCurrency(income2.totalRevenue)}</td>
@@ -178,7 +207,11 @@ export function YearOverYearReport({ fiscalYearId, externalFilters, hideInternal
                   {revenueChange >= 0 ? "+" : ""}{revenueChange.toFixed(1)}%
                 </td>
               </tr>
+<<<<<<< HEAD
               <tr className="border-t border-border bg-red-50/50 dark:bg-red-950/20">
+=======
+              <tr className="border-t border-border/50 bg-red-50/50 dark:bg-red-950/20">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <td className="p-3 font-medium">إجمالي المصروفات</td>
                 <td className="p-3">{formatCurrency(income1.totalExpenses)}</td>
                 <td className="p-3">{formatCurrency(income2.totalExpenses)}</td>
@@ -189,7 +222,11 @@ export function YearOverYearReport({ fiscalYearId, externalFilters, hideInternal
                   {expenseChange >= 0 ? "+" : ""}{expenseChange.toFixed(1)}%
                 </td>
               </tr>
+<<<<<<< HEAD
               <tr className="border-t border-border font-bold">
+=======
+              <tr className="border-t border-border/50 font-bold">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <td className="p-3">صافي الدخل</td>
                 <td className={`p-3 ${income1.netIncome >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"}`}>
                   {formatCurrency(income1.netIncome)}

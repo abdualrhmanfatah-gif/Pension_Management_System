@@ -1,8 +1,15 @@
 ﻿import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { jwtDecode } from "jwt-decode";
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { toast,Toaster } from "sonner";
+=======
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { BrowserRouter, Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { Toaster, toast } from "sonner";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 import { PermissionRoute } from "@/components/auth/PermissionRoute";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
@@ -12,7 +19,10 @@ import { FloatingNotification } from "@/components/notifications/FloatingNotific
 import { NotificationProvider } from "@/components/providers/NotificationProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Loader } from "@/components/ui";
+<<<<<<< HEAD
 import { useGlobalCreateFileShortcut } from "@/constants/shortcuts";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useAuthStore } from "@/stores/authStore";
 
 // ─── Lazy Pages ─────────────────────────────────────────
@@ -291,7 +301,10 @@ export function App() {
             <AuthEventListener />
             <QueryErrorToast />
             <ForbiddenListener />
+<<<<<<< HEAD
             <GlobalShortcuts />
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             <FloatingNotification />
             <ErrorBoundary>
               <Suspense fallback={<Loader variant="fullscreen" />}>
@@ -449,6 +462,7 @@ export function App() {
                         <Route path="/investment/settings" element={<InvestmentSettingsPage />} />
                       </Route>
 
+<<<<<<< HEAD
                       {/* ── مركز التقارير ── */}
                       <Route element={<PermissionRoute anyPermission={["System.Admin", "Report.Pension.View", "Report.Financial.View", "Report.Entitlements.View", "Report.Documents.View", "Report.Admin.View"]} />}>
                         <Route path="/reports/retirement-file-reports" element={<RetirementFileReportsPage />} />
@@ -457,11 +471,20 @@ export function App() {
                         <Route path="/reports/:reportId" element={<ReportViewerPage />} />
                       </Route>
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                       {/* ── إدارة النظام ── */}
                       <Route element={<PermissionRoute permission="System.Admin" />}>
                         <Route path="/users" element={<Navigate to="/system-admin/users" replace />} />
                         <Route path="/system-admin/users" element={<UsersDirectoryPage />} />
                         <Route path="/admin" element={<AdminLandingPage />} />
+<<<<<<< HEAD
+=======
+                        <Route path="/reports/retirement-file-reports" element={<RetirementFileReportsPage />} />
+                        <Route path="/reports" element={<ReportsPage />} />
+                        <Route path="/reports/kashf" element={<KashfReportsPage />} />
+                        <Route path="/reports/:reportId" element={<ReportViewerPage />} />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <Route path="/branches" element={<BranchesListPage />} />
                         <Route path="/banks" element={<BanksListPage />} />
                         <Route path="/ranks" element={<RanksListPage />} />
@@ -611,6 +634,7 @@ function ForbiddenListener() {
 
   return null;
 }
+<<<<<<< HEAD
 
 // ─── Global Keyboard Shortcuts ──────────────────────────
 
@@ -618,3 +642,5 @@ function GlobalShortcuts() {
   useGlobalCreateFileShortcut();
   return null;
 }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

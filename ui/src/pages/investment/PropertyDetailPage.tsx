@@ -5,9 +5,15 @@ import { Link,useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 import { investmentApi } from "@/api/investment";
+<<<<<<< HEAD
 import { InvestmentDocumentsManager } from "@/components/domain/investment/InvestmentDocumentsManager";
 import { Breadcrumb, ErrorState, Heading, LoadingIndicator, PageLayout, StatCard, Tabs, TabsContent, TabsList, TabsTrigger, Text } from "@/components/ui";
 
+=======
+import { Breadcrumb, ErrorState, Heading, LoadingIndicator, PageLayout, StatCard, Tabs, TabsContent, TabsList, TabsTrigger, Text } from "@/components/ui";
+
+import { InvestmentDocumentsManager } from "@/components/domain/investment/InvestmentDocumentsManager";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { ContractsTab } from "./tabs/ContractsTab";
 import { PropertyActivityLogTab } from "./tabs/PropertyActivityLogTab";
 import { PropertyDepreciationTab } from "./tabs/PropertyDepreciationTab";
@@ -55,7 +61,11 @@ export function PropertyDetailPage() {
                         <Heading level="h1" className="font-black">{property.propertyName}</Heading>
                         <Text variant="description" className="flex items-center gap-2 font-medium">
                             <Building2 className="w-4 h-4 text-muted-primary" /> {property.propertyTypeName} 
+<<<<<<< HEAD
                             <span className="opacity-100 mx-1">|</span>
+=======
+                            <span className="opacity-30 mx-1">|</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <MapPin className="w-4 h-4 text-muted-primary" /> {property.locationCity}
                         </Text>
                     </div>
@@ -71,18 +81,30 @@ export function PropertyDetailPage() {
                 <StatCard 
                     title="القيمة السوقية" 
                     value={`${property.currentMarketValue.toLocaleString('ar-YE')} ر.ي`} 
+<<<<<<< HEAD
                     icon={<DollarSign className="w-4 h-4 text-success" />} 
+=======
+                    icon={<DollarSign className="w-4 h-4 text-emerald-500" />} 
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     variant="emerald"
                 />
                 <StatCard 
                     title="عدد الوحدات" 
                     value={property.units?.length || 0} 
+<<<<<<< HEAD
                     icon={<Building2 className="w-4 h-4 text-info" />} 
+=======
+                    icon={<Building2 className="w-4 h-4 text-blue-500" />} 
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 />
                 <StatCard 
                     title="تاريخ الاستحواذ" 
                     value={property.acquisitionDate || "—"} 
+<<<<<<< HEAD
                     icon={<Calendar className="w-4 h-4 text-warning" />} 
+=======
+                    icon={<Calendar className="w-4 h-4 text-amber-500" />} 
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     variant="amber"
                 />
             </div>

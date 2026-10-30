@@ -19,6 +19,7 @@ public class PagedResult<T>
     /// <summary>يوجد بيانات بعد هذا المؤشر</summary>
     public bool HasMore { get; set; }
 }
+<<<<<<< HEAD
 
 /// <summary>
 /// حارس قابلية استكمال التصدير — يمنع تصدير ناقص بصمت عند عبور حدود البيانات المقطعة
@@ -35,3 +36,5 @@ public static class PagedResultGuards
         return result.Data.Items;
     }
 }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { DollarSign, FileText, History,UserCheck, Users } from "lucide-react";
 import { useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
@@ -18,6 +19,28 @@ import { useFileDetailsQuery } from "@/hooks/queries";
 import { useApiMutation } from "@/hooks/useApiMutation";
 import { cn } from "@/lib/utils";
 import type { ReviewSection } from "@/types/retirement";
+=======
+import { useState } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
+import { Users, UserCheck, FileText, DollarSign, History } from "lucide-react";
+
+import { useFileDetailsQuery } from "@/hooks/queries";
+import { Button, Skeleton, Text, Textarea } from "@/components/ui";
+import { BaseFormDialog } from "@/components/ui/BaseFormDialog";
+import { FileReviewSidebar } from "@/components/domain/retirement/FileReviewSidebar";
+import { FileReviewHeader } from "@/components/domain/retirement/FileReviewHeader";
+import { ReviewPanel } from "@/components/domain/retirement/ReviewPanel";
+import { BasicInfoSection } from "@/components/domain/retirement/sections/BasicInfoSection";
+import { PeopleSection } from "@/components/domain/retirement/sections/PeopleSection";
+import { DocumentsSection } from "@/components/domain/retirement/sections/DocumentsSection";
+import { FinancialSection } from "@/components/domain/retirement/sections/FinancialSection";
+import { HistorySection } from "@/components/domain/retirement/sections/HistorySection";
+import { useApiMutation } from "@/hooks/useApiMutation";
+import { retirementApi } from "@/api/retirement";
+import { cn } from "@/lib/utils";
+import type { ReviewSection } from "@/types/retirement";
+import { REVIEW_SECTIONS, REVIEW_SECTIONS_AR } from "@/constants";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 
 export function FileReviewPage() {
@@ -48,7 +71,11 @@ export function FileReviewPage() {
 
     const approveMutation = useApiMutation(
         async () => {
+<<<<<<< HEAD
             await retirementApi.approveReview(fileId);
+=======
+            await retirementApi.updateFileStatus(fileId, 2, "اعتماد الملف");
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         },
         {
             invalidateKeys: [["retirement-file", fileId], ["review-items", fileId]],
@@ -58,11 +85,19 @@ export function FileReviewPage() {
 
     const rejectMutation = useApiMutation(
         async () => {
+<<<<<<< HEAD
             await retirementApi.rejectReview(fileId, rejectReason);
         },
         {
             invalidateKeys: [["retirement-file", fileId], ["review-items", fileId]],
             successMessage: "رُفضت المراجعة؛ يبقى الملف معلقًا والصرف موقوفًا",
+=======
+            await retirementApi.updateFileStatus(fileId, 3, rejectReason || "رفض الملف");
+        },
+        {
+            invalidateKeys: [["retirement-file", fileId], ["review-items", fileId]],
+            successMessage: "تم رفض الملف بنجاح",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             onSuccess: () => {
                 setRejectDialogOpen(false);
                 setRejectReason("");

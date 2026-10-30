@@ -1,6 +1,7 @@
 /**
  * عملاء API لنظام إدارة المعاشات 
  */
+<<<<<<< HEAD
 import type { RecordEntitledPersonDeathRequest } from "@/lib/entitledPersonRequests";
 import { entitledPersonFormData, entitledPersonMultipart, reactivateEntitledPersonForm, recordEntitledPersonDeathForm, stopEntitledPersonForm } from "@/lib/entitledPersonRequests";
 import type { RecentActivity } from "@/types/dashboard";
@@ -51,6 +52,57 @@ import type {
 
 import api from "./axios";
 import { documentsApi } from "./documents";
+=======
+import api from "./axios";
+import { documentsApi } from "./documents";
+
+import type {
+  // أنواع مشتركة
+  PagedResult,
+  // البحث الاجتماعي
+  SocialResearchFilters,
+  SocialResearchResult,
+  PaymentBookReview,
+  PaymentBookStats,
+  MinistryReferral,
+  MinistryApprovalBatch,
+  DocumentUploadStats,
+  // التسوية
+  SettlementBatchListItem,
+  SettlementItemDetail,
+  SettlementDecision,
+  ServiceHistoryData,
+  // المستحقون
+  EntitledPersonDetail,
+  CreateEntitledPersonDto,
+  UpdateEntitledPersonDto,
+  StopEntitledPersonDto,
+  ReactivateEntitledPersonDto,
+  // الإيقافات
+  SuspensionDetail,
+  PledgeDetail,
+  ExemptionDetail,
+  SuspensionStats,
+  CreateSuspensionDto,
+  EndSuspensionDto,
+  CreateExemptionDto,
+  // الاستحقاقات
+  FinancialEntitlementDetail,
+  CreateFinancialEntitlementDto,
+  SalaryBatchDetail,
+  SalaryPaymentItemDetail,
+  // السجلات والإحصاء
+  PensionStatistics,
+  PerformanceStatistics,
+  StatusTransitionLog,
+  // بطاقات الصرف
+  PaymentCardDetail,
+  // التسوية
+  LinkSettlementItemDto,
+} from "@/types/pension";
+
+import type { RecentActivity } from "@/types/dashboard";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ══════════════════════════════════════════════════════════════
 // 1. البحث الاجتماعي والفحص
@@ -224,6 +276,7 @@ export const entitledPersonApi = {
       .then(r => r.data.data),
 
   /** إنشاء مستحق جديد */
+<<<<<<< HEAD
   create: (dto: CreateEntitledPersonDto) => {
     const { birthDate, ...fields } = dto;
     return api.post<{ data: EntitledPersonDetail }>("/entitled-persons", entitledPersonFormData({ ...fields, dateOfBirth: birthDate }), entitledPersonMultipart)
@@ -240,16 +293,39 @@ export const entitledPersonApi = {
   /** إيقاف الاستحقاق */
   stop: (id: number, dto: StopEntitledPersonDto) =>
     api.put<{ data: boolean }>(`/entitled-persons/${id}/stop`, stopEntitledPersonForm(dto), entitledPersonMultipart)
+=======
+  create: (dto: CreateEntitledPersonDto) =>
+    api.post<{ data: EntitledPersonDetail }>("/entitled-persons", dto)
+      .then(r => r.data.data),
+
+  /** تحديث بيانات مستحق */
+  update: (id: number, dto: UpdateEntitledPersonDto) =>
+    api.put<{ data: EntitledPersonDetail }>(`/entitled-persons/${id}`, dto)
+      .then(r => r.data.data),
+
+  /** إيقاف الاستحقاق */
+  stop: (id: number, dto: StopEntitledPersonDto) =>
+    api.post<{ data: boolean }>(`/entitled-persons/${id}/stop`, dto)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       .then(r => r.data.data),
 
   /** إعادة تفعيل الاستحقاق */
   reactivate: (id: number, dto: ReactivateEntitledPersonDto) =>
+<<<<<<< HEAD
     api.put<{ data: boolean }>(`/entitled-persons/${id}/reactivate`, reactivateEntitledPersonForm(dto), entitledPersonMultipart)
       .then(r => r.data.data),
 
   /** تسجيل وفاة */
   recordDeath: (id: number, data: RecordEntitledPersonDeathRequest) =>
     api.post<{ data: boolean }>(`/entitled-persons/${id}/death`, recordEntitledPersonDeathForm(data), entitledPersonMultipart)
+=======
+    api.post<{ data: boolean }>(`/entitled-persons/${id}/reactivate`, dto)
+      .then(r => r.data.data),
+
+  /** تسجيل وفاة */
+  recordDeath: (id: number, data: { deathDate: string; deathCertificateNumber?: string }) =>
+    api.post<{ data: boolean }>(`/entitled-persons/${id}/death`, data)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       .then(r => r.data.data),
 
   /** حذف مستحق (حذف ناعم) */

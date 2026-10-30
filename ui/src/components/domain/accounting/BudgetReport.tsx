@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 import { Pencil, Trash2 } from "lucide-react";
 
 import { Badge, Button, Card, Heading,Skeleton } from "@/components/ui";
 import { formatCurrency } from "@/lib/utils";
+=======
+import { Card, Skeleton, Badge, Button, Heading } from "@/components/ui";
+import { formatCurrency } from "@/lib/utils";
+import { Pencil, Trash2 } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface Props {
   data: any;
@@ -68,7 +74,11 @@ export function BudgetReport({ data, isLoading, showQuarters, showMonthly, selec
                 {month.items?.map((item: any) => (
                   <tr
                     key={item.budgetItemID}
+<<<<<<< HEAD
                     className="border-t border-border hover:bg-muted/20"
+=======
+                    className="border-t border-border/50 hover:bg-muted/20"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                   >
                     <td className="p-3 font-mono text-xs">{item.accountCode}</td>
                     <td className="p-3 font-medium">{item.accountName}</td>
@@ -149,7 +159,11 @@ export function BudgetReport({ data, isLoading, showQuarters, showMonthly, selec
             {data.items?.map((item: any) => (
               <tr
                 key={item.budgetItemID}
+<<<<<<< HEAD
                 className="border-t border-border hover:bg-muted/20"
+=======
+                className="border-t border-border/50 hover:bg-muted/20"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               >
                 <td className="p-3 font-mono text-xs">{item.accountCode}</td>
                 <td className="p-3 font-medium">{item.accountName}</td>
@@ -260,7 +274,11 @@ export function BudgetReport({ data, isLoading, showQuarters, showMonthly, selec
               {quarter.items?.map((item: any) => (
                 <tr
                   key={item.budgetItemID}
+<<<<<<< HEAD
                   className="border-t border-border hover:bg-muted/20"
+=======
+                  className="border-t border-border/50 hover:bg-muted/20"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 >
                   <td className="p-3 font-mono text-xs">{item.accountCode}</td>
                   <td className="p-3 font-medium">{item.accountName}</td>

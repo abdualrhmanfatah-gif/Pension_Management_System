@@ -1,5 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+<<<<<<< HEAD
 import { Activity,Building2, MapPin, UserCheck } from "lucide-react";
+=======
+import { Activity,Building2, MapPin, Smartphone, UserCheck } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useMemo } from "react";
 import { Controller,useForm } from "react-hook-form";
 import * as z from "zod";
@@ -11,10 +15,15 @@ import {
     FormField,
     FormSection,
     Input,
+<<<<<<< HEAD
     NativeSelect,
     NoteBox,
     yemenPhoneSchema,
 } from "@/components/ui";
+=======
+    NoteBox,
+    NativeSelect} from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation } from "@/hooks";
 
 // ─── Validation Schema ─────────────────────────────────
@@ -23,9 +32,15 @@ const branchSchema = z.object({
     branchName: z.string().trim().min(3, "اسم الفرع يجب أن يكون 3 أحرف على الأقل"),
     governorate: z.string().trim().min(2, "المحافظة مطلوبة"),
     address: z.string().trim().optional().nullable().or(z.literal("")),
+<<<<<<< HEAD
     phone: yemenPhoneSchema.optional().nullable().or(z.literal("")),
     managerName: z.string().trim().optional().nullable().or(z.literal("")),
     managerPhone: yemenPhoneSchema.optional().nullable().or(z.literal("")),
+=======
+    phone: z.string().trim().optional().nullable().or(z.literal("")),
+    managerName: z.string().trim().optional().nullable().or(z.literal("")),
+    managerPhone: z.string().trim().optional().nullable().or(z.literal("")),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     isActive: z.boolean(),
 });
 
@@ -134,7 +149,11 @@ export function BranchDialog({
                         </FormField>
 
                         <FormField label="هاتف التواصل" error={errors.phone?.message}>
+<<<<<<< HEAD
                             <Input placeholder="7xxxxxxx" {...register("phone")} />
+=======
+                            <Input placeholder="رقم الهاتف" {...register("phone")} dir="ltr" icon={Smartphone} />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         </FormField>
                     </div>
                 </FormSection>
@@ -146,7 +165,11 @@ export function BranchDialog({
                         </FormField>
 
                         <FormField label="هاتف المدير" error={errors.managerPhone?.message}>
+<<<<<<< HEAD
                             <Input placeholder="7xxxxxxx" {...register("managerPhone")} />
+=======
+                            <Input placeholder="رقم هاتف المدير" {...register("managerPhone")} dir="ltr" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         </FormField>
 
                         <div className="md:col-span-2">

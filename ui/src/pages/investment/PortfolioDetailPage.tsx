@@ -5,9 +5,15 @@ import { Link,useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 import { investmentApi } from "@/api/investment";
+<<<<<<< HEAD
 import { InvestmentDocumentsManager } from "@/components/domain/investment/InvestmentDocumentsManager";
 import { Breadcrumb, ErrorState, Heading, LoadingIndicator, PageLayout, StatCard, Tabs, TabsContent, TabsList, TabsTrigger, Text } from "@/components/ui";
 
+=======
+import { Breadcrumb, ErrorState, Heading, LoadingIndicator, PageLayout, StatCard, Tabs, TabsContent, TabsList, TabsTrigger, Text } from "@/components/ui";
+
+import { InvestmentDocumentsManager } from "@/components/domain/investment/InvestmentDocumentsManager";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { PortfolioProjectsTab } from "./tabs/PortfolioProjectsTab";
 import { PortfolioPropertiesTab } from "./tabs/PortfolioPropertiesTab";
 
@@ -73,18 +79,30 @@ export function PortfolioDetailPage() {
                 <StatCard 
                     title="الإنفاق الفعلي" 
                     value={`${summary?.totalActualSpent?.toLocaleString() || 0} ر.ي`} 
+<<<<<<< HEAD
                     icon={<TrendingUp className="w-4 h-4 text-success" />} 
+=======
+                    icon={<TrendingUp className="w-4 h-4 text-emerald-500" />} 
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     variant="emerald"
                 />
                 <StatCard 
                     title="عدد المشاريع" 
                     value={summary?.projectCount || 0} 
+<<<<<<< HEAD
                     icon={<Building2 className="w-4 h-4 text-info" />} 
+=======
+                    icon={<Building2 className="w-4 h-4 text-blue-500" />} 
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 />
                 <StatCard 
                     title="نسبة الإشغال" 
                     value={`${summary?.occupancyRate || 0}%`} 
+<<<<<<< HEAD
                     icon={<PieChart className="w-4 h-4 text-warning" />} 
+=======
+                    icon={<PieChart className="w-4 h-4 text-amber-500" />} 
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     variant="amber"
                 />
             </div>
@@ -117,9 +135,15 @@ export function PortfolioDetailPage() {
                 
                 <TabsContent value="finance" className="mt-0 outline-none">
                     <div className="bg-card border rounded-2xl p-4 sm:p-8 lg:p-16 text-center text-muted-foreground border-dashed">
+<<<<<<< HEAD
                         <TrendingUp className="w-12 h-12 mx-auto mb-4 opacity-100" />
                         <p className="text-lg font-bold">التحليل المالي والتدفقات</p>
                         <p className="text-sm font-medium opacity-100">سيتم تفعيل الرسوم البيانية التفصيلية للمحفظة قريباً.</p>
+=======
+                        <TrendingUp className="w-12 h-12 mx-auto mb-4 opacity-20" />
+                        <p className="text-lg font-bold">التحليل المالي والتدفقات</p>
+                        <p className="text-sm font-medium opacity-70">سيتم تفعيل الرسوم البيانية التفصيلية للمحفظة قريباً.</p>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     </div>
                 </TabsContent>
                 

@@ -5,9 +5,15 @@ import { toast } from "sonner";
 
 import type { DepreciationRecordDto } from "@/api/investment";
 import { investmentApi } from "@/api/investment";
+<<<<<<< HEAD
 import { DepreciationDialog } from "@/components/domain/investment/DepreciationDialog";
 import { InvestmentDocsViewerDialog } from "@/components/domain/investment/InvestmentDocsViewerDialog";
 import { Button, CrudPageLayout, type CustomColumnDef, ErrorState, useConfirm } from "@/components/ui";
+=======
+import { Button, CrudPageLayout, type CustomColumnDef, ErrorState, useConfirm } from "@/components/ui";
+import { DepreciationDialog } from "@/components/domain/investment/DepreciationDialog";
+import { InvestmentDocsViewerDialog } from "@/components/domain/investment/InvestmentDocsViewerDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation, useCrudState } from "@/hooks";
 
 interface PropertyDepreciationTabProps {
@@ -67,14 +73,22 @@ export function PropertyDepreciationTab({ propertyId }: PropertyDepreciationTabP
             key: "depreciationRate",
             header: "نسبة الاستهلاك",
             render: (row) => (
+<<<<<<< HEAD
                 <span className="font-semibold text-warning font-mono">{row.depreciationRate}%</span>
+=======
+                <span className="font-semibold text-amber-600 font-mono">{row.depreciationRate}%</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             )
         },
         {
             key: "depreciationAmount",
             header: "مبلغ الاستهلاك",
             render: (row) => (
+<<<<<<< HEAD
                 <span className="text-danger font-medium flex items-center gap-1 font-mono">
+=======
+                <span className="text-red-500 font-medium flex items-center gap-1 font-mono">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <TrendingDown className="w-3 h-3" />
                     {row.depreciationAmount.toLocaleString()} ر.ي
                 </span>
@@ -84,7 +98,11 @@ export function PropertyDepreciationTab({ propertyId }: PropertyDepreciationTabP
             key: "netBookValue",
             header: "صافي القيمة الدفترية",
             render: (row) => (
+<<<<<<< HEAD
                 <span className="text-success font-bold font-mono">
+=======
+                <span className="text-emerald-600 font-bold font-mono">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {row.netBookValue.toLocaleString()} ر.ي
                 </span>
             )
@@ -98,7 +116,11 @@ export function PropertyDepreciationTab({ propertyId }: PropertyDepreciationTabP
                         variant="ghost"
                         size="icon"
                         onClick={() => crud.openViewer(row)}
+<<<<<<< HEAD
                         className="text-warning hover:bg-warning/10"
+=======
+                        className="text-amber-600 hover:bg-amber-50"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         title="المرفقات والوثائق"
                     >
                         <FileText className="w-4 h-4" />
@@ -107,7 +129,11 @@ export function PropertyDepreciationTab({ propertyId }: PropertyDepreciationTabP
                         variant="ghost"
                         size="icon"
                         onClick={() => handleDelete(row)}
+<<<<<<< HEAD
                         className="text-danger hover:text-danger hover:bg-danger/10 transition-colors"
+=======
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50 transition-colors"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         title="حذف"
                     >
                         <Trash2 className="w-4 h-4" />

@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import type { ApiResponse, PagedResult } from "@/types/api";
 import type { CreateSalaryBatchDto,SalaryBatch, SalaryBatchItem } from "@/types/salaries";
 
 import api from "./axios";
+=======
+import type { CreateSalaryBatchDto,SalaryBatch, SalaryBatchItem } from "@/types/salaries";
+
+import api from "./axios";
+import type { ApiResponse, PagedResult } from "@/types/api";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export const salariesApi = {
     getAll: (params: { page: number; pageSize: number; status?: string }) => 

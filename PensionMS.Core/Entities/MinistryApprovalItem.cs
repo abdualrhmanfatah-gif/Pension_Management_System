@@ -25,8 +25,13 @@ public class MinistryApprovalItem : ISoftDeletable
     public string FullName { get; set; } = string.Empty;
     public byte? Gender { get; set; }
     public string? UnitName { get; set; }
+<<<<<<< HEAD
     public DateOnly? EnrollmentDate { get; set; }
     public DateOnly? RetirementDate { get; set; }
+=======
+    public DateTime? EnrollmentDate { get; set; }
+    public DateTime? RetirementDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public decimal? Salary { get; set; }
     public int? CategoryID { get; set; }
     public virtual RetireeCategory? Category { get; set; }

@@ -9,9 +9,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
+<<<<<<< HEAD
 import type { EmployeeListItemDto } from "@/api/hr";
 import { hrApi } from "@/api/hr";
 import { CreateEmployeeDialog } from "@/components/domain/hr/CreateEmployeeDialog";
+=======
+import { getPhotoUrl } from "@/lib/utils";
+import type { EmployeeListItemDto } from "@/api/hr";
+import { hrApi } from "@/api/hr";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
   Badge,
   Button,
@@ -20,9 +26,15 @@ import {
   ErrorState,
   Loader
 } from "@/components/ui";
+<<<<<<< HEAD
 import { useCrudState, useRoleBasedUI } from "@/hooks";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
 import { getPhotoUrl } from "@/lib/utils";
+=======
+import { CreateEmployeeDialog } from "@/components/domain/hr/CreateEmployeeDialog";
+import { useCrudState, useRoleBasedUI } from "@/hooks";
+import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 /**
  * صفحة إدارة الموظفين - وحدة الموارد البشرية
@@ -124,7 +136,11 @@ export function EmployeesPage() {
             />
           ) : (
             <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+<<<<<<< HEAD
               <User className="w-5 h-5 opacity-100" />
+=======
+              <User className="w-5 h-5 opacity-40" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             </div>
           )}
           <div className="flex flex-col">
@@ -283,7 +299,11 @@ export function EmployeesPage() {
       onRowClick={(row) => navigate(`/hr/employees/${row.employeeID}`)}
       emptyMessage="لم يتم العثور على موظفين يطابقون معايير البحث"
       headerActions={
+<<<<<<< HEAD
         <Button variant="outline" className="gap-2 border-primary bg-primary/5 hover:bg-primary/10">
+=======
+        <Button variant="outline" className="gap-2 border-primary/20 bg-primary/5 hover:bg-primary/10">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           <Filter className="h-4 w-4" />
           تصفية متقدمة
         </Button>

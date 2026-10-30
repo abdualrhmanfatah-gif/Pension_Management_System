@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback, useMemo,useState } from "react";
 
@@ -9,6 +10,19 @@ import { Card, Heading, Text } from "@/components/ui";
 import { chartColors } from "@/lib/chartColors";
 import { formatCurrency } from "@/lib/utils";
 import type { BalanceSheetSectionDto } from "@/types/accounting";
+=======
+import { useQuery } from "@tanstack/react-query";
+import { useState, useCallback, useMemo } from "react";
+
+import { reportsApi } from "@/api/accounting";
+import type { BalanceSheetSectionDto } from "@/types/accounting";
+import { formatCurrency } from "@/lib/utils";
+import { Card, Heading, Text } from "@/components/ui";
+import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
+import { ReportFilters } from "@/components/common/ReportFilters";
+import { ReportPieChart, ReportBarChart } from "@/components/common/charts";
+import { chartColors } from "@/lib/chartColors";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface LiabilitiesReportProps {
   fiscalYearId?: number;
@@ -71,10 +85,17 @@ export function LiabilitiesReport({ fiscalYearId, asOfDate: propAsOfDate, extern
   }, [data]);
 
   const customKPIs = classified ? [
+<<<<<<< HEAD
     { label: 'الالتزامات قصيرة الأجل', value: formatCurrency(classified.totalCurrent), color: 'warning' },
     { label: 'الالتزامات طويلة الأجل', value: formatCurrency(classified.totalNonCurrent), color: 'warning' },
     { label: 'التزامات أخرى', value: formatCurrency(classified.totalOther), color: 'default' },
     { label: 'إجمالي الديون', value: formatCurrency(classified.totalLiabilities), color: 'danger' },
+=======
+    { label: 'الالتزامات قصيرة الأجل', value: formatCurrency(classified.totalCurrent), color: 'text-amber-600' },
+    { label: 'الالتزامات طويلة الأجل', value: formatCurrency(classified.totalNonCurrent), color: 'text-orange-600' },
+    { label: 'التزامات أخرى', value: formatCurrency(classified.totalOther), color: 'text-foreground' },
+    { label: 'إجمالي الديون', value: formatCurrency(classified.totalLiabilities), color: 'text-red-600' },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   ] : [];
 
   const chartContent = classified ? (
@@ -141,7 +162,11 @@ export function LiabilitiesReport({ fiscalYearId, asOfDate: propAsOfDate, extern
               ) : (
                 <div className="space-y-2">
                   {classified.currentLiabilities.map((item: BalanceSheetSectionDto) => (
+<<<<<<< HEAD
                     <div key={item.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+=======
+                    <div key={item.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{item.accountCode}</span>
                         <span className="text-sm mr-2">{item.accountName}</span>
@@ -165,7 +190,11 @@ export function LiabilitiesReport({ fiscalYearId, asOfDate: propAsOfDate, extern
               ) : (
                 <div className="space-y-2">
                   {classified.nonCurrentLiabilities.map((item: BalanceSheetSectionDto) => (
+<<<<<<< HEAD
                     <div key={item.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+=======
+                    <div key={item.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{item.accountCode}</span>
                         <span className="text-sm mr-2">{item.accountName}</span>
@@ -187,7 +216,11 @@ export function LiabilitiesReport({ fiscalYearId, asOfDate: propAsOfDate, extern
               <div className="p-4">
                 <div className="space-y-2">
                   {classified.otherLiabilities.map((item: BalanceSheetSectionDto) => (
+<<<<<<< HEAD
                     <div key={item.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+=======
+                    <div key={item.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{item.accountCode}</span>
                         <span className="text-sm mr-2">{item.accountName}</span>

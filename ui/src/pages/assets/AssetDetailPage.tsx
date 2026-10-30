@@ -1,13 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { ArrowRight, Building2, Calendar, DollarSign, FileText, LandPlot, Laptop, Monitor, Sofa, TrendingDown, Truck } from "lucide-react";
+=======
+import { ArrowRight, Building2, Calendar, DollarSign, FileText, Laptop, LandPlot, Monitor, Sofa, TrendingDown, Truck } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 import { fixedAssetApi } from "@/api/fixedAssets";
 import { Breadcrumb, ErrorState, Heading, LoadingIndicator, PageLayout, StatCard, Tabs, TabsContent, TabsList, TabsTrigger, Text } from "@/components/ui";
+<<<<<<< HEAD
 import { ASSET_TYPE_ICONS } from "@/constants/assets";
 import { formatCurrency } from "@/lib/utils";
+=======
+import { formatCurrency } from "@/lib/utils";
+import { ASSET_TYPE_ICONS } from "@/constants/assets";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 import { AssetDepreciationTab } from "./tabs/AssetDepreciationTab";
 import { AssetInfoTab } from "./tabs/AssetInfoTab";
@@ -65,7 +74,11 @@ export function AssetDetailPage() {
                         <Heading level="h1" className="font-black">{asset.assetName}</Heading>
                         <Text variant="description" className="flex items-center gap-2 font-medium">
                             <span className="font-mono text-xs">{asset.assetNumber}</span>
+<<<<<<< HEAD
                             <span className="opacity-100 mx-1">|</span>
+=======
+                            <span className="opacity-30 mx-1">|</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             {asset.categoryName || "بدون تصنيف"}
                         </Text>
                     </div>
@@ -123,7 +136,11 @@ export function AssetDetailPage() {
 
                 <TabsContent value="documents" className="mt-0 outline-none">
                     <div className="text-center py-12 text-muted-foreground">
+<<<<<<< HEAD
                         <FileText className="w-12 h-12 mx-auto mb-4 opacity-100" />
+=======
+                        <FileText className="w-12 h-12 mx-auto mb-4 opacity-50" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <Text variant="body">إدارة الوثائق قادمة قريباً</Text>
                     </div>
                 </TabsContent>

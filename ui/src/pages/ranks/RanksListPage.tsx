@@ -2,9 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import { Medal, Pencil, Trash2 } from "lucide-react";
 
 import { ranksApi } from "@/api/ranks";
+<<<<<<< HEAD
 import { RankFormDialog } from "@/components/domain/admin/RankFormDialog";
 import { Button, CrudPageLayout } from "@/components/ui";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+=======
+import { Button, CrudPageLayout } from "@/components/ui";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+import { RankFormDialog } from "@/components/domain/admin/RankFormDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation,useCrudState } from "@/hooks";
 import { formatCurrency } from "@/lib/utils";
 

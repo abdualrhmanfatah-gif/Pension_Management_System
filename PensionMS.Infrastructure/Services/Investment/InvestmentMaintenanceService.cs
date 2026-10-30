@@ -10,12 +10,18 @@ namespace PensionMS.Infrastructure.Services.Investment;
 public class InvestmentMaintenanceService : IInvestmentMaintenanceService
 {
     private readonly IUnitOfWork _unitOfWork;
+<<<<<<< HEAD
     private readonly IAccessiblePensionRepository _access;
 
     public InvestmentMaintenanceService(IUnitOfWork unitOfWork, IAccessiblePensionRepository access)
     {
         _unitOfWork = unitOfWork;
         _access = access;
+=======
+    public InvestmentMaintenanceService(IUnitOfWork unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 
     // ----------------------------------------------------------------------
@@ -24,23 +30,36 @@ public class InvestmentMaintenanceService : IInvestmentMaintenanceService
 
     public async Task<ApiResponse<int>> CreateMaintenanceRequestAsync(CreateMaintenanceRequestDto dto, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var property = await queries.Query(_unitOfWork.InvestmentProperties)
             .FirstOrDefaultAsync(p => p.PropertyID == dto.PropertyID && !p.IsDeleted);
+=======
+        var property = await _unitOfWork.InvestmentProperties.GetByIdAsync(dto.PropertyID);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (property == null || property.IsDeleted)
             return ApiResponse<int>.Fail("العقار غير موجود");
 
         if (dto.UnitID.HasValue)
         {
+<<<<<<< HEAD
             var unit = await queries.Query(_unitOfWork.PropertyUnits)
                 .FirstOrDefaultAsync(u => u.UnitID == dto.UnitID.Value && u.PropertyID == dto.PropertyID && !u.IsDeleted);
+=======
+            var unit = await _unitOfWork.PropertyUnits.GetByIdAsync(dto.UnitID.Value);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             if (unit == null || unit.IsDeleted)
                 return ApiResponse<int>.Fail("الوحدة غير موجودة");
         }
 
         if (dto.TenantID.HasValue)
         {
+<<<<<<< HEAD
             if (!await ReferenceableTenants(queries).AnyAsync(t => t.TenantID == dto.TenantID.Value))
+=======
+            var tenant = await _unitOfWork.Tenants.GetByIdAsync(dto.TenantID.Value);
+            if (tenant == null || tenant.IsDeleted)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 return ApiResponse<int>.Fail("المستأجر غير موجود");
         }
 
@@ -65,9 +84,13 @@ public class InvestmentMaintenanceService : IInvestmentMaintenanceService
 
     public async Task<ApiResponse<bool>> UpdateMaintenanceRequestAsync(int id, UpdateMaintenanceRequestDto dto, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var request = await queries.Query(_unitOfWork.MaintenanceRequests)
             .FirstOrDefaultAsync(r => r.RequestID == id && !r.IsDeleted);
+=======
+        var request = await _unitOfWork.MaintenanceRequests.GetByIdAsync(id);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (request == null || request.IsDeleted)
             return ApiResponse<bool>.Fail("طلب الصيانة غير موجود");
 
@@ -83,28 +106,88 @@ public class InvestmentMaintenanceService : IInvestmentMaintenanceService
 
     public async Task<ApiResponse<MaintenanceRequestDto>> GetMaintenanceRequestByIdAsync(int id)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var dto = await ProjectRequests(queries.Query(_unitOfWork.MaintenanceRequests)
             .Where(r => r.RequestID == id && !r.IsDeleted), queries).FirstOrDefaultAsync();
         if (dto == null)
             return ApiResponse<MaintenanceRequestDto>.Fail("طلب الصيانة غير موجود");
 
+=======
+        var request = await _unitOfWork.MaintenanceRequests.Query()
+            .Include(r => r.Property)
+            .Include(r => r.Unit)
+            .Include(r => r.Tenant)
+            .FirstOrDefaultAsync(r => r.RequestID == id && !r.IsDeleted);
+
+        if (request == null)
+            return ApiResponse<MaintenanceRequestDto>.Fail("طلب الصيانة غير موجود");
+
+        var dto = new MaintenanceRequestDto
+        {
+            RequestID = request.RequestID,
+            PropertyID = request.PropertyID,
+            PropertyName = request.Property?.PropertyName ?? string.Empty,
+            UnitID = request.UnitID,
+            UnitNumber = request.Unit?.UnitNumber,
+            TenantID = request.TenantID,
+            TenantName = request.Tenant?.FullName,
+            Priority = request.Priority,
+            Description = request.Description,
+            Status = request.Status,
+            ReportedDate = request.ReportedDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)
+        };
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         return ApiResponse<MaintenanceRequestDto>.Success(dto);
     }
 
     public async Task<ApiResponse<List<MaintenanceRequestDto>>> GetRequestsByPropertyAsync(int propertyId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var query = queries.Query(_unitOfWork.MaintenanceRequests).Where(r => !r.IsDeleted);
         if (propertyId > 0)
             query = query.Where(r => r.PropertyID == propertyId);
 
         var requests = await ProjectRequests(query.OrderByDescending(r => r.ReportedDate), queries).ToListAsync();
+=======
+        var query = _unitOfWork.MaintenanceRequests.Query()
+            .Include(r => r.Property)
+            .Include(r => r.Unit)
+            .Include(r => r.Tenant)
+            .Where(r => !r.IsDeleted);
+
+        if (propertyId > 0)
+        {
+            query = query.Where(r => r.PropertyID == propertyId);
+        }
+
+        var requests = await query
+            .OrderByDescending(r => r.ReportedDate)
+            .Select(r => new MaintenanceRequestDto
+            {
+                RequestID = r.RequestID,
+                PropertyID = r.PropertyID,
+                PropertyName = r.Property != null ? r.Property.PropertyName : string.Empty,
+                UnitID = r.UnitID,
+                UnitNumber = r.Unit != null ? r.Unit.UnitNumber : null,
+                TenantID = r.TenantID,
+                TenantName = r.Tenant != null ? r.Tenant.FullName : null,
+                Priority = r.Priority,
+                Description = r.Description,
+                Status = r.Status,
+                ReportedDate = r.ReportedDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)
+            })
+            .ToListAsync();
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         return ApiResponse<List<MaintenanceRequestDto>>.Success(requests);
     }
 
     public async Task<ApiResponse<List<MaintenanceRequestDto>>> GetAllMaintenanceRequestsAsync()
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var requests = await ProjectRequests(queries.Query(_unitOfWork.MaintenanceRequests)
             .Where(r => !r.IsDeleted).OrderByDescending(r => r.ReportedDate), queries).ToListAsync();
@@ -143,15 +226,46 @@ public class InvestmentMaintenanceService : IInvestmentMaintenanceService
         });
     }
 
+=======
+        var requests = await _unitOfWork.MaintenanceRequests.Query()
+            .Include(r => r.Property)
+            .Include(r => r.Unit)
+            .Include(r => r.Tenant)
+            .Where(r => !r.IsDeleted)
+            .OrderByDescending(r => r.ReportedDate)
+            .Select(r => new MaintenanceRequestDto
+            {
+                RequestID = r.RequestID,
+                PropertyID = r.PropertyID,
+                PropertyName = r.Property != null ? r.Property.PropertyName : string.Empty,
+                UnitID = r.UnitID,
+                UnitNumber = r.Unit != null ? r.Unit.UnitNumber : null,
+                TenantID = r.TenantID,
+                TenantName = r.Tenant != null ? r.Tenant.FullName : null,
+                Priority = r.Priority,
+                Description = r.Description,
+                Status = r.Status,
+                ReportedDate = r.ReportedDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)
+            })
+            .ToListAsync();
+
+        return ApiResponse<List<MaintenanceRequestDto>>.Success(requests);
+    }
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     // ----------------------------------------------------------------------
     // WORK ORDERS
     // ----------------------------------------------------------------------
 
     public async Task<ApiResponse<int>> CreateWorkOrderAsync(CreateWorkOrderDto dto, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var request = await queries.Query(_unitOfWork.MaintenanceRequests)
             .FirstOrDefaultAsync(r => r.RequestID == dto.RequestID && !r.IsDeleted);
+=======
+        var request = await _unitOfWork.MaintenanceRequests.GetByIdAsync(dto.RequestID);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (request == null || request.IsDeleted)
             return ApiResponse<int>.Fail("طلب الصيانة غير موجود");
 
@@ -180,6 +294,7 @@ public class InvestmentMaintenanceService : IInvestmentMaintenanceService
 
     public async Task<ApiResponse<bool>> UpdateWorkOrderAsync(int id, UpdateWorkOrderDto dto, int userId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var workOrder = await queries.Query(_unitOfWork.WorkOrders)
             .FirstOrDefaultAsync(w => w.WorkOrderID == id && !w.IsDeleted);
@@ -191,6 +306,12 @@ public class InvestmentMaintenanceService : IInvestmentMaintenanceService
         if (request == null)
             return ApiResponse<bool>.Fail("طلب الصيانة غير موجود");
 
+=======
+        var workOrder = await _unitOfWork.WorkOrders.GetByIdAsync(id);
+        if (workOrder == null || workOrder.IsDeleted)
+            return ApiResponse<bool>.Fail("أمر العمل غير موجود");
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         workOrder.ActualCost = dto.ActualCost;
         workOrder.CompletionDate = dto.CompletionDate;
         workOrder.InvoiceFilePath = dto.InvoiceFilePath;
@@ -200,8 +321,17 @@ public class InvestmentMaintenanceService : IInvestmentMaintenanceService
         _unitOfWork.WorkOrders.Update(workOrder);
 
         // Check if request should be marked completed
+<<<<<<< HEAD
         request.Status = MaintenanceStatusConstants.Completed;
         _unitOfWork.MaintenanceRequests.Update(request);
+=======
+        var request = await _unitOfWork.MaintenanceRequests.GetByIdAsync(workOrder.RequestID);
+        if (request != null && !request.IsDeleted)
+        {
+            request.Status = MaintenanceStatusConstants.Completed;
+            _unitOfWork.MaintenanceRequests.Update(request);
+        }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
         await _unitOfWork.SaveChangesAsync();
 
@@ -212,6 +342,7 @@ public class InvestmentMaintenanceService : IInvestmentMaintenanceService
 
     public async Task<ApiResponse<WorkOrderDto>> GetWorkOrderByIdAsync(int id)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var dto = await queries.Query(_unitOfWork.WorkOrders).AsNoTracking()
             .Where(w => w.WorkOrderID == id && !w.IsDeleted)
@@ -229,13 +360,37 @@ public class InvestmentMaintenanceService : IInvestmentMaintenanceService
         if (dto == null)
             return ApiResponse<WorkOrderDto>.Fail("أمر العمل غير موجود");
 
+=======
+        var workOrder = await _unitOfWork.WorkOrders.Query()
+            .FirstOrDefaultAsync(w => w.WorkOrderID == id && !w.IsDeleted);
+
+        if (workOrder == null)
+            return ApiResponse<WorkOrderDto>.Fail("أمر العمل غير موجود");
+
+        var dto = new WorkOrderDto
+        {
+            WorkOrderID = workOrder.WorkOrderID,
+            RequestID = workOrder.RequestID,
+            AssignedContractor = workOrder.AssignedContractor,
+            EstimatedCost = workOrder.EstimatedCost,
+            ActualCost = workOrder.ActualCost,
+            CompletionDate = workOrder.CompletionDate?.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture),
+            InvoiceFilePath = workOrder.InvoiceFilePath,
+            CompletionCertPath = workOrder.CompletionCertPath
+        };
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         return ApiResponse<WorkOrderDto>.Success(dto);
     }
 
     public async Task<ApiResponse<List<WorkOrderDto>>> GetWorkOrdersByRequestAsync(int requestId)
     {
+<<<<<<< HEAD
         var queries = await _access.ForCurrentOperationAsync();
         var workOrders = await queries.Query(_unitOfWork.WorkOrders).AsNoTracking()
+=======
+        var workOrders = await _unitOfWork.WorkOrders.Query()
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             .Where(w => w.RequestID == requestId && !w.IsDeleted)
             .Select(w => new WorkOrderDto
             {

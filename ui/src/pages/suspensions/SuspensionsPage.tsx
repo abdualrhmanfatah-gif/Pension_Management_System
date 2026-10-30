@@ -5,11 +5,20 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import { retirementApi } from "@/api/retirement";
+<<<<<<< HEAD
 import { CreateSuspensionDialog } from "@/components/domain/suspensions/CreateSuspensionDialog";
 import { Badge, Button, Card, type CustomColumnDef, DataTable, Heading, Input, Text } from "@/components/ui";
 import { queryKeys } from "@/constants/queryKeys";
 import { formatDate } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
+=======
+import { Badge, Button, Card, DataTable, Input, type CustomColumnDef, Heading, Text } from "@/components/ui";
+import { CreateSuspensionDialog } from "@/components/domain/suspensions/CreateSuspensionDialog";
+import { formatDate } from "@/lib/utils";
+import { useHasPermission } from "@/stores/authStore";
+import { queryKeys } from "@/constants/queryKeys";
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import type { SuspensionItem } from "@/types/retirement";
 
 export function SuspensionsPage() {
@@ -132,7 +141,11 @@ export function SuspensionsPage() {
                     variant="ghost"
                     size="sm"
                     onClick={() => navigate(`/files/${row.fileID}?tab=suspensions`)}
+<<<<<<< HEAD
                     className="text-primary hover:text-primary"
+=======
+                    className="text-primary hover:text-primary/80"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 >
                     عرض الملف
                 </Button>

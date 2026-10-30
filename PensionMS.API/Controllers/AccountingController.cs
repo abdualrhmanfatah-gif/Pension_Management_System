@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 using PensionMS.Core.Interfaces.Reporting;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -23,7 +26,10 @@ public class AccountingController : ControllerBase
     private readonly IFiscalPeriodService _fiscalPeriod;
     private readonly IClosingService _closing;
     private readonly IAccountingExportService _exportService;
+<<<<<<< HEAD
     private readonly IBudgetService _budget;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     public AccountingController(
         IChartOfAccountService chartOfAccount,
@@ -32,8 +38,12 @@ public class AccountingController : ControllerBase
         IReportingService reporting,
         IFiscalPeriodService fiscalPeriod,
         IClosingService closing,
+<<<<<<< HEAD
         IAccountingExportService exportService,
         IBudgetService budget)
+=======
+        IAccountingExportService exportService)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     {
         _chartOfAccount = chartOfAccount;
         _journalEntry = journalEntry;
@@ -42,14 +52,22 @@ public class AccountingController : ControllerBase
         _fiscalPeriod = fiscalPeriod;
         _closing = closing;
         _exportService = exportService;
+<<<<<<< HEAD
         _budget = budget;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 
     private IActionResult ReturnFile(byte[] bytes, string format, string baseName)
     {
         if (format.ToLower() == ExportFormatConstants.Pdf)
+<<<<<<< HEAD
             return File(bytes, "application/pdf", $"{baseName}_{PensionMS.Core.Time.YemenTime.Now:yyyyMMdd}.pdf");
         return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{baseName}_{PensionMS.Core.Time.YemenTime.Now:yyyyMMdd}.xlsx");
+=======
+            return File(bytes, "application/pdf", $"{baseName}_{DateTime.Now:yyyyMMdd}.pdf");
+        return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{baseName}_{DateTime.Now:yyyyMMdd}.xlsx");
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }
 
     // ═══════════════════════════════════════════
@@ -321,6 +339,7 @@ public class AccountingController : ControllerBase
     [HttpGet("reports/trial-balance/export")]
     [Authorize(Policy = "Accounting.Reports")]
     public async Task<IActionResult> ExportTrialBalance(
+<<<<<<< HEAD
         [FromQuery] int? periodId, [FromQuery] DateTime? fromDate, [FromQuery] DateTime? toDate,
         [FromQuery] string format = "excel", [FromQuery] int? accountLevel = null)
     {
@@ -373,6 +392,15 @@ public class AccountingController : ControllerBase
         return ReturnFile(await _exportService.ExportQuarterExpensesAsync(data), "excel", "QuarterExpenses");
     }
 
+=======
+        [FromQuery] int? periodId, [FromQuery] DateTime? fromDate, [FromQuery] DateTime? toDate, [FromQuery] string format = "excel")
+    {
+        var data = await _reporting.GetTrialBalanceAsync(periodId, fromDate, toDate);
+        var bytes = await _exportService.ExportTrialBalanceAsync(data, format);
+        return ReturnFile(bytes, format, "TrialBalance");
+    }
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     [HttpGet("reports/balance-sheet/export")]
     [Authorize(Policy = "Accounting.Reports")]
     public async Task<IActionResult> ExportBalanceSheet([FromQuery] DateTime asOfDate, [FromQuery] string format = "excel")

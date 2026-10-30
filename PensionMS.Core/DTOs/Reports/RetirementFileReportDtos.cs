@@ -40,7 +40,11 @@ public class RetirementFileReportRow
     public int? SocialStatusID { get; set; }
     public string? SocialStatusName { get; set; }
     public string? HealthStatusName { get; set; }
+<<<<<<< HEAD
     public DateOnly? RetirementDate { get; set; }
+=======
+    public DateTime? RetirementDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public DateTime? FileOpenDate { get; set; }
     public int MissingDocumentsCount { get; set; }
     public string? ReviewStatusName { get; set; }

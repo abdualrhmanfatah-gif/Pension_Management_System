@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
@@ -11,6 +12,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { chartColors } from "@/lib/chartColors";
 import { formatCurrency } from "@/lib/utils";
 import type { AccountStatementResultDto, ChartOfAccountDto } from "@/types/accounting";
+=======
+import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect, useCallback } from "react";
+
+import { accountsApi, reportsApi } from "@/api/accounting";
+import type { AccountStatementResultDto, ChartOfAccountDto } from "@/types/accounting";
+import { formatCurrency } from "@/lib/utils";
+import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
+import { ReportFilters } from "@/components/common/ReportFilters";
+import { ReportLineChart } from "@/components/common/charts";
+import { chartColors } from "@/lib/chartColors";
+import { Button } from "@/components/ui";
+import { Card } from "@/components/ui/Card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/Select";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface AccountStatementReportProps {
   fiscalYearId?: number;
@@ -80,16 +96,27 @@ export function AccountStatementReport({ fiscalYearId, fromDate: propFromDate, t
   ) : undefined;
 
   const customKPIs = items.length > 0 ? [
+<<<<<<< HEAD
     { label: 'عدد الحركات', value: items.length, color: 'default' },
     { label: 'إجمالي المدين', value: formatCurrency(items.reduce((s, i) => s + i.debit, 0)), color: 'info' },
     { label: 'إجمالي الدائن', value: formatCurrency(items.reduce((s, i) => s + i.credit, 0)), color: 'success' },
     { label: 'الرصيد النهائي', value: formatCurrency(items[items.length - 1]?.runningBalance ?? 0), color: 'primary' },
+=======
+    { label: 'عدد الحركات', value: items.length, color: 'text-foreground' },
+    { label: 'إجمالي المدين', value: formatCurrency(items.reduce((s, i) => s + i.debit, 0)), color: 'text-blue-600' },
+    { label: 'إجمالي الدائن', value: formatCurrency(items.reduce((s, i) => s + i.credit, 0)), color: 'text-green-600' },
+    { label: 'الرصيد النهائي', value: formatCurrency(items[items.length - 1]?.runningBalance ?? 0), color: 'text-primary' },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   ] : [];
 
   const filterBar = hideInternalControls ? undefined : (
     <Card className="p-4 flex flex-wrap gap-4 items-end mb-6">
       <div className="w-full sm:w-64">
+<<<<<<< HEAD
         <label className="label-filter">الحساب</label>
+=======
+        <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">الحساب</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         <Select value={String(accountId ?? "")} onValueChange={(v) => setInternalAccountId(Number(v))}>
           <SelectTrigger className="h-10">
             <SelectValue placeholder="اختر الحساب" />
@@ -148,7 +175,11 @@ export function AccountStatementReport({ fiscalYearId, fromDate: propFromDate, t
             </thead>
             <tbody>
               {items.map((item, i) => (
+<<<<<<< HEAD
                 <tr key={i} className="border-t border-border hover:bg-muted/20">
+=======
+                <tr key={i} className="border-t border-border/50 hover:bg-muted/20">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                   <td className="p-2 text-xs">{new Date(item.entryDate).toLocaleDateString("ar-SA")}</td>
                   <td className="p-2 font-mono text-xs ltr" dir="ltr">{item.entryNumber}</td>
                   <td className="p-2 text-xs">{item.description}</td>

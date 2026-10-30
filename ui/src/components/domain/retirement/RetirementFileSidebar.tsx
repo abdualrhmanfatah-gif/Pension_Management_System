@@ -1,12 +1,23 @@
+<<<<<<< HEAD
 import { useQueryClient } from "@tanstack/react-query";
 import {          Activity, AlertCircle,BadgeCheck, Calendar, ChevronDown, ChevronUp, HeartPulse,  
 MapPin, Shield, User, UserCircle2 } from "lucide-react";
 import { useState } from "react";
+=======
+import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import {          Activity, AlertCircle,BadgeCheck, Calendar, ChevronDown, ChevronUp, HeartPulse,  
+MapPin, Shield, User, UserCircle2 } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 import api from "@/api/axios";
 import { Button, Card, EditableImage, Heading } from "@/components/ui";
 import { useApiMutation } from "@/hooks";
+<<<<<<< HEAD
 import { cn, formatDate, getDefaultDeceasedAvatar, getPhotoUrl, getStatusColorClass, resolvePersonalPhotoPath } from "@/lib/utils";
+=======
+import { cn, formatDate, getDefaultDeceasedAvatar, getStatusColorClass, getPhotoUrl, resolvePersonalPhotoPath } from "@/lib/utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useHasPermission } from "@/stores/authStore";
 
 // ─── Types ─────────────────────────────────────────────
@@ -67,7 +78,11 @@ export function RetirementFileSidebar({ file, retiree, isCompact }: RetirementFi
             <div className="relative overflow-hidden rounded-2xl border bg-card ">
                 {/* خلفية علوية متدرجة */}
                 <div className="h-16 sm:h-28 bg-gradient-to-br from-primary/15 via-primary/5 to-background relative">
+<<<<<<< HEAD
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--primary)_0%,transparent_60%)] opacity-100" />
+=======
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--primary)_0%,transparent_60%)] opacity-[0.07]" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {/* نمط زخرفي خفيف */}
                     <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
                 </div>
@@ -77,12 +92,20 @@ export function RetirementFileSidebar({ file, retiree, isCompact }: RetirementFi
                     <div className="flex flex-col items-center">
                         {/* الصورة الشخصية مع حلقة مميزة */}
                         <div className="relative group">
+<<<<<<< HEAD
                             <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/30 to-primary/10 rounded-2xl blur opacity-100 group-hover:opacity-100 transition duration-500" />
+=======
+                            <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/30 to-primary/10 rounded-2xl blur opacity-50 group-hover:opacity-75 transition duration-500" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <EditableImage
                                 src={resolvePersonalPhotoPath(retiree) ? getPhotoUrl(resolvePersonalPhotoPath(retiree)) : resolvePersonalPhotoPath(file) ? getPhotoUrl(resolvePersonalPhotoPath(file)) : !file.isAlive ? getDefaultDeceasedAvatar(file.gender) : null}
                                 alt={file.retireeFullName}
                                 className="relative w-20 h-28 sm:w-28 sm:h-36 rounded-2xl border-[4px] sm:border-[5px] border-card object-cover bg-muted transition-all duration-300 group-hover:scale-[1.02]"
+<<<<<<< HEAD
                                 fallbackIcon={<User className="w-8 h-8 sm:w-12 sm:h-12 text-muted-foreground" />}
+=======
+                                fallbackIcon={<User className="w-8 h-8 sm:w-12 sm:h-12 text-muted-foreground/60" />}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 canEdit={canEditRetiree}
                                 imgWidth={112}
                                 imgHeight={144}
@@ -97,7 +120,11 @@ export function RetirementFileSidebar({ file, retiree, isCompact }: RetirementFi
                                 file.isAlive ? "bg-emerald-500" : "bg-red-500"
                             )}>
                                 {file.isAlive && (
+<<<<<<< HEAD
                                     <div className="absolute inset-0 rounded-full bg-emerald-500 animate-ping opacity-100" />
+=======
+                                    <div className="absolute inset-0 rounded-full bg-emerald-500 animate-ping opacity-40" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 )}
                             </div>
                         </div>
@@ -119,17 +146,29 @@ export function RetirementFileSidebar({ file, retiree, isCompact }: RetirementFi
 
                     {/* معلومات سريعة (غير مضغوط) */}
                     {!isCompact && (
+<<<<<<< HEAD
                         <div className="mt-3 sm:mt-4 flex flex-col gap-2">
                             <InfoPill 
                                 icon={<UserCircle2 className="w-3.5 h-3.5" />}
+=======
+                        <div className="mt-3 sm:mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                            <InfoPill 
+                                icon={<UserCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 label="الرقم الوطني"
                                 value={file.nationalID || "—"}
                                 dir="ltr"
                             />
                             <InfoPill 
+<<<<<<< HEAD
                                 icon={<MapPin className="w-3.5 h-3.5" />}
                                 label="العنوان"
                                 value={retiree.governorate && retiree.city ? `${retiree.governorate}، ${retiree.city}` : retiree.governorate || retiree.city || "—"}
+=======
+                                icon={<MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
+                                label="العنوان"
+                                value={`${retiree.governorate || "—"} — ${retiree.city || "—"}`}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             />
                         </div>
                     )}
@@ -179,7 +218,11 @@ export function RetirementFileSidebar({ file, retiree, isCompact }: RetirementFi
                     "overflow-hidden transition-all duration-300",
                     detailsExpanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0 lg:max-h-96 lg:opacity-100"
                 )}>
+<<<<<<< HEAD
                     <div className="px-2.5 pb-2.5 sm:px-3 sm:pb-3 space-y-0.5 border-t border-border pt-2 sm:pt-3">
+=======
+                    <div className="px-2.5 pb-2.5 sm:px-3 sm:pb-3 space-y-0.5 border-t border-border/50 pt-2 sm:pt-3">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <DetailRow 
                             icon={<Shield className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
                             label="الرقم العسكري" 
@@ -211,12 +254,21 @@ export function RetirementFileSidebar({ file, retiree, isCompact }: RetirementFi
 
 function InfoPill({ icon, label, value, dir }: { icon: React.ReactNode; label: string; value: string; dir?: string }) {
     return (
+<<<<<<< HEAD
         <div className="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-xl bg-muted/40 border border-border hover:bg-muted/60 transition-colors group min-w-0">
             <div className="flex items-center gap-1.5 text-muted-foreground shrink-0">
                 {icon}
                 <span className="text-xs font-bold">{label}</span>
             </div>
             <p className="text-xs font-semibold text-foreground truncate min-w-0 text-end" title={value} dir={dir}>
+=======
+        <div className="flex items-center justify-between p-2.5 sm:p-3 rounded-xl bg-muted/40 border border-border/40 hover:bg-muted/60 transition-colors group">
+            <div className="flex items-center gap-1 sm:gap-1.5 text-muted-foreground">
+                {icon}
+                <span className="text-[9px] sm:text-[10px] sm:text-xs font-bold uppercase tracking-wider">{label}</span>
+            </div>
+            <p className="text-[11px] sm:text-xs font-mono font-semibold text-foreground truncate" title={value} dir={dir}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 {value}
             </p>
         </div>
@@ -227,7 +279,11 @@ function DetailRow({ icon, label, value }: { icon: React.ReactNode; label: strin
     return (
         <div className="flex items-center justify-between py-2 sm:py-2.5 px-1.5 sm:px-2 rounded-lg hover:bg-muted/30 transition-colors group">
             <div className="flex items-center gap-1.5 sm:gap-2 text-muted-foreground">
+<<<<<<< HEAD
                 <span className="text-muted-foreground group-hover:text-primary transition-colors">
+=======
+                <span className="text-muted-foreground/60 group-hover:text-primary/70 transition-colors">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {icon}
                 </span>
                 <span className="text-[10px] sm:text-xs font-medium">{label}</span>

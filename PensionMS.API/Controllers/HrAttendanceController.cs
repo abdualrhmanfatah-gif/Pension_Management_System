@@ -47,7 +47,11 @@ public class HrAttendanceController : ControllerBase
     [Authorize(Policy = "HR.Dashboard.View")]
     public async Task<IActionResult> GetDailyStats([FromQuery] DateTime? date)
     {
+<<<<<<< HEAD
         var statsDate = date ?? PensionMS.Core.Time.YemenTime.TodayDateTime;
+=======
+        var statsDate = date ?? DateTime.Today;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         var result = await _service.GetDailyStatsAsync(statsDate);
         return result.ToActionResult();
     }

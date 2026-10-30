@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Eye, FileText } from "lucide-react";
 import { useEffect, useMemo } from "react";
+<<<<<<< HEAD
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -9,6 +10,16 @@ import { investmentApi } from "@/api/investment";
 import { InvestmentDocsViewerDialog } from "@/components/domain/investment/InvestmentDocsViewerDialog";
 import { PropertyDialog } from "@/components/domain/investment/PropertyDialog";
 import { Button, CrudPageLayout, type CustomColumnDef, ErrorState } from "@/components/ui";
+=======
+import { toast } from "sonner";
+import { Link, useNavigate } from "react-router-dom";
+
+import type { PropertyDto } from "@/api/investment";
+import { investmentApi } from "@/api/investment";
+import { Button, CrudPageLayout, type CustomColumnDef, ErrorState } from "@/components/ui";
+import { InvestmentDocsViewerDialog } from "@/components/domain/investment/InvestmentDocsViewerDialog";
+import { PropertyDialog } from "@/components/domain/investment/PropertyDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useCrudState } from "@/hooks";
 
 interface ProjectPropertiesTabProps {

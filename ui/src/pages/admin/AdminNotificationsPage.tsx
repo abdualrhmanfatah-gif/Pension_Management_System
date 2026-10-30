@@ -15,14 +15,24 @@ import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
+<<<<<<< HEAD
 import { type AdminNotificationFilter,notificationsApi } from "@/api/notifications";
 import { SendNotificationDialog } from "@/components/domain/admin/SendNotificationDialog";
+=======
+import { notificationsApi, type AdminNotificationFilter } from "@/api/notifications";
+import { queryKeys } from "@/constants/queryKeys";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
   Badge,
   Button,
   Card,
+<<<<<<< HEAD
   type CustomColumnDef,
   DataTable,
+=======
+  DataTable,
+  type CustomColumnDef,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   Heading,
   Input,
   PageLayout,
@@ -32,18 +42,30 @@ import {
   SelectTrigger,
   SelectValue,
   StatCard,
+<<<<<<< HEAD
   StickyHeader,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
   Text,
+<<<<<<< HEAD
 } from "@/components/ui";
 import { queryKeys } from "@/constants/queryKeys";
+=======
+  StickyHeader,
+} from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useConfirm } from "@/hooks/useConfirm";
 import { formatDate } from "@/lib/utils";
 import type { NotificationDto } from "@/types/notifications";
 import { CATEGORY_COLORS, CATEGORY_LABELS } from "@/types/notifications";
+<<<<<<< HEAD
+=======
+import { SendNotificationDialog } from "@/components/domain/admin/SendNotificationDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function AdminNotificationsPage() {
   const queryClient = useQueryClient();

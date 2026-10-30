@@ -1,17 +1,30 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { ChevronLeft, FileText, Plus,Trash2 } from "lucide-react";
+=======
+import { ChevronLeft, FileText, Trash2, Plus } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import api from "@/api/axios";
 import { ministryApi } from "@/api/ministry";
+<<<<<<< HEAD
 import { CreateForceBatchDialog } from "@/components/domain/force/CreateForceBatchDialog";
 import { Badge, Button, CrudPageLayout, Heading, PageLayout, Text, useConfirm } from "@/components/ui";
 import { useApiMutation } from "@/hooks";
 import { normalizeApiError } from "@/lib/errorUtils";
 import { formatDate } from "@/lib/utils";
 import { ForceStatsSection } from "@/pages/ministry-approvals/ForceAnalyticsDashboard";
+=======
+import { Badge, Button, CrudPageLayout, Heading, PageLayout, Text, useConfirm } from "@/components/ui";
+import { CreateForceBatchDialog } from "@/components/domain/force/CreateForceBatchDialog";
+import { ForceStatsSection } from "@/pages/ministry-approvals/ForceAnalyticsDashboard";
+import { useApiMutation } from "@/hooks";
+import { normalizeApiError } from "@/lib/errorUtils";
+import { formatDate } from "@/lib/utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Types ─────────────────────────────────────────────
 

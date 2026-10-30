@@ -15,7 +15,10 @@ public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
         builder.Property(e => e.Category).HasMaxLength(50);
 
         builder.HasData(
+<<<<<<< HEAD
             new Permission { PermissionId = 157, Code = "File.Transfer", Description = "نقل ملف تقاعد بين الفروع", Category = "File" },
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             // ─── File (1-9, 143) ───
             new Permission { PermissionId = 143, Code = "File.View",                 Description = "عرض ملفات التقاعد",           Category = "File" },
             new Permission { PermissionId = 1,  Code = "File.Create",                Description = "إنشاء ملف تقاعد جديد",       Category = "File" },

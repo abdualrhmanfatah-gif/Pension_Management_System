@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback, useMemo,useState } from "react";
 
@@ -9,6 +10,19 @@ import { Card, Heading, Text } from "@/components/ui";
 import { chartColors } from "@/lib/chartColors";
 import { formatCurrency } from "@/lib/utils";
 import type { BalanceSheetSectionDto } from "@/types/accounting";
+=======
+import { useQuery } from "@tanstack/react-query";
+import { useState, useCallback, useMemo } from "react";
+
+import { reportsApi } from "@/api/accounting";
+import type { BalanceSheetSectionDto } from "@/types/accounting";
+import { formatCurrency } from "@/lib/utils";
+import { Card, Heading, Text } from "@/components/ui";
+import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
+import { ReportFilters } from "@/components/common/ReportFilters";
+import { ReportPieChart, ReportBarChart } from "@/components/common/charts";
+import { chartColors } from "@/lib/chartColors";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface ProvisionsReportProps {
   fiscalYearId?: number;
@@ -67,9 +81,15 @@ export function ProvisionsReport({ fiscalYearId, asOfDate: propAsOfDate, externa
   }, [data]);
 
   const customKPIs = classified ? [
+<<<<<<< HEAD
     { label: 'المخصصات والاستحقاقات', value: formatCurrency(classified.totalProvisions), color: 'warning' },
     { label: 'مخصصات أخرى', value: formatCurrency(classified.totalOtherProvisions), color: 'warning' },
     { label: 'إجمالي المخصصات', value: formatCurrency(classified.totalAllProvisions), color: 'danger' },
+=======
+    { label: 'المخصصات والاستحقاقات', value: formatCurrency(classified.totalProvisions), color: 'text-amber-600' },
+    { label: 'مخصصات أخرى', value: formatCurrency(classified.totalOtherProvisions), color: 'text-orange-600' },
+    { label: 'إجمالي المخصصات', value: formatCurrency(classified.totalAllProvisions), color: 'text-red-600' },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   ] : [];
 
   const chartContent = classified ? (
@@ -134,7 +154,11 @@ export function ProvisionsReport({ fiscalYearId, asOfDate: propAsOfDate, externa
               ) : (
                 <div className="space-y-2">
                   {classified.provisions.map((item: BalanceSheetSectionDto) => (
+<<<<<<< HEAD
                     <div key={item.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+=======
+                    <div key={item.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{item.accountCode}</span>
                         <span className="text-sm mr-2">{item.accountName}</span>
@@ -158,7 +182,11 @@ export function ProvisionsReport({ fiscalYearId, asOfDate: propAsOfDate, externa
               ) : (
                 <div className="space-y-2">
                   {classified.otherProvisions.map((item: BalanceSheetSectionDto) => (
+<<<<<<< HEAD
                     <div key={item.accountID} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+=======
+                    <div key={item.accountID} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                       <div>
                         <span className="text-xs font-mono text-muted-foreground">{item.accountCode}</span>
                         <span className="text-sm mr-2">{item.accountName}</span>

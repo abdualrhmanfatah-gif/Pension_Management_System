@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 import type { ReactivateEntitledPersonRequest, RecordEntitledPersonDeathRequest, StopEntitledPersonRequest } from "@/lib/entitledPersonRequests";
 import { entitledPersonMultipart, reactivateEntitledPersonForm, recordEntitledPersonDeathForm, stopEntitledPersonForm } from "@/lib/entitledPersonRequests";
 import type { ApiResponse, PagedResult } from "@/types/api";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import type {
     AgentSearchResult,
     AgentSummary,
@@ -25,6 +28,7 @@ import type {
     StatusTransition,
     SuspensionItem} from "@/types/retirement";
 
+<<<<<<< HEAD
 import api from "./axios";
 import { documentsApi } from "./documents";
 import type { SettlementItemDto } from "./settlements";
@@ -36,6 +40,16 @@ function normalizeAgentPhoto<T extends { personalPhotoPath?: string | null }>(it
     photoPath?: string | null;
     PhotoPath?: string | null;
 }): T {
+=======
+import type { ApiResponse, PagedResult } from "@/types/api";
+
+import type { SettlementItemDto } from "./settlements";
+
+import api from "./axios";
+import { documentsApi } from "./documents";
+
+function normalizeAgentPhoto<T extends { personalPhotoPath?: string | null }>(item: any): T {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     return {
         ...item,
         personalPhotoPath: item.personalPhotoPath ?? item.PersonalPhotoPath ?? item.personalPhoto ?? item.PersonalPhoto ?? item.photoPath ?? item.PhotoPath ?? null,
@@ -237,6 +251,7 @@ export const retirementApi = {
             headers: { "Content-Type": "multipart/form-data" }
         }).then(r => r.data),
 
+<<<<<<< HEAD
     uploadAgentPhoto: (id: number, photo: File) => {
         const formData = new FormData();
         formData.append("photo", photo);
@@ -245,6 +260,8 @@ export const retirementApi = {
         }).then(r => r.data);
     },
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     // الورثة والمستحقون
     getEntitledPersonById: (id: number) =>
         api.get<ApiResponse<EntitledPersonSummary>>(`/entitled-persons/${id}`).then(r => r.data.data),
@@ -260,13 +277,19 @@ export const retirementApi = {
             headers: { "Content-Type": "multipart/form-data" }
         }).then(r => r.data),
 
+<<<<<<< HEAD
     createEntitledPerson: (fileId: number, formData: FormData) => {
         formData.set("fileID", String(fileId));
         return api.post<ApiResponse<EntitledPersonSummary>>(
+=======
+    createEntitledPerson: (fileId: number, formData: FormData) =>
+        api.post<ApiResponse<EntitledPersonSummary>>(
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             `/entitled-persons`,
             formData,
             {
                 headers: { "Content-Type": "multipart/form-data" },
+<<<<<<< HEAD
             }
         ).then(r => r.data);
     },
@@ -279,6 +302,17 @@ export const retirementApi = {
 
     recordEntitledPersonDeath: (id: number, data: RecordEntitledPersonDeathRequest) =>
         api.post<ApiResponse<boolean>>(`/entitled-persons/${id}/death`, recordEntitledPersonDeathForm(data), entitledPersonMultipart).then(r => r.data),
+=======
+                params: { fileId },
+            }
+        ).then(r => r.data),
+
+    stopEntitledPerson: (id: number, data: { stopCode: string; stopDate: string }) =>
+        api.put<ApiResponse<boolean>>(`/entitled-persons/${id}/stop`, data).then(r => r.data),
+
+    reactivateEntitledPerson: (id: number, data: { reactivationCode: string }) =>
+        api.put<ApiResponse<boolean>>(`/entitled-persons/${id}/reactivate`, data).then(r => r.data),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     deleteEntitledPerson: (id: number) =>
         api.delete<ApiResponse<boolean>>(`/entitled-persons/${id}`).then(r => r.data),
@@ -408,9 +442,12 @@ export const retirementApi = {
             params: { deathDate },
         }).then(r => r.data),
 
+<<<<<<< HEAD
     correctLifeStatus: (fileId: number, data: { reason: string; healthStatusID: number }) =>
         api.post<ApiResponse<boolean>>(`/retirement-files/${fileId}/correct-life-status`, data).then(r => r.data),
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     getSettlements: (retireeId: number) =>
         api.get<ApiResponse<SettlementItemDto[]>>(`/settlements/by-retiree/${retireeId}`).then(r => r.data.data),
 
@@ -434,6 +471,7 @@ export const retirementApi = {
             params: { reason }
         }).then(r => r.data),
 
+<<<<<<< HEAD
     reinstateEntitlement: (fileId: number) =>
         api.post<ApiResponse<boolean>>("/retirement-files/" + fileId + "/reinstate-entitlement").then(r => r.data),
 
@@ -449,6 +487,11 @@ export const retirementApi = {
             reviewRequested: boolean;
         }>>(`/retirement-files/${fileId}/refresh-after-upload`, { documentIds }).then(r => r.data),
 
+=======
+    requestReview: (fileId: number) =>
+        api.post<ApiResponse<boolean>>(`/retirement-files/${fileId}/request-review`).then(r => r.data),
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     approveReviewItem: (itemId: number, notes?: string) =>
         api.post<ApiResponse<boolean>>(`/retirement-files/review-items/${itemId}/approve`, null, {
             params: { notes }

@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import type { PagedResult } from "@/types/api";
 
 import api from "./axios";
+=======
+import api from "./axios";
+import type { PagedResult } from "@/types/api";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export interface RetireeListItem {
     retireeID: number;
@@ -26,7 +31,10 @@ export interface RetireeFilters {
     rankId?: number;
     gender?: number;
     governorate?: string;
+<<<<<<< HEAD
     isProcessed?: boolean;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 export const retireeApi = {

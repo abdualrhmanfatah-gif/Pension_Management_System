@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 ﻿import type { ColumnDef } from "@tanstack/react-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
+=======
+import { useVirtualizer } from "@tanstack/react-virtual";
+import type { ColumnDef } from "@tanstack/react-table";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     ArrowDown,
     ArrowUp,
@@ -25,6 +30,7 @@ import {
 import { Skeleton } from "./Skeleton";
 
 const ROW_VIRTUALIZATION_THRESHOLD = 200;
+<<<<<<< HEAD
 const ESTIMATED_ROW_HEIGHT = 48;
 const MOBILE_CARD_ESTIMATED_HEIGHT = 90;
 const tableNumberFormatter = new Intl.NumberFormat("ar-YE");
@@ -38,6 +44,10 @@ function isNestedControl(event: React.MouseEvent<HTMLElement>): boolean {
     );
     return control !== null && control !== event.currentTarget;
 }
+=======
+const ESTIMATED_ROW_HEIGHT = 56;
+const MOBILE_CARD_ESTIMATED_HEIGHT = 90;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Types ─────────────────────────────────────────────
 
@@ -80,8 +90,11 @@ export interface DataTableProps<T> {
     focusedRowIndex?: number;
     className?: string;
     stickyHeader?: boolean;
+<<<<<<< HEAD
     /** Keep one identifying column visible at the logical start while scrolling. */
     stickyColumnKey?: string;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     title?: React.ReactNode;
     drawerTitle?: (row: T) => string;
     drawerDescription?: (row: T) => string;
@@ -90,8 +103,11 @@ export interface DataTableProps<T> {
     rowClassName?: (row: T) => string | undefined;
     dir?: "rtl" | "ltr";
     maxHeight?: string;
+<<<<<<< HEAD
     /** Use page scrolling for short, paginated mobile lists. */
     mobileScrollMode?: "contained" | "page";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 // ─── Mobile Card View (virtualized to prevent OOM) ──────
@@ -103,11 +119,17 @@ interface MobileCardViewProps<T> {
     actionsColumn?: CustomColumnDef<T>;
     renderCell: (row: T, i: number, col: CustomColumnDef<T>) => React.ReactNode;
     renderMobileCard?: (row: T, index: number) => React.ReactNode;
+<<<<<<< HEAD
     rowClassName?: (row: T) => string | undefined;
     onRowClick: (row: T) => void;
     hasRowInteraction: boolean;
     maxHeight?: string;
     scrollMode: "contained" | "page";
+=======
+    onRowClick: (row: T) => void;
+    hasRowInteraction: boolean;
+    maxHeight?: string;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 function MobileCardView<T>({
@@ -117,6 +139,7 @@ function MobileCardView<T>({
     actionsColumn,
     renderCell,
     renderMobileCard,
+<<<<<<< HEAD
     rowClassName,
     onRowClick,
     hasRowInteraction,
@@ -125,12 +148,20 @@ function MobileCardView<T>({
 }: MobileCardViewProps<T>) {
     const scrollContainerRef = React.useRef<HTMLDivElement>(null);
     const isPageScroll = scrollMode === "page";
+=======
+    onRowClick,
+    hasRowInteraction,
+    maxHeight,
+}: MobileCardViewProps<T>) {
+    const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     const mobileVirtualizer = useVirtualizer({
         count: data.length,
         getScrollElement: () => scrollContainerRef.current,
         estimateSize: () => MOBILE_CARD_ESTIMATED_HEIGHT,
         overscan: 5,
+<<<<<<< HEAD
         gap: 8,
         enabled: !isPageScroll,
     });
@@ -138,11 +169,18 @@ function MobileCardView<T>({
     const virtualItems = isPageScroll
         ? data.map((_, index) => ({ index, start: 0 }))
         : mobileVirtualizer.getVirtualItems();
+=======
+        gap: 2,
+    });
+
+    const virtualItems = mobileVirtualizer.getVirtualItems();
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const totalSize = mobileVirtualizer.getTotalSize();
 
     return (
         <div
             ref={scrollContainerRef}
+<<<<<<< HEAD
             className={cn(isPageScroll ? "py-1" : "overflow-y-auto p-1")}
             style={isPageScroll ? undefined : { maxHeight: maxHeight ?? "calc(100dvh - 260px)" }}
         >
@@ -150,6 +188,12 @@ function MobileCardView<T>({
                 className={isPageScroll ? "space-y-2" : "relative"}
                 style={isPageScroll ? undefined : { height: `${totalSize}px` }}
             >
+=======
+            className="p-0 md:p-3 overflow-y-auto"
+            style={{ maxHeight: maxHeight ?? 'calc(100dvh - 260px)' }}
+        >
+            <div style={{ height: `${totalSize}px`, position: 'relative' }}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 {virtualItems.map((virtualRow) => {
                     const i = virtualRow.index;
                     const row = data[i];
@@ -159,8 +203,13 @@ function MobileCardView<T>({
                         <div
                             key={key}
                             data-index={virtualRow.index}
+<<<<<<< HEAD
                             ref={isPageScroll ? undefined : mobileVirtualizer.measureElement}
                             style={isPageScroll ? undefined : {
+=======
+                            ref={mobileVirtualizer.measureElement}
+                            style={{
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 position: 'absolute',
                                 top: 0,
                                 left: 0,
@@ -168,6 +217,7 @@ function MobileCardView<T>({
                                 transform: `translateY(${virtualRow.start}px)`,
                             }}
                             className={cn(
+<<<<<<< HEAD
                                 "min-w-0 bg-card rounded-xl border border-border overflow-hidden",
                                 hasRowInteraction && "cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
                                 rowClassName?.(row)
@@ -179,6 +229,16 @@ function MobileCardView<T>({
                             tabIndex={hasRowInteraction ? 0 : undefined}
                             onKeyDown={(e) => {
                                 if (hasRowInteraction && e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {
+=======
+                                "bg-card rounded-xl border border-border/80 shadow-sm overflow-hidden",
+                                hasRowInteraction && "cursor-pointer active:scale-[0.99] transition-transform"
+                            )}
+                            onClick={() => onRowClick(row)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     e.preventDefault();
                                     onRowClick(row);
                                 }
@@ -191,9 +251,15 @@ function MobileCardView<T>({
                                     {dataColumns.map((col, idx) => (
                                         <div key={col.key} className={cn(
                                             "flex items-center gap-2 px-3 py-2",
+<<<<<<< HEAD
                                             idx < dataColumns.length - 1 && "border-b border-border"
                                         )}>
                                             <span className="text-caption font-bold text-muted-foreground shrink-0 min-w-[60px] text-end">
+=======
+                                            idx < dataColumns.length - 1 && "border-b border-border/60"
+                                        )}>
+                                            <span className="text-[10px] font-bold text-muted-foreground shrink-0 min-w-[60px] text-end">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                 {col.header}
                                             </span>
                                             <span className="text-xs flex-1 text-start font-medium break-words min-w-0">
@@ -202,7 +268,11 @@ function MobileCardView<T>({
                                         </div>
                                     ))}
                                     {actionsColumn && (
+<<<<<<< HEAD
                                         <div className="flex justify-center items-center gap-2 px-3 py-2 bg-muted/20 border-t border-border">
+=======
+                                        <div className="flex justify-center items-center gap-2 px-3 py-2 bg-muted/20 border-t border-border/60">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             {renderCell(row, i, actionsColumn)}
                                         </div>
                                     )}
@@ -233,7 +303,10 @@ function DataTable<T>({
     focusedRowIndex,
     className,
     stickyHeader = true,
+<<<<<<< HEAD
     stickyColumnKey,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     title,
     drawerTitle,
     drawerDescription,
@@ -242,7 +315,10 @@ function DataTable<T>({
     rowClassName,
     dir = "rtl",
     maxHeight,
+<<<<<<< HEAD
     mobileScrollMode = "contained",
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }: DataTableProps<T>) {
     const data = React.useMemo(() => {
         if (!unsafeData) return [];
@@ -269,7 +345,10 @@ function DataTable<T>({
         getScrollElement: () => scrollRef.current,
         estimateSize: () => ESTIMATED_ROW_HEIGHT,
         overscan: 10,
+<<<<<<< HEAD
         enabled: shouldVirtualize,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     });
 
     // Scroll to focused row when it changes
@@ -344,6 +423,7 @@ function DataTable<T>({
                 <td
                     key={col.key}
                     className={cn(
+<<<<<<< HEAD
                         "border-b border-border px-3 py-2 text-start align-middle text-sm font-medium text-table-foreground whitespace-nowrap transition-colors motion-reduce:transition-none",
                         i === data.length - 1 && "border-b-0",
                         col.className,
@@ -351,11 +431,20 @@ function DataTable<T>({
                         col.key === stickyColumnKey && focusedRowIndex === i && "bg-muted"
                     )}
                     style={{ width: col.size, minWidth: col.minSize, maxWidth: col.maxSize }}
+=======
+                        "px-3 sm:px-4 py-3.5 text-start align-middle text-sm font-medium text-table-foreground whitespace-normal sm:whitespace-nowrap transition-colors duration-300",
+                        col.className
+                    )}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 >
                     {renderCell(row, i, col)}
                 </td>
             )),
+<<<<<<< HEAD
         [columns, data.length, focusedRowIndex, renderCell, stickyColumnKey]
+=======
+        [columns, renderCell]
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     );
 
     const renderTr = React.useCallback(
@@ -368,6 +457,7 @@ function DataTable<T>({
                     key={key}
                     data-row-index={i}
                     className={cn(
+<<<<<<< HEAD
                         "group/table-row hover:bg-muted transition-colors motion-reduce:transition-none",
                         isClickable && "cursor-pointer",
                         focusedRowIndex === i && "bg-muted ring-1 ring-inset ring-primary",
@@ -381,6 +471,19 @@ function DataTable<T>({
                     tabIndex={isClickable ? 0 : undefined}
                     onKeyDown={(e) => {
                         if (isClickable && e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {
+=======
+                        "hover:bg-primary/5 hover:scale-[1.001] transition-all duration-300 border-b border-border/40 last:border-0",
+                        isClickable && "cursor-pointer",
+                        focusedRowIndex === i && "bg-primary/10 ring-1 ring-primary/30",
+                        rowClassName?.(row),
+                        extraClassName
+                    )}
+                    onClick={() => handleRowClick(row)}
+                    role={isClickable ? "button" : undefined}
+                    tabIndex={isClickable ? 0 : undefined}
+                    onKeyDown={(e) => {
+                        if (isClickable && (e.key === "Enter" || e.key === " ")) {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             e.preventDefault();
                             handleRowClick(row);
                         }
@@ -408,6 +511,7 @@ function DataTable<T>({
         pagination &&
         pagination.cursor !== undefined &&
         pagination.cursor !== null;
+<<<<<<< HEAD
     const PreviousIcon = dir === "rtl" ? ChevronRight : ChevronLeft;
     const NextIcon = dir === "rtl" ? ChevronLeft : ChevronRight;
     const FirstIcon = dir === "rtl" ? ChevronsRight : ChevronsLeft;
@@ -422,10 +526,19 @@ function DataTable<T>({
             {title && (
                 <div className="flex items-center justify-between border-b border-border px-3 py-3">
                     <h4 className="text-sm font-black text-primary tracking-wide">
+=======
+
+    return (
+        <div className={cn("space-y-4", className)} dir={dir}>
+            {title && (
+                <div className="flex items-center justify-between px-2">
+                    <h4 className="text-sm font-black text-primary/80 tracking-wide">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         {title}
                     </h4>
                 </div>
             )}
+<<<<<<< HEAD
             <div className="min-w-0">
                 <div
                     ref={scrollRef}
@@ -438,12 +551,29 @@ function DataTable<T>({
                     <table className="w-full min-w-full border-separate border-spacing-0 text-sm">
                         {/* ─── Header ────────────────────────────── */}
                         <thead className="bg-muted">
+=======
+            <div className="rounded-2xl border border-border/70 overflow-hidden bg-card transition-all duration-300">
+                <div
+                    ref={scrollRef}
+                    className="overflow-y-auto overflow-x-auto hidden sm:block"
+                    style={{ maxHeight: maxHeight ?? "calc(100dvh - 260px)" }}
+                >
+                    <table className="w-full text-sm min-w-full sm:min-w-[680px] border-collapse">
+                        {/* ─── Header ────────────────────────────── */}
+                        <thead
+                            className={cn(
+                                "bg-muted border-b border-border/80",
+                                stickyHeader && "sticky top-0 z-10"
+                            )}
+                        >
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <tr>
                                 {columns.map((col) => (
                                     <th
                                         key={col.key}
                                         scope="col"
                                         className={cn(
+<<<<<<< HEAD
                                             "border-b border-border bg-muted px-3 py-2.5 text-start align-middle text-sm font-semibold text-table-foreground whitespace-nowrap",
                                             col.className,
                                             col.sortable && onSort && "p-0",
@@ -474,6 +604,29 @@ function DataTable<T>({
                                                 {col.header}
                                                 <span
                                                     className="text-muted-foreground"
+=======
+                                            "px-3 sm:px-4 py-3.5 text-start font-bold text-table-foreground whitespace-normal sm:whitespace-nowrap bg-muted border-b border-border/60 transition-colors duration-200",
+                                            col.sortable &&
+                                                "cursor-pointer select-none hover:text-primary hover:bg-muted/40",
+                                            col.className
+                                        )}
+                                        onClick={() => handleSort(col)}
+                                        aria-sort={
+                                            sortColumn === col.key
+                                                ? sortDirection === "asc"
+                                                    ? "ascending"
+                                                    : sortDirection === "desc"
+                                                        ? "descending"
+                                                        : "none"
+                                                : undefined
+                                        }
+                                    >
+                                        <span className="inline-flex items-center gap-2 text-xs sm:text-[13px] font-extrabold tracking-wide">
+                                            {col.header}
+                                            {col.sortable && (
+                                                <span
+                                                    className="text-muted-foreground/40"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                     aria-hidden="true"
                                                 >
                                                     {sortColumn === col.key &&
@@ -486,10 +639,15 @@ function DataTable<T>({
                                                         <ArrowUpDown className="h-4 w-4" />
                                                     )}
                                                 </span>
+<<<<<<< HEAD
                                             </button>
                                         ) : (
                                             <span className="text-sm font-semibold">{col.header}</span>
                                         )}
+=======
+                                            )}
+                                        </span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     </th>
                                 ))}
                             </tr>
@@ -497,7 +655,11 @@ function DataTable<T>({
 
                         {/* ─── Body ──────────────────────────────── */}
                         {shouldVirtualize && !loading ? (
+<<<<<<< HEAD
                             <tbody className="relative">
+=======
+                            <tbody className="divide-y divide-border/40 relative">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 {virtualItems.length > 0 &&
                                     virtualItems[0].start > 0 && (
                                         <tr aria-hidden="true">
@@ -525,6 +687,7 @@ function DataTable<T>({
                                             data-row-index={virtualRow.index}
                                             ref={rowVirtualizer.measureElement}
                                             className={cn(
+<<<<<<< HEAD
                                                 "group/table-row hover:bg-muted transition-colors motion-reduce:transition-none",
                                                 isClickable && "cursor-pointer",
                                                 focusedRowIndex === virtualRow.index &&
@@ -534,12 +697,23 @@ function DataTable<T>({
                                             onClick={(e) => {
                                                 if (!isNestedControl(e)) handleRowClick(row);
                                             }}
+=======
+                                                "hover:bg-primary/5 transition-all duration-300 border-b border-border/40",
+                                                isClickable && "cursor-pointer",
+                                                focusedRowIndex === virtualRow.index &&
+                                                    "bg-primary/10 ring-1 ring-primary/30"
+                                            )}
+                                            onClick={() => handleRowClick(row)}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             role={isClickable ? "button" : undefined}
                                             tabIndex={isClickable ? 0 : undefined}
                                             onKeyDown={(e) => {
                                                 if (
                                                     isClickable &&
+<<<<<<< HEAD
                                                     e.target === e.currentTarget &&
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                     (e.key === "Enter" || e.key === " ")
                                                 ) {
                                                     e.preventDefault();
@@ -566,13 +740,21 @@ function DataTable<T>({
                                     )}
                             </tbody>
                         ) : (
+<<<<<<< HEAD
                             <tbody>
+=======
+                            <tbody className="divide-y divide-border/40">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 {/* Loading state */}
                                 {loading &&
                                     Array.from({ length: 5 }).map((_, i) => (
                                         <tr key={`skeleton-${i}`} aria-hidden="true">
                                             {columns.map((col) => (
+<<<<<<< HEAD
                                                 <td key={col.key} className="border-b border-border px-3 py-2" style={{ width: col.size, minWidth: col.minSize, maxWidth: col.maxSize }}>
+=======
+                                                <td key={col.key} className="px-4 py-3.5">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                     <Skeleton className="h-4 w-full max-w-[200px]" />
                                                 </td>
                                             ))}
@@ -593,7 +775,11 @@ function DataTable<T>({
                                             >
                                                 {emptyIcon || (
                                                     <Inbox
+<<<<<<< HEAD
                                                         className="h-12 w-12 opacity-100 text-primary"
+=======
+                                                        className="h-12 w-12 opacity-30 text-primary/40"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                         aria-hidden="true"
                                                     />
                                                 )}
@@ -625,11 +811,17 @@ function DataTable<T>({
                             actionsColumn={actionsColumn}
                             renderCell={renderCell}
                             renderMobileCard={renderMobileCard}
+<<<<<<< HEAD
                             rowClassName={rowClassName}
                             onRowClick={handleRowClick}
                             hasRowInteraction={!!(onRowClick || renderDrawerContent)}
                             maxHeight={maxHeight}
                             scrollMode={mobileScrollMode}
+=======
+                            onRowClick={handleRowClick}
+                            hasRowInteraction={!!(onRowClick || renderDrawerContent)}
+                            maxHeight={maxHeight}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         />
                     </div>
                 )}
@@ -644,7 +836,11 @@ function DataTable<T>({
                         >
                             {emptyIcon || (
                                 <Inbox
+<<<<<<< HEAD
                                     className="h-12 w-12 opacity-100 text-primary"
+=======
+                                    className="h-12 w-12 opacity-30 text-primary/40"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     aria-hidden="true"
                                 />
                             )}
@@ -654,6 +850,7 @@ function DataTable<T>({
                 )}
 
                 {/* ─── Pagination ───────────────────────────── */}
+<<<<<<< HEAD
                 {pagination && (totalPages > 1 || pagination.pageSizeOptions || isCursorMode) && (
                     <div className="flex flex-col items-stretch justify-between gap-3 border-t border-border bg-card px-3 py-3 sm:flex-row sm:flex-wrap sm:items-center">
                         <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-center sm:justify-start sm:text-start">
@@ -686,17 +883,57 @@ function DataTable<T>({
                             {pagination.pageSizeOptions && pagination.onPageSizeChange && (
                                 <div className="flex items-center gap-1.5">
                                     <span className="text-xs text-muted-foreground">حجم الصفحة</span>
+=======
+                {pagination && (totalPages > 1 || pagination.pageSizeOptions) && (
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-2 px-3 sm:px-4 py-2 bg-muted/10 border-t border-border/60">
+                        <div className="flex items-center gap-2 order-2 sm:order-1">
+                            <p className="text-[10px] text-muted-foreground font-medium whitespace-nowrap sm:whitespace-normal break-words">
+                                عرض{" "}
+                                <span className="font-semibold text-foreground">
+                                    {pagination.total > 0
+                                        ? (
+                                            (pagination.page - 1) * pagination.pageSize +
+                                            1
+                                        ).toLocaleString()
+                                        : 0}
+                                </span>
+                                {" - "}
+                                <span className="font-semibold text-foreground">
+                                    {Math.min(
+                                        pagination.page * pagination.pageSize,
+                                        pagination.total
+                                    ).toLocaleString()}
+                                </span>
+                                {" من "}
+                                <span className="font-semibold text-foreground">
+                                    {pagination.total.toLocaleString()}
+                                </span>
+                                {" سجل"}
+                            </p>
+
+                            {pagination.pageSizeOptions && pagination.onPageSizeChange && (
+                                <div className="flex items-center gap-1.5">
+                                    <span className="text-[10px] text-muted-foreground">عرض</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     <select
                                         value={pagination.pageSize}
                                         onChange={(e) =>
                                             pagination.onPageSizeChange?.(Number(e.target.value))
                                         }
+<<<<<<< HEAD
                                         className="h-11 min-w-16 rounded-md border border-border bg-background px-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring [@media(pointer:fine)]:h-9"
+=======
+                                        className="h-6 text-[10px] rounded-md border border-border/60 bg-background px-1.5 py-0.5 focus:outline-none focus:ring-2 focus:ring-primary/30"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                         aria-label="عدد السجلات في الصفحة"
                                     >
                                         {pagination.pageSizeOptions.map((size) => (
                                             <option key={size} value={size}>
+<<<<<<< HEAD
                                                 {tableNumberFormatter.format(size)}
+=======
+                                                {size}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             </option>
                                         ))}
                                     </select>
@@ -706,7 +943,11 @@ function DataTable<T>({
 
                         {/* Cursor mode: simplified Prev/Next */}
                         {isCursorMode ? (
+<<<<<<< HEAD
                             <div className="flex items-center justify-center gap-2" role="navigation" aria-label="التنقل بين صفحات الجدول">
+=======
+                            <div className="flex items-center gap-1 order-1 sm:order-2">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 <Button
                                     variant="ghost"
                                     size="icon"
@@ -716,6 +957,7 @@ function DataTable<T>({
                                         pagination.page <= 1
                                     }
                                     onClick={() => pagination.onCursorPrev?.()}
+<<<<<<< HEAD
                                     className={paginationButtonClass}
                                     title="السابق"
                                     aria-label="الصفحة السابقة"
@@ -728,6 +970,20 @@ function DataTable<T>({
                                     aria-live="polite"
                                 >
                                     الصفحة {tableNumberFormatter.format(pagination.page)}
+=======
+                                    className="h-7 w-7 text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-300"
+                                    title="السابق"
+                                    aria-label="الصفحة السابقة"
+                                >
+                                    <ChevronRight className="h-4 w-4" aria-hidden="true" />
+                                </Button>
+
+                                <span
+                                    className="text-[10px] text-muted-foreground font-medium mx-1"
+                                    aria-live="polite"
+                                >
+                                    الصفحة {pagination.page}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 </span>
 
                                 <Button
@@ -735,16 +991,28 @@ function DataTable<T>({
                                     size="icon"
                                     disabled={!pagination.hasMore || !pagination.onCursorNext}
                                     onClick={() => pagination.onCursorNext?.()}
+<<<<<<< HEAD
                                     className={paginationButtonClass}
                                     title="التالي"
                                     aria-label="الصفحة التالية"
                                 >
                                     <NextIcon className="h-4 w-4" aria-hidden="true" />
+=======
+                                    className="h-7 w-7 text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-300"
+                                    title="التالي"
+                                    aria-label="الصفحة التالية"
+                                >
+                                    <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 </Button>
                             </div>
                         ) : (
                             <div
+<<<<<<< HEAD
                                 className="flex items-center justify-center gap-1"
+=======
+                                className="flex items-center gap-1 order-1 sm:order-2"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 role="navigation"
                                 aria-label="التنقل بين الصفحات"
                             >
@@ -754,11 +1022,19 @@ function DataTable<T>({
                                     size="icon"
                                     disabled={pagination.page <= 1}
                                     onClick={() => pagination.onPageChange(1)}
+<<<<<<< HEAD
                                     className={paginationButtonClass}
                                     title="الصفحة الأولى"
                                     aria-label="الصفحة الأولى"
                                 >
                                     <FirstIcon className="h-4 w-4" aria-hidden="true" />
+=======
+                                    className="min-h-[28px] min-w-[28px] text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-300"
+                                    title="الصفحة الأولى"
+                                    aria-label="الصفحة الأولى"
+                                >
+                                    <ChevronsRight className="h-4 w-4" aria-hidden="true" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 </Button>
 
                                 {/* Previous */}
@@ -767,6 +1043,7 @@ function DataTable<T>({
                                     size="icon"
                                     disabled={pagination.page <= 1}
                                     onClick={() => pagination.onPageChange(pagination.page - 1)}
+<<<<<<< HEAD
                                     className={paginationButtonClass}
                                     title="الصفحة السابقة"
                                     aria-label="الصفحة السابقة"
@@ -776,6 +1053,17 @@ function DataTable<T>({
 
                                 {/* Page numbers */}
                                 <div className="hidden items-center gap-1 sm:flex">
+=======
+                                    className="min-h-[28px] min-w-[28px] text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-300"
+                                    title="الصفحة السابقة"
+                                    aria-label="الصفحة السابقة"
+                                >
+                                    <ChevronRight className="h-4 w-4" aria-hidden="true" />
+                                </Button>
+
+                                {/* Page numbers */}
+                                <div className="flex items-center gap-0.5 mx-1">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     {getPageNumbers().map((p) => (
                                         <Button
                                             key={p}
@@ -783,15 +1071,26 @@ function DataTable<T>({
                                             size="icon"
                                             onClick={() => pagination.onPageChange(p)}
                                             className={cn(
+<<<<<<< HEAD
                                                 paginationButtonClass,
                                                 p === pagination.page
                                                     ? "bg-primary text-primary-foreground"
                                                     : "text-foreground hover:text-primary"
+=======
+                                                "h-7 w-7 text-[10px] font-bold transition-all duration-300 rounded-lg",
+                                                p === pagination.page
+                                                    ? "bg-primary text-primary-foreground scale-105"
+                                                    : "text-muted-foreground hover:text-primary hover:bg-primary/5"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             )}
                                             aria-label={`الصفحة ${p}`}
                                             aria-current={p === pagination.page ? "page" : undefined}
                                         >
+<<<<<<< HEAD
                                             {tableNumberFormatter.format(p)}
+=======
+                                            {p}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                         </Button>
                                     ))}
                                 </div>
@@ -802,11 +1101,19 @@ function DataTable<T>({
                                     size="icon"
                                     disabled={pagination.page >= totalPages}
                                     onClick={() => pagination.onPageChange(pagination.page + 1)}
+<<<<<<< HEAD
                                     className={paginationButtonClass}
                                     title="الصفحة التالية"
                                     aria-label="الصفحة التالية"
                                 >
                                     <NextIcon className="h-4 w-4" aria-hidden="true" />
+=======
+                                    className="min-h-[28px] min-w-[28px] text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-300"
+                                    title="الصفحة التالية"
+                                    aria-label="الصفحة التالية"
+                                >
+                                    <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 </Button>
 
                                 {/* Last */}
@@ -815,11 +1122,19 @@ function DataTable<T>({
                                     size="icon"
                                     disabled={pagination.page >= totalPages}
                                     onClick={() => pagination.onPageChange(totalPages)}
+<<<<<<< HEAD
                                     className={paginationButtonClass}
                                     title="الصفحة الأخيرة"
                                     aria-label="الصفحة الأخيرة"
                                 >
                                     <LastIcon className="h-4 w-4" aria-hidden="true" />
+=======
+                                    className="min-h-[28px] min-w-[28px] text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-300"
+                                    title="الصفحة الأخيرة"
+                                    aria-label="الصفحة الأخيرة"
+                                >
+                                    <ChevronsLeft className="h-4 w-4" aria-hidden="true" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 </Button>
                             </div>
                         )}
@@ -854,4 +1169,8 @@ function DataTable<T>({
     );
 }
 
+<<<<<<< HEAD
 export { DataTable };
+=======
+export { DataTable };
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

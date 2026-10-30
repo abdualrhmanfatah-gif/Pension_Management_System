@@ -3,13 +3,22 @@ import { FileText, RefreshCcw, ShieldCheck } from "lucide-react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
+<<<<<<< HEAD
 import { retirementApi } from "@/api/retirement";
+=======
+import api from "@/api/axios";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     BaseFormDialog,
     FileField,
     FormField,
     FormSection,
+<<<<<<< HEAD
     NativeSelect,    NoteBox} from "@/components/ui";
+=======
+    NoteBox,
+    NativeSelect} from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation } from "@/hooks";
 
 // ─── Validation Schema ─────────────────────────────────
@@ -45,7 +54,18 @@ export function ReactivateEntitledPersonDialog({ open, onOpenChange, personId, t
     const reactivationCode = useWatch({ control, name: "reactivationCode" });
 
     const mutation = useApiMutation(async (values: ReactivateFormValues) => {
+<<<<<<< HEAD
         return retirementApi.reactivateEntitledPerson(personId, values);
+=======
+        const formData = new FormData();
+        formData.append("reactivationCode", values.reactivationCode);
+        if (values.document) formData.append("document", values.document);
+        if (values.civilServiceProof) formData.append("civilServiceProof", values.civilServiceProof);
+
+        return api.put(`/entitled-persons/${personId}/reactivate`, formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     }, {
         successMessage: "تم إعادة تفعيل الصرف بنجاح",
         invalidateKeys: [["entitled-persons", fileId], ["retirement-file"]],

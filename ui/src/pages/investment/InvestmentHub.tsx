@@ -125,7 +125,11 @@ export function InvestmentHub() {
                                     className="flex items-center justify-between p-4 hover:bg-primary/[0.02] transition-colors group flex-wrap gap-2"
                                 >
                                     <div className="flex items-center gap-4">
+<<<<<<< HEAD
                                         <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all  border border-primary">
+=======
+                                        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all  border border-primary/5">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             <Briefcase className="w-5 h-5" />
                                         </div>
                                         <div className="text-start">
@@ -156,9 +160,15 @@ export function InvestmentHub() {
                             <div className="py-12 text-center text-muted-foreground text-sm italic">لا توجد طلبات معلقة حالياً</div>
                         ) : (
                             approvals.slice(0, 6).map((app: ApprovalRequestDto) => (
+<<<<<<< HEAD
                                 <div key={app.approvalID} className="flex flex-col gap-2 p-4 rounded-xl border bg-muted/20 hover:border-primary transition-all text-start group">
                                     <div className="flex items-center justify-between">
                                         <Badge variant={BADGE_VARIANT.OUTLINE} className="text-[10px] sm:text-xs px-2 h-5 bg-background font-bold border-primary">
+=======
+                                <div key={app.approvalID} className="flex flex-col gap-2 p-4 rounded-xl border bg-muted/20 hover:border-primary/30 transition-all text-start group">
+                                    <div className="flex items-center justify-between">
+                                        <Badge variant={BADGE_VARIANT.OUTLINE} className="text-[10px] sm:text-xs px-2 h-5 bg-background font-bold border-primary/10">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             {app.entityType}
                                         </Badge>
                                         <Badge 
@@ -173,7 +183,11 @@ export function InvestmentHub() {
                                         </Badge>
                                     </div>
                                     <p className="text-xs font-black text-foreground group-hover:text-primary transition-colors">طلب اعتماد #{app.entityID}</p>
+<<<<<<< HEAD
                                     <div className="flex items-center justify-between text-[10px] sm:text-xs text-muted-foreground font-medium border-t border-border pt-2 mt-1">
+=======
+                                    <div className="flex items-center justify-between text-[10px] sm:text-xs text-muted-foreground font-medium border-t border-border/50 pt-2 mt-1">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                         <span>بواسطة: {app.requestedByUserName}</span>
                                         <span className="font-mono">{formatDate(app.createdAt)}</span>
                                     </div>

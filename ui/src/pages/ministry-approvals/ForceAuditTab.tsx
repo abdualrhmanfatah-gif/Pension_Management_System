@@ -1,6 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { ArrowLeftRight, Clock, Info, Plus, Shield, Trash2, User } from "lucide-react";
 import { useEffect } from "react";
+=======
+import { useEffect } from "react";
+import { ArrowLeftRight, Clock, Info, Plus, Shield, Trash2, User } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { toast } from "sonner";
 
 import { type ForceAuditLogDto, ministryApi } from "@/api/ministry";
@@ -31,7 +36,11 @@ function StatusTransition({ oldStatus, newStatus }: { oldStatus?: string; newSta
     return (
         <span className="text-xs text-muted-foreground">
             <span className="text-amber-600 font-medium">{oldStatus || "—"}</span>
+<<<<<<< HEAD
             <span className="mx-1.5 text-muted-foreground">→</span>
+=======
+            <span className="mx-1.5 text-muted-foreground/50">→</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             <span className="text-emerald-600 font-medium">{newStatus || "—"}</span>
         </span>
     );

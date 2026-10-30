@@ -31,6 +31,7 @@ public class PermissionHandler : AuthorizationHandler<PermissionRequirement>
             return; // لم يتم العثور على المستخدم
         }
 
+<<<<<<< HEAD
         // Share the HTTP request's service scope with the data services.
         var http = context.Resource as Microsoft.AspNetCore.Http.HttpContext;
         using var fallbackScope = http is null ? _serviceProvider.CreateScope() : null;
@@ -43,6 +44,29 @@ public class PermissionHandler : AuthorizationHandler<PermissionRequirement>
 
         _logger.LogDebug("PermissionHandler: userId={UserId}, permission='{Permission}', result={Result}",
             userId, requirement.Permission, hasPermission);
+=======
+        // استخدام نطاق جديد لحل خدمة IScopedPermissionResolver (لأن Handler يتم تسجيله كـ Singleton)
+        using var scope = _serviceProvider.CreateScope();
+        var permissionResolver = scope.ServiceProvider.GetRequiredService<IScopedPermissionResolver>();
+
+        // التحقق المباشر من قاعدة البيانات مع مراعاة نطاق الفرع
+        var branchClaim = context.User.FindFirst("BranchId")?.Value;
+        bool hasPermission;
+
+        if (int.TryParse(branchClaim, out int branchId) && branchId > 0)
+        {
+            // مستخدم مقيد بفرع: التحقق من الصلاحية ضمن نطاق فرعه
+            hasPermission = await permissionResolver.HasPermissionInBranchAsync(userId, requirement.Permission, branchId);
+        }
+        else
+        {
+            // مستخدم مركزي/الإدارة العامة: التحقق من الصلاحية العامة
+            hasPermission = await permissionResolver.HasPermissionAsync(userId, requirement.Permission);
+        }
+
+        _logger.LogDebug("PermissionHandler: userId={UserId}, branchId={BranchId}, permission='{Permission}', result={Result}",
+            userId, branchId, requirement.Permission, hasPermission);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
         if (hasPermission)
         {

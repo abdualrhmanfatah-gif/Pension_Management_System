@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -10,6 +11,19 @@ import {
 import { useEffect, useMemo, useState } from "react";
 
 import { accountsApi, fiscalYearsApi,reportsApi } from "@/api/accounting";
+=======
+import { useEffect, useMemo, useState } from "react";
+import {
+  Vault,
+  ArrowUpRight,
+  ArrowDownRight,
+  Landmark,
+  TrendingUp,
+  TrendingDown,
+} from "lucide-react";
+
+import { accountsApi, reportsApi, fiscalYearsApi } from "@/api/accounting";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
   Card,
   Heading,
@@ -24,7 +38,11 @@ import {
   Text,
 } from "@/components/ui";
 import { formatCurrency } from "@/lib/utils";
+<<<<<<< HEAD
 import type { AccountStatementResultDto,AccountTreeNode, FiscalYearSummaryDto } from "@/types/accounting";
+=======
+import type { AccountTreeNode, FiscalYearSummaryDto, AccountStatementResultDto } from "@/types/accounting";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function TreasuryPage() {
   const [fiscalYearId, setFiscalYearId] = useState<number | null>(null);
@@ -109,8 +127,13 @@ export function TreasuryPage() {
       <StickyHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
+<<<<<<< HEAD
             <div className="p-2 rounded-xl bg-success/10 ">
               <Vault className="h-6 w-6 text-success " />
+=======
+            <div className="p-2 rounded-xl bg-emerald-100 dark:bg-emerald-900/30">
+              <Vault className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             </div>
             <Heading level="h2">الخزينة</Heading>
           </div>
@@ -167,34 +190,58 @@ export function TreasuryPage() {
           </Card>
           <Card className="p-4">
             <div className="flex items-center gap-2 text-muted-foreground text-sm mb-1">
+<<<<<<< HEAD
               <ArrowDownRight className="h-4 w-4 text-success" />
               إجمالي المدين (الوارد)
             </div>
             <Text variant="body" className="font-bold text-success">
+=======
+              <ArrowDownRight className="h-4 w-4 text-green-600" />
+              إجمالي المدين (الوارد)
+            </div>
+            <Text variant="body" className="font-bold text-green-600">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               {formatCurrency(totalDebit)}
             </Text>
           </Card>
           <Card className="p-4">
             <div className="flex items-center gap-2 text-muted-foreground text-sm mb-1">
+<<<<<<< HEAD
               <ArrowUpRight className="h-4 w-4 text-danger" />
               إجمالي الدائن (الصادر)
             </div>
             <Text variant="body" className="font-bold text-danger">
+=======
+              <ArrowUpRight className="h-4 w-4 text-red-600" />
+              إجمالي الدائن (الصادر)
+            </div>
+            <Text variant="body" className="font-bold text-red-600">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               {formatCurrency(totalCredit)}
             </Text>
           </Card>
           <Card className="p-4">
             <div className="flex items-center gap-2 text-muted-foreground text-sm mb-1">
               {closingBalance >= 0 ? (
+<<<<<<< HEAD
                 <TrendingUp className="h-4 w-4 text-success" />
               ) : (
                 <TrendingDown className="h-4 w-4 text-danger" />
+=======
+                <TrendingUp className="h-4 w-4 text-emerald-600" />
+              ) : (
+                <TrendingDown className="h-4 w-4 text-red-600" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               )}
               الرصيد الختامي
             </div>
             <Text
               variant="body"
+<<<<<<< HEAD
               className={`font-bold ${closingBalance >= 0 ? "text-success" : "text-danger"}`}
+=======
+              className={`font-bold ${closingBalance >= 0 ? "text-emerald-600" : "text-red-600"}`}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             >
               {formatCurrency(closingBalance)}
             </Text>

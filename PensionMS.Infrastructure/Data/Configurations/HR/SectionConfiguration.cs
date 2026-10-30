@@ -30,7 +30,11 @@ public class SectionConfiguration : IEntityTypeConfiguration<Section>
             // ─── إدارة المعاشات  (Dept 1) ───
             new Section { SectionID = 1, DepartmentID = 1, Code = "PEN_RESEARCH", Name = "قسم البحث الاجتماعي والفحص", IsActive = true, CreatedAt = seedDate },
             new Section { SectionID = 2, DepartmentID = 1, Code = "PEN_SETTLE", Name = "قسم التسوية والربط", IsActive = true, CreatedAt = seedDate },
+<<<<<<< HEAD
             new Section { SectionID = 3, DepartmentID = 1, Code = "PEN_ENTITLE", Name = "قسم الاستحقاق", IsActive = true, CreatedAt = seedDate },
+=======
+            new Section { SectionID = 3, DepartmentID = 1, Code = "PEN_ENTITLE", Name = "قسم الاستحقاقات", IsActive = true, CreatedAt = seedDate },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             new Section { SectionID = 4, DepartmentID = 1, Code = "PEN_RECORDS", Name = "قسم السجلات والأحصاء", IsActive = true, CreatedAt = seedDate },
             new Section { SectionID = 5, DepartmentID = 1, Code = "PEN_IT", Name = "قسم الحاسب الآلي", IsActive = true, CreatedAt = seedDate },
             new Section { SectionID = 6, DepartmentID = 1, Code = "PEN_DOCS", Name = "قسم التوثيق", IsActive = true, CreatedAt = seedDate },

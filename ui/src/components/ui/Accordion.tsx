@@ -12,7 +12,11 @@ const AccordionItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <AccordionPrimitive.Item
         ref={ref}
+<<<<<<< HEAD
         className={cn("border-b border-muted", className)}
+=======
+        className={cn("border-b border-muted/50", className)}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         {...props}
     />
 ));
@@ -20,16 +24,25 @@ AccordionItem.displayName = "AccordionItem";
 
 const AccordionTrigger = React.forwardRef<
     React.ComponentRef<typeof AccordionPrimitive.Trigger>,
+<<<<<<< HEAD
     React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger> & {
         density?: "default" | "compact";
     }
 >(({ className, children, density = "default", ...props }, ref) => (
+=======
+    React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
+>(({ className, children, ...props }, ref) => (
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     <AccordionPrimitive.Header className="flex">
         <AccordionPrimitive.Trigger
             ref={ref}
             className={cn(
+<<<<<<< HEAD
                 "flex flex-1 items-center justify-between text-sm font-semibold transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
                 density === "compact" ? "min-h-11 py-2" : "py-4",
+=======
+                "flex flex-1 items-center justify-between py-4 text-sm font-semibold transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 "text-start",
                 className
             )}

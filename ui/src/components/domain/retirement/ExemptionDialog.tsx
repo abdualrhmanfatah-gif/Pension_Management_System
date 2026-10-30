@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileText,Gavel, ShieldCheck } from "lucide-react";
+<<<<<<< HEAD
 import { Controller,useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
@@ -9,13 +10,28 @@ import { DocumentChecklistField } from "@/components/domain/retirement/DocumentC
 import {
   BaseFormDialog,
   DateInput,
+=======
+import { useForm, useWatch, Controller } from "react-hook-form";
+import { z } from "zod";
+
+import {
+  BaseFormDialog,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   FileField,
   FormField,
   FormSection,
   Input,
+<<<<<<< HEAD
   NoteBox,
   Textarea,
 } from "@/components/ui";
+=======
+  DateInput,
+  NoteBox,
+  Textarea,
+} from "@/components/ui";
+import { DocumentChecklistField } from "@/components/domain/retirement/DocumentChecklistField";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import type { MissingDocOption } from "@/utils/missing-documents";
 
 // ─── Validation Schema ─────────────────────────────────

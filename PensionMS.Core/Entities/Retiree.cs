@@ -29,8 +29,13 @@ public class Retiree : ISoftDeletable
     public string? Governorate { get; set; }
     public string? LinkNumber { get; set; }
     public bool IsAlive { get; set; } = true;
+<<<<<<< HEAD
     public DateOnly? BirthDate { get; set; }
     public DateOnly? DeathDate { get; set; }
+=======
+    public DateTime? BirthDate { get; set; }
+    public DateTime? DeathDate { get; set; }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     public PendingReviewStatus PendingReviewStatus { get; set; } = PendingReviewStatus.None;
 

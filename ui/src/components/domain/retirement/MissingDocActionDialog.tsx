@@ -10,11 +10,18 @@ import { documentsApi } from "@/api/documents";
 import { 
   BaseFormDialog, 
   Button,
+<<<<<<< HEAD
   DateInput,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   FileField, 
   FormField, 
   FormSection,
   Input,
+<<<<<<< HEAD
+=======
+  DateInput,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   NoteBox,
   Textarea, 
 } from "@/components/ui";
@@ -169,7 +176,11 @@ export function MissingDocActionDialog({
                                         onClick={() => setValue("actionType", "pledge", { shouldDirty: true })}
                                     >
                                         <span className="font-bold">تعهد</span>
+<<<<<<< HEAD
                                         <span className="text-[10px] sm:text-xs opacity-100">التزام بإحضار الوثيقة لاحقاً</span>
+=======
+                                        <span className="text-[10px] sm:text-xs opacity-70">التزام بإحضار الوثيقة لاحقاً</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     </Button>
                                     <Button 
                                         type="button"
@@ -181,7 +192,11 @@ export function MissingDocActionDialog({
                                         onClick={() => setValue("actionType", "exemption", { shouldDirty: true })}
                                     >
                                         <span className="font-bold">إعفاء</span>
+<<<<<<< HEAD
                                         <span className="text-[10px] sm:text-xs opacity-100">إسقاط المطالبة بالوثيقة</span>
+=======
+                                        <span className="text-[10px] sm:text-xs opacity-70">إسقاط المطالبة بالوثيقة</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     </Button>
                                 </div>
                             )}

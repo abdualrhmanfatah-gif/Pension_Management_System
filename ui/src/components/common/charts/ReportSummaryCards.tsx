@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {
 AlertOctagon,
 AlertTriangle,     BarChart3, Building2,     Calculator, Calendar, CheckCircle, Clock, DollarSign,     FileText,     Folder, Link,
@@ -8,13 +9,29 @@ import { useMemo } from 'react';
 
 import type { SummaryCardConfig } from '@/api/reports';
 import { StatCard } from '@/components/ui/StatCard';
+=======
+import { useMemo } from 'react';
+import {
+    BarChart3, TrendingUp, TrendingDown, Minus,
+    FileText, Users, Clock, AlertTriangle, CheckCircle, XCircle,
+    Calculator, DollarSign, Percent, Calendar, MapPin,
+    Folder, Building2, Shield, Wrench, Link,
+    User, AlertOctagon
+} from 'lucide-react';
+
+import { StatCard } from '@/components/ui/StatCard';
+import type { SummaryCardConfig } from '@/api/reports';
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface ReportSummaryCardsProps {
     cards: SummaryCardConfig[];
     data: Record<string, any>[];
     summaryData?: Record<string, any>;
+<<<<<<< HEAD
     loading?: boolean;
     error?: boolean;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -34,7 +51,11 @@ function getNestedValue(obj: Record<string, any>, key: string): any {
     return key.split('.').reduce((acc, k) => acc?.[k], obj);
 }
 
+<<<<<<< HEAD
 export function ReportSummaryCards({ cards, data, summaryData, loading, error }: ReportSummaryCardsProps) {
+=======
+export function ReportSummaryCards({ cards, data, summaryData }: ReportSummaryCardsProps) {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const values = useMemo(() => {
         const result: Record<string, number> = {};
         const source = summaryData || {};
@@ -77,8 +98,12 @@ export function ReportSummaryCards({ cards, data, summaryData, loading, error }:
                     <StatCard
                         key={index}
                         title={card.title}
+<<<<<<< HEAD
                         value={error ? '—' : formatted}
                         loading={loading}
+=======
+                        value={formatted}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         icon={<Icon className="h-4 w-4" />}
                         description={card.description}
                         variant={variant}

@@ -5,9 +5,15 @@ import { toast } from "sonner";
 
 import type { PropertyUnitDto } from "@/api/investment";
 import { investmentApi } from "@/api/investment";
+<<<<<<< HEAD
 import { InvestmentDocsViewerDialog } from "@/components/domain/investment/InvestmentDocsViewerDialog";
 import { UnitDialog } from "@/components/domain/investment/UnitDialog";
 import { Badge, Button, CrudPageLayout, type CustomColumnDef, ErrorState, useConfirm } from "@/components/ui";
+=======
+import { Badge, Button, CrudPageLayout, type CustomColumnDef, ErrorState, useConfirm } from "@/components/ui";
+import { InvestmentDocsViewerDialog } from "@/components/domain/investment/InvestmentDocsViewerDialog";
+import { UnitDialog } from "@/components/domain/investment/UnitDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation, useCrudState } from "@/hooks";
 
 interface PropertyUnitsTabProps {
@@ -87,13 +93,21 @@ export function PropertyUnitsTab({ propertyId }: PropertyUnitsTabProps) {
             render: (row) => (
                 <div className="flex items-center gap-2">
                     <Button variant="ghost" size="icon" onClick={() => crud.openViewer(row)} title="الوثائق والمستندات">
+<<<<<<< HEAD
                         <FileText className="w-4 h-4 text-info" />
+=======
+                        <FileText className="w-4 h-4 text-blue-500" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     </Button>
                     <Button variant="ghost" size="icon" onClick={() => crud.openEdit(row)}>
                         <Edit className="w-4 h-4 text-muted-foreground" />
                     </Button>
                     <Button variant="ghost" size="icon" onClick={() => handleDelete(row)}>
+<<<<<<< HEAD
                         <Trash2 className="w-4 h-4 text-danger" />
+=======
+                        <Trash2 className="w-4 h-4 text-red-500" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     </Button>
                 </div>
             )

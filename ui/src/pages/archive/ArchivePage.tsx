@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { AlertTriangle, Archive, CheckCircle, Clock, Download, Eye, FileText, FileWarning, FileX, RotateCcw,Search } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -8,6 +9,19 @@ import { Badge, Button, Card, type CustomColumnDef, DataTable, DateInput, Headin
 import { formatDate, getDocumentUrl } from "@/lib/utils";
 import type { ArchiveDocument, ArchiveFilters, ArchiveStats, DocumentReviewFilters } from "@/types/archive";
 import { PENDING_REVIEW_STATUS } from "@/types/archive";
+=======
+import { Archive, CheckCircle, Clock, FileText, Search, AlertTriangle, Eye, Download, FileX, FileWarning, RotateCcw } from "lucide-react";
+import { useEffect, useState } from "react";
+
+
+import { archiveApi } from "@/api/archive";
+import { Badge, Button, Card, DataTable, DateInput, Input, NativeSelect, StatCard, type CustomColumnDef, Heading, PageLayout } from "@/components/ui";
+import { SearchDialog } from "@/components/common/SearchDialog";
+
+import { formatDate, getDocumentUrl } from "@/lib/utils";
+import { PENDING_REVIEW_STATUS } from "@/types/archive";
+import type { ArchiveDocument, ArchiveFilters, ArchiveStats, DocumentReviewFilters } from "@/types/archive";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function ArchivePage() {
     const [page, setPage] = useState(1);

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import {
+<<<<<<< HEAD
     BadgeCheck,
     FileSearch,
     FolderOpen,
@@ -8,13 +9,29 @@ import {
     Shield,
     UserCheck,
     Users,
+=======
+    Users,
+    FolderOpen,
+    PauseCircle,
+    Lock,
+    FileSearch,
+    UserCheck,
+    BadgeCheck,
+    Shield,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 } from "lucide-react";
 import { useMemo } from "react";
 
 import { pensionStatsApi } from "@/api/pension";
+<<<<<<< HEAD
 import { ReportBarChart,ReportPieChart } from "@/components/common/charts";
 import { ErrorState, PageLayout, StatCard } from "@/components/ui";
 import type { PensionStatistics } from "@/types/pension";
+=======
+import type { PensionStatistics } from "@/types/pension";
+import { ErrorState, PageLayout, StatCard } from "@/components/ui";
+import { ReportPieChart, ReportBarChart } from "@/components/common/charts";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function PensionStatisticsPage() {
     const { data: stats, isLoading, error } = useQuery<PensionStatistics>({

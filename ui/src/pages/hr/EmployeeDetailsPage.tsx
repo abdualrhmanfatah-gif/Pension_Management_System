@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { useNavigate,useParams } from "react-router-dom";
 import { toast } from "sonner";
 
+<<<<<<< HEAD
 import type { HrDocumentDto, ServiceHistoryEventDto } from "@/api/hr";
 import { hrApi } from "@/api/hr";
 import { AttendanceDialog } from "@/components/domain/hr/AttendanceDialog";
@@ -28,6 +29,11 @@ import { CreateEmployeeDialog } from "@/components/domain/hr/CreateEmployeeDialo
 import { HrUploadDocumentDialog } from "@/components/domain/hr/HrUploadDocumentDialog";
 import { ServiceHistoryDialog } from "@/components/domain/hr/ServiceHistoryDialog";
 import { type DocumentItem,DocumentViewerDialog } from "@/components/domain/retirement/DocumentViewerDialog";
+=======
+import { getDocumentUrl } from "@/lib/utils";
+import type { HrDocumentDto, ServiceHistoryEventDto } from "@/api/hr";
+import { hrApi } from "@/api/hr";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { DetailLayout } from "@/components/layout/DetailLayout";
 import {
   Badge,
@@ -37,20 +43,38 @@ import {
   type CustomColumnDef,
   DataTable,
   EditableImage,
+<<<<<<< HEAD
   ErrorState,
   Heading,
   InfoPair,
   PageLayout,
+=======
+  Heading,
+  InfoPair,
+  PageLayout,
+  ErrorState,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   Skeleton,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
   useConfirm} from "@/components/ui";
+<<<<<<< HEAD
 import { LEAVE_STATUS } from "@/constants";
 import { GENDER } from "@/constants";
 import { useApiMutation } from "@/hooks";
 import { getDocumentUrl } from "@/lib/utils";
+=======
+import { AttendanceDialog } from "@/components/domain/hr/AttendanceDialog";
+import { CreateEmployeeDialog } from "@/components/domain/hr/CreateEmployeeDialog";
+import { HrUploadDocumentDialog } from "@/components/domain/hr/HrUploadDocumentDialog";
+import { ServiceHistoryDialog } from "@/components/domain/hr/ServiceHistoryDialog";
+import { type DocumentItem,DocumentViewerDialog } from "@/components/domain/retirement/DocumentViewerDialog";
+import { LEAVE_STATUS } from "@/constants";
+import { GENDER } from "@/constants";
+import { useApiMutation } from "@/hooks";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { formatDate, getPhotoUrl } from "@/lib/utils";
 
 // ─── Helper for Image URLs ────────────────────────────
@@ -157,7 +181,11 @@ export function EmployeeDetailsPage() {
             <div className="space-y-3">
                 <InfoPair label="تاريخ الإضافة" value={formatDate(employee.createdAt)} layout="row" />
                 <InfoPair label="آخر تحديث" value={formatDate(employee.updatedAt) || "—"} layout="row" />
+<<<<<<< HEAD
                 <div className="flex justify-between items-center text-sm border-b border-muted pb-2 last:border-0 last:pb-0">
+=======
+                <div className="flex justify-between items-center text-sm border-b border-muted/50 pb-2 last:border-0 last:pb-0">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <span className="text-muted-foreground">حالة الخدمة</span>
                     <Badge variant={employee.isInService ? "success" : "warning"}>
                         {employee.isInService ? "في الخدمة" : "خارج الخدمة"}
@@ -402,7 +430,11 @@ function EmployeeHistoryTab({ employeeId }: { employeeId: number }) {
       ) : (
         <div className="space-y-4">
           {history.map((item: ServiceHistoryEventDto, idx: number) => (
+<<<<<<< HEAD
             <div key={idx} className="group flex flex-wrap gap-2 p-4 rounded-xl border border-border hover:bg-muted/30 transition-colors">
+=======
+            <div key={idx} className="group flex flex-wrap gap-2 p-4 rounded-xl border border-border/50 hover:bg-muted/30 transition-colors">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground shrink-0 mt-1">
                 <Clock className="w-5 h-5" />
               </div>
@@ -500,7 +532,11 @@ function EmployeeDocumentsTab({ employeeId }: { employeeId: number }) {
                           <Button variant="ghost" size="icon" className="min-h-[44px] min-w-[44px] text-blue-600" onClick={() => handleView(row)}>
                             <Eye className="h-4 w-4" />
                           </Button>
+<<<<<<< HEAD
                           <Button variant="ghost" size="icon" className="min-h-[44px] min-w-[44px] text-primary" onClick={() => window.open(getDocumentUrl(row.filePath) ?? "", '_blank')}>
+=======
+                          <Button variant="ghost" size="icon" className="min-h-[44px] min-w-[44px] text-primary" onClick={() => window.open(getDocumentUrl("/uploads/" + row.filePath) ?? "", '_blank')}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <Download className="h-4 w-4" />
                           </Button>
                           <Button variant="ghost" size="icon" className="min-h-[44px] min-w-[44px] text-destructive" onClick={() => handleDelete(row)}>

@@ -3,7 +3,11 @@ import { TrendingDown } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { toast } from "sonner";
 
+<<<<<<< HEAD
 import { type DepreciationScheduleDto,fixedAssetApi } from "@/api/fixedAssets";
+=======
+import { fixedAssetApi, type DepreciationScheduleDto } from "@/api/fixedAssets";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { Badge, CrudPageLayout, type CustomColumnDef, ErrorState } from "@/components/ui";
 import { formatCurrency } from "@/lib/utils";
 

@@ -16,6 +16,7 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
+<<<<<<< HEAD
 import { documentsApi } from "@/api/documents";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -29,6 +30,21 @@ import { getDeviceCapabilities } from "@/lib/device-capabilities";
 import { applySharpen, canvasToFile, type ImageSettings, renderSettingsImage, rotateCorners } from "@/lib/document-image";
 import { getDocumentUrl } from "@/lib/utils";
 
+=======
+
+import { documentsApi } from "@/api/documents";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/Dialog";
+import { CornerEditor } from "@/components/ui/CornerEditor";
+import { Slider } from "@/components/ui/Slider";
+import { CPUProcessor } from "@/lib/cpu-processor";
+import { getDeviceCapabilities, getOptimalProcessingSize, shouldUseWebGL } from "@/lib/device-capabilities";
+import { WebGLProcessor } from "@/lib/webgl-processor";
+import { getDocumentUrl } from "@/lib/utils";
+
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 interface DocumentData {
     documentID: number;
     documentTypeID: number;
@@ -40,6 +56,16 @@ interface DocumentData {
     createdAt: string;
 }
 
+<<<<<<< HEAD
+=======
+interface ImageSettings {
+    brightness: number;
+    contrast: number;
+    sharpness: number;
+    rotation: 0 | 90 | 180 | 270;
+}
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 const DEFAULT_SETTINGS: ImageSettings = {
     brightness: 100,
     contrast: 100,
@@ -48,8 +74,12 @@ const DEFAULT_SETTINGS: ImageSettings = {
 };
 
 const IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".tiff", ".tif"];
+<<<<<<< HEAD
 /** مهلة رفع الملف — مستقلة عن مهلة المعالجة */
 const UPLOAD_TIMEOUT_MS = 60000;
+=======
+const CROP_TIMEOUT_MS = 30000;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Canvas Pool ─────────────────────────────────────────
 const globalCanvasPool: HTMLCanvasElement[] = [];
@@ -75,6 +105,7 @@ function isImageDocument(doc: DocumentData | null): boolean {
 
 // ─── Helpers ─────────────────────────────────────────────
 
+<<<<<<< HEAD
 /**
  * تحميل عنصر صورة من blob URL.
  *
@@ -85,6 +116,12 @@ function isImageDocument(doc: DocumentData | null): boolean {
 function loadImageElement(src: string): Promise<HTMLImageElement> {
     return new Promise((resolve, reject) => {
         const img = new Image();
+=======
+function loadImage(src: string): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        if (src.startsWith("http")) img.crossOrigin = "anonymous";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         img.onload = () => resolve(img);
         img.onerror = () => reject(new Error("فشل تحميل الصورة"));
         img.src = src;
@@ -109,6 +146,7 @@ function rotateImage(
     return canvas;
 }
 
+<<<<<<< HEAD
 // ─── Component ───────────────────────────────────────────
 
 const deviceCapabilities = getDeviceCapabilities();
@@ -129,6 +167,86 @@ function renderExportCanvas(img: HTMLImageElement, settings: ImageSettings): HTM
     return canvas;
 }
 
+=======
+function rotateCorners(
+    corners: { x: number; y: number }[],
+    rotation: 0 | 90 | 180 | 270,
+    naturalW: number,
+    naturalH: number,
+): { x: number; y: number }[] {
+    switch (rotation) {
+        case 90:  return corners.map(c => ({ x: naturalH - c.y, y: c.x }));
+        case 180: return corners.map(c => ({ x: naturalW - c.x, y: naturalH - c.y }));
+        case 270: return corners.map(c => ({ x: c.y, y: naturalW - c.x }));
+        default:  return corners;
+    }
+}
+
+function canvasToFile(canvas: HTMLCanvasElement, originalName: string): Promise<File> {
+    return new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => {
+            if (!blob) {
+                reject(new Error("فشل تحويل Canvas"));
+                return;
+            }
+            // Strip GUID prefix added by LocalFileStorageService (e.g. "guid_original.jpg")
+            const cleaned = originalName.replace(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}_/i, "");
+            const baseName = cleaned.replace(/\.[^.]+$/, "");
+            const name = baseName.endsWith("_scanned") ? `${baseName}.jpg` : `${baseName}_scanned.jpg`;
+            resolve(new File([blob], name, { type: "image/jpeg" }));
+        }, "image/jpeg", 0.85);
+    });
+}
+
+// ─── Processor Manager ──────────────────────────────────
+
+let webglProcessor: WebGLProcessor | null = null;
+let cpuProcessor: CPUProcessor | null = null;
+let deviceCapabilities = getDeviceCapabilities();
+
+function getProcessors() {
+    if (!webglProcessor && shouldUseWebGL(deviceCapabilities)) {
+        webglProcessor = new WebGLProcessor({
+            maxTextureSize: deviceCapabilities.maxTextureSize,
+            enhanceAmount: 0.3,
+        });
+    }
+    if (!cpuProcessor) {
+        cpuProcessor = new CPUProcessor({
+            maxDimension: getOptimalProcessingSize(deviceCapabilities),
+            enhanceAmount: 0.3,
+        });
+    }
+    return { webglProcessor, cpuProcessor };
+}
+
+function processImage(
+    srcData: Uint8ClampedArray,
+    srcWidth: number,
+    srcHeight: number,
+    corners: { x: number; y: number }[],
+): { data: Uint8ClampedArray; width: number; height: number } {
+    const { webglProcessor, cpuProcessor } = getProcessors();
+
+    if (webglProcessor) {
+        try {
+            const result = webglProcessor.process(srcData, srcWidth, srcHeight, corners);
+            if (result) return result;
+        } catch (error) {
+            console.warn("WebGL processing failed, falling back to CPU:", error);
+        }
+    }
+
+    if (cpuProcessor) {
+        return cpuProcessor.process(srcData, srcWidth, srcHeight, corners);
+    }
+
+    throw new Error("No processor available");
+}
+
+// ─── Component ───────────────────────────────────────────
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 interface DocumentProcessDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
@@ -149,9 +267,12 @@ export function DocumentProcessDialog({
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const originalImageRef = useRef<HTMLImageElement | null>(null);
     const settingsRef = useRef<ImageSettings>(DEFAULT_SETTINGS);
+<<<<<<< HEAD
     // رقم العملية الجارية: انتهاء المهلة يجعل الفحص اللاحق يرفض نتائج العملية القديمة
     const operationRef = useRef(0);
     const abortRef = useRef<AbortController | null>(null);
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     const [settings, setSettings] = useState<ImageSettings>(DEFAULT_SETTINGS);
     const [history, setHistory] = useState<ImageSettings[]>([DEFAULT_SETTINGS]);
@@ -166,6 +287,7 @@ export function DocumentProcessDialog({
         settingsRef.current = settings;
     }, [settings]);
 
+<<<<<<< HEAD
     // إعادة تهيئة جلسة التحرير عند تغيير الوثيقة أو فتح النافذة لوثيقة أخرى
     useEffect(() => {
         setSettings(DEFAULT_SETTINGS);
@@ -185,12 +307,15 @@ export function DocumentProcessDialog({
         enabled: open,
     });
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const imageUrl = useMemo(() => {
         if (!docData?.filePath) return null;
         return getDocumentUrl(docData.filePath);
     }, [docData?.filePath]);
 
     useEffect(() => {
+<<<<<<< HEAD
         if (!imageBlobUrl || !open) return;
 
         let cancelled = false;
@@ -219,6 +344,30 @@ export function DocumentProcessDialog({
         if (originalImageRef.current) return;
         toast.error("تعذّر تحميل الصورة، تحقّق من الاتصال أو من صلاحية الجلسة");
     }, [open, docData?.filePath, blobLoading, imageBlobUrl]);
+=======
+        if (!imageUrl || !open) return;
+
+        let cancelled = false;
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => {
+            if (cancelled) return;
+            originalImageRef.current = img;
+            applySettings(settingsRef.current);
+        };
+        img.onerror = () => {
+            if (cancelled) return;
+            toast.error("فشل تحميل الصورة");
+        };
+        img.src = imageUrl;
+
+        return () => {
+            cancelled = true;
+            img.onload = null;
+            img.onerror = null;
+        };
+    }, [imageUrl, open]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     const applySettings = useCallback(
         (newSettings: ImageSettings) => {
@@ -234,6 +383,7 @@ export function DocumentProcessDialog({
                 return;
             }
 
+<<<<<<< HEAD
             const { previewDim } = getCropBudget(deviceCapabilities);
             const isVertical = newSettings.rotation === 90 || newSettings.rotation === 270;
             const baseW = isVertical ? img.height : img.width;
@@ -244,12 +394,73 @@ export function DocumentProcessDialog({
             canvas.height = Math.max(1, Math.round(baseH * scale));
 
             renderSettingsImage(ctx, img, newSettings, scale);
+=======
+            const isVertical = newSettings.rotation === 90 || newSettings.rotation === 270;
+            canvas.width = isVertical ? img.height : img.width;
+            canvas.height = isVertical ? img.width : img.height;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate((newSettings.rotation * Math.PI) / 180);
+            ctx.drawImage(img, -img.width / 2, -img.height / 2);
+            ctx.restore();
+
+            const brightness = newSettings.brightness / 100;
+            const contrast = newSettings.contrast / 100;
+            ctx.filter = `brightness(${brightness}) contrast(${contrast})`;
+            ctx.drawImage(canvas, 0, 0);
+            ctx.filter = "none";
+
+            if (newSettings.sharpness > 0) {
+                applySharpen(ctx, canvas.width, canvas.height, newSettings.sharpness / 100);
+            }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
             setIsProcessing(false);
         },
         []
     );
 
+<<<<<<< HEAD
+=======
+    const applySharpen = (
+        ctx: CanvasRenderingContext2D,
+        width: number,
+        height: number,
+        amount: number
+    ) => {
+        const imageData = ctx.getImageData(0, 0, width, height);
+        const data = imageData.data;
+        const original = new Uint8ClampedArray(data);
+
+        const kernel = [
+            0, -1, 0,
+            -1, 5, -1,
+            0, -1, 0,
+        ];
+
+        for (let y = 1; y < height - 1; y++) {
+            for (let x = 1; x < width - 1; x++) {
+                for (let c = 0; c < 3; c++) {
+                    let sum = 0;
+                    for (let ky = -1; ky <= 1; ky++) {
+                        for (let kx = -1; kx <= 1; kx++) {
+                            const idx = ((y + ky) * width + (x + kx)) * 4 + c;
+                            sum += original[idx] * kernel[(ky + 1) * 3 + (kx + 1)];
+                        }
+                    }
+                    const idx = (y * width + x) * 4 + c;
+                    data[idx] = Math.min(255, Math.max(0, original[idx] + (sum - original[idx]) * amount));
+                }
+            }
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+    };
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     useEffect(() => {
         if (!isCropMode) {
             applySettings(settings);
@@ -315,6 +526,7 @@ export function DocumentProcessDialog({
 
         setIsProcessing(true);
 
+<<<<<<< HEAD
         const opId = ++operationRef.current;
         const controller = new AbortController();
         abortRef.current = controller;
@@ -359,10 +571,59 @@ export function DocumentProcessDialog({
             }
 
             let finalData: Uint8ClampedArray<ArrayBuffer>;
+=======
+        let workCanvas: HTMLCanvasElement | null = null;
+        let srcCtxCanvas: HTMLCanvasElement | null = null;
+        let outCanvas: HTMLCanvasElement | null = null;
+
+        const timeoutId = setTimeout(() => {
+            toast.error("انتهت مهلة القص، يرجى المحاولة مرة أخرى");
+            setIsProcessing(false);
+        }, CROP_TIMEOUT_MS);
+
+        try {
+            const img = await loadImage(imageUrl);
+
+            const hasRotation = settings.rotation !== 0;
+            if (hasRotation) {
+                workCanvas = rotateImage(img, settings.rotation);
+            } else {
+                workCanvas = acquireCanvas(img.naturalWidth, img.naturalHeight);
+                const tmpCtx = workCanvas.getContext("2d");
+                if (!tmpCtx) throw new Error("فشل إنشاء سياق الرسم");
+                tmpCtx.drawImage(img, 0, 0);
+            }
+
+            const MAX_PROC_DIM = getOptimalProcessingSize(deviceCapabilities);
+            const procRatio = Math.min(MAX_PROC_DIM / workCanvas.width, MAX_PROC_DIM / workCanvas.height, 1);
+            const sourceW = Math.max(1, Math.round(workCanvas.width * procRatio));
+            const sourceH = Math.max(1, Math.round(workCanvas.height * procRatio));
+
+            const rotatedCorners = hasRotation
+                ? rotateCorners(manualCorners, settings.rotation, img.naturalWidth, img.naturalHeight)
+                : manualCorners;
+            const scaledCorners = rotatedCorners.map(c => ({
+                x: c.x * procRatio,
+                y: c.y * procRatio,
+            }));
+
+            srcCtxCanvas = acquireCanvas(sourceW, sourceH);
+            const srcCtx = srcCtxCanvas.getContext("2d", { willReadFrequently: true });
+            if (!srcCtx) throw new Error("فشل إنشاء سياق القراءة");
+            srcCtx.drawImage(workCanvas, 0, 0, sourceW, sourceH);
+            const srcData = srcCtx.getImageData(0, 0, sourceW, sourceH);
+            releaseCanvas(srcCtxCanvas);
+            srcCtxCanvas = null;
+            releaseCanvas(workCanvas);
+            workCanvas = null;
+
+            let finalData: Uint8ClampedArray;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             let finalW: number;
             let finalH: number;
 
             try {
+<<<<<<< HEAD
                 const result = await runCropPipeline({
                     source: regionSource,
                     sourceWidth: regionSourceW,
@@ -371,11 +632,15 @@ export function DocumentProcessDialog({
                     capabilities: deviceCapabilities,
                     signal: controller.signal,
                 });
+=======
+                const result = processImage(srcData.data, sourceW, sourceH, scaledCorners);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 finalData = result.data;
                 finalW = result.width;
                 finalH = result.height;
             } catch (error) {
                 console.error("Processor failed:", error);
+<<<<<<< HEAD
                 const message = error instanceof Error ? error.message : "";
                 throw new Error(/[\u0600-\u06FF]/.test(message) ? message : "فشل معالجة الصورة");
             }
@@ -389,6 +654,15 @@ export function DocumentProcessDialog({
             const outCtx = outCanvas.getContext("2d");
             if (!outCtx) throw new Error("فشل إنشاء سياق الإخراج");
             outCtx.putImageData(new ImageData(finalData, finalW, finalH), 0, 0);
+=======
+                throw new Error("فشل معالجة الصورة");
+            }
+
+            outCanvas = acquireCanvas(finalW, finalH);
+            const outCtx = outCanvas.getContext("2d");
+            if (!outCtx) throw new Error("فشل إنشاء سياق الإخراج");
+            outCtx.putImageData(new ImageData(new Uint8ClampedArray(finalData), finalW, finalH), 0, 0);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
             const brightness = settings.brightness / 100;
             const contrast = settings.contrast / 100;
@@ -406,6 +680,7 @@ export function DocumentProcessDialog({
             releaseCanvas(outCanvas);
             outCanvas = null;
 
+<<<<<<< HEAD
             if (opId !== operationRef.current) return;
 
             // استبدال الأصل: تحديث الوثيقة الحالية — المالك والبيانات تبقى كما هي
@@ -429,27 +704,47 @@ export function DocumentProcessDialog({
                 clearTimeout(uploadTimeoutId);
             }
             if (opId !== operationRef.current) return;
+=======
+            const formData = new FormData();
+            formData.append("File", file);
+            formData.append("RetirementFileID", String(fileId));
+            formData.append("DocumentTypeID", String(docData.documentTypeID));
+            formData.append("Notes", `صورة مقصوصة من: ${docData.fileName}`);
+
+            await documentsApi.upload(formData);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
             toast.success("تم القص والحفظ بنجاح");
             setIsCropMode(false);
             setManualCorners(null);
             await queryClient.invalidateQueries({ queryKey: ["documents", fileId] });
+<<<<<<< HEAD
             await queryClient.invalidateQueries({ queryKey: ["document", docData.documentID] });
             onSaved?.();
             onOpenChange(false);
         } catch (error) {
             if (opId !== operationRef.current) return; // نتيجة ملغاة — لا رسالة ولا واجهة
+=======
+            onSaved?.();
+            onOpenChange(false);
+        } catch (error) {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             console.error("Crop error:", error);
             toast.error(error instanceof Error ? error.message : "فشل قص الصورة");
         } finally {
             clearTimeout(timeoutId);
             if (workCanvas) releaseCanvas(workCanvas);
+<<<<<<< HEAD
+=======
+            if (srcCtxCanvas) releaseCanvas(srcCtxCanvas);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             if (outCanvas) releaseCanvas(outCanvas);
             setIsProcessing(false);
         }
     }, [manualCorners, imageUrl, docData, settings, fileId, queryClient, onSaved, onOpenChange]);
 
     const handleSave = useCallback(async () => {
+<<<<<<< HEAD
         const img = originalImageRef.current;
         if (!img || !docData) return;
 
@@ -486,11 +781,33 @@ export function DocumentProcessDialog({
             onOpenChange(false);
         } catch (error) {
             if (opId !== operationRef.current) return;
+=======
+        const canvas = canvasRef.current;
+        if (!canvas || !docData) return;
+
+        setIsProcessing(true);
+
+        try {
+            const file = await canvasToFile(canvas, docData.fileName);
+            const formData = new FormData();
+            formData.append("File", file);
+            formData.append("RetirementFileID", String(fileId));
+            formData.append("DocumentTypeID", String(docData.documentTypeID));
+            formData.append("Notes", `صورة معالجة من: ${docData.fileName}`);
+
+            await documentsApi.upload(formData);
+
+            toast.success("تم حفظ الصورة المعالجة بنجاح");
+            onSaved?.();
+            onOpenChange(false);
+        } catch (error) {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             console.error("Save error:", error);
             toast.error("فشل حفظ الصورة");
         } finally {
             setIsProcessing(false);
         }
+<<<<<<< HEAD
     }, [docData, settings, fileId, queryClient, onSaved, onOpenChange]);
 
     const handleDownload = useCallback(() => {
@@ -509,6 +826,19 @@ export function DocumentProcessDialog({
         }
         link.click();
     }, [docData?.fileName, settings]);
+=======
+    }, [docData, fileId, onSaved, onOpenChange]);
+
+    const handleDownload = useCallback(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        const link = window.document.createElement("a");
+        link.download = `processed_${docData?.fileName || "image.jpg"}`;
+        link.href = canvas.toDataURL("image/jpeg", 0.92);
+        link.click();
+    }, [docData?.fileName]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     const resetSettings = useCallback(() => {
         setSettings(DEFAULT_SETTINGS);
@@ -546,7 +876,11 @@ export function DocumentProcessDialog({
                         {isCropMode ? (
                             <div className="w-full h-full max-w-5xl">
                                 <CornerEditor
+<<<<<<< HEAD
                                     imageUrl={imageBlobUrl || imageUrl || ""}
+=======
+                                    imageUrl={imageUrl || ""}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     rotation={settings.rotation}
                                     corners={manualCorners ?? undefined}
                                     onCornersChange={setManualCorners}

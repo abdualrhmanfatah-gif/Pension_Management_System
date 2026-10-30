@@ -41,7 +41,11 @@ export function DocumentChecklistField({
 
     return (
         <FormField label={label} required error={error}>
+<<<<<<< HEAD
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 border border-border rounded-2xl p-3 max-h-48 overflow-y-auto bg-background/30  custom-scrollbar">
+=======
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 border border-border/40 rounded-2xl p-3 max-h-48 overflow-y-auto bg-background/30  custom-scrollbar">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 {documents.length === 0 ? (
                     <Text variant="caption" className="col-span-full text-center py-6 italic font-medium">
                         {emptyMessage}
@@ -56,7 +60,11 @@ export function DocumentChecklistField({
                                 className={cn(
                                     "flex items-center gap-2.5 p-2.5 rounded-xl border transition-all cursor-pointer",
                                     isSelected
+<<<<<<< HEAD
                                         ? "bg-primary/5 border-primary text-primary"
+=======
+                                        ? "bg-primary/5 border-primary/30 text-primary"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                         : "bg-background hover:bg-muted border-transparent text-muted-foreground"
                                 )}
                             >
@@ -73,7 +81,11 @@ export function DocumentChecklistField({
                                         {doc.name}
                                     </span>
                                     {doc.entityName && (
+<<<<<<< HEAD
                                         <span className="text-[9px] text-muted-foreground font-medium opacity-100 flex items-center gap-1">
+=======
+                                        <span className="text-[9px] text-muted-foreground font-medium opacity-80 flex items-center gap-1">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             <FileText className="w-2.5 h-2.5" />
                                             {doc.entityName}
                                         </span>

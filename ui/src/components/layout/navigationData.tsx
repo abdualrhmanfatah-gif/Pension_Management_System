@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import type { ReactNode } from "react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
   Activity,
   AlertTriangle,
@@ -28,15 +32,26 @@ import {
   FileCheck,
   FileClock,
   FileQuestion,
+<<<<<<< HEAD
   Files,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   FileSearch,
   FileSpreadsheet,
   FileType,
   FileWarning,
+<<<<<<< HEAD
   Fingerprint,
   FolderOpen,
   Folders,
   FolderSearch,
+=======
+  Files,
+  Fingerprint,
+  FolderOpen,
+  FolderSearch,
+  Folders,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   GitCompare,
   Globe,
   HandCoins,
@@ -46,9 +61,15 @@ import {
   IdCard,
   Inbox,
   Landmark,
+<<<<<<< HEAD
   Layers,
   LayoutDashboard,
   LayoutGrid,
+=======
+  LayoutDashboard,
+  LayoutGrid,
+  Layers,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   LineChart,
   ListChecks,
   ListOrdered,
@@ -79,14 +100,22 @@ import {
   Upload,
   UserCheck,
   UserCog,
+<<<<<<< HEAD
   Users,
   UserSearch,
+=======
+  UserSearch,
+  Users,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   UsersRound,
   Vault,
   Wallet,
   Wrench,
 } from "lucide-react";
+<<<<<<< HEAD
 import type { ReactNode } from "react";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 const ICON = "h-[18px] w-[18px]";
 
@@ -142,7 +171,11 @@ export const subGroupLabels: Record<string, string> = {
   // ── إدارة المعاشات  ──
   "social-research": "قسم البحث الاجتماعي والفحص",
   "settlement-link": "قسم التسوية والربط",
+<<<<<<< HEAD
   entitlements: "قسم الاستحقاق",
+=======
+  entitlements: "قسم الاستحقاقات",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   "records-stats": "قسم السجلات والإحصاء",
   documentation: "قسم التوثيق",
   reports: "التقارير",
@@ -321,7 +354,11 @@ export const navItems: NavItem[] = [
     subGroup: "settlement-link",
   },
 
+<<<<<<< HEAD
   // قسم الاستحقاق
+=======
+  // قسم الاستحقاقات
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   {
     label: "ملفات التقاعد",
     path: "/files",
@@ -452,7 +489,11 @@ export const navItems: NavItem[] = [
     subGroup: "reports",
   },
   {
+<<<<<<< HEAD
     label: "تقرير المتقاعدين",
+=======
+    label: "المتقاعدين النشطين",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     path: "/reports/ret-02",
     icon: <Activity className={ICON} />,
     requiredPermission: "Report.Pension.View",
@@ -976,4 +1017,8 @@ export function filterByPermissions(items: NavItem[], permissions: string[] | un
     if (item.anyPermission?.length) return item.anyPermission.some((p) => perms.includes(p));
     return true;
   });
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

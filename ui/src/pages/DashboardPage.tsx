@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { keepPreviousData,useQuery } from "@tanstack/react-query";
+=======
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Activity,
     BadgeCheck,
@@ -27,8 +31,13 @@ import { chartColors } from "@/lib/chartColors";
 import { cn, formatCurrency, formatNumber } from "@/lib/utils";
 import type { AccountingDashboardDto } from "@/types/accounting";
 import type { DashboardStats } from "@/types/dashboard";
+<<<<<<< HEAD
 import type { RecentActivity } from "@/types/dashboard";
 import type { PensionStatistics, PerformanceStatistics } from "@/types/pension";
+=======
+import type { PensionStatistics, PerformanceStatistics } from "@/types/pension";
+import type { RecentActivity } from "@/types/dashboard";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Reusable Components ───────────────────────────────
 
@@ -65,6 +74,7 @@ function ActivityTable({ entries, isLoading }: { entries: RecentActivity[] | und
     const actionStyle = (action: string) => {
         switch (action) {
             case "Create":
+<<<<<<< HEAD
                 return "bg-success/10 text-success";
             case "Update":
                 return "bg-info/10 text-info";
@@ -74,6 +84,17 @@ function ActivityTable({ entries, isLoading }: { entries: RecentActivity[] | und
                 return "bg-warning/10 text-warning";
             default:
                 return "bg-special/10 text-special";
+=======
+                return "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400";
+            case "Update":
+                return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400";
+            case "Delete":
+                return "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400";
+            case "StatusChange":
+                return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400";
+            default:
+                return "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
     };
 
@@ -114,7 +135,11 @@ function ActivityTable({ entries, isLoading }: { entries: RecentActivity[] | und
             {entries.map((item) => (
                 <div
                     key={item.logID}
+<<<<<<< HEAD
                     className="flex items-center justify-between p-3 rounded-xl bg-muted/30 border border-border hover:bg-muted/50 transition-colors"
+=======
+                    className="flex items-center justify-between p-3 rounded-xl bg-muted/30 border border-border/40 hover:bg-muted/50 transition-colors"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 >
                     <div className="flex items-center gap-3">
                         <div className={cn("px-2 py-0.5 rounded-md text-caption font-bold", actionStyle(item.action))}>
@@ -387,8 +412,13 @@ export function DashboardPage() {
                                 data={performanceStats?.monthlyData ?? []}
                                 xKey="month"
                                 lines={[
+<<<<<<< HEAD
                                     { key: "retirees", color: chartColors.danger, label: "المتقاعدين" },
                                     { key: "files", color: chartColors.success, label: "ملفات التقاعد" },
+=======
+                                    { key: "retirees", color: "hsl(346, 84%, 60%)", label: "المتقاعدين" },
+                                    { key: "files", color: "hsl(142, 76%, 36%)", label: "ملفات التقاعد" },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                  
                                 ]}
                                 height={280}
@@ -482,7 +512,11 @@ export function DashboardPage() {
                 ) : (
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                         {/* Budget Utilization */}
+<<<<<<< HEAD
                         <Card className="border border-border shadow-sm hover:shadow-md transition-shadow">
+=======
+                        <Card className="border border-border/60 shadow-sm hover:shadow-md transition-shadow">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <CardContent className="p-5">
                                 <div className="flex items-center gap-3 mb-5">
                                     <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-muted text-muted-foreground">
@@ -503,7 +537,11 @@ export function DashboardPage() {
                                             <Text variant="caption">المتبقي</Text>
                                             <p className={cn(
                                                 "text-lg font-black",
+<<<<<<< HEAD
                                                 isOverBudget ? "text-danger" : "text-success"
+=======
+                                                isOverBudget ? "text-rose-600" : "text-emerald-600"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             )}>
                                                 {formatCurrency(budgetRemaining)}
                                             </p>
@@ -512,8 +550,13 @@ export function DashboardPage() {
                                     <div className="relative h-4 bg-muted rounded-full overflow-hidden">
                                         <div
                                             className={cn(
+<<<<<<< HEAD
                                                 "h-full rounded-full transition-all duration-slow",
                                                 budgetPct > 90 ? "bg-danger" : budgetPct > 70 ? "bg-warning" : "bg-success"
+=======
+                                                "h-full rounded-full transition-all duration-1000",
+                                                budgetPct > 90 ? "bg-rose-500" : budgetPct > 70 ? "bg-amber-500" : "bg-emerald-500"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             )}
                                             style={{ width: `${budgetPct}%` }}
                                         />
@@ -522,7 +565,11 @@ export function DashboardPage() {
                                         <span>المصروف: {formatCurrency(budgetUsed)}</span>
                                         <span className="font-bold text-foreground">{budgetPct}%</span>
                                         {isOverBudget && (
+<<<<<<< HEAD
                                             <span className="font-bold text-danger">
+=======
+                                            <span className="font-bold text-rose-600">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                 تجاوز: {formatCurrency(-budgetRemaining)}
                                             </span>
                                         )}
@@ -575,7 +622,11 @@ export function DashboardPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
                     {/* Accounting Details */}
                     <div className="lg:col-span-2 space-y-4">
+<<<<<<< HEAD
                         <Card className="border border-border shadow-sm hover:shadow-md transition-shadow">
+=======
+                        <Card className="border border-border/60 shadow-sm hover:shadow-md transition-shadow">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <CardContent className="p-5">
                                 <div className="flex items-center gap-3 mb-5">
                                     <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-muted text-muted-foreground">
@@ -615,7 +666,11 @@ export function DashboardPage() {
                                         />
                                     </div>
                                 )}
+<<<<<<< HEAD
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 pt-4 border-t border-border">
+=======
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 pt-4 border-t border-border/40">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     <div className="text-center p-3 rounded-lg bg-muted/30">
                                         <p className="text-lg font-black text-foreground">
                                             {accountingDashboard?.openPeriods ?? 0}
@@ -633,7 +688,11 @@ export function DashboardPage() {
                         </Card>
 
                         {/* Batch Status */}
+<<<<<<< HEAD
                         <Card className="border border-border shadow-sm hover:shadow-md transition-shadow">
+=======
+                        <Card className="border border-border/60 shadow-sm hover:shadow-md transition-shadow">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <CardContent className="p-5">
                                 <div className="flex items-center gap-3 mb-5">
                                     <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-muted text-muted-foreground">
@@ -662,7 +721,11 @@ export function DashboardPage() {
                                         />
                                     </div>
                                 )}
+<<<<<<< HEAD
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 pt-4 border-t border-border">
+=======
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 pt-4 border-t border-border/40">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     <div className="text-center p-3 rounded-lg bg-muted/30">
                                         <p className="text-lg font-black text-foreground">
                                             {data?.pendingSettlementsCount ?? 0}
@@ -682,7 +745,11 @@ export function DashboardPage() {
 
                     {/* Activity Feed */}
                     <div className="lg:col-span-3">
+<<<<<<< HEAD
                         <Card className="border border-border shadow-sm hover:shadow-md transition-shadow">
+=======
+                        <Card className="border border-border/60 shadow-sm hover:shadow-md transition-shadow">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <CardContent className="p-5">
                                 <div className="flex items-center gap-3 mb-5">
                                     <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-muted text-muted-foreground">

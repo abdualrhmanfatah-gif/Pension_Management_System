@@ -8,7 +8,10 @@ using PensionMS.Core.Entities.Assets;
 using PensionMS.Core.Entities.Financial;
 using PensionMS.Core.Entities.Accounting;
 using PensionMS.Core.Interfaces;
+<<<<<<< HEAD
 using PensionMS.Infrastructure.Interceptors;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 using System.Linq.Expressions;
 
 namespace PensionMS.Infrastructure.Data;
@@ -17,6 +20,7 @@ using PensionMS.Infrastructure.Data.Configurations;
 
 public class PensionDbContext : DbContext
 {
+<<<<<<< HEAD
     private readonly FileReviewChangeInterceptor _reviewChanges;
     private bool _savingChanges;
 
@@ -87,6 +91,9 @@ public class PensionDbContext : DbContext
             _savingChanges = false;
         }
     }
+=======
+    public PensionDbContext(DbContextOptions<PensionDbContext> options) : base(options) { }
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     #region DbSets — Core
     public DbSet<Retiree> Retirees => Set<Retiree>();

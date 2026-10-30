@@ -1,14 +1,23 @@
+<<<<<<< HEAD
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { BookOpen,Building2, Calendar, CircleDollarSign, LandPlot, Laptop, Sofa, Truck, Wrench } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { Controller,type Resolver, useForm } from "react-hook-form";
+=======
+import { useQuery } from "@tanstack/react-query";
+import { Building2, Calendar, LandPlot, Laptop, Sofa, Truck, Wrench, CircleDollarSign, BookOpen } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
+import { type Resolver, useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { z } from "zod";
 
 import { fixedAssetApi, type FixedAssetDto } from "@/api/fixedAssets";
 import {
     BaseFormDialog,
     Checkbox,
+<<<<<<< HEAD
     DateInput,
     FormField,
     FormSection,
@@ -17,6 +26,16 @@ import {
 } from "@/components/ui";
 import { queryKeys } from "@/constants/queryKeys";
 import { useApiMutation } from "@/hooks";
+=======
+    FormField,
+    FormSection,
+    Input,
+    DateInput,
+    NativeSelect,
+} from "@/components/ui";
+import { useApiMutation } from "@/hooks";
+import { queryKeys } from "@/constants/queryKeys";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ═══════════════════════════════════════
 // Schema
@@ -304,7 +323,11 @@ export function FixedAssetFormDialog({
     // ─── Mutation ───────────────────────────────────────
     const mutation = useApiMutation(
         (values: FormData) => {
+<<<<<<< HEAD
             const payload = buildPayload(values, selectedTypeId);
+=======
+            let payload = buildPayload(values, selectedTypeId);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             const cat = categories.find(c => c.categoryID === values.categoryID);
             if (cat) {
                 if (!payload.assetAccountID || payload.assetAccountID === 0) payload.assetAccountID = cat.assetAccountID || 0;

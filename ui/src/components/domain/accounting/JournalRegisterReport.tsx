@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
@@ -10,6 +11,24 @@ import { JOURNAL_STATUS } from "@/constants";
 import { chartColors } from "@/lib/chartColors";
 import { formatCurrency } from "@/lib/utils";
 import type { JournalRegisterItemDto } from "@/types/accounting";
+=======
+import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect, useCallback } from "react";
+
+import { reportsApi } from "@/api/accounting";
+import type { JournalRegisterItemDto } from "@/types/accounting";
+import { formatCurrency } from "@/lib/utils";
+import { Badge } from "@/components/ui";
+import { JOURNAL_STATUS } from "@/constants";
+import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
+import { ReportFilters } from "@/components/common/ReportFilters";
+import { ReportBarChart } from "@/components/common/charts";
+import { chartColors } from "@/lib/chartColors";
+import {
+  createWorkbook, buildReportHeader, buildTableHeader, styleDataCell, altRowFill,
+  buildReportFooter, exportWorkbook, autoFitColumns,
+} from "@/components/domain/print/excel.utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface JournalRegisterReportProps {
   fiscalYearId?: number;
@@ -55,6 +74,46 @@ export function JournalRegisterReport({ fiscalYearId, fromDate: propFromDate, to
     window.open(`/reports/journal-register/print?${params.toString()}`, "_blank");
   }, [fiscalYearId, filters]);
 
+<<<<<<< HEAD
+=======
+  const handleExportExcel = useCallback(async () => {
+    if (!data) return;
+    const { ws } = createWorkbook("سجل اليومية");
+    autoFitColumns(ws, { 1: 12, 2: 15, 3: 25, 4: 12, 5: 10, 6: 12, 7: 18, 8: 18 });
+    const dataStartRow = await buildReportHeader(ws, "سجل اليومية", 8, [
+      { label: "من تاريخ", value: filters.fromDate },
+      { label: "إلى تاريخ", value: filters.toDate },
+    ]);
+
+    buildTableHeader(ws, dataStartRow, ["التاريخ", "رقم القيد", "البيان", "المصدر", "الحالة", "بواسطة", "مدين", "دائن"]);
+
+    data.entries.forEach((entry: JournalRegisterItemDto, i: number) => {
+      const r = ws.getRow(dataStartRow + 1 + i);
+      r.getCell(1).value = new Date(entry.entryDate).toLocaleDateString("ar-SA");
+      r.getCell(2).value = entry.entryNumber;
+      r.getCell(3).value = entry.description;
+      r.getCell(4).value = entry.sourceModule === "Manual" ? "يدوي" : entry.sourceModule;
+      r.getCell(5).value = statusBadge[entry.status]?.label ?? entry.status;
+      r.getCell(6).value = entry.createdByUserName;
+      r.getCell(7).value = entry.totalDebit;
+      r.getCell(8).value = entry.totalCredit;
+
+      [7, 8].forEach(c => styleDataCell(r.getCell(c), { numFmt: "#,##0" }));
+      for (let c = 1; c <= 8; c++) altRowFill(r.getCell(c), i);
+    });
+
+    const totalRowNum = dataStartRow + 1 + data.entries.length;
+    ws.getRow(totalRowNum).getCell(1).value = "الإجمالي";
+    ws.getRow(totalRowNum).getCell(7).value = data.grandTotalDebit;
+    ws.getRow(totalRowNum).getCell(8).value = data.grandTotalCredit;
+    styleDataCell(ws.getRow(totalRowNum).getCell(1), { bold: true });
+    styleDataCell(ws.getRow(totalRowNum).getCell(7), { numFmt: "#,##0", bold: true });
+    styleDataCell(ws.getRow(totalRowNum).getCell(8), { numFmt: "#,##0", bold: true });
+
+    buildReportFooter(ws, 8);
+    await exportWorkbook(ws.workbook, `سجل_اليومية_${filters.fromDate}_${filters.toDate}`);
+  }, [data, filters]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
   const chartContent = data ? (
     <ReportBarChart
@@ -71,9 +130,15 @@ export function JournalRegisterReport({ fiscalYearId, fromDate: propFromDate, to
   ) : undefined;
 
   const customKPIs = data ? [
+<<<<<<< HEAD
     { label: 'عدد القيود', value: data.totalEntries, color: 'default' },
     { label: 'إجمالي المدين', value: formatCurrency(data.grandTotalDebit), color: 'info' },
     { label: 'إجمالي الدائن', value: formatCurrency(data.grandTotalCredit), color: 'success' },
+=======
+    { label: 'عدد القيود', value: data.totalEntries, color: 'text-foreground' },
+    { label: 'إجمالي المدين', value: formatCurrency(data.grandTotalDebit), color: 'text-blue-600' },
+    { label: 'إجمالي الدائن', value: formatCurrency(data.grandTotalCredit), color: 'text-green-600' },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   ] : [];
 
   const filterBar = hideInternalControls ? undefined : (
@@ -94,7 +159,13 @@ export function JournalRegisterReport({ fiscalYearId, fromDate: propFromDate, to
       customKPIs={customKPIs}
       filterBar={filterBar}
       chartContent={chartContent}
+<<<<<<< HEAD
       onPrint={hideInternalControls ? undefined : (data ? handlePrint : undefined)}    >
+=======
+      onPrint={hideInternalControls ? undefined : (data ? handlePrint : undefined)}
+      onExport={hideInternalControls ? undefined : (data ? handleExportExcel : undefined)}
+    >
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       {error ? (
         <div className="text-destructive text-sm">فشل في تحميل سجل اليومية</div>
       ) : !data ? (
@@ -116,7 +187,11 @@ export function JournalRegisterReport({ fiscalYearId, fromDate: propFromDate, to
             </thead>
             <tbody>
               {data.entries.map((entry: JournalRegisterItemDto) => (
+<<<<<<< HEAD
                 <tr key={entry.journalEntryID} className="border-t border-border hover:bg-muted/20">
+=======
+                <tr key={entry.journalEntryID} className="border-t border-border/50 hover:bg-muted/20">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                   <td className="p-2 text-xs">{new Date(entry.entryDate).toLocaleDateString("ar-SA")}</td>
                   <td className="p-2 font-mono text-xs ltr" dir="ltr">{entry.entryNumber}</td>
                   <td className="p-2 text-xs max-w-[200px] truncate">{entry.description}</td>

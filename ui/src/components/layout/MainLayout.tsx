@@ -4,9 +4,15 @@ import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 
 import { OfflineDetector } from "@/components/providers/OfflineDetector";
+<<<<<<< HEAD
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/stores/authStore";
 import { useSidebarStore } from "@/stores/sidebarStore";
+=======
+import { useAuthStore } from "@/stores/authStore";
+import { useSidebarStore } from "@/stores/sidebarStore";
+import { cn } from "@/lib/utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 import { Sidebar } from "./Sidebar";
 import { TopNav } from "./TopNav";

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { ApiResponse } from "@/types/api";
 import type {
     DocumentItem,
@@ -6,6 +7,15 @@ import type {
 } from "@/types/retirement";
 
 import api from "./axios";
+=======
+import api from "./axios";
+import type {
+    DocumentItem,
+    MissingDocumentInfo,
+    DocumentTypeLookup,
+} from "@/types/retirement";
+import type { ApiResponse } from "@/types/api";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export const documentsApi = {
     getByFileId(fileId: number): Promise<DocumentItem[]> {
@@ -26,27 +36,41 @@ export const documentsApi = {
             .then((r) => r.data.data);
     },
 
+<<<<<<< HEAD
     upload(
         formData: FormData,
         signal?: AbortSignal,
         opts?: { deferPostProcessing?: boolean }
     ): Promise<DocumentItem> {
+=======
+    upload(formData: FormData): Promise<DocumentItem> {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         return api
             .post<ApiResponse<DocumentItem>>("/documents", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
                 timeout: 300000,
+<<<<<<< HEAD
                 signal,
                 params: opts?.deferPostProcessing ? { deferPostProcessing: true } : undefined,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             })
             .then((r) => r.data.data);
     },
 
+<<<<<<< HEAD
     update(id: number, formData: FormData, signal?: AbortSignal): Promise<DocumentItem> {
         return api
             .put<ApiResponse<DocumentItem>>(`/documents/${id}`, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
                 timeout: 300000,
                 signal,
+=======
+    update(id: number, formData: FormData): Promise<DocumentItem> {
+        return api
+            .put<ApiResponse<DocumentItem>>(`/documents/${id}`, formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             })
             .then((r) => r.data.data);
     },

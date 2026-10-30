@@ -3,22 +3,36 @@ import { CheckCircle, Edit2, FileSignature, Plus, Printer,ShieldCheck, X } from 
 import { useCallback,useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { documentsApi } from "@/api/documents";
 import {
     type CreateExemptionDto,
     type CreatePledgeDto,
     retirementApi} from "@/api/retirement";
+<<<<<<< HEAD
 import { ExemptionDialog, type ExemptionFormValues } from "@/components/domain/retirement/ExemptionDialog";
 import { FulfillPledgeDialog, type FulfillPledgeFormValues } from "@/components/domain/retirement/FulfillPledgeDialog";
 import { PledgeDialog, type PledgeFormValues } from "@/components/domain/retirement/PledgeDialog";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Badge,
     Button,
     type CustomColumnDef,
     DataTable,
     LoadingIndicator,
+<<<<<<< HEAD
     TabHeader,
     useConfirm} from "@/components/ui";
+=======
+    useConfirm} from "@/components/ui";
+import { ExemptionDialog, type ExemptionFormValues } from "@/components/domain/retirement/ExemptionDialog";
+import { FulfillPledgeDialog, type FulfillPledgeFormValues } from "@/components/domain/retirement/FulfillPledgeDialog";
+import { PledgeDialog, type PledgeFormValues } from "@/components/domain/retirement/PledgeDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation, useCreateShortcut } from "@/hooks";
 import { useAgentsQuery, useEntitledPersonsQuery, useGuardiansQuery, useMissingDocumentsQuery } from "@/hooks/queries";
 import { cn, formatDate } from "@/lib/utils";
@@ -118,7 +132,11 @@ export function PledgesAndExemptionsTab({ fileId, retireeName }: PledgesAndExemp
                 formData.append("PledgeID", String(res.data));
                 await documentsApi.upload(formData);
             }
+<<<<<<< HEAD
             return { ...res, keepOpen: payload.keepOpen };
+=======
+            return res;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
     }, {
         successMessage: "تم حفظ التعهد بنجاح",
@@ -205,7 +223,11 @@ export function PledgesAndExemptionsTab({ fileId, retireeName }: PledgesAndExemp
     });
 
     // المعالجات
+<<<<<<< HEAD
     const handlePledgeSubmit = async (values: PledgeFormValues, options?: { keepOpen?: boolean }) => {
+=======
+    const handlePledgeSubmit = async (values: PledgeFormValues) => {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         let pledgedName = "";
         let pledgedType = "";
         switch (values.pledgedByType) {
@@ -237,7 +259,11 @@ export function PledgesAndExemptionsTab({ fileId, retireeName }: PledgesAndExemp
             values: payload, 
             id: dialogState.pledge.data?.pledgeID, 
             shouldPrint: values.issueOfficialPledge,
+<<<<<<< HEAD
             keepOpen: options?.keepOpen,
+=======
+            keepOpen: (values as unknown as { keepOpen: boolean }).keepOpen 
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         });
     };
 
@@ -281,7 +307,11 @@ export function PledgesAndExemptionsTab({ fileId, retireeName }: PledgesAndExemp
                     <Badge 
                         key={idx} 
                         variant={isFulfilled ? "success" : "outline"} 
+<<<<<<< HEAD
                         className={`text-[10px] sm:text-xs font-bold ${isFulfilled ? "opacity-100 line-through" : ""}`}
+=======
+                        className={`text-[10px] sm:text-xs font-bold ${isFulfilled ? "opacity-70 line-through" : ""}`}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         title={isFulfilled ? "مستلمة" : "غير مستلمة"}
                     >
                         {doc.documentTypeName}
@@ -369,6 +399,7 @@ export function PledgesAndExemptionsTab({ fileId, retireeName }: PledgesAndExemp
 
     return (
         <div className="space-y-3 md:space-y-6 animate-in fade-in duration-500 text-start" dir="rtl">
+<<<<<<< HEAD
             {/* Card Header */}
             <TabHeader
                 title="التعهدات والإعفاءات"
@@ -382,10 +413,16 @@ export function PledgesAndExemptionsTab({ fileId, retireeName }: PledgesAndExemp
                 }}
             >
                 <div className="flex p-1 bg-background/80 rounded-xl border border-border w-fit ms-0 sm:ms-4">
+=======
+            {/* Tabs Header */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/60 pb-4">
+                <div className="flex p-1 bg-muted/50 rounded-xl border border-border/40 w-fit ">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => setActiveTab("pledges")}
+<<<<<<< HEAD
                         className={`flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg ${activeTab === "pledges"
                             ? "bg-primary text-primary-foreground shadow-sm"
                             : "text-muted-foreground"
@@ -393,11 +430,21 @@ export function PledgesAndExemptionsTab({ fileId, retireeName }: PledgesAndExemp
                     >
                         <FileSignature className="w-3.5 h-3.5" />
                         التعهدات <span className="ms-1 px-1.5 py-0.5 rounded-full bg-primary/20 text-[10px] font-mono font-bold">{pledges.length}</span>
+=======
+                        className={`flex items-center gap-2 px-5 py-2 text-sm font-black ${activeTab === "pledges"
+                            ? "bg-background text-primary "
+                            : "text-muted-foreground"
+                            }`}
+                    >
+                        <FileSignature className="w-4 h-4" />
+                        التعهدات <span className="ms-1 px-1.5 py-0.5 rounded-full bg-primary/10 text-[10px] sm:text-xs font-mono font-bold">{pledges.length}</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     </Button>
                     <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => setActiveTab("exemptions")}
+<<<<<<< HEAD
                         className={`flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg ${activeTab === "exemptions"
                             ? "bg-primary text-primary-foreground shadow-sm"
                             : "text-muted-foreground"
@@ -408,6 +455,29 @@ export function PledgesAndExemptionsTab({ fileId, retireeName }: PledgesAndExemp
                     </Button>
                 </div>
             </TabHeader>
+=======
+                        className={`flex items-center gap-2 px-5 py-2 text-sm font-black ${activeTab === "exemptions"
+                            ? "bg-background text-primary "
+                            : "text-muted-foreground"
+                            }`}
+                    >
+                        <ShieldCheck className="w-4 h-4" />
+                        الإعفاءات <span className="ms-1 px-1.5 py-0.5 rounded-full bg-primary/10 text-[10px] sm:text-xs font-mono font-bold">{exemptions.length}</span>
+                    </Button>
+                </div>
+
+                {activeTab === "pledges" && canCreatePledge && (
+                    <Button size="sm" onClick={() => setDialogState(s => ({ ...s, pledge: { open: true, mode: "create", data: null, shouldPrint: false } }))} className="gap-1.5 font-bold">
+                        <Plus className="w-4 h-4" /> إضافة تعهد
+                    </Button>
+                )}
+                {activeTab === "exemptions" && canCreateExemption && (
+                    <Button size="sm" onClick={() => setDialogState(s => ({ ...s, exemption: { open: true, mode: "create", data: null } }))} className="gap-1.5 font-bold">
+                        <Plus className="w-4 h-4" /> إضافة إعفاء
+                    </Button>
+                )}
+            </div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
             {/* Content */}
             <DataTable
@@ -433,7 +503,11 @@ export function PledgesAndExemptionsTab({ fileId, retireeName }: PledgesAndExemp
                             {(item as PledgeItem).missingDocuments?.map((doc, idx) => {
                                 const isFulfilled = doc.status === "Fulfilled";
                                 return (
+<<<<<<< HEAD
                                     <Badge key={idx} variant={isFulfilled ? "success" : "outline"} className={`text-[9px] h-3.5 font-bold ${isFulfilled ? "opacity-100 line-through" : ""}`}>
+=======
+                                    <Badge key={idx} variant={isFulfilled ? "success" : "outline"} className={`text-[9px] h-3.5 font-bold ${isFulfilled ? "opacity-70 line-through" : ""}`}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                         {doc.documentTypeName}
                                     </Badge>
                                 );
@@ -475,7 +549,11 @@ export function PledgesAndExemptionsTab({ fileId, retireeName }: PledgesAndExemp
                             {(item as ExemptionItem).missingDocuments?.map((doc, idx) => {
                                 const isFulfilled = doc.status === "Fulfilled";
                                 return (
+<<<<<<< HEAD
                                     <Badge key={idx} variant={isFulfilled ? "success" : "outline"} className={`text-[9px] h-3.5 font-bold ${isFulfilled ? "opacity-100 line-through" : ""}`}>
+=======
+                                    <Badge key={idx} variant={isFulfilled ? "success" : "outline"} className={`text-[9px] h-3.5 font-bold ${isFulfilled ? "opacity-70 line-through" : ""}`}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                         {doc.documentTypeName}
                                     </Badge>
                                 );

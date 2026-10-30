@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Download, Printer } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -10,6 +11,18 @@ import { kpiToneClass } from '@/lib/utils';
 
 import { ChartToggle } from './charts';
 import { ReportKPICards } from './ReportKPICards';
+=======
+import React, { useState } from 'react';
+import { Download, Printer } from 'lucide-react';
+
+import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { Heading } from '@/components/ui';
+import { ReportKPICards } from './ReportKPICards';
+import { ChartToggle } from './charts';
+import type { ReportDataRow } from '@/api/reports';
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface AccountingReportLayoutProps {
   title: string;
@@ -81,10 +94,17 @@ export const AccountingReportLayout: React.FC<AccountingReportLayoutProps> = ({
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {customKPIs.map((kpi, idx) => (
             <Card key={idx} className="p-5">
+<<<<<<< HEAD
               <h4 className="text-caption sm:text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
                 {kpi.label}
               </h4>
               <div className={`text-2xl font-black font-mono ${kpiToneClass(kpi.color)}`}>
+=======
+              <h4 className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
+                {kpi.label}
+              </h4>
+              <div className={`text-2xl font-black font-mono ${kpi.color || 'text-primary'}`}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 {typeof kpi.value === 'number'
                   ? new Intl.NumberFormat('ar-YE').format(kpi.value)
                   : kpi.value}

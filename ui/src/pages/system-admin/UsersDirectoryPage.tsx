@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿import { useQuery } from "@tanstack/react-query";
+=======
+import { useQuery } from "@tanstack/react-query";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
 Building2, ChevronDown, ChevronUp, Pencil, RotateCcw,
     Shield, ShieldCheck,
@@ -7,15 +11,25 @@ import { useEffect,useState } from "react";
 import { toast } from "sonner";
 
 import { usersApi } from "@/api/users";
+<<<<<<< HEAD
+=======
+import { Badge, Button, Card, CrudPageLayout, Heading, Text, useConfirm } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { categoryColors, categoryLabels,getPermissionName } from "@/components/domain/admin/permission-utils";
 import { RolePermissionsDialog } from "@/components/domain/admin/RolePermissionsDialog";
 import { UserDialog } from "@/components/domain/admin/UserDialog";
 import { UserPermissionsDialog } from "@/components/domain/admin/UserPermissionsDialog";
+<<<<<<< HEAD
 import { Badge, Button, Card, CrudPageLayout, Heading, Text, useConfirm } from "@/components/ui";
 import { queryKeys } from "@/constants/queryKeys";
 import { useApiMutation,useCrudState } from "@/hooks";
 import { normalizeApiError } from "@/lib/errorUtils";
 import { kpiToneClass } from "@/lib/utils";
+=======
+import { useApiMutation,useCrudState } from "@/hooks";
+import { normalizeApiError } from "@/lib/errorUtils";
+import { queryKeys } from "@/constants/queryKeys";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Types ─────────────────────────────────────────────
 
@@ -280,12 +294,21 @@ export function UsersDirectoryPage() {
             {/* Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 {[
+<<<<<<< HEAD
                     { label: "إجمالي المستخدمين", value: totalCount, color: "primary" },
                     { label: "الأدوار", value: roles.length, color: "special" },
                 ].map((stat) => (
                     <Card key={stat.label} className="p-4">
                         <Text variant="caption">{stat.label}</Text>
                         <Text variant="body" className={`md:text-xl lg:text-2xl font-bold ${kpiToneClass(stat.color)}`}>{stat.value}</Text>
+=======
+                    { label: "إجمالي المستخدمين", value: totalCount, color: "text-primary" },
+                    { label: "الأدوار", value: roles.length, color: "text-purple-600" },
+                ].map((stat) => (
+                    <Card key={stat.label} className="p-4">
+                        <Text variant="caption">{stat.label}</Text>
+                        <Text variant="body" className={`md:text-xl lg:text-2xl font-bold ${stat.color}`}>{stat.value}</Text>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     </Card>
                 ))}
             </div>

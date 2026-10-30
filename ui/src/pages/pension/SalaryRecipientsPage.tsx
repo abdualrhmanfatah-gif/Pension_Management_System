@@ -1,12 +1,20 @@
+<<<<<<< HEAD
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Eye, Users, UserX } from "lucide-react";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+=======
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Users, Eye, UserX } from "lucide-react";
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 import { salaryRecipientApi, type SalaryRecipientDto } from "@/api/salary-recipients";
 import {
     Badge,
+<<<<<<< HEAD
     BaseFormDialog,
     Button,
     CrudPageLayout,
@@ -15,6 +23,17 @@ import {
     StatCard,
 } from "@/components/ui";
 import { getPhotoUrl, resolvePersonalPhotoPath } from "@/lib/utils";
+=======
+    CrudPageLayout,
+    Heading,
+    StatCard,
+    Button,
+    InfoPair,
+    BaseFormDialog,
+} from "@/components/ui";
+import { getPhotoUrl, resolvePersonalPhotoPath } from "@/lib/utils";
+import { toast } from "sonner";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function SalaryRecipientsPage() {
     const navigate = useNavigate();

@@ -11,7 +11,10 @@ import { toast } from "sonner";
 
 import type { AttendanceEventDto } from "@/api/hr";
 import { hrApi } from "@/api/hr";
+<<<<<<< HEAD
 import { AttendanceDialog } from "@/components/domain/hr/AttendanceDialog";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
   Badge,
   Button,
@@ -20,6 +23,10 @@ import {
   DateInput,
   ErrorState,
   StatCard} from "@/components/ui";
+<<<<<<< HEAD
+=======
+import { AttendanceDialog } from "@/components/domain/hr/AttendanceDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { ATTENDANCE_TYPE } from "@/constants";
 import { formatDate } from "@/lib/utils";
 

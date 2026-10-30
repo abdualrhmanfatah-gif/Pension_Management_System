@@ -3,15 +3,26 @@ import { Edit, RotateCcw, ShieldAlert, Trash2, Wrench } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+<<<<<<< HEAD
 import { type AssetCategoryDto,fixedAssetApi } from "@/api/fixedAssets";
 import { AssetCategoryFormDialog } from "@/components/domain/assets/AssetCategoryFormDialog";
 import type { CustomColumnDef } from "@/components/ui";
 import { Badge, Button, CrudPageLayout } from "@/components/ui";
+=======
+import { fixedAssetApi, type AssetCategoryDto } from "@/api/fixedAssets";
+import { Badge, Button, CrudPageLayout } from "@/components/ui";
+import type { CustomColumnDef } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { useApiMutation } from "@/hooks";
 import { normalizeApiError } from "@/lib/errorUtils";
 import { useHasPermission } from "@/stores/authStore";
 
+<<<<<<< HEAD
+=======
+import { AssetCategoryFormDialog } from "@/components/domain/assets/AssetCategoryFormDialog";
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 export function AssetCategoriesPage() {
     const canManage = useHasPermission("Inventory.Item.Edit");
 

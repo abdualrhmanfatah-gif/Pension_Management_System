@@ -3,12 +3,21 @@ import { ArrowRight, Printer } from "lucide-react";
 import { useNavigate,useParams } from "react-router-dom";
 
 import { retirementApi } from "@/api/retirement";
+<<<<<<< HEAD
 import { PrintSignatureBlock } from "@/components/common/PrintSignatureBlock";
 import { Button } from "@/components/ui";
 import { PrintLayout } from "@/components/ui/print/PrintLayout";
 import { formatDate } from "@/lib/utils";
 import { useAuthStore } from "@/stores/authStore";
 import type { MissingDocumentInfo } from "@/types/retirement";
+=======
+import type { MissingDocumentInfo } from "@/types/retirement";
+import { PrintSignatureBlock } from "@/components/common/PrintSignatureBlock";
+import { Button } from "@/components/ui";
+import { formatDate } from "@/lib/utils";
+import { PrintLayout } from "@/components/ui/print/PrintLayout";
+import { useAuthStore } from "@/stores/authStore";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Print Page ────────────────────────────────────────
 

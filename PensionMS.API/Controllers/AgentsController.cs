@@ -63,12 +63,15 @@ public class AgentsController : ControllerBase
         return result.ToActionResult();
     }
 
+<<<<<<< HEAD
     [HttpPost("{id:int}/photo")]
     [Consumes("multipart/form-data")]
     [Authorize(Policy = "Agent.Edit")]
     public async Task<IActionResult> UploadPhoto(int id, IRemoteFile photo) =>
         (await _service.UpdatePhotoAsync(id, photo, this.GetUserId())).ToActionResult();
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     [HttpPut("{id:int}/deactivate")]
     [Authorize(Policy = "Agent.Delete")]
     public async Task<IActionResult> Deactivate(int id)

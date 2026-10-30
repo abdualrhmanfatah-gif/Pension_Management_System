@@ -6,6 +6,10 @@ import { useEffect, useMemo } from "react";
 import { Controller, type Resolver,type SubmitHandler, useForm, useWatch } from "react-hook-form";
 import * as z from "zod";
 
+<<<<<<< HEAD
+=======
+import { getPhotoUrl } from "@/lib/utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { type CreateEmployeeDto, type EmployeeDetailsDto,hrApi } from "@/api/hr";
 import { 
   BaseFormDialog, 
@@ -20,9 +24,14 @@ import {
   Textarea,
   yemenPhoneSchema,
 } from "@/components/ui";
+<<<<<<< HEAD
 import { queryKeys } from "@/constants/queryKeys";
 import { useApiMutation } from "@/hooks";
 import { getPhotoUrl } from "@/lib/utils";
+=======
+import { useApiMutation } from "@/hooks";
+import { queryKeys } from "@/constants/queryKeys";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Validation Schema ─────────────────────────────────
 

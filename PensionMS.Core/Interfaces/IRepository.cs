@@ -8,16 +8,25 @@ namespace PensionMS.Core.Interfaces;
 public interface IRepository<T> where T : class
 {
     Task<T?> GetByIdAsync(int id);
+<<<<<<< HEAD
     Task ReloadAsync(T entity);
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     Task<T?> GetByIdAsync(string id);
     Task<IEnumerable<T>> GetAllAsync();
     Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
     Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
+<<<<<<< HEAD
+=======
+    Task<IEnumerable<T>> GetPagedAsync(int page, int pageSize);
+    Task<IEnumerable<T>> GetPagedAsync(Expression<Func<T, bool>> predicate, int page, int pageSize);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     Task<int> CountAsync();
     Task<int> CountAsync(Expression<Func<T, bool>> predicate);
     Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
     Task AddAsync(T entity);
     Task AddRangeAsync(IEnumerable<T> entities);
+<<<<<<< HEAD
     /// <summary>Marks a detached graph modified. Tracked query results need only property changes and SaveChanges.</summary>
     void Update(T entity);
     /// <summary>Hard DELETE; rejects ISoftDeletable. Services must set deletion fields for those entities.</summary>
@@ -25,12 +34,20 @@ public interface IRepository<T> where T : class
     /// <summary>Hard DELETE of all supplied rows; rejects the range if any row is ISoftDeletable.</summary>
     void DeleteRange(IEnumerable<T> entities);
     /// <summary>Tracked query; use AsNoTracking for read-only projections. Page only after a unique ordering.</summary>
+=======
+    void Update(T entity);
+    void Delete(T entity);
+    void DeleteRange(IEnumerable<T> entities);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     IQueryable<T> Query();
 
     /// <summary>
     /// Pagination مبني على cursor — أسرع من offset مع البيانات الكبيرة.
     /// cursor = null يعيد أول صفحة. HasMore = true يعني فيه بيانات بعد cursor.
+<<<<<<< HEAD
     /// المفتاح يجب أن يكون عددًا صحيحًا فريدًا؛ الترتيب تنازلي والصفحة التالية تستخدم آخر مفتاح.
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     /// </summary>
     Task<(IEnumerable<T> Items, bool HasMore)> GetCursorPagedAsync(
         Expression<Func<T, bool>>? predicate,

@@ -155,9 +155,13 @@ public class InventoryItemService : IInventoryItemService
         var item = await _unitOfWork.InventoryItems.GetByIdAsync(id);
         if (item == null) return ApiResponse<bool>.Fail("الصنف غير موجود");
 
+<<<<<<< HEAD
         item.IsDeleted = true;
         item.DeletedAt = DateTime.UtcNow;
         item.DeletedByUserID = userId;
+=======
+        _unitOfWork.InventoryItems.Delete(item);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         await _auditService.LogAsync(userId, "", "Delete", "InventoryItem", id, null, null);
         await _unitOfWork.SaveChangesAsync();
         return ApiResponse<bool>.Success(true, "تم حذف الصنف بنجاح");

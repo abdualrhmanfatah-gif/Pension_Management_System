@@ -46,7 +46,11 @@ export function SummaryCard({ children, title, icon, className }: SummaryCardPro
     return (
         <div className={cn("rounded-xl border bg-card p-4", className)}>
             {(title || icon) && (
+<<<<<<< HEAD
                 <div className="flex items-center gap-2 mb-4 pb-3 border-b border-muted">
+=======
+                <div className="flex items-center gap-2 mb-4 pb-3 border-b border-muted/50">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {icon && <span className="text-primary">{icon}</span>}
                     {title && <h3 className="text-sm font-semibold">{title}</h3>}
                 </div>

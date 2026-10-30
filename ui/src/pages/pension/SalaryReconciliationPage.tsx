@@ -1,8 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { Clock, DollarSign, Eye,GitCompare, Users } from "lucide-react";
 import { useRef, useState } from "react";
 
 import { salariesApi } from "@/api/salaries";
+=======
+import { GitCompare, DollarSign, Users, Clock, Eye } from "lucide-react";
+import { useRef, useState } from "react";
+
+import { salariesApi } from "@/api/salaries";
+import type { SalaryBatch } from "@/types/salaries";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Badge,
     BaseFormDialog,
@@ -12,7 +20,10 @@ import {
     StatCard,
 } from "@/components/ui";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
+<<<<<<< HEAD
 import type { SalaryBatch } from "@/types/salaries";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface BatchItem {
     batchItemID: number;

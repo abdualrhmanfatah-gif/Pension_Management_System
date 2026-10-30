@@ -4,6 +4,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { hrApi, type HrGlobalDocumentDto } from "@/api/hr";
+<<<<<<< HEAD
+=======
+import { getDocumentUrl } from "@/lib/utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { 
   Badge,
   Button,
@@ -11,7 +15,10 @@ import {
   ErrorState,
   Text} from "@/components/ui";
 import { CrudPageLayout } from "@/components/ui/CrudPageLayout";
+<<<<<<< HEAD
 import { getDocumentUrl } from "@/lib/utils";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 
 /**
@@ -59,7 +66,11 @@ export function HrDocumentsPage() {
       render: (row) => (
         <div className="flex items-center gap-2">
             <FileText className="h-4 w-4 text-muted-primary" />
+<<<<<<< HEAD
             <span className="font-medium text-sm text-foreground">{row.fileName}</span>
+=======
+            <span className="font-medium text-sm text-foreground/90">{row.fileName}</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         </div>
       ),
     },
@@ -67,7 +78,11 @@ export function HrDocumentsPage() {
       key: "documentType",
       header: "التصنيف",
       render: (row) => (
+<<<<<<< HEAD
         <Badge variant="outline" className="bg-primary/5 text-primary border-primary">
+=======
+        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           {row.documentTypeName}
         </Badge>
       ),

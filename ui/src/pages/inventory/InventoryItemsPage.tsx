@@ -4,14 +4,25 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 
 import { itemApi, type ItemDto } from "@/api/inventory/items";
+<<<<<<< HEAD
 import { InventoryItemFormDialog } from "@/components/domain/inventory/InventoryItemFormDialog";
 import { Badge, Button, CrudPageLayout } from "@/components/ui";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { INVENTORY_ITEM_CONDITION,INVENTORY_ITEM_STATUS } from "@/constants/inventory";
+=======
+import { Badge, Button, CrudPageLayout } from "@/components/ui";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation, useCrudState } from "@/hooks";
 import { normalizeApiError } from "@/lib/errorUtils";
 import { formatDate } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
+<<<<<<< HEAD
+=======
+import { INVENTORY_ITEM_STATUS, INVENTORY_ITEM_CONDITION } from "@/constants/inventory";
+
+import { InventoryItemFormDialog } from "@/components/domain/inventory/InventoryItemFormDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function InventoryItemsPage() {
     const crud = useCrudState<ItemDto>();

@@ -11,7 +11,11 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { complianceApi } from "@/api/compliance";
+<<<<<<< HEAD
 import { Badge, Button, Card, type CustomColumnDef, DataTable, ErrorState, Heading, PageLayout, StatCard, StickyHeader,Text } from "@/components/ui";
+=======
+import { Badge, Button, Card, DataTable, type CustomColumnDef, ErrorState, Heading, PageLayout, StatCard, Text, StickyHeader } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation } from "@/hooks";
 import { cn } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
@@ -128,8 +132,13 @@ export function ComplianceDashboardPage() {
                 <div className={cn(
                     "flex items-center gap-3 p-4 rounded-xl border",
                     chainResult.isIntact
+<<<<<<< HEAD
                         ? "bg-emerald-500/5 border-emerald-500 text-emerald-400"
                         : "bg-red-500/5 border-red-500 text-red-400"
+=======
+                        ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-400"
+                        : "bg-red-500/5 border-red-500/20 text-red-400"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 )}>
                     {chainResult.isIntact ? <CheckCircle className="h-5 w-5" /> : <XCircle className="h-5 w-5" />}
                     <span className="text-sm font-medium">{chainResult.message}</span>
@@ -191,7 +200,11 @@ export function ComplianceDashboardPage() {
                     <Heading level="h2" className="text-lg font-bold text-foreground mb-4">ملخص مخاطر الفروع</Heading>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                         {dashboard.branchRiskSummary.map((branch) => (
+<<<<<<< HEAD
                             <div key={branch.branchId} className="flex items-center justify-between p-4 rounded-xl bg-muted/30 border border-border">
+=======
+                            <div key={branch.branchId} className="flex items-center justify-between p-4 rounded-xl bg-muted/30 border border-border/50">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 <div>
                                     <p className="font-medium text-foreground">{branch.branchName}</p>
                                     <Text variant="caption" className="mt-1">{branch.totalPendingTasks} مهمة معلقة</Text>

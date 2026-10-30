@@ -30,6 +30,7 @@ public class SalaryRecipient : ISoftDeletable
     public bool IsActive { get; set; } = true;
     public string? Notes { get; set; }
 
+<<<<<<< HEAD
     // ─── الحصص ─────────────────────────────────────────────
     /// <summary>
     /// النسبة المئوية المحسوبة (من المبلغ المُدخل أو يدوياً)
@@ -37,6 +38,8 @@ public class SalaryRecipient : ISoftDeletable
     /// </summary>
     public decimal? SharePercent { get; set; }
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public PendingReviewStatus PendingReviewStatus { get; set; } = PendingReviewStatus.None;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

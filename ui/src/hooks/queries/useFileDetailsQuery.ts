@@ -1,10 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 
+<<<<<<< HEAD
 import { retireeApi } from "@/api/retirees";
 import { retirementApi } from "@/api/retirement";
 
 export interface RetirementFileDetail {
     previousStatusID?: number | null;
+=======
+import { retirementApi } from "@/api/retirement";
+import { retireeApi } from "@/api/retirees";
+
+export interface RetirementFileDetail {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     reviewStatus: number;
     reviewNotes: any;
     salaryStatus?: string;
@@ -130,8 +137,12 @@ export function useFileDetailsQuery(fileId: number | undefined) {
                 reviewNotes: data.reviewNotes ?? d.ReviewNotes ?? null,
                 reviewRequestedAt: (data as any).reviewRequestedAt ?? d.ReviewRequestedAt ?? null,
                 reviewCompletedAt: (data as any).reviewCompletedAt ?? d.ReviewCompletedAt ?? null,
+<<<<<<< HEAD
                 salaryStatus: data.salaryStatus ?? d.SalaryStatus ?? "",
                 previousStatusID: data.previousStatusID ?? d.PreviousStatusID,
+=======
+                salaryStatus: "",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 pensionAmount: 0
             };
             

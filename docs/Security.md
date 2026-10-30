@@ -31,8 +31,15 @@
 ```json
 {
   "sub": "1",
+<<<<<<< HEAD
   "role": "Admin",
   "BranchId": 1,
+=======
+  "username": "admin",
+  "role": "Admin",
+  "branchId": 1,
+  "permissions": ["*"],
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   "exp": 1691238167
 }
 ```
@@ -80,6 +87,7 @@
 | **Investment** | `Investment.View`, `Investment.Create`, `Investment.Edit`, `Investment.Delete` |
 | **HR** | `HR.View`, `HR.Create`, `HR.Edit`, `HR.Delete` |
 
+<<<<<<< HEAD
 ### قرار الوصول إلى بيانات التقاعد — 2026-10-22
 
 المصدر المعتمد هو `IScopedPermissionResolver.GetAllowedScopeAsync(userId, permissionCode)`.
@@ -114,6 +122,32 @@
 بقرار معتمد بتاريخ 2026-10-20، أُلغيت قيود فصل المهام. يستطيع صاحب صلاحية الإجراء تنفيذه حتى لو أنشأ السجل أو عدّل بياناته أو رفع وثائقه أو أنشأ كشف المعاشات نفسه. يشمل ذلك اعتماد مراجعة الملف كاملة أو بند منها واعتماد كشف المعاشات.
 
 تُطبَّق صلاحيات الإجراءات بواسطة سياسات التفويض في API؛ مثل `File.Review.Approve` و`SalaryBatch.Approve` و`File.ChangeStatus.Approve`. تبقى حدود الفرع وشروط انتقال الحالات وصحة البيانات وإيقافات المعاش وسجل التدقيق نافذة. إلغاء فصل المهام لا يمنح المستخدم صلاحية جديدة، ولا يتيح صرف ملف معلق أو معاش موقوف.
+=======
+### Branch-Scoped Permissions
+
+| Tier | Scope | Example Roles |
+|------|-------|---------------|
+| **Branch** | Own branch only | Operator, Reviewer |
+| **Regional** | Multiple branches | RegionalManager |
+| **National** | All branches | Admin |
+
+---
+
+## 3. Separation of Duties (SoD)
+
+Three guards enforce dual-control:
+
+| Guard | Rule |
+|-------|------|
+| `SettlementSoDGuard` | Settlement creator cannot approve it |
+| `SalaryBatchSoDGuard` | Batch creator cannot approve it |
+| `EntitlementSoDGuard` | Calculator cannot disburse |
+
+```
+Settlement:  Creator (Operator) → Approver (Reviewer) → Executor (Finance)
+Salary Batch: Creator (Finance) → Approver (Admin) → Executor (Finance)
+```
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 ---
 

@@ -100,12 +100,20 @@ export function FulfillPledgeDialog({
                         return (
                             <div 
                                 key={doc.missingDocumentID} 
+<<<<<<< HEAD
                                 className={`p-4 rounded-xl border border-border flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors ${isFulfilled ? 'bg-success/5 border-success' : 'bg-muted/20'}`}
+=======
+                                className={`p-4 rounded-xl border border-border/60 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors ${isFulfilled ? 'bg-success/5 border-success/30' : 'bg-muted/20'}`}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             >
                                 <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-1">
                                         <FileCheck className={`w-4 h-4 ${isFulfilled ? 'text-success' : 'text-primary'}`} />
+<<<<<<< HEAD
                                         <span className={`font-black text-sm ${isFulfilled ? 'opacity-100 line-through text-success' : ''}`}>
+=======
+                                        <span className={`font-black text-sm ${isFulfilled ? 'opacity-70 line-through text-success' : ''}`}>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             {doc.documentTypeName}
                                         </span>
                                     </div>
@@ -125,7 +133,11 @@ export function FulfillPledgeDialog({
 
                                 <div className="w-full md:w-64">
                                     {isFulfilled ? (
+<<<<<<< HEAD
                                         <div className="h-[60px] flex items-center justify-center rounded-lg border border-dashed border-success bg-success/10 text-success font-bold text-sm ">
+=======
+                                        <div className="h-[60px] flex items-center justify-center rounded-lg border border-dashed border-success/30 bg-success/10 text-success font-bold text-sm ">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             تم التسليم
                                         </div>
                                     ) : (

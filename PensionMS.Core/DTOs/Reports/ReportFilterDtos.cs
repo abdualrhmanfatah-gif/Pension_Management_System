@@ -14,7 +14,10 @@ public class ReportFilter
     public int? FiscalYear { get; set; }
     public string? Quarter { get; set; }
     public string? Search { get; set; }
+<<<<<<< HEAD
     public string? DecisionType { get; set; }
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public int PageNumber { get; set; } = 1;
     public int PageSize { get; set; } = 50;
 }

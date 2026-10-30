@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
@@ -8,6 +9,27 @@ import { chartColors } from "@/lib/chartColors";
 import { formatCurrency } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import type { FiscalYearSummaryDto } from "@/types/accounting";
+=======
+import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect, useCallback } from "react";
+
+import { reportsApi, fiscalYearsApi } from "@/api/accounting";
+import type { FiscalYearSummaryDto } from "@/types/accounting";
+import { formatCurrency } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
+import { ReportBarChart, ReportPieChart } from "@/components/common/charts";
+import { chartColors } from "@/lib/chartColors";
+import {
+  createWorkbook,
+  buildReportHeader,
+  styleDataCell,
+  altRowFill,
+  buildReportFooter,
+  exportWorkbook,
+  autoFitColumns,
+} from "@/components/domain/print/excel.utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface IncomeStatementReportProps {
   fiscalYearId?: number;
@@ -38,6 +60,47 @@ export function IncomeStatementReport({ fiscalYearId, hideInternalControls }: In
     enabled: !!selectedYearId,
   });
 
+<<<<<<< HEAD
+=======
+  const handleExportExcel = useCallback(async () => {
+    if (!data) return;
+    const { ws } = createWorkbook("قائمة الدخل");
+    autoFitColumns(ws, { 1: 15, 2: 35, 3: 20 });
+    const dataStartRow = await buildReportHeader(ws, "قائمة الدخل", 3, [
+      { label: "السنة المالية", value: String(selectedYearId) },
+    ]);
+
+    let row = dataStartRow;
+    const writeSection = (title: string, lines: { accountName: string; amount: number }[], total: number) => {
+      ws.getRow(row).getCell(1).value = title;
+      styleDataCell(ws.getRow(row).getCell(1), { bold: true });
+      row++;
+      lines.forEach((line, i) => {
+        ws.getRow(row).getCell(2).value = line.accountName;
+        ws.getRow(row).getCell(3).value = line.amount;
+        styleDataCell(ws.getRow(row).getCell(3), { numFmt: "#,##0" });
+        altRowFill(ws.getRow(row).getCell(1), i);
+        altRowFill(ws.getRow(row).getCell(2), i);
+        altRowFill(ws.getRow(row).getCell(3), i);
+        row++;
+      });
+      ws.getRow(row).getCell(2).value = `إجمالي ${title}`;
+      ws.getRow(row).getCell(3).value = total;
+      styleDataCell(ws.getRow(row).getCell(2), { bold: true });
+      styleDataCell(ws.getRow(row).getCell(3), { numFmt: "#,##0", bold: true });
+      row++;
+    };
+
+    writeSection("الإيرادات", data.revenues, data.totalRevenue);
+    writeSection("المصروفات", data.expenses, data.totalExpenses);
+    ws.getRow(row).getCell(1).value = "صافي الدخل";
+    ws.getRow(row).getCell(3).value = data.netIncome;
+    styleDataCell(ws.getRow(row).getCell(1), { bold: true });
+    styleDataCell(ws.getRow(row).getCell(3), { numFmt: "#,##0", bold: true });
+    buildReportFooter(ws, 3);
+    await exportWorkbook(ws.workbook, `قائمة_الدخل_${selectedYearId}`);
+  }, [data, selectedYearId]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
   const handlePrint = useCallback(() => {
     const params = new URLSearchParams();
@@ -48,7 +111,11 @@ export function IncomeStatementReport({ fiscalYearId, hideInternalControls }: In
   const renderLines = (lines: { accountCode: string; accountName: string; amount: number; accountLevel: number }[]) => {
     return lines.map((line, i) => (
       <div key={i} className={cn(
+<<<<<<< HEAD
         "flex justify-between px-3 py-1.5 border-t border-border text-sm",
+=======
+        "flex justify-between px-3 py-1.5 border-t border-border/30 text-sm",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         line.accountLevel <= 1 && "font-medium bg-muted/20",
         line.accountLevel === 2 && "pr-6",
         line.accountLevel >= 3 && "pr-10 text-xs"
@@ -60,10 +127,17 @@ export function IncomeStatementReport({ fiscalYearId, hideInternalControls }: In
   };
 
   const customKPIs = data ? [
+<<<<<<< HEAD
     { label: 'إجمالي الإيرادات', value: formatCurrency(data.totalRevenue), color: 'success' },
     { label: 'إجمالي المصروفات', value: formatCurrency(data.totalExpenses), color: 'danger' },
     { label: 'صافي الدخل', value: formatCurrency(data.netIncome), color: data.netIncome >= 0 ? 'text-green-600' : 'text-red-600' },
     { label: 'النسبة', value: data.totalRevenue > 0 ? `${((data.netIncome / data.totalRevenue) * 100).toFixed(1)}%` : '0%', color: 'primary' },
+=======
+    { label: 'إجمالي الإيرادات', value: formatCurrency(data.totalRevenue), color: 'text-green-600' },
+    { label: 'إجمالي المصروفات', value: formatCurrency(data.totalExpenses), color: 'text-red-600' },
+    { label: 'صافي الدخل', value: formatCurrency(data.netIncome), color: data.netIncome >= 0 ? 'text-green-600' : 'text-red-600' },
+    { label: 'النسبة', value: data.totalRevenue > 0 ? `${((data.netIncome / data.totalRevenue) * 100).toFixed(1)}%` : '0%', color: 'text-primary' },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   ] : [];
 
   const chartContent = data ? (
@@ -98,7 +172,13 @@ export function IncomeStatementReport({ fiscalYearId, hideInternalControls }: In
       description="عرض الإيرادات والمصروفات وصافي الدخل"
       isLoading={isLoading}
       customKPIs={customKPIs}
+<<<<<<< HEAD
       chartContent={chartContent}      onPrint={hideInternalControls ? undefined : (data ? handlePrint : undefined)}
+=======
+      chartContent={chartContent}
+      onExport={hideInternalControls ? undefined : (data ? handleExportExcel : undefined)}
+      onPrint={hideInternalControls ? undefined : (data ? handlePrint : undefined)}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     >
       {error ? (
         <div className="text-destructive text-sm">فشل في تحميل التقرير</div>

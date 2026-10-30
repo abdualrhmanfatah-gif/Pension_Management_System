@@ -31,6 +31,7 @@
 ┌─────────────────────────────────────────────────────────────┐
 │                   SERVICE LAYER                             │
 │  ┌──────────────────────────────────────────────────────┐   │
+<<<<<<< HEAD
 │  │  Domain Services (99 C# source files)                │   │
 │  │  ┌────────────────┐ ┌────────────────┐ ┌──────────┐  │   │
 │  │  │RetirementFile  │ │EntitledPerson  │ │Settlement│  │   │
@@ -39,6 +40,16 @@
 │  │  ┌────────────────┐ ┌────────────────┐ ┌──────────┐  │   │
 │  │  │FileReview      │ │SalaryPayment   │ │Financial │  │   │
 │  │  │Service        │ │BatchService    │ │Entitlement│  │   │
+=======
+│  │  Business Logic Services (~50 implementations)       │   │
+│  │  ┌────────────────┐ ┌────────────────┐ ┌──────────┐  │   │
+│  │  │RetirementFile  │ │EntitledPerson  │ │Settlement│  │   │
+│  │  │Service (2609L) │ │Service (760L)  │ │Service   │  │   │
+│  │  └────────────────┘ └────────────────┘ └──────────┘  │   │
+│  │  ┌────────────────┐ ┌────────────────┐ ┌──────────┐  │   │
+│  │  │FileReview      │ │SalaryPayment   │ │Financial │  │   │
+│  │  │Service (1065L) │ │BatchService    │ │Entitlement│  │   │
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 │  │  └────────────────┘ └────────────────┘ └──────────┘  │   │
 │  │  ┌────────────────────────────────────────────────┐   │   │
 │  │  │  Engines: Compliance | Entitlement | Workflow  │   │   │
@@ -82,7 +93,11 @@
 |-----------|-------|---------|
 | Controllers | ~80 | REST API endpoints, HTTP method routing |
 | Middleware | 4 | JWT auth, request logging, error handling, CORS |
+<<<<<<< HEAD
 | DI Configuration | 18 files | Explicit domain registrations in Infrastructure/DependencyInjection, invoked from Program.cs |
+=======
+| DI Configuration | 1 | Service registration in `Program.cs` |
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 | SignalR Hub | 1 | Real-time notifications to connected clients |
 
 **Key Responsibilities:**
@@ -107,9 +122,16 @@
 
 | Component | Count | Purpose |
 |-----------|-------|---------|
+<<<<<<< HEAD
 | Service Source Files | 99 | Domain directories, partial report files and internal helpers |
 | Interface Definition Files | 97 | Contracts in Core/Interfaces |
 | Background Jobs | 2 | Expired pledges, outbox processor |
+=======
+| Service Implementations | ~50 | Business logic execution |
+| Interface Definitions | ~90 | Contracts (in Core) |
+| Background Jobs | 2 | Expired pledges, outbox processor |
+| SoD Guards | 3 | Separation of duties enforcement |
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 | Engines | 3 | Compliance, entitlement calculation, workflow |
 | ScopedPermissionResolver | 1 | Runtime permission resolution |
 
@@ -120,6 +142,7 @@
 - File review workflow orchestration
 - Financial calculation engines
 - Background task processing
+<<<<<<< HEAD
 - Action permission and business-state validation
 
 #### تنظيم الخدمات حسب المجال
@@ -146,6 +169,9 @@
 `FileStatusService` تطبق مصفوفة دورة الحياة عند تغيير الحالة وعرض الانتقالات، وتمنع الانتقال من Closed. أثناء المراجعة المعلقة تقتصر قائمة الانتقالات على UnderReview إن كان انتقالًا مسموحًا من الحالة الحالية. شروط الاستحقاق المالي ودفتر الصرف والمستلم والتعهدات وSoD تظل مفحوصة عند التنفيذ؛ قائمة الانتقالات ليست ضمانًا لاستيفاء هذه الشروط.
 
 خريطة النقل وسجل التنفيذ في [خطة تنظيم الخدمات](../plan/services-reorganization-plan.md).
+=======
+- Separation of duties validation
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 ### 2.3 Domain Layer (PensionMS.Core)
 
@@ -173,6 +199,7 @@
 | Migrations | ~20 | Schema evolution |
 | Seed Data | 1 | Default roles, permissions, admin user |
 
+<<<<<<< HEAD
 #### حفظ تغييرات ملفات التقاعد ومراجعتها
 
 يمتلك `FileReviewService` بدء المراجعة وبنود فروق البيانات وتدقيقها وإيقاف المراجعة، ويستخدم الطلب الصريح والحفظ التلقائي العمليات الداخلية نفسها. يلتقط `Infrastructure/Interceptors/FileReviewChangeInterceptor.cs` تغييرات EF وروابط الملفات والقيم السابقة، ثم يفوض آثار المراجعة إلى المالك؛ يفوض حماية بنود الصرف إلى العمليات الداخلية في `SalaryPaymentBatchService` التي تعيد استخدام `PensionPaymentStatusRules` في Core. لا يحتاج هذا الربط بناء خدمات التطبيق من داخل إنشاء السياق أو إضافة خدمات وسيطة.
@@ -191,6 +218,8 @@
 
 قيد سابق رُصد أثناء التحقق: تصحيح مفاتيح الإنشاء في `AuditSaveChangesInterceptor` يدعم `int` فقط، بينما `FileReviewItem.ItemID` من نوع `long`. لا يعالج نقل المسؤوليات هذا القيد في التدقيق العام؛ تدقيق `ReviewDataChange` المخصص يستمر في حفظ روابط الملف والكيان والقيم السابقة والجديدة. أُعيد إنتاج القيد باستخدام السياق السابق، وتختبر حالات النقل تصحيح مفاتيح الإيقافات المدعومة وسلامة روابط تدقيق المراجعة والتراجع عن كليهما.
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 ---
 
 ## 3. Design Patterns
@@ -209,7 +238,11 @@ Core (Domain) ← Infrastructure ← API (Presentation)
 
 ### 3.2 Repository Pattern (via EF Core)
 
+<<<<<<< HEAD
 خدمات الأعمال تستخدم `IUnitOfWork` و`IRepository<T>` للوصول إلى البيانات؛ ينفذ Infrastructure المستودعات باستخدام EF Core. بعض الخدمات التقنية مثل Workflow وSnapshot تستخدم DbContext مباشرة داخل Infrastructure، وتبقى هذه الاستثناءات ظاهرة دون تغيير سلوكها أثناء تنظيم المجلدات.
+=======
+EF Core DbContext acts as the repository. No explicit repository interfaces — services interact with DbContext directly for query composition, while business operations go through service interfaces.
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 ### 3.3 State Machine Pattern
 
@@ -225,9 +258,23 @@ New → PendingReview → UnderReview → Approved
 
 Implemented via `FileStatusService` with guard conditions.
 
+<<<<<<< HEAD
 ### 3.4 صلاحية الإجراء
 
 منذ قرار 2026-10-20، لا يُشترط اختلاف منفذ الاعتماد عن منشئ السجل أو محرره. تحمي سياسات API كل إجراء بصلاحيته، ويجوز للمستخدم تنفيذ الإدخال والاعتماد إذا امتلك الصلاحيتين. أُزيلت خدمات وقواعد فصل المهام وتسجيلاتها من DI. تبقى فحوص حالة البيانات ونطاق الفرع وإيقافات الصرف والتدقيق مستقلة عن هذا القرار؛ انظر [Security.md](Security.md).
+=======
+### 3.4 Separation of Duties (SoD) Guards
+
+Three guards enforce dual-control on sensitive operations:
+
+| Guard | Scope |
+|-------|-------|
+| `SettlementSoDGuard` | Settlement creation vs approval |
+| `SalaryBatchSoDGuard` | Salary batch creation vs approval |
+| `EntitlementSoDGuard` | Entitlement calculation vs disbursement |
+
+**Rule:** The person who creates a record cannot approve it.
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 ### 3.5 Outbox Pattern
 
@@ -259,6 +306,7 @@ Request → JWT Validation → Role Extraction → Permission Resolution → Con
 ```
 
 - JWT tokens contain user ID, username, role, branch ID
+<<<<<<< HEAD
 - Permissions and their branch scopes are resolved per operation by `ScopedPermissionResolver` from active explicit role assignments; personal revocation overrides grants.
 - `ICurrentUserContext` supplies authenticated identity only. `IAccessiblePensionRepository` binds that identity and the operation permission to an immutable `IPensionDataQuery`; its ownership predicates run in SQL before paging and aggregation.
 - A user's read and write scopes may differ. A branch request filter narrows the allowed scope. Home branch and JWT role claims cannot grant central access.
@@ -266,6 +314,11 @@ Request → JWT Validation → Role Extraction → Permission Resolution → Con
 - Global administration and unpartitioned settlement/payroll workflows require an explicit central scope. Unsupported ownership is denied for branch-restricted queries.
 - Legacy `PensionFileAccess`, `BranchScopeProvider` and `ReportingQueries` were removed. Expired pledges use the dedicated `IExpiredPledgeProcessor` background capability.
 - See [Security.md](Security.md) and [the rollout plan](../plan/branch-access-unification-plan.md) for assignment semantics, transfer rules and the SQL preparation required before deployment.
+=======
+- Permissions resolved via `ScopedPermissionResolver`
+- Branch-scoped data access (users only see their branch's data)
+- Permission tiers: Branch → Regional → National
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 ### 4.2 Audit Trail
 
@@ -299,7 +352,11 @@ SignalR hub for:
 ### 5.1 File Creation Flow
 
 ```
+<<<<<<< HEAD
 User → API Controller → Service Interface → IUnitOfWork / Repository → DbContext → Database
+=======
+User → API Controller → RetirementFileService → DbContext → Database
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   │                                                │
   │                                                ↓
   │                                          FileSnapshot (audit)

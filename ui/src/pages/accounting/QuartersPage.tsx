@@ -1,10 +1,21 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { Calendar, CheckCircle, ChevronDown, ChevronRight, Clock, Eye,RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import { fiscalYearsApi, quartersApi } from "@/api/accounting";
+=======
+import { useEffect, useState } from "react";
+import { Calendar, ChevronDown, ChevronRight, Clock, RefreshCw, CheckCircle, Eye } from "lucide-react";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+
+import { fiscalYearsApi, quartersApi } from "@/api/accounting";
+import type { FiscalYearSummaryDto, QuarterDto } from "@/types/accounting";
+import { useHasPermission } from "@/stores/authStore";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
   Badge,
   Button,
@@ -19,8 +30,11 @@ import {
   Skeleton,
   StickyHeader,
 } from "@/components/ui";
+<<<<<<< HEAD
 import { useHasPermission } from "@/stores/authStore";
 import type { FiscalYearSummaryDto, QuarterDto } from "@/types/accounting";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 
 export function QuartersPage() {
@@ -211,7 +225,11 @@ export function QuartersPage() {
                       </thead>
                       <tbody>
                         {q.periods.map((period) => (
+<<<<<<< HEAD
                           <tr key={period.periodID} className="border-t border-border hover:bg-muted/20">
+=======
+                          <tr key={period.periodID} className="border-t border-border/50 hover:bg-muted/20">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <td className="p-3 font-medium">{period.periodName}</td>
                             <td className="p-3">{period.periodNumber}</td>
                             <td className="p-3 text-xs">
@@ -237,7 +255,11 @@ export function QuartersPage() {
 
           {/* Year-end close notice */}
           {allClosed && (
+<<<<<<< HEAD
             <div className="bg-emerald-500/5 border border-emerald-500 text-emerald-800 px-4 py-3 rounded-xl text-sm">
+=======
+            <div className="bg-emerald-500/5 border border-emerald-500/20 text-emerald-800 px-4 py-3 rounded-xl text-sm">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               جميع فصول السنة مغلقة — يمكن إقفال السنة المالية
             </div>
           )}

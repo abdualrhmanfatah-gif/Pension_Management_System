@@ -5,8 +5,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { transactionApi } from "@/api/inventory/transactions";
 import { PrintSignatureBlock } from "@/components/common/PrintSignatureBlock";
 import { Button } from "@/components/ui";
+<<<<<<< HEAD
 import { PrintLayout } from "@/components/ui/print/PrintLayout";
 import { formatDate } from "@/lib/utils";
+=======
+import { formatDate } from "@/lib/utils";
+import { PrintLayout } from "@/components/ui/print/PrintLayout";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useAuthStore } from "@/stores/authStore";
 
 export function InventoryWithdrawalOrderPrint() {

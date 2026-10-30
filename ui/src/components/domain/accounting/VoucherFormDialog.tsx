@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { Landmark, Receipt } from "lucide-react";
 import { useEffect, useMemo } from "react";
+<<<<<<< HEAD
 import { Controller, type Resolver,useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
@@ -20,6 +21,26 @@ import {
 import { queryKeys } from "@/constants/queryKeys";
 import { useApiMutation } from "@/hooks";
 import type { ChartOfAccountDto } from "@/types/accounting";
+=======
+import { Controller, useForm, useWatch, type Resolver } from "react-hook-form";
+import { z } from "zod";
+
+import { accountsApi } from "@/api/accounting";
+import type { ChartOfAccountDto } from "@/types/accounting";
+import { vouchersApi, type VoucherType, type CreateVoucherDto } from "@/api/vouchers";
+import {
+  BaseFormDialog,
+  Button,
+  FormField,
+  FormSection,
+  Input,
+  DateInput,
+  NativeSelect,
+  NoteBox,
+} from "@/components/ui";
+import { useApiMutation } from "@/hooks";
+import { queryKeys } from "@/constants/queryKeys";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Schema ───────────────────────────────────────
 const voucherSchema = z.object({

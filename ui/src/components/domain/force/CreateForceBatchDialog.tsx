@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { toast } from "sonner";
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { ministryApi } from "@/api/ministry";
 import { Button, Dialog, DialogContent, DialogHeader, DialogTitle, Input } from "@/components/ui";
 import { useApiMutation } from "@/hooks";
@@ -46,11 +49,19 @@ export function CreateForceBatchDialog({ open, onOpenChange, onSuccess }: Props)
                 </DialogHeader>
                 <div className="space-y-4 py-2">
                     <div>
+<<<<<<< HEAD
                         <label className="label-field">رقم الكشف</label>
                         <Input value={batchNumber} onChange={(e) => setBatchNumber(e.target.value)} placeholder="رقم الكشف" />
                     </div>
                     <div>
                         <label className="label-field">التاريخ</label>
+=======
+                        <label className="text-sm font-medium">رقم الكشف</label>
+                        <Input value={batchNumber} onChange={(e) => setBatchNumber(e.target.value)} placeholder="رقم الكشف" />
+                    </div>
+                    <div>
+                        <label className="text-sm font-medium">التاريخ</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <Input type="date" value={batchDate} onChange={(e) => setBatchDate(e.target.value)} />
                     </div>
                     <div className="flex justify-end gap-2 pt-2">

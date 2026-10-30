@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import { useCallback, useEffect, useMemo, useState } from "react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     AlertTriangle,
@@ -15,11 +19,15 @@ import {
     Upload,
     User,
 } from "lucide-react";
+<<<<<<< HEAD
 import { useCallback, useEffect, useMemo, useState } from "react";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { toast } from "sonner";
 
 import api from "@/api/axios";
 import { retirementApi } from "@/api/retirement";
+<<<<<<< HEAD
 import { AddMissingDocumentDialog } from "@/components/domain/retirement/AddMissingDocumentDialog";
 import { BulkUploadDialog } from "@/components/domain/retirement/BulkUploadDialog";
 import { DocumentViewerDialog } from "@/components/domain/retirement/DocumentViewerDialog";
@@ -29,12 +37,20 @@ import { UploadDocumentDialog } from "@/components/domain/retirement/UploadDocum
 import {
     Badge,
     Button,
+=======
+import { getDocumentUrl } from "@/lib/utils";
+import {
+    Badge,
+    Button,
+    Card,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     type CustomColumnDef,
     DataTable,
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
+<<<<<<< HEAD
     LoadingIndicator,
     Text,
     TabHeader,
@@ -43,6 +59,21 @@ import {
 import { PENDING_REVIEW_STATUS } from "@/constants";
 import { useApiMutation, useCreateShortcut } from "@/hooks";
 import { getDocumentUrl } from "@/lib/utils";
+=======
+    Heading,
+    LoadingIndicator,
+    Text,
+    useConfirm,
+} from "@/components/ui";
+import { PENDING_REVIEW_STATUS } from "@/constants";
+import { AddMissingDocumentDialog } from "@/components/domain/retirement/AddMissingDocumentDialog";
+import { DocumentViewerDialog } from "@/components/domain/retirement/DocumentViewerDialog";
+import { EditDocumentDialog } from "@/components/domain/retirement/EditDocumentDialog";
+import { MissingDocActionDialog } from "@/components/domain/retirement/MissingDocActionDialog";
+import { BulkUploadDialog } from "@/components/domain/retirement/BulkUploadDialog";
+import { UploadDocumentDialog } from "@/components/domain/retirement/UploadDocumentDialog";
+import { useApiMutation, useCreateShortcut } from "@/hooks";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { formatDate } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
 import type {
@@ -117,11 +148,16 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
     const [notesContent, setNotesContent] = useState<{ title: string; body: string } | null>(null);
 
     // ─── جلب البيانات ───
+<<<<<<< HEAD
     // م37: مفتاح فرعي للمستودع المركب (docs/missing/types) حتى لا يتعارض مع
     // مصفوفة الوثائق في useDocumentsByFileQuery — البادئة ["documents", fileId]
     // تُبطله مع كل التحديثات القائمة على المفتاح الأب
     const { data, isLoading, error } = useQuery({
         queryKey: ["documents", fileId, "tab"],
+=======
+    const { data, isLoading, error } = useQuery({
+        queryKey: ["documents", fileId],
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         queryFn: async () => {
             const [docs, missing, auto, types] = await Promise.all([
                 retirementApi.getDocuments(fileId),
@@ -282,7 +318,11 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
             else el.onload = checkReady;
         });
         if (total === 0) window.print();
+<<<<<<< HEAD
     </script>
+=======
+    <\/script>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 </body>
 </html>`);
         printWindow.document.close();
@@ -413,7 +453,11 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
                 className: "max-w-[100px]",
                 render: (row) => {
                     if (!row.notes) {
+<<<<<<< HEAD
                         return <span className="text-xs text-muted-foreground">—</span>;
+=======
+                        return <span className="text-xs text-muted-foreground/40">—</span>;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     }
                     const long = isLongNote(row.notes);
                     return (
@@ -474,7 +518,11 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
                             <Button
                                 size="icon"
                                 variant="ghost"
+<<<<<<< HEAD
                                 className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+=======
+                                className="h-8 w-8 text-destructive hover:text-destructive/90 hover:bg-destructive/10"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 onClick={() => handleDelete(row)}
                                 title="حذف"
                             >
@@ -514,6 +562,7 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
     return (
         <div className="space-y-4 md:space-y-6 animate-in fade-in duration-500">
             {/* ═══ Header ═══ */}
+<<<<<<< HEAD
             {/* ═══ Header ═══ */}
             <TabHeader
                 title="وثائق الملف المرفوعة"
@@ -577,6 +626,79 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
                 <div className="bg-destructive/[0.03] border border-destructive rounded-xl overflow-hidden">
                     {/* Header */}
                     <div className="bg-destructive/10 px-4 py-3 md:px-5 md:py-3.5 flex items-center justify-between border-b border-destructive">
+=======
+            <Card className="flex flex-col gap-3 bg-muted/30 p-4 md:p-5">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-center gap-2">
+                        <FileText className="w-4 h-4 md:w-5 md:h-5 text-primary shrink-0" />
+                        <Heading level="h3" className="font-bold text-sm md:text-base whitespace-nowrap">
+                            وثائق الملف المرفوعة
+                        </Heading>
+                        <Text variant="caption" className="md:text-sm font-medium text-muted-foreground hidden sm:inline">
+                            — كافة المستندات المؤرشفة والمرفقة مع هذا الملف التقاعدي
+                        </Text>
+                    </div>
+                    <div className="flex items-center gap-1.5 md:gap-2">
+                    {canUpload && (
+                        <>
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => setBulkUploadOpen(true)}
+                                className="gap-1 h-7 px-2 text-[11px] md:h-9 md:text-sm md:px-3 shrink-0"
+                            >
+                                <Upload className="w-3.5 h-3.5" />
+                                <span className="hidden sm:inline">رفع جماعي</span>
+                                <span className="sm:hidden">جماعي</span>
+                            </Button>
+                            <Button
+                                size="sm"
+                                onClick={() => {
+                                    setUploadDefaultTypeId(undefined);
+                                    setUploadEntityIds(undefined);
+                                    setUploadOpen(true);
+                                }}
+                                className="gap-1 h-7 px-2 text-[11px] md:h-9 md:text-sm md:px-3 shrink-0"
+                            >
+                                <Plus className="w-3.5 h-3.5" />
+                                <span className="hidden sm:inline">رفع وثيقة</span>
+                                <span className="sm:hidden">وثيقة</span>
+                            </Button>
+                        </>
+                    )}
+                    {canManageMissing && (
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setAddMissingOpen(true)}
+                            className="gap-1 h-7 px-2 text-[11px] md:h-9 md:text-sm md:px-3 shrink-0"
+                        >
+                            <ListChecks className="w-3.5 h-3.5" />
+                            <span className="hidden sm:inline">تسجيل نقص</span>
+                            <span className="sm:hidden">نقص</span>
+                        </Button>
+                    )}
+                    {documents.length > 0 && (
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={handlePrintAll}
+                            className="h-7 px-2 md:h-9 md:px-3 shrink-0"
+                            title="طباعة الكل"
+                        >
+                            <Printer className="w-4 h-4" />
+                        </Button>
+                    )}
+                </div>
+                </div>
+            </Card>
+
+            {/* ═══ Missing Documents ═══ */}
+            {missingDocs.length > 0 && (
+                <div className="bg-destructive/[0.03] border border-destructive/20 rounded-xl overflow-hidden">
+                    {/* Header */}
+                    <div className="bg-destructive/10 px-4 py-3 md:px-5 md:py-3.5 flex items-center justify-between border-b border-destructive/15">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <div className="flex items-center gap-2 text-destructive font-bold">
                             <FileWarning className="w-5 h-5" />
                             <span className="text-sm md:text-base">
@@ -587,7 +709,11 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
                     </div>
 
                     {/* List */}
+<<<<<<< HEAD
                     <div className="divide-y divide-destructive">
+=======
+                    <div className="divide-y divide-destructive/10">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         {missingDocs.map((md, idx) => (
                             <div
                                 key={`${md.documentTypeID}-${md.entityType || idx}`}
@@ -608,7 +734,11 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
                                             </span>
                                             <Badge
                                                 variant="outline"
+<<<<<<< HEAD
                                                 className="text-[10px] h-5 px-1.5 border-destructive text-destructive bg-destructive/[0.05]"
+=======
+                                                className="text-[10px] h-5 px-1.5 border-destructive/20 text-destructive bg-destructive/[0.05]"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             >
                                                 {md.status}
                                             </Badge>
@@ -626,7 +756,11 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
                                         <Button
                                             size="sm"
                                             variant="outline"
+<<<<<<< HEAD
                                             className="h-8 px-3 text-xs font-semibold border-primary text-primary hover:bg-primary/5 gap-1.5 rounded-lg"
+=======
+                                            className="h-8 px-3 text-xs font-semibold border-primary/30 text-primary hover:bg-primary/5 gap-1.5 rounded-lg"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             onClick={() => {
                                                 setUploadDefaultTypeId(md.documentTypeID);
                                                 setUploadEntityIds({
@@ -648,7 +782,11 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
                                         <Button
                                             size="sm"
                                             variant="outline"
+<<<<<<< HEAD
                                             className="h-8 px-3 text-xs font-semibold border-emerald-500 text-emerald-600 hover:bg-emerald-500/10 gap-1.5 rounded-lg"
+=======
+                                            className="h-8 px-3 text-xs font-semibold border-emerald-500/30 text-emerald-600 hover:bg-emerald-500/10 gap-1.5 rounded-lg"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             onClick={() => handleFulfill(md)}
                                             disabled={fulfillMutation.isPending}
                                         >
@@ -660,7 +798,11 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
                                         <Button
                                             size="sm"
                                             variant="outline"
+<<<<<<< HEAD
                                             className="h-8 px-3 text-xs font-semibold border-destructive text-destructive hover:bg-destructive/5 rounded-lg"
+=======
+                                            className="h-8 px-3 text-xs font-semibold border-destructive/30 text-destructive hover:bg-destructive/5 rounded-lg"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             onClick={() => {
                                                 setActiveMissing(md);
                                                 setActionOpen(true);
@@ -873,4 +1015,8 @@ export function DocumentsTab({ fileId, retireeName }: DocumentsTabProps) {
             {ConfirmDialogElement}
         </div>
     );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

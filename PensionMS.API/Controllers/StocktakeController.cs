@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+<<<<<<< HEAD
 using PensionMS.Core.Interfaces.Accounting;
+=======
+using Microsoft.EntityFrameworkCore;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 using PensionMS.API.Extensions;
 using PensionMS.Core.DTOs.Assets;
 using PensionMS.Core.DTOs.Inventory;
@@ -17,18 +21,30 @@ public class StocktakeController : ControllerBase
 {
     private readonly IAssetStocktakeService _assetStocktakeService;
     private readonly ISimpleStocktakeService _simpleStocktakeService;
+<<<<<<< HEAD
     private readonly IFiscalPeriodService _fiscalService;
+=======
+    private readonly IUnitOfWork _unitOfWork;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     private readonly ILogger<StocktakeController> _logger;
 
     public StocktakeController(
         IAssetStocktakeService assetStocktakeService,
         ISimpleStocktakeService simpleStocktakeService,
+<<<<<<< HEAD
         IFiscalPeriodService fiscalService,
+=======
+        IUnitOfWork unitOfWork,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         ILogger<StocktakeController> logger)
     {
         _assetStocktakeService = assetStocktakeService;
         _simpleStocktakeService = simpleStocktakeService;
+<<<<<<< HEAD
         _fiscalService = fiscalService;
+=======
+        _unitOfWork = unitOfWork;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         _logger = logger;
     }
 
@@ -40,10 +56,18 @@ public class StocktakeController : ControllerBase
     [Authorize(Policy = "Inventory.View")]
     public async Task<IActionResult> GetFiscalYears()
     {
+<<<<<<< HEAD
         var result = await _fiscalService.GetAllFiscalYearsAsync();
         if (!result.IsSuccess) return result.ToActionResult();
         var years = result.Data!.OrderByDescending(y => y.StartDate)
             .Select(y => new { y.FiscalYearID, y.YearName, y.StartDate, y.EndDate, y.IsClosed });
+=======
+        var years = await _unitOfWork.FiscalYears.Query()
+            .Where(y => !y.IsDeleted)
+            .OrderByDescending(y => y.StartDate)
+            .Select(y => new { y.FiscalYearID, y.YearName, y.StartDate, y.EndDate, y.IsClosed })
+            .ToListAsync();
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         return Ok(years);
     }
 

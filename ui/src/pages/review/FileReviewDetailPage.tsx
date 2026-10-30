@@ -1,18 +1,31 @@
 import { useQuery } from "@tanstack/react-query";
 import {
+<<<<<<< HEAD
     ArrowLeft,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     CheckCircle2,
     ExternalLink,
     Info,
     ListChecks,
+<<<<<<< HEAD
     Loader2,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     Plus,
     ThumbsDown,
     ThumbsUp,
     User,
     XCircle,
+<<<<<<< HEAD
 } from "lucide-react";
 import { useCallback, useEffect,useId, useMemo, useRef, useState } from "react";
+=======
+    Loader2,
+    ArrowLeft,
+} from "lucide-react";
+import { useMemo, useState, useCallback, useRef, useId, useEffect } from "react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -25,9 +38,15 @@ import {
     Card,
     Dialog,
     DialogContent,
+<<<<<<< HEAD
     DialogFooter,
     DialogHeader,
     DialogTitle,
+=======
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     EmptyState,
     Heading,
     Loader,
@@ -205,11 +224,19 @@ function ReviewChangeCard({
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap justify-end">
                                 <h4 className="font-black text-sm truncate">{translateFieldName(change.fieldName)}</h4>
+<<<<<<< HEAD
                                 <Badge variant="ghost" className="h-4 p-0 text-[10px] font-bold opacity-100">
                                     {isNew ? "إضافة" : "تعديل"}
                                 </Badge>
                                 {change.modifiedByUserName && (
                                     <Badge variant="secondary" className="h-5 text-[10px] px-1.5 opacity-100 gap-1 rounded-md">
+=======
+                                <Badge variant="ghost" className="h-4 p-0 text-[10px] font-bold opacity-60">
+                                    {isNew ? "إضافة" : "تعديل"}
+                                </Badge>
+                                {change.modifiedByUserName && (
+                                    <Badge variant="secondary" className="h-5 text-[10px] px-1.5 opacity-80 gap-1 rounded-md">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                         <User className="w-2.5 h-2.5" aria-hidden="true" />
                                         {change.modifiedByUserName}
                                     </Badge>
@@ -217,10 +244,17 @@ function ReviewChangeCard({
                             </div>
 
                             {hasDetails && change.fieldDetails && (
+<<<<<<< HEAD
                                 <div className="mt-3 rounded-xl border border-border bg-muted/5 overflow-x-auto">
                                      <table className="w-full text-end border-collapse table-fixed" aria-label="مقارنة القيم">
                                         <thead>
                                             <tr className="bg-muted/30 border-b border-border">
+=======
+                                <div className="mt-3 rounded-xl border border-border/60 bg-muted/5 overflow-x-auto">
+                                     <table className="w-full text-end border-collapse table-fixed" aria-label="مقارنة القيم">
+                                        <thead>
+                                            <tr className="bg-muted/30 border-b border-border/60">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                 <th scope="col" className="px-3 py-2 text-[10px] font-black text-muted-foreground text-end">الحقل</th>
                                                 <th scope="col" className="px-3 py-2 text-[10px] font-black text-muted-foreground text-end">السابق</th>
                                                 <th scope="col" className="px-3 py-2 text-[10px] font-black text-muted-foreground text-end">الجديد</th>
@@ -230,14 +264,22 @@ function ReviewChangeCard({
                                             {change.fieldDetails.map((detail, i) => (
                                                 <tr
                                                     key={`${change.itemId ?? change.fieldName}-${detail.fieldName}-${i}`}
+<<<<<<< HEAD
                                                     className="border-b border-border last:border-0 hover:bg-background/50 transition-colors"
+=======
+                                                    className="border-b border-border/40 last:border-0 hover:bg-background/50 transition-colors"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                 >
 <td className="px-3 py-2 text-xs font-bold text-foreground bg-muted/10 text-end truncate overflow-hidden">{translateFieldName(detail.fieldName)}</td>
                                                      <td className="px-3 py-2 text-end overflow-hidden">
                                                          {detail.isMedia ? (
                                                              <ReviewFilePreview path={detail.oldValue ?? ""} label="سابقاً" />
                                                          ) : (
+<<<<<<< HEAD
                                                              <span className="text-xs font-medium text-[hsl(var(--gov-danger))] line-through opacity-100 break-all truncate block max-w-full">
+=======
+                                                             <span className="text-xs font-medium text-[hsl(var(--gov-danger))] line-through opacity-60 break-all truncate block max-w-full">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                                  <bdi>{formatFieldValue(detail.oldValue)}</bdi>
                                                              </span>
                                                          )}
@@ -259,8 +301,13 @@ function ReviewChangeCard({
                             )}
 
                             {isNew && !hasDetails && (
+<<<<<<< HEAD
                                 <div className="mt-3 p-3 bg-[hsl(var(--gov-info)/.08)] border border-[hsl(var(--gov-info))] rounded-xl flex items-center gap-3">
                                     <Info className="w-4 h-4 text-[hsl(var(--gov-info))] opacity-100 shrink-0" aria-hidden="true" />
+=======
+                                <div className="mt-3 p-3 bg-[hsl(var(--gov-info)/.08)] border border-[hsl(var(--gov-info)/.2)] rounded-xl flex items-center gap-3">
+                                    <Info className="w-4 h-4 text-[hsl(var(--gov-info))] opacity-50 shrink-0" aria-hidden="true" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     <p className="text-xs font-bold text-[hsl(var(--gov-info))]">
                                         بيانات الكيان الجديد: <span className="font-black">{change.newValue}</span>
                                     </p>
@@ -551,7 +598,11 @@ export function FileReviewDetailPage() {
 
                 {/* ── Bottom Action Bar ── */}
                 <div className="absolute bottom-0 inset-x-0 p-4 md:p-6 bg-gradient-to-t from-background via-background/95 to-transparent pointer-events-none">
+<<<<<<< HEAD
                     <Card className="max-w-5xl mx-auto rounded-2xl p-3 md:p-4 border border-primary bg-background/95 backdrop-blur-sm pointer-events-auto flex flex-col gap-2">
+=======
+                    <Card className="max-w-5xl mx-auto rounded-2xl p-3 md:p-4 border border-primary/10 bg-background/95 backdrop-blur-sm pointer-events-auto flex flex-col gap-2">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <div className="flex items-center justify-between gap-3 flex-wrap">
                             <div className="hidden sm:block">
                                 <p className="text-xs font-black">القرار النهائي للملف</p>

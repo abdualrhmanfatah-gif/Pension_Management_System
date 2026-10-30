@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2, FileText, ShieldCheck, User } from "lucide-react";
+<<<<<<< HEAD
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Controller,type Resolver, type ResolverOptions,useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
@@ -11,10 +12,20 @@ import { retirementApi } from "@/api/retirement";
 import {
     BaseFormDialog,
     DateInput,
+=======
+import { useEffect, useMemo } from "react";
+import { useForm, useWatch, Controller } from "react-hook-form";
+import { z } from "zod";
+
+import api from "@/api/axios";
+import {
+    BaseFormDialog,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     FileField,
     FormField,
     FormSection,
     Input,
+<<<<<<< HEAD
     NoteBox,
     yemenPhoneSchema,
 } from "@/components/ui";
@@ -23,13 +34,26 @@ import { GUARDIAN_KEY } from "@/hooks/queries/useGuardianQuery";
 import { GUARDIANS_KEY } from "@/hooks/queries/useGuardiansQuery";
 import { cn } from "@/lib/utils";
 import type { GuardianDto } from "@/types/retirement";
+=======
+    DateInput,
+    NoteBox,
+} from "@/components/ui";
+import { useApiMutation } from "@/hooks";
+import { useGuardianQuery } from "@/hooks/queries/useGuardianQuery";
+import type { GuardianDto } from "@/types/retirement";
+import { cn } from "@/lib/utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Schema ─────────────────────────────────────────────
 
 const guardianCreateSchema = z.object({
     fullName: z.string().min(1, "اسم الوصي مطلوب"),
     nationalID: z.string().length(12, "الرقم الوطني يجب أن يتكون من 12 رقماً"),
+<<<<<<< HEAD
     phone: yemenPhoneSchema.optional().or(z.literal("")),
+=======
+    phone: z.string().optional(),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     guardianshipDocNumber: z.string().min(1, "رقم صك الوصاية مطلوب"),
     startDate: z.string().min(1, "تاريخ بدء الوصاية مطلوب"),
     entitledIDs: z.array(z.number()).min(1, "يجب اختيار مستحق واحد على الأقل"),
@@ -41,7 +65,11 @@ const guardianCreateSchema = z.object({
 const guardianEditSchema = z.object({
     fullName: z.string().min(1, "اسم الوصي مطلوب"),
     nationalID: z.string().length(12, "الرقم الوطني يجب أن يتكون من 12 رقماً"),
+<<<<<<< HEAD
     phone: yemenPhoneSchema.optional().or(z.literal("")),
+=======
+    phone: z.string().optional(),
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     guardianshipDocNumber: z.string().optional(),
     startDate: z.string().optional(),
     entitledIDs: z.array(z.number()).optional(),
@@ -64,6 +92,7 @@ interface GuardianDialogProps {
 
 const DRAFT_KEY = "guardian_draft";
 
+<<<<<<< HEAD
 const createEmptyDefaults = {
     fullName: "",
     nationalID: "",
@@ -76,6 +105,8 @@ const createEmptyDefaults = {
     guardianshipDocument: null,
 };
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 export function GuardianDialog({
     open,
     onClose,
@@ -85,6 +116,7 @@ export function GuardianDialog({
     mode = "create",
     initialData
 }: GuardianDialogProps) {
+<<<<<<< HEAD
     // في وضع التعديل: معرّف الوصي المفتوح (لبذر فهرس التنقل)
     const editId = mode === "edit" ? initialData?.guardianID : undefined;
 
@@ -150,20 +182,40 @@ export function GuardianDialog({
     const mutation = useApiMutation(
         async (formData: FormData) => {
             if (effectiveMode === "create") {
+=======
+    // جلب البيانات الطازجة في وضع التعديل
+    const editId = mode === "edit" ? initialData?.guardianID : undefined;
+    const { data: freshData } = useGuardianQuery(editId, !!editId && open);
+
+    const effectiveData = useMemo(() => {
+        if (mode === "edit" && freshData) return freshData;
+        return initialData;
+    }, [mode, freshData, initialData]);
+
+    const mutation = useApiMutation(
+        async (formData: FormData) => {
+            if (mode === "create") {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 return api.post("/guardians", formData, { headers: { "Content-Type": "multipart/form-data" } });
             } else {
                 return api.put(`/guardians/${effectiveData?.guardianID}`, formData, { headers: { "Content-Type": "multipart/form-data" } });
             }
         },
         {
+<<<<<<< HEAD
             invalidateKeys: [[GUARDIANS_KEY, fileId], ["retirement-file", fileId]],
             successMessage: effectiveMode === "create" ? "تم تسجيل الوصي بنجاح" : "تم تحديث بيانات الوصي بنجاح",
+=======
+            invalidateKeys: [["guardians"], ["retirement-file", fileId]],
+            successMessage: mode === "create" ? "تم تسجيل الوصي بنجاح" : "تم تحديث بيانات الوصي بنجاح",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             onSuccess: () => {
                 sessionStorage.removeItem(DRAFT_KEY);
             }
         }
     );
 
+<<<<<<< HEAD
     // مزامنة حارس التنقل مع حالة الحفظ (يُقرأ عند الضغط فقط)
     useEffect(() => {
         savingRef.current = mutation.isPending;
@@ -177,21 +229,69 @@ export function GuardianDialog({
             }
         }
     }, [open, mode, reset]);
+=======
+    const form = useForm<GuardianFormValues>({
+        resolver: zodResolver(mode === "create" ? guardianCreateSchema : guardianEditSchema) as any,
+        defaultValues: useMemo(() => {
+            if (mode === "edit" && effectiveData) {
+                return {
+                    fullName: effectiveData.fullName,
+                    nationalID: effectiveData.nationalID,
+                    phone: effectiveData.phone ?? "",
+                    guardianshipDocNumber: effectiveData.guardianshipDocNumber,
+                    startDate: effectiveData.startDate?.split("T")[0] ?? "",
+                    entitledIDs: effectiveData.minors?.filter(m => m.isActive).map(m => m.entitledID) ?? [],
+                };
+            }
+            const saved = sessionStorage.getItem(DRAFT_KEY);
+            if (saved) {
+                try {
+                    return JSON.parse(saved);
+                } catch { /* ignore */ }
+            }
+            return {
+                fullName: "",
+                nationalID: "",
+                phone: "",
+                guardianshipDocNumber: "",
+                startDate: "",
+                entitledIDs: [],
+                personalPhoto: null,
+                nationalIDDocument: null,
+                guardianshipDocument: null,
+            };
+        }, [mode, effectiveData])
+    });
+
+    const { control, register, setValue, trigger, watch, formState: { errors, isDirty } } = form;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const selectedEntitledIDs = useWatch({ control, name: "entitledIDs" }) || [];
 
     const allValues = watch();
     useEffect(() => {
+<<<<<<< HEAD
         if (effectiveMode === "create" && isDirty) {
+=======
+        if (mode === "create" && isDirty) {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             const { personalPhoto: _p, nationalIDDocument: _n, guardianshipDocument: _g, ...textFields } = allValues;
             void _p; void _n; void _g;
             sessionStorage.setItem(DRAFT_KEY, JSON.stringify(textFields));
         }
+<<<<<<< HEAD
     }, [allValues, isDirty, effectiveMode]);
+=======
+    }, [allValues, isDirty, mode]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     const performSubmit = async (values: GuardianFormValues, keepOpen = false) => {
         const formData = new FormData();
 
+<<<<<<< HEAD
         if (effectiveMode === "create") {
+=======
+        if (mode === "create") {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             formData.append("fileID", fileId.toString());
             values.entitledIDs?.forEach((id: number) => formData.append("entitledIDs", id.toString()));
             formData.append("startDate", (values.startDate ?? "") + "T00:00:00");
@@ -213,17 +313,30 @@ export function GuardianDialog({
         if (!keepOpen) {
             onClose();
         } else {
+<<<<<<< HEAD
             form.reset({ ...createEmptyDefaults });
+=======
+            form.reset();
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
     };
 
     const handleFormSubmit = (values: GuardianFormValues) => {
+<<<<<<< HEAD
         return performSubmit(values, false);
     };
 
     const handleSaveAndNew = () => {
         return form.handleSubmit((values) => {
             return performSubmit(values as any, true);
+=======
+        performSubmit(values, false);
+    };
+
+    const handleSaveAndNew = () => {
+        form.handleSubmit((values) => {
+            performSubmit(values as any, true);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         })();
     };
 
@@ -236,15 +349,30 @@ export function GuardianDialog({
         trigger("entitledIDs");
     };
 
+<<<<<<< HEAD
     const initialValues = useMemo(
         () => (effectiveData && (effectiveMode === "edit" || activeRecord) ? toFormValues(effectiveData) : undefined),
         [effectiveData, effectiveMode, activeRecord, toFormValues]
     );
+=======
+    const initialValues = useMemo(() => {
+        if (mode !== "edit" || !effectiveData) return undefined;
+        return {
+            fullName: effectiveData.fullName,
+            nationalID: effectiveData.nationalID,
+            phone: effectiveData.phone ?? "",
+            guardianshipDocNumber: effectiveData.guardianshipDocNumber,
+            startDate: effectiveData.startDate?.split("T")[0] ?? "",
+            entitledIDs: effectiveData.minors?.filter(m => m.isActive).map(m => m.entitledID) ?? [],
+        };
+    }, [mode, effectiveData]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     return (
         <BaseFormDialog
             open={open}
             onOpenChange={(o) => !o && onClose()}
+<<<<<<< HEAD
             title={effectiveMode === "create" ? "تسجيل وصي جديد" : "تعديل بيانات الوصي"}
             description={effectiveMode === "create" ? "أدخل بيانات الوصي واختر المستحقين (القاصرين) التابعين له" : "تحديث بيانات الوصي المسجلة"}
             size="full"
@@ -252,11 +380,21 @@ export function GuardianDialog({
             isDirty={isDirty}
             onSubmit={form.handleSubmit(handleFormSubmit as any)}
             onSaveAndNew={effectiveMode === "create" ? handleSaveAndNew : undefined}
+=======
+            title={mode === "create" ? "تسجيل وصي جديد" : "تعديل بيانات الوصي"}
+            description={mode === "create" ? "أدخل بيانات الوصي واختر المستحقين (القاصرين) التابعين له" : "تحديث بيانات الوصي المسجلة"}
+            size="full"
+            isLoading={mutation.isPending}
+            isDirty={isDirty}
+            onSubmit={form.handleSubmit(handleFormSubmit as any)}
+            onSaveAndNew={mode === "create" ? handleSaveAndNew : undefined}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             resetOnOpen={true}
             reset={form.reset}
             initialValues={initialValues}
             showGlobalError
             formErrors={errors}
+<<<<<<< HEAD
             submitLabel={effectiveMode === "create" ? "تسجيل الوصي" : "حفظ التعديلات"}
         >
             <div className="space-y-4" dir="rtl">
@@ -269,6 +407,20 @@ export function GuardianDialog({
                                     <div className="flex flex-col items-center justify-center h-full text-center p-6 space-y-3">
                                         <div className="p-3 bg-muted rounded-full">
                                             <ShieldCheck className="w-8 h-8 text-muted-foreground" />
+=======
+            submitLabel={mode === "create" ? "تسجيل الوصي" : "حفظ التعديلات"}
+        >
+            <div className="space-y-4" dir="rtl">
+                {/* اختيار المستحقين - فقط في وضع الإنشاء */}
+                {mode === "create" && (
+                    <FormSection title="المستحقين التابعين" icon={ShieldCheck}>
+                        <FormField label="اختر القاصرين" required error={errors.entitledIDs?.message}>
+                            <div className="border border-border/40 rounded-2xl p-2 max-h-[35vh] overflow-y-auto bg-background/30 space-y-1">
+                                {availableEntitleds.length === 0 ? (
+                                    <div className="flex flex-col items-center justify-center h-full text-center p-6 space-y-3">
+                                        <div className="p-3 bg-muted rounded-full">
+                                            <ShieldCheck className="w-8 h-8 text-muted-foreground/40" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                         </div>
                                         <p className="text-xs text-muted-foreground leading-relaxed">لا يوجد قاصرين متاحين بدون أوصياء حالياً</p>
                                     </div>
@@ -309,6 +461,7 @@ export function GuardianDialog({
                         </FormField>
 
                         <FormField label="الرقم الوطني" required error={errors.nationalID?.message}>
+<<<<<<< HEAD
                             <Input {...register("nationalID")} placeholder="12xxxxxxxxxx" />
                         </FormField>
 
@@ -317,6 +470,16 @@ export function GuardianDialog({
                         </FormField>
 
                         {effectiveMode === "create" && (
+=======
+                            <Input {...register("nationalID")} className="font-mono font-bold" placeholder="12xxxxxxxxxx" />
+                        </FormField>
+
+                        <FormField label="رقم صك الوصاية" required={mode === "create"} error={errors.guardianshipDocNumber?.message}>
+                            <Input {...register("guardianshipDocNumber")} className="font-mono font-bold" />
+                        </FormField>
+
+                        {mode === "create" && (
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <FormField label="تاريخ بدء الوصاية" required error={errors.startDate?.message}>
                                 <Controller
                                     name="startDate"
@@ -333,7 +496,11 @@ export function GuardianDialog({
                         )}
 
                         <FormField label="رقم الهاتف" error={errors.phone?.message}>
+<<<<<<< HEAD
                             <Input {...register("phone")} placeholder="7xxxxxxx" />
+=======
+                            <Input {...register("phone")} className="font-mono" placeholder="7xxxxxxx" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         </FormField>
                     </div>
                 </FormSection>
@@ -341,7 +508,11 @@ export function GuardianDialog({
                 {/* المرفقات والوثائق */}
                 <FormSection title="المرفقات والوثائق" icon={FileText}>
                     <NoteBox title="تنبيه" className="mb-4">
+<<<<<<< HEAD
                         {effectiveMode === "create"
+=======
+                        {mode === "create"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             ? "يرجى التأكد من وضوح الوثائق الممسوحة ضوئياً لضمان سرعة قبول الملف."
                             : "اترك الحقول فارغة إذا كنت لا تريد تغيير المرفقات الحالية."
                         }

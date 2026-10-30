@@ -5,8 +5,13 @@ import { useParams } from "react-router-dom";
 import { documentsApi } from "@/api/documents";
 import { retirementApi } from "@/api/retirement";
 import { Button } from "@/components/ui/Button";
+<<<<<<< HEAD
 import { PrintableReportTable, type TableCell } from "@/components/ui/print/PrintableReportTable";
 import { PrintLayout } from "@/components/ui/print/PrintLayout";
+=======
+import { PrintLayout } from "@/components/ui/print/PrintLayout";
+import { PrintableReportTable, type TableCell } from "@/components/ui/print/PrintableReportTable";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { chartColors } from "@/lib/chartColors";
 
 export function MissingDocumentsPrintPage() {

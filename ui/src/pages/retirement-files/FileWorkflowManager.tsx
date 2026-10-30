@@ -15,11 +15,18 @@ import {
     Users,
     Wallet,
 } from "lucide-react";
+<<<<<<< HEAD
 import React, { lazy, Suspense, useCallback, useEffect, useMemo } from "react";
 
 import { Card, type StepItem,Stepper, Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { FILE_SECTION_CODES } from "@/constants/shortcuts";
+=======
+import React, { lazy, Suspense, useCallback, useMemo } from "react";
+
+import { Card, type StepItem,Stepper, Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
+import { Skeleton } from "@/components/ui/Skeleton";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useAuthStore } from "@/stores/authStore";
 import type { RetirementFileDetail } from "@/types/retirement";
 
@@ -71,8 +78,11 @@ interface WorkflowSection {
     label: string;
     description: string;
     tabs: TabKey[];
+<<<<<<< HEAD
     /** التبويب الذي يُفتح عند النقر على القسم (افتراضياً: أول تبويب مرئي) */
     defaultTab?: TabKey;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 const sections: WorkflowSection[] = [
@@ -93,7 +103,10 @@ const sections: WorkflowSection[] = [
         label: "المالية والمعاشات",
         description: "الحسابات والدفاتر",
         tabs: ["entitlements", "salaryPayments", "paymentBooks", "settlements", "recipients"],
+<<<<<<< HEAD
         defaultTab: "paymentBooks",
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     },
     {
         id: "review",
@@ -153,6 +166,7 @@ export function FileWorkflowManager({
         return activeSection.tabs.filter(isTabVisible);
     }, [activeSection, isTabVisible]);
 
+<<<<<<< HEAD
     // التبويب الذي يفتح عند اختيار قسم: defaultTab إن كان مرئياً، وإلا أول تبويب مرئي
     const getSectionLandingTab = useCallback((section: WorkflowSection | undefined): TabKey | undefined => {
         if (!section) return undefined;
@@ -256,6 +270,24 @@ export function FileWorkflowManager({
     return (
         <div className="space-y-1.5 md:space-y-2.5">
             <Card className="px-3 py-2 sm:px-5 sm:py-2.5 rounded-2xl">
+=======
+    const handleSectionClick = (index: number) => {
+        const section = sections[index];
+        const firstVisibleTab = section.tabs.find(isTabVisible);
+        if (firstVisibleTab) {
+            onTabChange(firstVisibleTab);
+        }
+    };
+
+    const stepItems: StepItem[] = sections.map(s => ({
+        label: s.label,
+        description: s.description,
+    }));
+
+    return (
+        <div className="space-y-3 md:space-y-8">
+            <Card className="p-3 sm:p-6 rounded-2xl">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <Stepper
                     steps={stepItems}
                     activeStep={currentSectionIndex}
@@ -264,7 +296,11 @@ export function FileWorkflowManager({
                 />
             </Card>
 
+<<<<<<< HEAD
             <Tabs dir="rtl" value={activeTab} onValueChange={(v) => onTabChange(v as TabKey)} className="space-y-1.5 md:space-y-2.5 text-start">
+=======
+            <Tabs dir="rtl" value={activeTab} onValueChange={(v) => onTabChange(v as TabKey)} className="space-y-2 md:space-y-6 text-start">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <div className="relative border-b border-border">
                     <TabsList className="h-auto bg-transparent p-0 gap-0 w-full flex overflow-x-auto scrollbar-hide">
                         {visibleTabsInActiveSection.map((tabKey) => {
@@ -273,8 +309,12 @@ export function FileWorkflowManager({
                                 <TabsTrigger
                                     key={tabKey}
                                     value={tabKey}
+<<<<<<< HEAD
                                     aria-keyshortcuts="Alt+ArrowLeft Alt+ArrowRight"
                                     className="group relative gap-2 px-3.5 py-2.5 whitespace-nowrap flex-shrink-0 rounded-none border-0 bg-transparent font-semibold text-xs sm:text-sm text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors duration-200 data-[state=active]:text-primary data-[state=active]:bg-transparent after:absolute after:bottom-0 after:inset-x-0 after:h-0.5 after:bg-primary after:scale-x-0 after:transition-transform after:duration-200 data-[state=active]:after:scale-x-100"
+=======
+                                    className="group relative gap-2 px-4 py-3 whitespace-nowrap flex-shrink-0 rounded-none border-0 bg-transparent font-semibold text-sm text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors duration-200 data-[state=active]:text-primary data-[state=active]:bg-transparent after:absolute after:bottom-0 after:inset-x-0 after:h-0.5 after:bg-primary after:scale-x-0 after:transition-transform after:duration-200 data-[state=active]:after:scale-x-100"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 >
                                     {config.icon}
                                     {config.label}
@@ -290,7 +330,11 @@ export function FileWorkflowManager({
                 </div>
 
 
+<<<<<<< HEAD
                 <div className="mt-2.5">
+=======
+                <div className="mt-6">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <Suspense fallback={<TabLoadingSkeleton />}>
                         <TabsContent value="entitled" className="m-0 focus-visible:outline-none">
                             <EntitledPersonsTab fileId={file.fileID} />

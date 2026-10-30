@@ -1,19 +1,29 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
+=======
+import { useCallback, useMemo, useState } from "react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     BarChart3,
     FileSpreadsheet,
     FileText,
     Users
 } from "lucide-react";
+<<<<<<< HEAD
 import { useCallback, useMemo, useState } from "react";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 import {
     discrepancyApi,
     type DiscrepancyFilter,
     type RetireeDiscrepancy
 } from "@/api/discrepancy";
+<<<<<<< HEAD
 import { ReportBarChart } from "@/components/common/charts/ReportBarChart";
 import { ReportPieChart } from "@/components/common/charts/ReportPieChart";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Badge,
     Button,
@@ -29,6 +39,11 @@ import {
     Text
 } from "@/components/ui";
 import type { CustomColumnDef } from "@/components/ui/DataTable";
+<<<<<<< HEAD
+=======
+import { ReportBarChart } from "@/components/common/charts/ReportBarChart";
+import { ReportPieChart } from "@/components/common/charts/ReportPieChart";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function KashfReportsPage() {
     const [filter, setFilter] = useState<DiscrepancyFilter>({

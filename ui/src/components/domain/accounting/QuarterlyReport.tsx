@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿import { useQuery } from "@tanstack/react-query";
 import { useCallback,useEffect, useState } from "react";
 
@@ -14,6 +15,28 @@ import type { FiscalYearSummaryDto, QuarterDto } from "@/types/accounting";
 interface QuarterlyReportProps {
   fiscalYearId?: number;
   externalFilters?: { quarterId?: number };
+=======
+import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect, useCallback } from "react";
+
+import { reportsApi, fiscalYearsApi, quartersApi } from "@/api/accounting";
+import type { FiscalYearSummaryDto, QuarterDto } from "@/types/accounting";
+import { formatCurrency } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { AccountingReportLayout } from "@/components/common/AccountingReportLayout";
+import { ReportBarChart, ReportPieChart } from "@/components/common/charts";
+import { chartColors } from "@/lib/chartColors";
+import { Card } from "@/components/ui/Card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/Select";
+import {
+  createWorkbook, buildReportHeader, styleDataCell, altRowFill,
+  buildReportFooter, exportWorkbook, autoFitColumns,
+} from "@/components/domain/print/excel.utils";
+
+interface QuarterlyReportProps {
+  fiscalYearId?: number;
+  externalFilters?: { quarter?: number };
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   hideInternalControls?: boolean;
 }
 
@@ -43,14 +66,23 @@ export function QuarterlyReport({ fiscalYearId, externalFilters, hideInternalCon
   }, [fiscalYears, fiscalYearId]);
 
   useEffect(() => {
+<<<<<<< HEAD
     if (externalFilters?.quarterId && quarters) {
       const match = quarters.find((q: QuarterDto) => q.quarterID === externalFilters.quarterId);
+=======
+    if (externalFilters?.quarter && quarters) {
+      const match = quarters.find((q: QuarterDto) => q.quarterNumber === externalFilters.quarter);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       if (match) setSelectedQuarterId(match.quarterID);
     } else if (quarters && quarters.length > 0 && !selectedQuarterId) {
       const openQ = quarters.find((q: QuarterDto) => !q.isClosed);
       setSelectedQuarterId(openQ?.quarterID ?? quarters[quarters.length - 1].quarterID);
     }
+<<<<<<< HEAD
   }, [externalFilters?.quarterId, quarters, selectedQuarterId]);
+=======
+  }, [quarters]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
   const selectedQuarter = quarters?.find((q: QuarterDto) => q.quarterID === selectedQuarterId);
 
@@ -67,12 +99,58 @@ export function QuarterlyReport({ fiscalYearId, externalFilters, hideInternalCon
     window.open(`/reports/quarterly/print?${params.toString()}`, "_blank");
   }, [selectedYearId, selectedQuarterId]);
 
+<<<<<<< HEAD
 
   const customKPIs = data ? [
     { label: 'إجمالي الإيرادات', value: formatCurrency(data.totalRevenue), color: 'success' },
     { label: 'إجمالي المصروفات', value: formatCurrency(data.totalExpenses), color: 'danger' },
     { label: 'صافي الدخل الفصلي', value: formatCurrency(data.netIncome), color: data.netIncome >= 0 ? 'text-green-600' : 'text-red-600' },
     { label: 'الفصل', value: selectedQuarter?.quarterName || '', color: 'primary' },
+=======
+  const handleExportExcel = useCallback(async () => {
+    if (!data) return;
+    const { ws } = createWorkbook("التقرير الفصلي");
+    autoFitColumns(ws, { 1: 30, 2: 20 });
+    const dataStartRow = await buildReportHeader(ws, "التقرير الفصلي", 2, [
+      { label: "الفصل", value: selectedQuarter?.quarterName || "" },
+    ]);
+
+    let row = dataStartRow;
+    const writeSection = (title: string, lines: { accountName: string; amount: number }[], total: number) => {
+      ws.getRow(row).getCell(1).value = title;
+      styleDataCell(ws.getRow(row).getCell(1), { bold: true });
+      row++;
+      lines.forEach((line, i) => {
+        ws.getRow(row).getCell(1).value = line.accountName;
+        ws.getRow(row).getCell(2).value = line.amount;
+        styleDataCell(ws.getRow(row).getCell(2), { numFmt: "#,##0" });
+        altRowFill(ws.getRow(row).getCell(1), i);
+        altRowFill(ws.getRow(row).getCell(2), i);
+        row++;
+      });
+      ws.getRow(row).getCell(1).value = `إجمالي ${title}`;
+      ws.getRow(row).getCell(2).value = total;
+      styleDataCell(ws.getRow(row).getCell(1), { bold: true });
+      styleDataCell(ws.getRow(row).getCell(2), { numFmt: "#,##0", bold: true });
+      row++;
+    };
+
+    writeSection("الإيرادات", data.revenues, data.totalRevenue);
+    writeSection("المصروفات", data.expenses, data.totalExpenses);
+    ws.getRow(row).getCell(1).value = "صافي الدخل";
+    ws.getRow(row).getCell(2).value = data.netIncome;
+    styleDataCell(ws.getRow(row).getCell(1), { bold: true });
+    styleDataCell(ws.getRow(row).getCell(2), { numFmt: "#,##0", bold: true });
+    buildReportFooter(ws, 2);
+    await exportWorkbook(ws.workbook, `التقرير_الفصلي_${selectedQuarter?.quarterName || ""}`);
+  }, [data, selectedQuarter]);
+
+  const customKPIs = data ? [
+    { label: 'إجمالي الإيرادات', value: formatCurrency(data.totalRevenue), color: 'text-green-600' },
+    { label: 'إجمالي المصروفات', value: formatCurrency(data.totalExpenses), color: 'text-red-600' },
+    { label: 'صافي الدخل الفصلي', value: formatCurrency(data.netIncome), color: data.netIncome >= 0 ? 'text-green-600' : 'text-red-600' },
+    { label: 'الفصل', value: selectedQuarter?.quarterName || '', color: 'text-primary' },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   ] : [];
 
   const chartContent = data ? (
@@ -104,7 +182,11 @@ export function QuarterlyReport({ fiscalYearId, externalFilters, hideInternalCon
   const filterBar = hideInternalControls ? undefined : (
     <Card className="p-4 flex flex-wrap gap-4 items-end mb-6">
       <div className="w-full sm:w-48">
+<<<<<<< HEAD
         <label className="label-filter">السنة المالية</label>
+=======
+        <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">السنة المالية</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         <Select
           value={selectedYearId != null ? String(selectedYearId) : undefined}
           onValueChange={(v) => {
@@ -125,7 +207,11 @@ export function QuarterlyReport({ fiscalYearId, externalFilters, hideInternalCon
         </Select>
       </div>
       <div className="w-full sm:w-48">
+<<<<<<< HEAD
         <label className="label-filter">الفصل المالي</label>
+=======
+        <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">الفصل المالي</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         <Select
           value={selectedQuarterId != null ? String(selectedQuarterId) : undefined}
           onValueChange={(v) => setSelectedQuarterId(Number(v))}
@@ -148,7 +234,11 @@ export function QuarterlyReport({ fiscalYearId, externalFilters, hideInternalCon
   const renderLines = (lines: { accountCode: string; accountName: string; amount: number; accountLevel: number }[]) => {
     return lines.map((line, i) => (
       <div key={i} className={cn(
+<<<<<<< HEAD
         "flex justify-between px-3 py-1.5 border-t border-border text-sm",
+=======
+        "flex justify-between px-3 py-1.5 border-t border-border/30 text-sm",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         line.accountLevel <= 1 && "font-medium bg-muted/20",
         line.accountLevel === 2 && "pr-6",
         line.accountLevel >= 3 && "pr-10 text-xs"
@@ -167,7 +257,13 @@ export function QuarterlyReport({ fiscalYearId, externalFilters, hideInternalCon
       customKPIs={customKPIs}
       filterBar={filterBar}
       chartContent={chartContent}
+<<<<<<< HEAD
       onPrint={hideInternalControls ? undefined : (data ? handlePrint : undefined)}    >
+=======
+      onPrint={hideInternalControls ? undefined : (data ? handlePrint : undefined)}
+      onExport={hideInternalControls ? undefined : (data ? handleExportExcel : undefined)}
+    >
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       {selectedQuarter && (
         <div className="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-2 rounded-xl text-sm flex justify-between mb-4">
           <span>

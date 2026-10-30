@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+<<<<<<< HEAD
 import { Bar, BarChart, CartesianGrid, Cell,ResponsiveContainer, XAxis, YAxis } from "recharts";
 
 import { Heading } from "@/components/ui";
@@ -11,6 +12,20 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart";
+=======
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Cell } from "recharts";
+
+import { Card } from "@/components/ui/Card";
+import { Heading } from "@/components/ui";
+import {
+    ChartContainer,
+    ChartTooltip,
+    ChartTooltipContent,
+    ChartLegend,
+    ChartLegendContent,
+} from "@/components/ui/chart";
+import type { ChartConfig } from "@/components/ui/chart";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { chartColors } from "@/lib/chartColors";
 import { cn, formatNumber } from "@/lib/utils";
 
@@ -95,7 +110,11 @@ function HorizontalBarChart({
         const firstKey = yKeys[0]?.key;
         if (!firstKey) return data;
 
+<<<<<<< HEAD
         const arr = [...data].filter((d) => String(d[xKey] ?? "") !== "");
+=======
+        let arr = [...data].filter((d) => String(d[xKey] ?? "") !== "");
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (sortByValue) {
             arr.sort((a, b) => Number(b[firstKey] ?? 0) - Number(a[firstKey] ?? 0));
         }
@@ -150,7 +169,11 @@ function HorizontalBarChart({
                         dir="rtl"
                     >
                         <div className="flex items-center justify-between text-sm">
+<<<<<<< HEAD
                             <span className="truncate flex-1 font-semibold text-foreground transition-colors group-hover:text-foreground text-start">
+=======
+                            <span className="truncate flex-1 font-semibold text-foreground/90 transition-colors group-hover:text-foreground text-start">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 {String(d[xKey])}
                             </span>
                             <div className="shrink-0 flex items-center gap-2 tabular-nums">
@@ -270,7 +293,11 @@ function VerticalBarChart({
                                 maxBarSize={50}
                                 minPointSize={10}
                                 stackId={yk.stackId}
+<<<<<<< HEAD
                                 className="transition-opacity hover:opacity-100"
+=======
+                                className="transition-opacity hover:opacity-80"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             >
                                 {data.map((_, i) => (
                                     <Cell
@@ -310,9 +337,15 @@ export const ReportBarChart = React.memo(function ReportBarChart({
 
     if (!hasData) {
         return (
+<<<<<<< HEAD
             <Card className={cn("border border-border bg-card shadow-sm flex flex-col items-center justify-center min-h-[300px]", className)}>
                 <div className="flex flex-col items-center gap-2 text-muted-foreground">
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-100">
+=======
+            <Card className={cn("border border-border/60 bg-card shadow-sm flex flex-col items-center justify-center min-h-[300px]", className)}>
+                <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-50">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <path d="M3 3v18h18" />
                         <path d="M18 17V9" />
                         <path d="M13 17V5" />
@@ -325,9 +358,15 @@ export const ReportBarChart = React.memo(function ReportBarChart({
     }
 
     return (
+<<<<<<< HEAD
         <Card className={cn("border border-border bg-card shadow-sm transition-shadow duration-200 hover:shadow-md flex flex-col overflow-hidden", className)}>
             {title && (
                 <div dir="rtl" className="px-5 pt-5 pb-2 shrink-0 border-b border-border">
+=======
+        <Card className={cn("border border-border/60 bg-card shadow-sm transition-shadow duration-200 hover:shadow-md flex flex-col overflow-hidden", className)}>
+            {title && (
+                <div dir="rtl" className="px-5 pt-5 pb-2 shrink-0 border-b border-border/40">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <Heading level="h3" className="text-sm font-bold text-foreground">
                         {title}
                     </Heading>

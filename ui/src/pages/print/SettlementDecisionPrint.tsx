@@ -7,8 +7,13 @@ import { settlementApi } from "@/api/settlements";
 import { PrintSignatureBlock } from "@/components/common/PrintSignatureBlock";
 import { PrintSummaryBox } from "@/components/common/PrintSummaryBox";
 import { Button } from "@/components/ui/Button";
+<<<<<<< HEAD
 import { PrintLayout } from "@/components/ui/print/PrintLayout";
 import { formatDate } from "@/lib/utils";
+=======
+import { formatDate } from "@/lib/utils";
+import { PrintLayout } from "@/components/ui/print/PrintLayout";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Print Page ────────────────────────────────────────
 
@@ -133,7 +138,11 @@ export function SettlementDecisionPrint() {
                                     <tbody className="divide-y divide-gray-200 print:divide-black">
                                         {items.map((item, index) => (
                                             <tr key={item.settlementItemID}>
+<<<<<<< HEAD
                                                 <td className="p-1.5 font-mono text-muted-foreground print:text-black">{index + 1}</td>
+=======
+                                                <td className="p-1.5 font-mono text-muted-foreground/60 print:text-black">{index + 1}</td>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                 <td className="p-1.5 font-mono">{item.militaryNumber || "—"}</td>
                                                 <td className="p-1.5 font-medium">{item.retireeFullName}</td>
                                                 <td className="p-1.5 text-muted-foreground">{item.currentRankName}</td>

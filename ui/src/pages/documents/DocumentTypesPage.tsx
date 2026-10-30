@@ -2,11 +2,20 @@ import { useQuery } from "@tanstack/react-query";
 import { FileText, Pencil, Trash2 } from "lucide-react";
 
 import { documentTypesApi } from "@/api/document-types";
+<<<<<<< HEAD
 import { DocumentTypeDialog } from "@/components/domain/admin/DocumentTypeDialog";
 import { Badge, Button, CrudPageLayout } from "@/components/ui";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { queryKeys } from "@/constants/queryKeys";
 import { useApiMutation,useCrudState } from "@/hooks";
+=======
+import { Badge, Button, CrudPageLayout } from "@/components/ui";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+import { useApiMutation,useCrudState } from "@/hooks";
+import { queryKeys } from "@/constants/queryKeys";
+
+import { DocumentTypeDialog } from "@/components/domain/admin/DocumentTypeDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Types ─────────────────────────────────────────────
 

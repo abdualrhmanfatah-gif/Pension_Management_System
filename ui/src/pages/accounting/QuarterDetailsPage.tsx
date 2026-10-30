@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import {
   Download,
   Printer,
@@ -15,6 +16,25 @@ import type { VoucherDto } from "@/api/vouchers";
 import { vouchersApi } from "@/api/vouchers";
 import { TrialBalanceReport } from "@/components/domain/accounting";
 import { StickyHeader, Text } from "@/components/ui";
+=======
+import { useEffect, useState } from "react";
+import {
+  Wallet,
+  TrendingDown,
+  TrendingUp,
+  RefreshCw,
+  Download,
+  Printer,
+} from "lucide-react";
+
+import { fiscalYearsApi, quartersApi, reportsApi } from "@/api/accounting";
+import { vouchersApi } from "@/api/vouchers";
+import type { TrialBalanceItemDto, FiscalYearSummaryDto, QuarterDto, QuarterDetailsDto } from "@/types/accounting";
+import type { VoucherDto } from "@/api/vouchers";
+import { PrintLayout } from "@/components/ui/print/PrintLayout";
+import { StickyHeader, Text } from "@/components/ui";
+import { cn, formatCurrency } from "@/lib/utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
   Badge,
   Button,
@@ -32,9 +52,24 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui";
+<<<<<<< HEAD
 import { PrintLayout } from "@/components/ui/print/PrintLayout";
 import { cn, formatCurrency } from "@/lib/utils";
 import type { FiscalYearSummaryDto, QuarterDetailsDto,QuarterDto, TrialBalanceItemDto } from "@/types/accounting";
+=======
+import { TrialBalanceReport } from "@/components/domain/accounting";
+import {
+  createWorkbook,
+  buildReportHeader,
+  buildTableHeader,
+  styleDataCell,
+  altRowFill,
+  buildTotalsRow,
+  buildReportFooter,
+  exportWorkbook,
+  type HeaderField,
+} from "@/components/domain/print/excel.utils";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export function QuarterDetailsPage() {
   const [fiscalYearID, setFiscalYearID] = useState<number | "">("");
@@ -102,6 +137,7 @@ export function QuarterDetailsPage() {
   /* ═══ التصدير بتصميم احترافي ═══ */
   const quarterName = selectedQuarter?.quarterName ?? "";
   const yearNum = selectedQuarter?.startDate ? new Date(selectedQuarter.startDate).getFullYear() : "";
+<<<<<<< HEAD
   const [isExporting, setIsExporting] = useState(false);
   const exportQuarterDetails = async (section: "periods" | "expenses") => {
     if (!selectedQuarter || isExporting) return;
@@ -115,6 +151,151 @@ export function QuarterDetailsPage() {
     } finally {
       setIsExporting(false);
     }
+=======
+  const trialTotalDebit = trialBalance?.reduce((s, i) => s + i.totalDebit, 0) ?? 0;
+  const trialTotalCredit = trialBalance?.reduce((s, i) => s + i.totalCredit, 0) ?? 0;
+  void trialTotalCredit;
+
+  const metaQuarter: HeaderField[] = [
+    { label: "الفصل", value: quarterName },
+    { label: "السنة", value: String(yearNum) },
+  ];
+
+  const exportPeriods = async () => {
+    if (!details) return;
+    const { ws } = createWorkbook("تفصيل الفترة");
+    ws.columns = [
+      { header: "", key: "period", width: 25 },
+      { header: "", key: "opening", width: 20 },
+      { header: "", key: "withdrawn", width: 20 },
+      { header: "", key: "spent", width: 20 },
+      { header: "", key: "closing", width: 20 },
+    ];
+    const startRow = await buildReportHeader(ws, "تفصيل حسب الفترة", 5, metaQuarter);
+    buildTableHeader(ws, startRow, ["الفترة", "الرصيد الافتتاحي", "سحب من البنك", "الصرف الفعلي", "الرصيد الختامي"]);
+
+    details.periods.forEach((p, i) => {
+      const r = ws.getRow(startRow + 1 + i);
+      r.getCell(1).value = p.periodName;
+      r.getCell(2).value = p.openingBalance;
+      r.getCell(3).value = p.withdrawn;
+      r.getCell(4).value = p.spent;
+      r.getCell(5).value = p.closingBalance;
+      styleDataCell(r.getCell(1), { bold: true, align: "start" });
+      styleDataCell(r.getCell(2), { numFmt: "#,##0" });
+      styleDataCell(r.getCell(3), { color: "FF1D4ED8", numFmt: "#,##0" });
+      styleDataCell(r.getCell(4), { color: "FFDC2626", numFmt: "#,##0" });
+      styleDataCell(r.getCell(5), { bold: true, numFmt: "#,##0" });
+      for (let c = 1; c <= 5; c++) altRowFill(r.getCell(c), i);
+    });
+
+    const totalRowNum = startRow + 1 + details.periods.length;
+    buildTotalsRow(ws, totalRowNum, [
+      { value: "الإجمالي" },
+      { value: "—" },
+      { value: details.totalWithdrawn, numFmt: "#,##0", color: "FF1D4ED8" },
+      { value: details.totalSpent, numFmt: "#,##0", color: "FFDC2626" },
+      { value: details.remainingBalance, numFmt: "#,##0", bold: true },
+    ]);
+    ws.getRow(totalRowNum).height = 22;
+
+    buildReportFooter(ws, 5);
+    await exportWorkbook(ws.workbook, `فترة_${selectedQuarter?.quarterName ?? "فصل"}`);
+  };
+
+  const exportExpenses = async () => {
+    if (!details) return;
+    const { ws } = createWorkbook("تفصيل المصروفات");
+    ws.columns = [
+      { header: "", key: "code", width: 15 },
+      { header: "", key: "name", width: 35 },
+      { header: "", key: "amount", width: 20 },
+      { header: "", key: "count", width: 12 },
+    ];
+    const startRow = await buildReportHeader(ws, "تفصيل المصروفات حسب الحساب", 4, metaQuarter);
+    buildTableHeader(ws, startRow, ["كود الحساب", "اسم الحساب", "المبلغ", "عدد القيود"]);
+
+    details.expenseBreakdown.forEach((e, i) => {
+      const r = ws.getRow(startRow + 1 + i);
+      r.getCell(1).value = e.accountCode;
+      r.getCell(2).value = e.accountName;
+      r.getCell(3).value = e.amount;
+      r.getCell(4).value = e.entryCount;
+      styleDataCell(r.getCell(1), { bold: true });
+      styleDataCell(r.getCell(2), { bold: true, align: "start" });
+      styleDataCell(r.getCell(3), { color: "FFDC2626", numFmt: "#,##0" });
+      styleDataCell(r.getCell(4), { bold: true });
+      for (let c = 1; c <= 4; c++) altRowFill(r.getCell(c), i);
+    });
+
+    buildReportFooter(ws, 4);
+    await exportWorkbook(ws.workbook, `مصروفات_${selectedQuarter?.quarterName ?? "فصل"}`);
+  };
+
+  const exportTrialBalanceData = async (trialData: TrialBalanceItemDto[]) => {
+    const { ws } = createWorkbook("ميزان المراجعه");
+    const COL_COUNT = 9;
+    ws.columns = [
+      { header: "", key: "code", width: 15 },
+      { header: "", key: "name", width: 28 },
+      { header: "", key: "openDebit", width: 18 },
+      { header: "", key: "openCredit", width: 18 },
+      { header: "", key: "movDebit", width: 18 },
+      { header: "", key: "movCredit", width: 18 },
+      { header: "", key: "closeDebit", width: 18 },
+      { header: "", key: "closeCredit", width: 18 },
+      { header: "", key: "balance", width: 18 },
+    ];
+    const startRow = await buildReportHeader(ws, "ميزان المراجعه للفصل", COL_COUNT, metaQuarter);
+    buildTableHeader(ws, startRow, [
+      "الكود", "الحساب",
+      "افتتاحي مدين", "افتتاحي دائن",
+      "حركه مدين", "حركه دائن",
+      "ختامي مدين", "ختامي دائن",
+      "الرصيد",
+    ]);
+
+    trialData.forEach((item, i) => {
+      const r = ws.getRow(startRow + 1 + i);
+      r.getCell(1).value = item.accountCode;
+      r.getCell(2).value = item.accountName;
+      r.getCell(3).value = item.openingDebit;
+      r.getCell(4).value = item.openingCredit;
+      r.getCell(5).value = item.movementDebit;
+      r.getCell(6).value = item.movementCredit;
+      r.getCell(7).value = item.closingDebit;
+      r.getCell(8).value = item.closingCredit;
+      r.getCell(9).value = item.balance;
+      styleDataCell(r.getCell(1), { bold: true });
+      styleDataCell(r.getCell(2), { bold: true, align: "start" });
+      [3, 4, 5, 6, 7, 8].forEach(c => styleDataCell(r.getCell(c), { numFmt: "#,##0" }));
+      styleDataCell(r.getCell(9), { numFmt: "#,##0", bold: true });
+      for (let c = 1; c <= 9; c++) altRowFill(r.getCell(c), i);
+    });
+
+    const totalRowNum = startRow + 1 + trialData.length;
+    const totOpenDebit = trialData.reduce((s, i) => s + i.openingDebit, 0);
+    const totOpenCredit = trialData.reduce((s, i) => s + i.openingCredit, 0);
+    const totMovDebit = trialData.reduce((s, i) => s + i.movementDebit, 0);
+    const totMovCredit = trialData.reduce((s, i) => s + i.movementCredit, 0);
+    const totCloseDebit = trialData.reduce((s, i) => s + i.closingDebit, 0);
+    const totCloseCredit = trialData.reduce((s, i) => s + i.closingCredit, 0);
+    buildTotalsRow(ws, totalRowNum, [
+      { value: "الإجمالي" },
+      undefined,
+      { value: totOpenDebit, numFmt: "#,##0" },
+      { value: totOpenCredit, numFmt: "#,##0" },
+      { value: totMovDebit, numFmt: "#,##0" },
+      { value: totMovCredit, numFmt: "#,##0" },
+      { value: totCloseDebit, numFmt: "#,##0" },
+      { value: totCloseCredit, numFmt: "#,##0" },
+      { value: trialTotalDebit, numFmt: "#,##0" },
+    ]);
+    ws.getRow(totalRowNum).height = 22;
+
+    buildReportFooter(ws, COL_COUNT);
+    await exportWorkbook(ws.workbook, `ميزان_المراجعه_${selectedQuarter?.quarterName ?? "فصل"}`);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   };
 
   return (
@@ -154,6 +335,7 @@ export function QuarterDetailsPage() {
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Card className="border-none rounded-3xl p-6">
+<<<<<<< HEAD
                   <div className="flex items-center gap-3 mb-3"><div className="p-2 bg-info/10 rounded-xl"><TrendingUp className="w-5 h-5 text-info" /></div><span className="text-sm text-muted-foreground">إجمالي السحب من البنك</span></div>
                   <Text variant="body" className="text-lg md:text-xl lg:text-2xl font-bold text-info">{formatCurrency(details.totalWithdrawn)}</Text>
                 </Card>
@@ -164,6 +346,18 @@ export function QuarterDetailsPage() {
                 <Card className="border-none rounded-3xl p-6">
                   <div className="flex items-center gap-3 mb-3"><div className="p-2 bg-success/10 rounded-xl"><Wallet className="w-5 h-5 text-success" /></div><span className="text-sm text-muted-foreground">المتبقي</span></div>
                   <Text variant="body" className={cn("text-lg md:text-xl lg:text-2xl font-bold", details.remainingBalance >= 0 ? "text-success" : "text-danger")}>{formatCurrency(details.remainingBalance)}</Text>
+=======
+                  <div className="flex items-center gap-3 mb-3"><div className="p-2 bg-blue-100 rounded-xl"><TrendingUp className="w-5 h-5 text-blue-600" /></div><span className="text-sm text-muted-foreground">إجمالي السحب من البنك</span></div>
+                  <Text variant="body" className="text-lg md:text-xl lg:text-2xl font-bold text-blue-700">{formatCurrency(details.totalWithdrawn)}</Text>
+                </Card>
+                <Card className="border-none rounded-3xl p-6">
+                  <div className="flex items-center gap-3 mb-3"><div className="p-2 bg-red-100 rounded-xl"><TrendingDown className="w-5 h-5 text-red-600" /></div><span className="text-sm text-muted-foreground">إجمالي الصرف الفعلي</span></div>
+                  <Text variant="body" className="text-lg md:text-xl lg:text-2xl font-bold text-red-700">{formatCurrency(details.totalSpent)}</Text>
+                </Card>
+                <Card className="border-none rounded-3xl p-6">
+                  <div className="flex items-center gap-3 mb-3"><div className="p-2 bg-green-100 rounded-xl"><Wallet className="w-5 h-5 text-green-600" /></div><span className="text-sm text-muted-foreground">المتبقي</span></div>
+                  <Text variant="body" className={cn("text-lg md:text-xl lg:text-2xl font-bold", details.remainingBalance >= 0 ? "text-green-700" : "text-red-700")}>{formatCurrency(details.remainingBalance)}</Text>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 </Card>
               </div>
 
@@ -186,13 +380,22 @@ export function QuarterDetailsPage() {
                 {/* ── تفصيل الفترة ── */}
                 <TabsContent value="periods" className="mt-4">
                   <Card className="border-none rounded-3xl overflow-hidden">
+<<<<<<< HEAD
                     <div className="p-4 bg-muted/30 font-bold flex items-center justify-between">تفصيل حسب الفترة<Button variant="outline" size="sm" disabled={isExporting} onClick={() => exportQuarterDetails("periods")} className="gap-2"><Download className="w-4 h-4" />تصدير Excel</Button></div>
+=======
+                    <div className="p-4 bg-muted/30 font-bold flex items-center justify-between">تفصيل حسب الفترة<Button variant="outline" size="sm" onClick={() => exportPeriods()} className="gap-2"><Download className="w-4 h-4" />تصدير Excel</Button></div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <div className="overflow-x-auto">
                         <table className="w-full text-base text-foreground" role="table" aria-label="أوامر الصرف">
                       <thead className="bg-muted/50 sticky top-0 z-10"><tr><th className="text-end p-4 text-sm md:text-base lg:text-xl">الفترة</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">الافتتاحي</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">سحب من البنك</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">الصرف الفعلي</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">الختامي</th></tr></thead>
                       <tbody>
+<<<<<<< HEAD
                         {details.periods.map((p) => (<tr key={p.periodID} className="border-t border-border hover:bg-muted/20"><td className="p-4 font-medium">{p.periodName}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(p.openingBalance)}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-info">{p.withdrawn > 0 ? `+${formatCurrency(p.withdrawn)}` : "—"}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">{p.spent > 0 ? `-${formatCurrency(p.spent)}` : "—"}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(p.closingBalance)}</td></tr>))}
                         <tr className="bg-muted/30 font-bold"><td className="p-4">الإجمالي</td><td className="p-4">—</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-info">+{formatCurrency(details.totalWithdrawn)}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">-{formatCurrency(details.totalSpent)}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(details.remainingBalance)}</td></tr>
+=======
+                        {details.periods.map((p) => (<tr key={p.periodID} className="border-t border-border/50 hover:bg-muted/20"><td className="p-4 font-medium">{p.periodName}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(p.openingBalance)}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-blue-600">{p.withdrawn > 0 ? `+${formatCurrency(p.withdrawn)}` : "—"}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">{p.spent > 0 ? `-${formatCurrency(p.spent)}` : "—"}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(p.closingBalance)}</td></tr>))}
+                        <tr className="bg-muted/30 font-bold"><td className="p-4">الإجمالي</td><td className="p-4">—</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-blue-600">+{formatCurrency(details.totalWithdrawn)}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">-{formatCurrency(details.totalSpent)}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{formatCurrency(details.remainingBalance)}</td></tr>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                       </tbody>
                     </table>
                     </div>
@@ -202,12 +405,20 @@ export function QuarterDetailsPage() {
                 {/* ── المصروفات ── */}
                 <TabsContent value="expenses" className="mt-4">
                   <Card className="border-none rounded-3xl overflow-hidden">
+<<<<<<< HEAD
                     <div className="p-4 bg-muted/30 font-bold flex items-center justify-between">تفصيل المصروفات حسب الحساب<Button variant="outline" size="sm" disabled={isExporting} onClick={() => exportQuarterDetails("expenses")} className="gap-2"><Download className="w-4 h-4" />تصدير Excel</Button></div>
+=======
+                    <div className="p-4 bg-muted/30 font-bold flex items-center justify-between">تفصيل المصروفات حسب الحساب<Button variant="outline" size="sm" onClick={() => exportExpenses()} className="gap-2"><Download className="w-4 h-4" />تصدير Excel</Button></div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {details.expenseBreakdown.length > 0 ? (
                       <div className="overflow-x-auto">
                       <table className="w-full text-base text-foreground" role="table" aria-label="تفصيل المصروفات">
                         <thead className="bg-muted/50 sticky top-0 z-10"><tr><th className="text-end p-4 text-sm md:text-base lg:text-xl">كود الحساب</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">اسم الحساب</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">المبلغ</th><th className="text-end p-4 text-sm md:text-base lg:text-xl">عدد القيود</th></tr></thead>
+<<<<<<< HEAD
                         <tbody>{details.expenseBreakdown.map((e) => (<tr key={e.accountID} className="border-t border-border hover:bg-muted/20"><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{e.accountCode}</td><td className="p-4">{e.accountName}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">{formatCurrency(e.amount)}</td><td className="p-4 text-center font-bold text-sm md:text-base lg:text-lg">{e.entryCount}</td></tr>))}</tbody>
+=======
+                        <tbody>{details.expenseBreakdown.map((e) => (<tr key={e.accountID} className="border-t border-border/50 hover:bg-muted/20"><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{e.accountCode}</td><td className="p-4">{e.accountName}</td><td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">{formatCurrency(e.amount)}</td><td className="p-4 text-center font-bold text-sm md:text-base lg:text-lg">{e.entryCount}</td></tr>))}</tbody>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                       </table>
                       </div>
                     ) : (
@@ -238,7 +449,11 @@ export function QuarterDetailsPage() {
                           </thead>
                           <tbody>
                             {quarterVouchers.map((v) => (
+<<<<<<< HEAD
                               <tr key={v.voucherID} className="border-t border-border hover:bg-muted/20">
+=======
+                              <tr key={v.voucherID} className="border-t border-border/50 hover:bg-muted/20">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 <td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg">{v.voucherNumber}</td>
                                 <td className="p-4">{new Date(v.voucherDate).toLocaleDateString("ar-SA")}</td>
                                 <td className="p-4 font-mono font-bold text-sm md:text-base lg:text-lg text-destructive">{formatCurrency(v.amount)}</td>
@@ -276,7 +491,11 @@ export function QuarterDetailsPage() {
                   <Card className="border-none rounded-3xl overflow-hidden">
                     <div className="p-4 bg-muted/30 font-bold">ميزان المراجعه للفصل</div>
                     <div className="p-4">
+<<<<<<< HEAD
                       {selectedQuarter && <TrialBalanceReport fromDate={selectedQuarter.startDate} toDate={selectedQuarter.endDate} />}
+=======
+                      {selectedQuarter && <TrialBalanceReport fromDate={selectedQuarter.startDate} toDate={selectedQuarter.endDate} onExport={(d) => exportTrialBalanceData(d)} />}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     </div>
                   </Card>
                 </TabsContent>
@@ -307,10 +526,17 @@ export function QuarterDetailsPage() {
                   <table className="print-table">
                     <thead><tr><th>البيان</th><th>المبلغ (ريال يمني)</th></tr></thead>
                     <tbody>
+<<<<<<< HEAD
                       <tr><td className="text-start font-bold">إجمالي السحب من البنك</td><td className="mono fb text-info">{formatCurrency(details.totalWithdrawn)}</td></tr>
                       <tr><td className="text-start font-bold">إجمالي الصرف الفعلي</td><td className="mono fb text-danger">{formatCurrency(details.totalSpent)}</td></tr>
                     </tbody>
                     <tfoot><tr><td className="text-start font-black text-xs">الرصيد المتبقي المرحل</td><td className={cn("mono fb text-xs", details.remainingBalance >= 0 ? "text-success" : "text-danger")}>{formatCurrency(details.remainingBalance)}</td></tr></tfoot>
+=======
+                      <tr><td className="text-start font-bold">إجمالي السحب من البنك</td><td className="mono fb text-blue-700">{formatCurrency(details.totalWithdrawn)}</td></tr>
+                      <tr><td className="text-start font-bold">إجمالي الصرف الفعلي</td><td className="mono fb text-red-600">{formatCurrency(details.totalSpent)}</td></tr>
+                    </tbody>
+                    <tfoot><tr><td className="text-start font-black text-xs">الرصيد المتبقي المرحل</td><td className={cn("mono fb text-xs", details.remainingBalance >= 0 ? "text-green-700" : "text-red-600")}>{formatCurrency(details.remainingBalance)}</td></tr></tfoot>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                   </table>
                 </section>
 
@@ -324,13 +550,22 @@ export function QuarterDetailsPage() {
                         <tr key={p.periodID}>
                           <td className="font-bold">{p.periodName}</td>
                           <td className="mono fb">{formatCurrency(p.openingBalance)}</td>
+<<<<<<< HEAD
                           <td className="mono fb text-info">{p.withdrawn > 0 ? `+${formatCurrency(p.withdrawn)}` : "—"}</td>
                           <td className="mono fb text-danger">{p.spent > 0 ? `-${formatCurrency(p.spent)}` : "—"}</td>
+=======
+                          <td className="mono fb text-blue-700">{p.withdrawn > 0 ? `+${formatCurrency(p.withdrawn)}` : "—"}</td>
+                          <td className="mono fb text-red-600">{p.spent > 0 ? `-${formatCurrency(p.spent)}` : "—"}</td>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                           <td className="mono fb">{formatCurrency(p.closingBalance)}</td>
                         </tr>
                       ))}
                     </tbody>
+<<<<<<< HEAD
                     <tfoot><tr><td className="font-black text-xs">الإجمالي</td><td>—</td><td className="mono fb text-info">+{formatCurrency(details.totalWithdrawn)}</td><td className="mono fb text-danger">-{formatCurrency(details.totalSpent)}</td><td className="mono fb">{formatCurrency(details.remainingBalance)}</td></tr></tfoot>
+=======
+                    <tfoot><tr><td className="font-black text-xs">الإجمالي</td><td>—</td><td className="mono fb text-blue-700">+{formatCurrency(details.totalWithdrawn)}</td><td className="mono fb text-red-600">-{formatCurrency(details.totalSpent)}</td><td className="mono fb">{formatCurrency(details.remainingBalance)}</td></tr></tfoot>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                   </table>
                 </section>
 
@@ -340,7 +575,11 @@ export function QuarterDetailsPage() {
                     <div className="print-section-heading"><div className="print-section-number">3</div><span className="print-section-title">تفصيل المصروفات حسب الحساب</span></div>
                     <table className="print-table">
                       <thead><tr><th>كود الحساب</th><th>اسم الحساب</th><th>المبلغ</th><th>عدد القيود</th></tr></thead>
+<<<<<<< HEAD
                       <tbody>{details.expenseBreakdown.map((e) => (<tr key={e.accountID}><td className="mono fb">{e.accountCode}</td><td className="font-bold">{e.accountName}</td><td className="mono fb text-danger">{formatCurrency(e.amount)}</td><td className="fb">{e.entryCount}</td></tr>))}</tbody>
+=======
+                      <tbody>{details.expenseBreakdown.map((e) => (<tr key={e.accountID}><td className="mono fb">{e.accountCode}</td><td className="font-bold">{e.accountName}</td><td className="mono fb text-red-600">{formatCurrency(e.amount)}</td><td className="fb">{e.entryCount}</td></tr>))}</tbody>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     </table>
                   </section>
                 )}
@@ -356,14 +595,22 @@ export function QuarterDetailsPage() {
                           <tr key={v.voucherID}>
                             <td className="mono fb">{v.voucherNumber}</td>
                             <td>{new Date(v.voucherDate).toLocaleDateString("ar-YE")}</td>
+<<<<<<< HEAD
                             <td className="mono fb text-danger">{formatCurrency(v.amount)}</td>
+=======
+                            <td className="mono fb text-red-600">{formatCurrency(v.amount)}</td>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <td className="font-bold">{v.payeeName || "—"}</td>
                             <td>{v.description || "—"}</td>
                             <td className="mono">{v.debitAccountCode}</td>
                           </tr>
                         ))}
                       </tbody>
+<<<<<<< HEAD
                       <tfoot><tr><td className="font-black">الإجمالي ({quarterVouchers.length} سند)</td><td>—</td><td className="mono fb text-danger text-xs">{formatCurrency(quarterVouchers.reduce((sum, v) => sum + v.amount, 0))}</td><td colSpan={3}>—</td></tr></tfoot>
+=======
+                      <tfoot><tr><td className="font-black">الإجمالي ({quarterVouchers.length} سند)</td><td>—</td><td className="mono fb text-red-600 text-xs">{formatCurrency(quarterVouchers.reduce((sum, v) => sum + v.amount, 0))}</td><td colSpan={3}>—</td></tr></tfoot>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     </table>
                   </section>
                 )}
@@ -386,7 +633,11 @@ export function QuarterDetailsPage() {
                             <tr key={item.accountID}>
                               <td className="mono fb" dir="ltr">{item.accountCode}</td>
                               <td className="font-bold">{item.accountName}</td>
+<<<<<<< HEAD
                               <td><span className={cn("px-1.5 rounded-full text-[9px] font-extrabold", item.accountNature === "Debit" ? "bg-info/10 text-info" : "bg-success/10 text-success")}>{item.accountNature === "Debit" ? "مدين" : "دائن"}</span></td>
+=======
+                              <td><span className={cn("px-1.5 rounded-full text-[9px] font-extrabold", item.accountNature === "Debit" ? "bg-blue-100 text-blue-700" : "bg-green-100 text-green-700")}>{item.accountNature === "Debit" ? "مدين" : "دائن"}</span></td>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                               <td className="mono fb">{formatCurrency(item.openingDebit)}</td>
                               <td className="mono fb">{formatCurrency(item.openingCredit)}</td>
                               <td className="mono fb">{formatCurrency(item.movementDebit)}</td>

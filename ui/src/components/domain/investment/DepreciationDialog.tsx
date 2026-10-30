@@ -6,14 +6,24 @@ import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 
 import api from "@/api/axios";
+<<<<<<< HEAD
 import { type DepreciationRecordDto,investmentApi } from "@/api/investment";
+=======
+import { investmentApi, type DepreciationRecordDto } from "@/api/investment";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     BaseFormDialog,
     FormField,
     FormSection,
     Input,
+<<<<<<< HEAD
     NativeSelect,
     NoteBox} from "@/components/ui";
+=======
+    NoteBox,
+    NativeSelect
+} from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation } from "@/hooks";
 
 // ─── Validation Schema ─────────────────────────────────

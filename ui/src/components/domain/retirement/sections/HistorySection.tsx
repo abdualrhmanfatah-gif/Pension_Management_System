@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeftRight, Clock,History, User } from "lucide-react";
 
@@ -5,6 +6,14 @@ import { retirementApi } from "@/api/retirement";
 import { Heading } from "@/components/ui";
 import { EmptyState } from "@/components/ui";
 import { cn, formatDate } from "@/lib/utils";
+=======
+import { Heading } from "@/components/ui";
+import { EmptyState } from "@/components/ui";
+import { useQuery } from "@tanstack/react-query";
+import { retirementApi } from "@/api/retirement";
+import { cn, formatDate } from "@/lib/utils";
+import { History, User, ArrowLeftRight, Clock } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 interface HistorySectionProps {
     fileId: number;
@@ -21,7 +30,11 @@ export function HistorySection({ fileId }: HistorySectionProps) {
     if (isLoading) {
         return (
             <div className="space-y-4 animate-in fade-in duration-500" dir="rtl">
+<<<<<<< HEAD
                 <div className="flex items-center gap-2.5 pb-2 border-b border-border">
+=======
+                <div className="flex items-center gap-2.5 pb-2 border-b border-border/40">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <div className="p-2 rounded-xl bg-primary/10 text-primary">
                         <History className="w-5 h-5" />
                     </div>
@@ -32,7 +45,11 @@ export function HistorySection({ fileId }: HistorySectionProps) {
                     {[1, 2, 3].map((i) => (
                         <div key={i} className="relative pe-8 pb-6">
                             <div className="absolute end-[2px] top-1.5 w-2.5 h-2.5 rounded-full bg-muted animate-pulse" />
+<<<<<<< HEAD
                             <div className="bg-card border border-border rounded-xl p-3.5 space-y-2">
+=======
+                            <div className="bg-card border border-border/50 rounded-xl p-3.5 space-y-2">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 <div className="h-4 bg-muted animate-pulse rounded w-3/4" />
                                 <div className="h-3 bg-muted animate-pulse rounded w-1/2" />
                                 <div className="h-3 bg-muted animate-pulse rounded w-1/3" />
@@ -46,7 +63,11 @@ export function HistorySection({ fileId }: HistorySectionProps) {
 
     return (
         <div className="space-y-4 animate-in fade-in duration-500" dir="rtl">
+<<<<<<< HEAD
             <div className="flex items-center gap-2.5 pb-2 border-b border-border">
+=======
+            <div className="flex items-center gap-2.5 pb-2 border-b border-border/40">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 <div className="p-2 rounded-xl bg-primary/10 text-primary">
                     <History className="w-5 h-5" />
                 </div>
@@ -84,7 +105,11 @@ export function HistorySection({ fileId }: HistorySectionProps) {
                                 )} />
                                 
                                 {/* البطاقة */}
+<<<<<<< HEAD
                                 <div className="bg-card rounded-xl border border-border p-3.5 md:p-4 shadow-sm hover:shadow-md hover:border-primary transition-all duration-300 overflow-hidden">
+=======
+                                <div className="bg-card rounded-xl border border-border/60 p-3.5 md:p-4 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300 overflow-hidden">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     {/* العنوان + التاريخ */}
                                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2 min-w-0 overflow-hidden">
                                         <p className="font-bold text-sm text-foreground leading-relaxed break-words flex-1 min-w-0">
@@ -98,7 +123,11 @@ export function HistorySection({ fileId }: HistorySectionProps) {
                                     
                                     {/* تفاصيل التغيير */}
                                     {item.fieldChanges && item.fieldChanges.length > 0 && (
+<<<<<<< HEAD
                                         <div className="mt-2.5 space-y-1.5 bg-muted/30 rounded-lg p-2.5 border border-border overflow-hidden">
+=======
+                                        <div className="mt-2.5 space-y-1.5 bg-muted/30 rounded-lg p-2.5 border border-border/40 overflow-hidden">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             {item.fieldChanges.map((fc, fi) => (
                                                 <div 
                                                     key={fi} 
@@ -108,10 +137,17 @@ export function HistorySection({ fileId }: HistorySectionProps) {
                                                         {fc.fieldName}
                                                     </span>
                                                     <div className="flex-1 min-w-0 flex items-center justify-end gap-2 overflow-hidden">
+<<<<<<< HEAD
                                                         <span className="truncate text-muted-foreground line-through opacity-100 text-start" dir="ltr">
                                                             {fc.oldValue || "—"}
                                                         </span>
                                                         <ArrowLeftRight className="w-3 h-3 shrink-0 text-primary opacity-100" />
+=======
+                                                        <span className="truncate text-muted-foreground line-through opacity-60 text-start" dir="ltr">
+                                                            {fc.oldValue || "—"}
+                                                        </span>
+                                                        <ArrowLeftRight className="w-3 h-3 shrink-0 text-primary opacity-50" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                         <span className="truncate font-bold text-foreground text-start" dir="ltr">
                                                             {fc.newValue || "—"}
                                                         </span>
@@ -122,10 +158,17 @@ export function HistorySection({ fileId }: HistorySectionProps) {
                                     )}
                                     
                                     {/* المستخدم */}
+<<<<<<< HEAD
                                     <div className="flex items-center gap-1.5 mt-2.5 pt-2 border-t border-border min-w-0 overflow-hidden">
                                         <User className="w-3 h-3 text-muted-foreground shrink-0" />
                                         <p className="text-[10px] text-muted-foreground font-medium truncate">
                                             بواسطة: <span className="font-bold text-foreground">{item.changedByUserName || "النظام"}</span>
+=======
+                                    <div className="flex items-center gap-1.5 mt-2.5 pt-2 border-t border-border/30 min-w-0 overflow-hidden">
+                                        <User className="w-3 h-3 text-muted-foreground/60 shrink-0" />
+                                        <p className="text-[10px] text-muted-foreground font-medium truncate">
+                                            بواسطة: <span className="font-bold text-foreground/80">{item.changedByUserName || "النظام"}</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                         </p>
                                     </div>
                                 </div>

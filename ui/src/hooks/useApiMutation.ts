@@ -60,7 +60,10 @@ export function useApiMutation<TData, TVariables, TError = unknown, TContext = u
     return useMutation<TData, TError, TVariables, TContext>({
         mutationFn,
         onSuccess: async (data, variables, _onMutateResult, _context) => {
+<<<<<<< HEAD
             await queryClient.invalidateQueries();
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             // 1. Invalidate Queries
             if (invalidateKeys && invalidateKeys.length > 0) {
                 await Promise.all(

@@ -16,9 +16,15 @@ import { useSidebarStore } from "@/stores/sidebarStore";
 import { useThemeStore } from "@/stores/themeStore";
 
 import { NavDropdown } from "./NavDropdown";
+<<<<<<< HEAD
 import { filterByPermissions, groups, type NavGroup,navItems } from "./navigationData";
 import { NotificationBell } from "./NotificationBell";
 import { SecondaryNav } from "./SecondaryNav";
+=======
+import { NotificationBell } from "./NotificationBell";
+import { SecondaryNav } from "./SecondaryNav";
+import { navItems, groups, filterByPermissions, type NavGroup } from "./navigationData";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Theme Toggle ────────────────────────────────────────
 
@@ -80,7 +86,11 @@ const UserMenu = memo(function UserMenu() {
 
       <DropdownMenuContent align="end" sideOffset={8} className="w-56 sm:w-64 p-1.5">
         {/* User info header */}
+<<<<<<< HEAD
         <div className="px-3 py-2.5 border-b border-border mb-1">
+=======
+        <div className="px-3 py-2.5 border-b border-border/50 mb-1">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
           <p className="text-sm font-semibold">{user?.fullName ?? "مستخدم"}</p>
           <p className="text-xs text-muted-foreground mt-0.5">{user?.username ?? "---"}</p>
         </div>
@@ -171,7 +181,11 @@ export const TopNav = memo(function TopNav() {
 
         <Link
           to="/dashboard"
+<<<<<<< HEAD
           className="flex items-center gap-1.5 sm:gap-2 shrink-0 no-underline hover:no-underline hover:opacity-100 transition-opacity"
+=======
+          className="flex items-center gap-1.5 sm:gap-2 min-w-0 hover:opacity-80 transition-opacity"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         >
           <picture>
             <source srcSet="/pension-logo.webp" type="image/webp" />
@@ -181,7 +195,11 @@ export const TopNav = memo(function TopNav() {
               className="w-7 h-7 sm:w-8 sm:h-8 object-contain shrink-0"
             />
           </picture>
+<<<<<<< HEAD
           <h1 className="text-xs sm:text-sm font-bold text-foreground leading-tight whitespace-nowrap">
+=======
+          <h1 className="text-xs sm:text-sm font-black text-foreground leading-tight truncate">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             صندوق التقاعد الأمني
           </h1>
         </Link>
@@ -194,17 +212,26 @@ export const TopNav = memo(function TopNav() {
       </header>
 
 {/* ── Desktop Header ─────────────────────────── */}
+<<<<<<< HEAD
       <header dir="rtl" className="hidden lg:flex items-center h-14 border-0 border-b border-border bg-background px-4 print:hidden">
         {/* Logo + Name */}
         <Link
           to="/dashboard"
           className="flex items-center gap-2.5 shrink-0 no-underline hover:no-underline hover:opacity-100 transition-opacity"
+=======
+      <header dir="rtl" className="hidden lg:flex items-center h-14 border-0 border-b border-border/50 bg-background px-4 print:hidden">
+        {/* Logo + Name */}
+        <Link
+          to="/dashboard"
+          className="flex items-center gap-2.5 shrink-0 me-4 hover:opacity-80 transition-opacity"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         >
           <picture>
             <source srcSet="/pension-logo.webp" type="image/webp" />
             <img
               src="/pension-logo.png"
               alt="الشعار"
+<<<<<<< HEAD
               className="w-9 h-9 object-contain shrink-0"
             />
           </picture>
@@ -213,13 +240,27 @@ export const TopNav = memo(function TopNav() {
               صندوق التقاعد الأمني
             </h1>
             <p className="text-[11px] font-medium text-muted-foreground leading-none mt-0.5 whitespace-nowrap">
+=======
+              className="w-8 h-8 object-contain shrink-0"
+            />
+          </picture>
+          <div className="min-w-0 hidden xl:block">
+            <h1 className="text-sm font-black text-foreground leading-tight truncate">
+              صندوق التقاعد الأمني
+            </h1>
+            <p className="text-[10px] text-foreground">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
               الإدارة العامة
             </p>
           </div>
         </Link>
 
         {/* Separator */}
+<<<<<<< HEAD
         <div className="w-px h-6 bg-border/60 shrink-0 mx-3" />
+=======
+        <div className="w-px h-6 bg-border/50 shrink-0" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
         {/* Navigation items */}
         <nav className="flex items-center gap-0.5 me-auto px-2">

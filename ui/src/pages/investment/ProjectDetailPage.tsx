@@ -13,10 +13,17 @@ import { Link,useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 import { investmentApi } from "@/api/investment";
+<<<<<<< HEAD
 import { InvestmentDocumentsManager } from "@/components/domain/investment/InvestmentDocumentsManager";
 import { Badge, Breadcrumb, ErrorState, Heading, LoadingIndicator, PageLayout, StatCard, Tabs, TabsContent, TabsList, TabsTrigger, Text } from "@/components/ui";
 import { PROJECT_STATUS } from "@/constants";
 
+=======
+import { Badge, Breadcrumb, ErrorState, Heading, LoadingIndicator, PageLayout, StatCard, Tabs, TabsContent, TabsList, TabsTrigger, Text } from "@/components/ui";
+import { PROJECT_STATUS } from "@/constants";
+
+import { InvestmentDocumentsManager } from "@/components/domain/investment/InvestmentDocumentsManager";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { ProjectPlansTab } from "./tabs/ProjectPlansTab";
 import { ProjectPropertiesTab } from "./tabs/ProjectPropertiesTab";
 import { RiskAssessmentsTab } from "./tabs/RiskAssessmentsTab";
@@ -75,7 +82,11 @@ export function ProjectDetailPage() {
                         <Text variant="description" className="flex items-center gap-2 mt-1 font-medium">
                             <Briefcase className="w-3.5 h-3.5 text-muted-primary" />
                             <span>المحفظة: {project.portfolioName}</span>
+<<<<<<< HEAD
                             <span className="opacity-100">|</span>
+=======
+                            <span className="opacity-30">|</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <Building2 className="w-3.5 h-3.5 text-muted-primary" />
                             <span>النوع: {project.typeName}</span>
                         </Text>
@@ -92,18 +103,30 @@ export function ProjectDetailPage() {
                 <StatCard 
                     title="الإنفاق الفعلي" 
                     value={`${summary?.totalActualSpent?.toLocaleString() || 0} ر.ي`} 
+<<<<<<< HEAD
                     icon={<TrendingUp className="w-4 h-4 text-success" />} 
+=======
+                    icon={<TrendingUp className="w-4 h-4 text-emerald-500" />} 
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     variant="emerald"
                 />
                 <StatCard 
                     title="عدد الأصول" 
                     value={summary?.propertyCount || 0} 
+<<<<<<< HEAD
                     icon={<Building2 className="w-4 h-4 text-info" />} 
+=======
+                    icon={<Building2 className="w-4 h-4 text-blue-500" />} 
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 />
                 <StatCard 
                     title="نسبة الإنجاز" 
                     value={`${summary?.progressPercentage || 0}%`} 
+<<<<<<< HEAD
                     icon={<LayoutDashboard className="w-4 h-4 text-warning" />} 
+=======
+                    icon={<LayoutDashboard className="w-4 h-4 text-amber-500" />} 
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     variant="amber"
                 />
             </div>

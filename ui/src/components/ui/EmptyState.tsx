@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import type { LucideIcon } from "lucide-react";
 import React from "react";
+=======
+import React from "react";
+import type { LucideIcon } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 import { cn } from "@/lib/utils";
 
@@ -36,7 +41,11 @@ export function EmptyState({
         )}>
             <div className="flex items-center justify-center w-16 h-16 rounded-full bg-primary/5 mb-4 group hover:bg-primary/10 transition-colors">
                 {typeof Icon === 'function' ? (
+<<<<<<< HEAD
                     <Icon className="w-8 h-8 text-primary group-hover:text-primary transition-colors" aria-hidden="true" />
+=======
+                    <Icon className="w-8 h-8 text-primary/30 group-hover:text-primary/50 transition-colors" aria-hidden="true" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 ) : React.isValidElement(Icon) ? (
                     Icon
                 ) : (

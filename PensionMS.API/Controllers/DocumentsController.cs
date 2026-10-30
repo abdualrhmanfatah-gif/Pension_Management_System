@@ -172,8 +172,12 @@ public class DocumentsController : ControllerBase
     [Consumes("multipart/form-data")]
     public async Task<IActionResult> Upload(
         [FromForm] UploadDocumentDto dto,
+<<<<<<< HEAD
         [FromHeader(Name = "X-Request-Id")] string? requestId,
         [FromQuery] bool deferPostProcessing = false)
+=======
+        [FromHeader(Name = "X-Request-Id")] string? requestId)
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     {
         var userId = this.GetUserId();
 
@@ -182,6 +186,7 @@ public class DocumentsController : ControllerBase
 
         try
         {
+<<<<<<< HEAD
             var result = await _documentService.UploadAsync(dto, userId, requestId, deferPostProcessing);
             return result.ToActionResult();
         }
@@ -192,6 +197,17 @@ public class DocumentsController : ControllerBase
                 IsSuccess = false,
                 Message = "الوثيقة مرفوعة مسبقاً",
                 Data = ex.Document
+=======
+            var result = await _documentService.UploadAsync(dto, userId, requestId);
+            return result.ToActionResult();
+        }
+        catch (InvalidOperationException ex) when (ex.Message == "DUPLICATE_DOCUMENT")
+        {
+            return Conflict(new ApiResponse<object>
+            {
+                IsSuccess = false,
+                Message = "الوثيقة مرفوعة مسبقاً"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             });
         }
     }
@@ -212,7 +228,11 @@ public class DocumentsController : ControllerBase
     /// فحص وثيقة وتحديث حالة الفحص
     /// </summary>
     [HttpPut("{id:int}/review")]
+<<<<<<< HEAD
     [Authorize(Policy = "File.Review.Approve")]
+=======
+    [Authorize(Policy = "File.View.Sensitive")]
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public async Task<IActionResult> Review(int id, [FromBody] ReviewDocumentDto dto)
     {
         var userId = this.GetUserId();

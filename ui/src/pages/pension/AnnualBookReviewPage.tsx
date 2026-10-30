@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import {
+<<<<<<< HEAD
     AlertTriangle,
     Ban,
     BookOpen,
@@ -15,10 +16,31 @@ import {
     User,
     XCircle,
     ZoomIn,
+=======
+    CalendarDays,
+    Eye,
+    AlertTriangle,
+    Clock,
+    CheckCircle,
+    XCircle,
+    Ban,
+    Download,
+    FileText,
+    User,
+    MapPin,
+    Hash,
+    BookOpen,
+    ZoomIn,
+    ExternalLink,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 } from "lucide-react";
 import { useRef, useState } from "react";
 
 import { paymentBookReviewApi } from "@/api/pension";
+<<<<<<< HEAD
+=======
+import type { PaymentBookReview } from "@/types/pension";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Badge,
     BaseFormDialog,
@@ -31,7 +53,10 @@ import {
 } from "@/components/ui";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
 import { getDocumentUrl } from "@/lib/utils";
+<<<<<<< HEAD
 import type { PaymentBookReview } from "@/types/pension";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 const statusColors: Record<string, "success" | "warning" | "destructive" | "info" | "outline"> = {
     "فعال": "success",
@@ -311,9 +336,15 @@ export function AnnualBookReviewPage() {
                 {selected && (
                     <div className="space-y-6">
                         {/* Header Card */}
+<<<<<<< HEAD
                         <div className="flex items-center justify-between p-4 bg-muted/40 rounded-xl border border-border shadow-xs">
                             <div className="flex items-center gap-3.5">
                                 <div className="p-2.5 bg-primary/10 rounded-xl border border-primary text-primary">
+=======
+                        <div className="flex items-center justify-between p-4 bg-muted/40 rounded-xl border border-border/60 shadow-xs">
+                            <div className="flex items-center gap-3.5">
+                                <div className="p-2.5 bg-primary/10 rounded-xl border border-primary/20 text-primary">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                     <BookOpen className="w-5 h-5" />
                                 </div>
                                 <div>
@@ -332,20 +363,34 @@ export function AnnualBookReviewPage() {
                         {/* Retiree Info */}
                         <FormSection title="بيانات المتقاعد والمستفيد" icon={User} separator>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<<<<<<< HEAD
                                 <InfoPair label="اسم المتقاعد" value={selected.retireeName} icon={<User className="w-4 h-4 text-primary" />} />
                                 <InfoPair label="رقم الملف التقاعدي" value={selected.fileNumber} icon={<Hash className="w-4 h-4 text-primary" />} mono />
                                 <InfoPair label="اسم المستفيد" value={selected.recipientName} icon={<User className="w-4 h-4 text-primary" />} />
                                 <InfoPair label="نوع المستفيد" value={selected.recipientType} icon={<FileText className="w-4 h-4 text-primary" />} />
+=======
+                                <InfoPair label="اسم المتقاعد" value={selected.retireeName} icon={<User className="w-4 h-4 text-primary/70" />} />
+                                <InfoPair label="رقم الملف التقاعدي" value={selected.fileNumber} icon={<Hash className="w-4 h-4 text-primary/70" />} mono />
+                                <InfoPair label="اسم المستفيد" value={selected.recipientName} icon={<User className="w-4 h-4 text-primary/70" />} />
+                                <InfoPair label="نوع المستفيد" value={selected.recipientType} icon={<FileText className="w-4 h-4 text-primary/70" />} />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             </div>
                         </FormSection>
 
                         {/* Book Details */}
                         <FormSection title="بيانات الدفتر والتخصيص" icon={FileText} separator>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<<<<<<< HEAD
                                 <InfoPair label="نوع الدفتر" value={selected.bookType} icon={<BookOpen className="w-4 h-4 text-primary" />} />
                                 <InfoPair label="لون الدفتر" value={selected.legacyColor} icon={<FileText className="w-4 h-4 text-primary" />} />
                                 <InfoPair label="الفرع المُصدر" value={selected.issuingBranchName} icon={<MapPin className="w-4 h-4 text-primary" />} />
                                 <InfoPair label="سبب التغيير / التعديل" value={selected.changeReason} icon={<AlertTriangle className="w-4 h-4 text-primary" />} />
+=======
+                                <InfoPair label="نوع الدفتر" value={selected.bookType} icon={<BookOpen className="w-4 h-4 text-primary/70" />} />
+                                <InfoPair label="لون الدفتر" value={selected.legacyColor} icon={<FileText className="w-4 h-4 text-primary/70" />} />
+                                <InfoPair label="الفرع المُصدر" value={selected.issuingBranchName} icon={<MapPin className="w-4 h-4 text-primary/70" />} />
+                                <InfoPair label="سبب التغيير / التعديل" value={selected.changeReason} icon={<AlertTriangle className="w-4 h-4 text-primary/70" />} />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             </div>
                         </FormSection>
 
@@ -355,16 +400,27 @@ export function AnnualBookReviewPage() {
                                 <InfoPair
                                     label="تاريخ الإصدار"
                                     value={selected.issueDate ? new Date(selected.issueDate).toLocaleDateString("ar-SA") : null}
+<<<<<<< HEAD
                                     icon={<CalendarDays className="w-4 h-4 text-primary" />}
+=======
+                                    icon={<CalendarDays className="w-4 h-4 text-primary/70" />}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 />
                                 <div className="space-y-2">
                                     <InfoPair
                                         label="تاريخ الانتهاء"
                                         value={selected.expiryDate ? new Date(selected.expiryDate).toLocaleDateString("ar-SA") : null}
+<<<<<<< HEAD
                                         icon={<CalendarDays className="w-4 h-4 text-primary" />}
                                     />
                                     {selected.isExpiringSoon && selected.daysUntilExpiry !== null && (
                                         <div className="flex items-center gap-2 p-2.5 bg-amber-500/10 border border-amber-500 text-amber-700 dark:text-amber-400 rounded-lg text-xs font-medium">
+=======
+                                        icon={<CalendarDays className="w-4 h-4 text-primary/70" />}
+                                    />
+                                    {selected.isExpiringSoon && selected.daysUntilExpiry !== null && (
+                                        <div className="flex items-center gap-2 p-2.5 bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 rounded-lg text-xs font-medium">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             <AlertTriangle className="w-4 h-4 shrink-0 text-amber-500" />
                                             <span>متبقي <strong>{selected.daysUntilExpiry}</strong> يوم على انتهاء صلاحية هذا الدفتر</span>
                                         </div>
@@ -380,7 +436,11 @@ export function AnnualBookReviewPage() {
                                     {selected.bookImagePaths.map((imagePath, idx) => (
                                         <div
                                             key={idx}
+<<<<<<< HEAD
                                             className="relative group overflow-hidden rounded-xl border border-border bg-muted/20 hover:border-primary hover:shadow-md transition-all cursor-pointer"
+=======
+                                            className="relative group overflow-hidden rounded-xl border border-border/70 bg-muted/20 hover:border-primary/60 hover:shadow-md transition-all cursor-pointer"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                             onClick={() => setPreviewImage(getDocumentUrl(imagePath) ?? `/${imagePath}`)}
                                         >
                                             <img
@@ -396,7 +456,11 @@ export function AnnualBookReviewPage() {
                                                 <ZoomIn className="w-5 h-5" />
                                                 <span>انقر لتكبير الصورة</span>
                                             </div>
+<<<<<<< HEAD
                                             <span className="absolute top-2.5 end-2.5 bg-background/90 backdrop-blur-xs text-xs font-semibold px-2.5 py-1 rounded-md border border-border shadow-xs group-hover:opacity-0 transition-opacity">
+=======
+                                            <span className="absolute top-2.5 end-2.5 bg-background/90 backdrop-blur-xs text-xs font-semibold px-2.5 py-1 rounded-md border border-border/50 shadow-xs group-hover:opacity-0 transition-opacity">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                                 صورة {idx + 1}
                                             </span>
                                         </div>
@@ -429,7 +493,11 @@ export function AnnualBookReviewPage() {
                                 فتح في تبويب جديد
                             </Button>
                         </div>
+<<<<<<< HEAD
                         <div className="relative flex items-center justify-center p-4 bg-muted/20 rounded-xl min-h-[350px] max-h-[70vh] overflow-auto border border-border">
+=======
+                        <div className="relative flex items-center justify-center p-4 bg-muted/20 rounded-xl min-h-[350px] max-h-[70vh] overflow-auto border border-border/60">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <img
                                 src={previewImage}
                                 alt="معاينة الدفتر المكبرة"

@@ -1,6 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { BarChart3, FileSpreadsheet, FileText, Users } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
+=======
+import { useCallback, useMemo, useState } from "react";
+import { BarChart3, FileSpreadsheet, FileText, Users } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 import { reportsApi } from "@/api/reports";
 import type { RetirementFileReportFilter } from "@/api/retirement";
@@ -198,7 +203,11 @@ export function RetirementFileReportViewer({ className }: RetirementFileReportVi
                 <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
                         <div className="space-y-2">
+<<<<<<< HEAD
                             <label className="label-filter">الرتبة</label>
+=======
+                            <label className="text-xs font-medium text-muted-foreground">الرتبة</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <NativeSelect
                                 placeholder="كل الرتب"
                                 options={
@@ -209,7 +218,11 @@ export function RetirementFileReportViewer({ className }: RetirementFileReportVi
                             />
                         </div>
                         <div className="space-y-2">
+<<<<<<< HEAD
                             <label className="label-filter">الفرع</label>
+=======
+                            <label className="text-xs font-medium text-muted-foreground">الفرع</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <NativeSelect
                                 placeholder="كل الفروع"
                                 options={
@@ -220,7 +233,11 @@ export function RetirementFileReportViewer({ className }: RetirementFileReportVi
                             />
                         </div>
                         <div className="space-y-2">
+<<<<<<< HEAD
                             <label className="label-filter">الجنس</label>
+=======
+                            <label className="text-xs font-medium text-muted-foreground">الجنس</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <NativeSelect
                                 placeholder="الكل"
                                 options={[
@@ -232,7 +249,11 @@ export function RetirementFileReportViewer({ className }: RetirementFileReportVi
                             />
                         </div>
                         <div className="space-y-2">
+<<<<<<< HEAD
                             <label className="label-filter">حالة المراجعة</label>
+=======
+                            <label className="text-xs font-medium text-muted-foreground">حالة المراجعة</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <NativeSelect
                                 placeholder="الكل"
                                 options={[
@@ -245,7 +266,11 @@ export function RetirementFileReportViewer({ className }: RetirementFileReportVi
                             />
                         </div>
                         <div className="space-y-2">
+<<<<<<< HEAD
                             <label className="label-filter">الحالة الاجتماعية</label>
+=======
+                            <label className="text-xs font-medium text-muted-foreground">الحالة الاجتماعية</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <NativeSelect
                                 placeholder="الكل"
                                 options={
@@ -256,7 +281,11 @@ export function RetirementFileReportViewer({ className }: RetirementFileReportVi
                             />
                         </div>
                         <div className="space-y-2">
+<<<<<<< HEAD
                             <label className="label-filter">حالة الملفات</label>
+=======
+                            <label className="text-xs font-medium text-muted-foreground">حالة الملفات</label>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <NativeSelect
                                 placeholder="الكل"
                                 options={
@@ -458,4 +487,8 @@ function ReportSection({
             )}
         </Card>
     );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1

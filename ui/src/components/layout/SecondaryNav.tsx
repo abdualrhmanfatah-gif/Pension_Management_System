@@ -13,12 +13,21 @@ import { useAuthStore } from "@/stores/authStore";
 import { useNavStore } from "@/stores/navStore";
 
 import {
+<<<<<<< HEAD
   filterByPermissions,
   groups,
   type NavGroup,
   type NavItem,
   navItems,
   subGroupLabels,
+=======
+  type NavItem,
+  type NavGroup,
+  subGroupLabels,
+  navItems,
+  groups,
+  filterByPermissions,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 } from "./navigationData";
 
 // ─── Helpers ──────────────────────────────────────────────
@@ -133,7 +142,11 @@ export const SecondaryNav = memo(function SecondaryNav() {
     <div
       dir="rtl"
       className={cn(
+<<<<<<< HEAD
         "sticky top-14 z-40 hidden lg:flex items-center h-10 border-b border-border bg-background px-4 print:hidden"
+=======
+        "sticky top-14 z-40 hidden lg:flex items-center h-10 border-b border-border/30 bg-background px-4 print:hidden"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       )}
     >
       <nav className="flex items-center gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

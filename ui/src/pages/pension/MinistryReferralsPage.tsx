@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     ArrowLeft,
@@ -13,25 +14,44 @@ import {
     Trash2,
     Users,
     X,
+=======
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+    ArrowLeft,
+    CheckCircle,
+    ClipboardList,
+    Eye,
+    List,
+    Plus,
+    Users,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     XCircle,
 } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import { toast } from "sonner";
 
 import { hrApi } from "@/api/hr";
+=======
+
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     ministryApi,
     type MinistryApprovalBatchDto,
     type MinistryApprovalItemDto,
 } from "@/api/ministry";
+<<<<<<< HEAD
 import { lookupApi } from "@/api/pension";
 import { SearchDialog } from "@/components/common/SearchDialog";
 import { AddReferralItemDialog } from "@/components/domain/force/AddReferralItemDialog";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Badge,
     Button,
     CrudPageLayout,
+<<<<<<< HEAD
     Select,
     SelectContent,
     SelectItem,
@@ -55,6 +75,18 @@ const GENDER_OPTIONS = [
 export function MinistryReferralsPage() {
     const navigate = useNavigate();
     const canManage = useHasPermission("Ministry.Manage", "System.Admin");
+=======
+    StatCard,
+} from "@/components/ui";
+import { SearchDialog } from "@/components/common/SearchDialog";
+import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
+import { toast } from "sonner";
+
+type ViewMode = "batches" | "all-items";
+
+export function MinistryReferralsPage() {
+    const navigate = useNavigate();
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const queryClient = useQueryClient();
     const { searchTerm, setSearchTerm, debouncedValue } =
         useDebouncedSearch();
@@ -67,6 +99,7 @@ export function MinistryReferralsPage() {
     const [processedFilter, setProcessedFilter] = useState<
         "all" | "processed" | "pending"
     >("all");
+<<<<<<< HEAD
     const [itemDialogOpen, setItemDialogOpen] = useState(false);
     const [editingItem, setEditingItem] =
         useState<MinistryApprovalItemDto | null>(null);
@@ -107,6 +140,8 @@ export function MinistryReferralsPage() {
         queryFn: () => hrApi.getRanks(),
         staleTime: 5 * 60_000,
     });
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     const { data: stats } = useQuery({
         queryKey: ["ministry-stats"],
@@ -126,15 +161,22 @@ export function MinistryReferralsPage() {
             selectedBatch?.batchID,
             page,
             debouncedValue,
+<<<<<<< HEAD
             gender,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         ],
         queryFn: () =>
             ministryApi.getBatchItems(
                 selectedBatch!.batchID,
                 page,
                 20,
+<<<<<<< HEAD
                 debouncedValue || undefined,
                 gender ? Number(gender) : undefined
+=======
+                debouncedValue || undefined
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             ),
         enabled: !!selectedBatch,
     });
@@ -145,7 +187,10 @@ export function MinistryReferralsPage() {
             page,
             debouncedValue,
             processedFilter,
+<<<<<<< HEAD
             gender,
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         ],
         queryFn: () =>
             ministryApi.getAllItems(
@@ -156,8 +201,12 @@ export function MinistryReferralsPage() {
                     ? true
                     : processedFilter === "pending"
                         ? false
+<<<<<<< HEAD
                         : undefined,
                 gender ? Number(gender) : undefined
+=======
+                        : undefined
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             ),
         enabled: viewMode === "all-items" && !selectedBatch,
     });
@@ -169,6 +218,7 @@ export function MinistryReferralsPage() {
         ? itemsData?.data?.totalCount || 0
         : allItemsData?.data?.totalCount || 0;
 
+<<<<<<< HEAD
     const canAddItems = canManage && !!selectedBatch;
 
     const availableUnits = useMemo(() => {
@@ -220,6 +270,15 @@ export function MinistryReferralsPage() {
 
         return result;
     }, [items, processedFilter, categoryId, rankId, governorate, unitName, categories, ranks]);
+=======
+    const filteredItems = useMemo(() => {
+        if (viewMode === "all-items") return items;
+        if (processedFilter === "all") return items;
+        if (processedFilter === "processed")
+            return items.filter((i) => i.isProcessed);
+        return items.filter((i) => !i.isProcessed);
+    }, [items, processedFilter, viewMode]);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
     const processMutation = useMutation({
         mutationFn: (itemId: number) => ministryApi.processItem(itemId),
@@ -238,6 +297,7 @@ export function MinistryReferralsPage() {
         },
     });
 
+<<<<<<< HEAD
     const deleteItemMutation = useApiMutation(
         (itemId: number) => ministryApi.deleteManualItem(itemId),
         {
@@ -255,6 +315,8 @@ export function MinistryReferralsPage() {
         }
     );
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     const batchColumns = [
         {
             key: "batchNumber",
@@ -409,6 +471,7 @@ export function MinistryReferralsPage() {
             ),
         },
         {
+<<<<<<< HEAD
             key: "gender",
             header: "الجنس",
             render: (row: MinistryApprovalItemDto) => {
@@ -422,6 +485,8 @@ export function MinistryReferralsPage() {
             },
         },
         {
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             key: "militaryNumber",
             header: "الرقم العسكري",
             render: (row: MinistryApprovalItemDto) => (
@@ -446,7 +511,11 @@ export function MinistryReferralsPage() {
         },
         {
             key: "enrollmentDate",
+<<<<<<< HEAD
             header: "تاريخ الالتحاق",
+=======
+            header: "تاريخ التكليف",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             render: (row: MinistryApprovalItemDto) => (
                 <span className="text-sm">
                     {row.enrollmentDate
@@ -472,7 +541,11 @@ export function MinistryReferralsPage() {
         },
         {
             key: "salary",
+<<<<<<< HEAD
             header: "المعاش",
+=======
+            header: "الراتب",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
             render: (row: MinistryApprovalItemDto) => (
                 <span className="text-sm font-mono">
                     {row.salary?.toLocaleString() || "—"}
@@ -536,6 +609,7 @@ export function MinistryReferralsPage() {
                             <Plus className="w-4 h-4" />
                         </Button>
                     )}
+<<<<<<< HEAD
                     {canManage && !row.isProcessed && (
                         <Button
                             variant="ghost-action"
@@ -579,14 +653,25 @@ export function MinistryReferralsPage() {
                             variant="ghost"
                             size="sm"
                             className="h-7 px-2 gap-1 text-xs text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-emerald-950/50"
+=======
+                    {!row.isProcessed && (
+                        <Button
+                            variant="ghost-action"
+                            size="sm"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             title="تعليم كمعالج"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 processMutation.mutate(row.approvalItemID);
                             }}
+<<<<<<< HEAD
                             loading={processMutation.isPending && processMutation.variables === row.approvalItemID}
                         >
                             <Play className="w-3.5 h-3.5 me-1" /> معالجة
+=======
+                        >
+                            <CheckCircle className="w-4 h-4" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         </Button>
                     )}
                 </div>
@@ -617,7 +702,11 @@ export function MinistryReferralsPage() {
                 </div>
                 {row.salary && (
                     <div className="flex justify-between">
+<<<<<<< HEAD
                         <span>المعاش:</span>
+=======
+                        <span>الراتب:</span>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <span className="font-mono">{row.salary.toLocaleString()}</span>
                     </div>
                 )}
@@ -634,6 +723,7 @@ export function MinistryReferralsPage() {
                         <Plus className="w-3.5 h-3.5 mr-1" /> إنشاء ملف
                     </Button>
                 )}
+<<<<<<< HEAD
                 {canManage && !row.isProcessed && (
                     <Button 
                         variant="ghost" 
@@ -643,12 +733,19 @@ export function MinistryReferralsPage() {
                         loading={processMutation.isPending && processMutation.variables === row.approvalItemID}
                     >
                         <Play className="w-3.5 h-3.5 me-1" /> معالجة
+=======
+                {!row.isProcessed && (
+                    <Button variant="ghost-action" size="sm" className="flex-1 text-xs"
+                        onClick={() => processMutation.mutate(row.approvalItemID)}>
+                        <CheckCircle className="w-3.5 h-3.5 mr-1" /> معالج
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     </Button>
                 )}
             </div>
         </div>
     );
 
+<<<<<<< HEAD
     const filtersElement = (
         <div className="rounded-2xl border border-border bg-card/50 p-3 sm:p-4 space-y-3 mb-4">
             <div className="flex items-center justify-between flex-wrap gap-2">
@@ -804,6 +901,8 @@ export function MinistryReferralsPage() {
         </div>
     );
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     if (selectedBatch) {
         return (
             <CrudPageLayout
@@ -837,6 +936,7 @@ export function MinistryReferralsPage() {
                 }}
                 headerActions={
                     <div className="flex flex-wrap gap-2 items-center">
+<<<<<<< HEAD
                         {canAddItems && (
                             <Button
                                 variant="primary"
@@ -847,6 +947,8 @@ export function MinistryReferralsPage() {
                                 إضافة محال
                             </Button>
                         )}
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <SearchDialog
                             value={searchTerm}
                             onSelect={(name) => {
@@ -913,6 +1015,7 @@ export function MinistryReferralsPage() {
                         </div>
                     </div>
                 }
+<<<<<<< HEAD
             >
                 {filtersElement}
                 {ConfirmDialogElement}
@@ -928,6 +1031,9 @@ export function MinistryReferralsPage() {
                     item={editingItem}
                 />
             </CrudPageLayout>
+=======
+            />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         );
     }
 
@@ -1041,9 +1147,13 @@ export function MinistryReferralsPage() {
                         </div>
                     </div>
                 }
+<<<<<<< HEAD
             >
                 {filtersElement}
             </CrudPageLayout>
+=======
+            />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         );
     }
 

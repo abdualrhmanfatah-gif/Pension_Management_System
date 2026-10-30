@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import { FileWarning, Loader2 } from "lucide-react";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useCallback, useState } from "react";
 
 import {
@@ -9,11 +12,19 @@ import {
     DialogTitle,
 } from "@/components/ui/Dialog";
 import { cn, formatDate, getDocumentUrl } from "@/lib/utils";
+<<<<<<< HEAD
 import type { DocumentItem as DocumentActionsItem } from "@/types/retirement";
 
 import { DocumentActions } from "./DocumentActions";
 
 /** Document item shape used by this dialog — الحقول كاملة لتمريرها لنموذج التعديل. */
+=======
+import { DocumentActions } from "./DocumentActions";
+import type { DocumentItem as DocumentActionsItem } from "@/types/retirement";
+import { FileWarning, Loader2 } from "lucide-react";
+
+/** Document item shape used by this dialog (subset of retirement types). */
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 export interface DocumentItem {
     documentID: number;
     documentTypeID: number;
@@ -23,6 +34,7 @@ export interface DocumentItem {
     notes?: string | null;
     uploadedByUser?: string | null;
     createdAt: string;
+<<<<<<< HEAD
     entityType?: string | null;
     entityName?: string | null;
     entitledID?: number | null;
@@ -33,6 +45,8 @@ export interface DocumentItem {
     issueDate?: string | null;
     expiryDate?: string | null;
     pendingReviewStatus?: number | null;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 }
 
 interface Props {
@@ -61,6 +75,7 @@ function mapToActionsItem(doc: DocumentItem): DocumentActionsItem {
         notes: doc.notes ?? undefined,
         uploadedByUser: doc.uploadedByUser ?? undefined,
         createdAt: doc.createdAt,
+<<<<<<< HEAD
         entityType: doc.entityType ?? undefined,
         entityName: doc.entityName ?? undefined,
         pendingReviewStatus: doc.pendingReviewStatus ?? undefined,
@@ -71,6 +86,11 @@ function mapToActionsItem(doc: DocumentItem): DocumentActionsItem {
         documentNumber: doc.documentNumber ?? undefined,
         issueDate: doc.issueDate ?? undefined,
         expiryDate: doc.expiryDate ?? undefined,
+=======
+        entityType: undefined,
+        entityName: undefined,
+        pendingReviewStatus: undefined,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     };
 }
 
@@ -185,7 +205,11 @@ export function DocumentViewerDialog({
                         </div>
                     ) : (
                         <div className="flex flex-col items-center justify-center gap-3 text-muted-foreground">
+<<<<<<< HEAD
                             <FileWarning className="h-10 w-10 text-destructive" />
+=======
+                            <FileWarning className="h-10 w-10 text-destructive/70" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                             <div className="text-center">
                                 <p className="font-medium text-foreground">مسار الملف غير متاح</p>
                                 <p className="text-sm mt-0.5">

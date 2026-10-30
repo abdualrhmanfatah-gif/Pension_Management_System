@@ -1,21 +1,39 @@
 import { useQuery } from "@tanstack/react-query";
 import { Edit, Monitor, PlayCircle, Trash2 } from "lucide-react";
+<<<<<<< HEAD
 // Icon mapping from string name to component
 import { Building2, LandPlot, Laptop, Sofa, Truck } from "lucide-react";
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 import { fixedAssetApi, type FixedAssetDto } from "@/api/fixedAssets";
+<<<<<<< HEAD
 import { FixedAssetFormDialog } from "@/components/domain/assets/FixedAssetFormDialog";
 import { Badge, Button, CrudPageLayout } from "@/components/ui";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { ASSET_STATUS_CONFIG } from "@/constants/assets";
 import { ASSET_TYPE_ICONS } from "@/constants/assets";
+=======
+import { Badge, Button, CrudPageLayout } from "@/components/ui";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation, useCrudState } from "@/hooks";
 import { normalizeApiError } from "@/lib/errorUtils";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { useHasPermission } from "@/stores/authStore";
+<<<<<<< HEAD
+=======
+import { ASSET_STATUS_CONFIG } from "@/constants/assets";
+import { ASSET_TYPE_ICONS } from "@/constants/assets";
+
+import { FixedAssetFormDialog } from "@/components/domain/assets/FixedAssetFormDialog";
+
+// Icon mapping from string name to component
+import { Building2, LandPlot, Laptop, Sofa, Truck } from "lucide-react";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 const ICON_MAP: Record<string, React.ReactNode> = {
     Laptop: <Laptop className="w-4 h-4" />,
     Truck: <Truck className="w-4 h-4" />,

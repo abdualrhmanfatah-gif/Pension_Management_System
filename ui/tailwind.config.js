@@ -9,8 +9,12 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+<<<<<<< HEAD
         sans: "var(--font-sans)",
         mono: "var(--font-mono)",
+=======
+        sans: ['"Noto Kufi Arabic"', '"Noto Sans Arabic"', '"Inter"', 'system-ui', 'sans-serif'],
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         label: "var(--label-font-family)",
       },
       colors: {
@@ -63,6 +67,7 @@ export default {
           foreground: "hsl(var(--popover-foreground))",
         },
         success: {
+<<<<<<< HEAD
           DEFAULT: "hsl(var(--gov-success))",
           foreground: "#ffffff",
         },
@@ -87,6 +92,15 @@ export default {
           fg: "hsl(var(--gov-hero-fg))",
         },
         overlay: "hsl(var(--overlay))",
+=======
+          DEFAULT: "#10b981",
+          foreground: "#ffffff",
+        },
+        warning: {
+          DEFAULT: "#f59e0b",
+          foreground: "#ffffff",
+        },
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         brand: {
           DEFAULT: "#1b3a5c",
           foreground: "#ffffff",
@@ -134,6 +148,7 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+<<<<<<< HEAD
       transitionDuration: {
         fast: "var(--transition-duration-fast)",
         base: "var(--transition-duration-base)",
@@ -144,6 +159,8 @@ export default {
         standard: "var(--transition-easing-standard)",
         bounce: "var(--transition-easing-bounce)",
       },
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       zIndex: {
         dialog: "9999",
         dropdown: "10000",
@@ -175,6 +192,7 @@ export default {
         },
       },
       fontSize: {
+<<<<<<< HEAD
         xs: "var(--font-xs)",
         sm: "var(--font-sm)",
         base: ["var(--font-base)", { fontWeight: "var(--font-weight-base)" }],
@@ -184,6 +202,8 @@ export default {
         "2xl": "var(--font-2xl)",
         "3xl": "var(--font-3xl)",
         "4xl": "var(--font-4xl)",
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         label: "var(--label-font-size)",
         micro: ["8px", "12px"],
         xsmall: ["9px", "13px"],

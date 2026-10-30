@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+=======
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     CheckCircle,
     ChevronDown,
@@ -6,6 +10,7 @@ import {
     Clock,
     Eye,
     FileSearch,
+<<<<<<< HEAD
     ThumbsDown,
     ThumbsUp,
     User,
@@ -17,21 +22,44 @@ import { toast } from "sonner";
 
 import { retirementApi } from "@/api/retirement";
 import { SearchDialog } from "@/components/common/SearchDialog";
+=======
+    ThumbsUp,
+    ThumbsDown,
+    XCircle,
+    User,
+} from "lucide-react";
+import { useMemo, useRef, useState, useCallback, useId } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { retirementApi } from "@/api/retirement";
+import type { PendingReviewFile } from "@/types/retirement";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
     Badge,
     Button,
     CrudPageLayout,
     Dialog,
     DialogContent,
+<<<<<<< HEAD
     DialogFooter,
     DialogHeader,
     DialogTitle,
+=======
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     NativeSelect,
     StatCard,
     Textarea,
 } from "@/components/ui";
 import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
+<<<<<<< HEAD
 import type { PendingReviewFile } from "@/types/retirement";
+=======
+import { SearchDialog } from "@/components/common/SearchDialog";
+import { toast } from "sonner";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Reject Dialog ──────────────────────────────────────
 
@@ -152,7 +180,11 @@ function ApproveDialog({
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle className="text-right text-sm font-black flex items-center gap-2">
+<<<<<<< HEAD
                         <ThumbsUp className="w-4 h-4 text-success" />
+=======
+                        <ThumbsUp className="w-4 h-4 text-emerald-600" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         اعتماد الملف: {fileName}
                     </DialogTitle>
                 </DialogHeader>
@@ -244,11 +276,19 @@ export function FileReviewListPage() {
         }
 
         if (filters.status === "pending") {
+<<<<<<< HEAD
             items = items.filter((f: PendingReviewFile) => f.reviewStatus === 1);
         } else if (filters.status === "approved") {
             items = items.filter((f: PendingReviewFile) => f.reviewStatus === 2);
         } else if (filters.status === "rejected") {
             items = items.filter((f: PendingReviewFile) => f.reviewStatus === 3);
+=======
+            items = items.filter((f: PendingReviewFile) => f.reviewStatus === 0);
+        } else if (filters.status === "approved") {
+            items = items.filter((f: PendingReviewFile) => f.reviewStatus === 1);
+        } else if (filters.status === "rejected") {
+            items = items.filter((f: PendingReviewFile) => f.reviewStatus === 2);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         }
 
         return items;
@@ -263,9 +303,15 @@ export function FileReviewListPage() {
 
     const stats = useMemo(() => {
         const total = pendingFiles.length;
+<<<<<<< HEAD
         const pending = pendingFiles.filter((f: PendingReviewFile) => f.reviewStatus === 1).length;
         const approved = pendingFiles.filter((f: PendingReviewFile) => f.reviewStatus === 2).length;
         const rejected = pendingFiles.filter((f: PendingReviewFile) => f.reviewStatus === 3).length;
+=======
+        const pending = pendingFiles.filter((f: PendingReviewFile) => f.reviewStatus === 0).length;
+        const approved = pendingFiles.filter((f: PendingReviewFile) => f.reviewStatus === 1).length;
+        const rejected = pendingFiles.filter((f: PendingReviewFile) => f.reviewStatus === 2).length;
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         return { total, pending, approved, rejected };
     }, [pendingFiles]);
 
@@ -410,10 +456,17 @@ export function FileReviewListPage() {
             key: "reviewStatus",
             header: "الحالة",
             render: (row: PendingReviewFile) => {
+<<<<<<< HEAD
                 if (row.reviewStatus === 2) {
                     return <Badge variant="success">تمت الموافقة</Badge>;
                 }
                 if (row.reviewStatus === 3) {
+=======
+                if (row.reviewStatus === 1) {
+                    return <Badge variant="success">تمت الموافقة</Badge>;
+                }
+                if (row.reviewStatus === 2) {
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     return <Badge variant="danger">مرفوض</Badge>;
                 }
                 return <Badge variant="warning">قيد المراجعة</Badge>;
@@ -427,18 +480,30 @@ export function FileReviewListPage() {
                     <Button
                         variant="ghost"
                         size="sm"
+<<<<<<< HEAD
                         className="text-info  hover:bg-info/15 hover:text-info dark:hover:text-info"
+=======
+                        className="text-blue-600 dark:text-blue-400 hover:bg-blue-500/15 hover:text-blue-700 dark:hover:text-blue-300"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         title="مراجعة الملف"
                         onClick={() => navigate(`/files/${row.fileID}/review`)}
                     >
                         <Eye className="w-4 h-4 shrink-0" />
                     </Button>
+<<<<<<< HEAD
                     {row.reviewStatus === 1 && (
+=======
+                    {row.reviewStatus === 0 && (
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         <>
                             <Button
                                 variant="ghost"
                                 size="sm"
+<<<<<<< HEAD
                                 className="text-success  hover:bg-success/15 hover:text-success dark:hover:text-success"
+=======
+                                className="text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/15 hover:text-emerald-700 dark:hover:text-emerald-300"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 title="اعتماد"
                                 onClick={() => handleApproveClick(row)}
                                 disabled={approveMutation.isPending}
@@ -448,7 +513,11 @@ export function FileReviewListPage() {
                             <Button
                                 variant="ghost"
                                 size="sm"
+<<<<<<< HEAD
                                 className="text-danger  hover:bg-danger/15 hover:text-danger dark:hover:text-danger"
+=======
+                                className="text-red-600 dark:text-red-400 hover:bg-red-500/15 hover:text-red-700 dark:hover:text-red-300"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 title="رفض"
                                 onClick={() => handleRejectClick(row)}
                                 disabled={rejectMutation.isPending}
@@ -510,7 +579,11 @@ export function FileReviewListPage() {
                         getName={(r) => r.retireeFullName}
                         getSubtitle={(r) => r.fileNumber}
                         title="بحث بالاسم"
+<<<<<<< HEAD
                         placeholder="اكتب الرقم العسكري أو الرقم العسكري أو الرقم العسكري أو اسم المتقاعد..."
+=======
+                        placeholder="اكتب اسم المتقاعد أو رقم الملف..."
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         hideTrigger
                     />
                     <Button

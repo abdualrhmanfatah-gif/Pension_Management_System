@@ -13,12 +13,21 @@ import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/stores/authStore";
 
 import {
+<<<<<<< HEAD
   filterByPermissions,
   groupIcons,
   groupLabels,
   type NavGroup,
   type NavItem,
   subGroupLabels,
+=======
+  type NavItem,
+  type NavGroup,
+  groupLabels,
+  groupIcons,
+  subGroupLabels,
+  filterByPermissions,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 } from "./navigationData";
 
 // ─── Helpers ──────────────────────────────────────────────
@@ -133,7 +142,11 @@ export const NavDropdown = memo(function NavDropdown({
         )}
 
         {mainItems.length > 0 && subGroups.length > 0 && (
+<<<<<<< HEAD
           <div className="mx-2 border-t border-border" />
+=======
+          <div className="mx-2 border-t border-border/50" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         )}
 
         {/* All sub-groups — flat list with labels */}
@@ -154,7 +167,11 @@ export const NavDropdown = memo(function NavDropdown({
               return (
                 <div key={sg} className="mb-1">
                   {sgDirectItems.length > 0 && (
+<<<<<<< HEAD
                     <DropdownMenuLabel className="px-2 py-1.5 text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+=======
+                    <DropdownMenuLabel className="px-2 py-1.5 text-[11px] font-bold text-muted-foreground/70 uppercase tracking-wider">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                       {subGroupLabels[sg] || sg}
                     </DropdownMenuLabel>
                   )}
@@ -170,11 +187,19 @@ export const NavDropdown = memo(function NavDropdown({
 
                   {sgNestedGroups.map((nestedGroup) => (
                     <div key={nestedGroup} className="mt-2">
+<<<<<<< HEAD
                       <div className="flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold text-primary tracking-wider">
                         <div className="h-px w-2 bg-primary/30" />
                         {subGroupLabels[nestedGroup] || nestedGroup}
                       </div>
                       <div className="space-y-0.5 border-e-2 border-primary ms-1">
+=======
+                      <div className="flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold text-primary/70 tracking-wider">
+                        <div className="h-px w-2 bg-primary/30" />
+                        {subGroupLabels[nestedGroup] || nestedGroup}
+                      </div>
+                      <div className="space-y-0.5 border-e-2 border-primary/10 ms-1">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         {visibleItems
                           .filter(
                             (i) => i.nestedIn === sg && i.subGroup === nestedGroup

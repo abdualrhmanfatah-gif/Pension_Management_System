@@ -41,11 +41,18 @@ function FormField({ label, required, error, hint, children, className, htmlFor,
         <div className={cn("space-y-1", className)}>
             {label && (
                 <label
+<<<<<<< HEAD
                     id={`${fieldId}-label`}
                     htmlFor={fieldId}
                     className="label-field flex items-center gap-1.5"
                 >
                     {Icon && <Icon className="w-4 h-4 text-muted-foreground" />}
+=======
+                    htmlFor={fieldId}
+                    className="text-sm font-medium text-muted-foreground flex items-center gap-1.5"
+                >
+                    {Icon && <Icon className="w-4 h-4 text-muted-foreground/60" />}
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {label}
                     {required && <span className="text-destructive">*</span>}
                 </label>

@@ -2,10 +2,17 @@ import { FileText } from "lucide-react";
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+<<<<<<< HEAD
 import { ReportCard } from '@/components/common/ReportCard';
 import { Breadcrumb, Heading, PageLayout, Text } from "@/components/ui";
 
 import { REPORT_CATALOG } from '../../api/reports';
+=======
+import { Breadcrumb, Heading, PageLayout, Text } from "@/components/ui";
+
+import { REPORT_CATALOG } from '../../api/reports';
+import { ReportCard } from '@/components/common/ReportCard';
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 export const ReportsPage: React.FC = () => {
     const navigate = useNavigate();
@@ -43,7 +50,11 @@ export const ReportsPage: React.FC = () => {
                                 {category}
                             </Heading>
                             <div className="h-px flex-1 bg-border/60" />
+<<<<<<< HEAD
                             <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest bg-muted px-2 py-0.5 rounded">
+=======
+                            <span className="text-xs font-bold text-muted-foreground/50 uppercase tracking-widest bg-muted px-2 py-0.5 rounded">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 {reports.length} تقارير
                             </span>
                         </div>

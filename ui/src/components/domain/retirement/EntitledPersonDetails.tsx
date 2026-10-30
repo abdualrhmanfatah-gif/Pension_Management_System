@@ -36,8 +36,13 @@ export function EntitledPersonDetails({
 
     return (
         <div className="space-y-3 lg:space-y-4 text-start">
+<<<<<<< HEAD
             <div className="bg-gradient-to-l from-primary/5 to-primary/10 rounded-xl p-3 lg:p-5 border border-primary relative overflow-hidden">
                 <div className="absolute top-0 end-0 p-8 opacity-100 pointer-events-none">
+=======
+            <div className="bg-gradient-to-l from-primary/5 to-primary/10 rounded-xl p-3 lg:p-5 border border-primary/20 relative overflow-hidden">
+                <div className="absolute top-0 end-0 p-8 opacity-[0.03] pointer-events-none">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <UserCircle2 className="w-32 lg:w-48 h-32 lg:h-48 max-w-[40vw] sm:max-w-none" />
                 </div>
 
@@ -93,7 +98,11 @@ export function EntitledPersonDetails({
                                 <Phone className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-muted-foreground flex-shrink-0" />
                                 <div className="flex-1 flex items-center justify-between gap-2">
                                     <p className="text-[10px] lg:text-xs text-muted-foreground font-bold shrink-0">رقم الهاتف</p>
+<<<<<<< HEAD
                                     <p className="text-xs lg:text-sm text-end">{person.phone}</p>
+=======
+                                    <p className="text-xs lg:text-sm font-mono font-bold text-end">{person.phone}</p>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                                 </div>
                             </div>
                         )}
@@ -131,7 +140,11 @@ export function EntitledPersonDetails({
             {person.stopReason && (
                 <div className="bg-card border rounded-xl lg:rounded-lg p-3 lg:p-5 space-y-2 lg:space-y-3">
                     <Heading level="h3" className="text-sm lg:text-lg font-semibold flex items-center gap-2 text-primary border-b pb-2"><FileText className="w-4 h-4 lg:w-5 lg:h-5 shrink-0" /> مبررات الحالة</Heading>
+<<<<<<< HEAD
                     <div className="bg-card/80 p-2.5 lg:p-4 rounded-xl border border-muted italic text-xs lg:text-sm font-bold text-foreground leading-relaxed">"{person.stopReason}"</div>
+=======
+                    <div className="bg-card/80 p-2.5 lg:p-4 rounded-xl border border-muted/30 italic text-xs lg:text-sm font-bold text-foreground/80 leading-relaxed">"{person.stopReason}"</div>
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                 </div>
             )}
         </div>

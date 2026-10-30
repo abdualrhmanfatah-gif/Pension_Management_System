@@ -15,13 +15,22 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { achievementObstacleApi } from "@/api/achievementObstacles";
+<<<<<<< HEAD
 import { Badge, Button, Card, type CustomColumnDef, DataTable, ErrorState, Heading, Loader, PageLayout, StatCard, Text } from "@/components/ui";
+=======
+import { Badge, Button, Card, DataTable, type CustomColumnDef, ErrorState, Heading, Loader, PageLayout, StatCard, Text } from "@/components/ui";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { useApiMutation, useConfirm } from "@/hooks";
 import { useAuthStore, useHasPermission } from "@/stores/authStore";
 import type { AchievementObstacleDto, AchievementObstacleFilter, AchievementObstacleType, TrackingStatus } from "@/types/achievementObstacle";
 
+<<<<<<< HEAD
 import { AchievementObstacleDetailDialog } from "./AchievementObstacleDetailDialog";
 import { AchievementObstacleDialog, type AchievementObstacleFormValues } from "./AchievementObstacleDialog";
+=======
+import { AchievementObstacleDialog, type AchievementObstacleFormValues } from "./AchievementObstacleDialog";
+import { AchievementObstacleDetailDialog } from "./AchievementObstacleDetailDialog";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ─── Constants ─────────────────────────────────────────
 
@@ -179,7 +188,11 @@ const { data: stats } = useQuery({
             <Card className="p-5">
                 {items.length === 0 ? (
                     <div className="border-2 border-dashed rounded-xl py-16 text-center text-muted-foreground bg-muted/10">
+<<<<<<< HEAD
                         <Target className="w-12 h-12 mx-auto mb-3 opacity-100" />
+=======
+                        <Target className="w-12 h-12 mx-auto mb-3 opacity-20" />
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         لا توجد سجلات إنجازات أو معوقات
                     </div>
                 ) : (

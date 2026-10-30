@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+<<<<<<< HEAD
 import {
   AlertCircle,
   BookOpen,
@@ -18,11 +19,35 @@ import { accountsApi, closingApi,fiscalYearsApi } from "@/api/accounting";
 import { fixedAssetApi } from "@/api/fixedAssets";
 import { FixedAssetFormDialog } from "@/components/domain/assets/FixedAssetFormDialog";
 import { StickyHeader } from "@/components/layout/PageLayout";
+=======
+import { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
+import {
+  Calculator,
+  Plus,
+  Trash2,
+  AlertCircle,
+  Wrench,
+  Package,
+  BookOpen,
+  CheckCircle2,
+  ScrollText,
+  RotateCcw,
+} from "lucide-react";
+
+import { accountsApi, fiscalYearsApi, closingApi } from "@/api/accounting";
+import { fixedAssetApi } from "@/api/fixedAssets";
+import { normalizeApiError } from "@/lib/errorUtils";
+import { FixedAssetFormDialog } from "@/components/domain/assets/FixedAssetFormDialog";
+import type { InitialOpeningBalanceLineDto } from "@/types/accounting";
+import type { FiscalYearSummaryDto, ChartOfAccountDto, SeedInitialDefaultsResultDto, InitialOpeningBalanceResponseDto } from "@/types/accounting";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import {
   Badge,
   Button,
   Card,
   ConfirmDialog,
+<<<<<<< HEAD
   DateInput,
   Dialog,
   DialogContent,
@@ -32,20 +57,40 @@ import {
   Heading,
   Input,
   PageLayout,
+=======
+  Heading,
+  Input,
+  DateInput,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+<<<<<<< HEAD
+=======
+  PageLayout,
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
+<<<<<<< HEAD
   Text,
 } from "@/components/ui";
 import { normalizeApiError } from "@/lib/errorUtils";
 import type { InitialOpeningBalanceLineDto } from "@/types/accounting";
 import type { ChartOfAccountDto, FiscalYearSummaryDto, InitialOpeningBalanceResponseDto,SeedInitialDefaultsResultDto } from "@/types/accounting";
+=======
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  Text,
+} from "@/components/ui";
+import { StickyHeader } from "@/components/layout/PageLayout";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 // ═══════════════════════════════════════════════
 // Types
@@ -506,7 +551,11 @@ export function InitialOpeningBalancesPage() {
       </div>
 
       {/* Reset All Button */}
+<<<<<<< HEAD
       <Card className="p-4 border-destructive bg-destructive/5">
+=======
+      <Card className="p-4 border-destructive/30 bg-destructive/5">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         <div className="flex items-center justify-between">
           <div>
             <Heading level="h3" className="text-sm font-semibold text-destructive">تصفير جميع البيانات</Heading>
@@ -519,7 +568,11 @@ export function InitialOpeningBalancesPage() {
       </Card>
 
       {/* Seed Initial Defaults Button */}
+<<<<<<< HEAD
       <Card className="p-4 border-primary bg-primary/5">
+=======
+      <Card className="p-4 border-primary/30 bg-primary/5">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         <div className="flex items-center justify-between">
           <div>
             <Heading level="h3" className="text-sm font-semibold text-primary">إدراج بيانات أولية افتراضية</Heading>
@@ -569,7 +622,11 @@ export function InitialOpeningBalancesPage() {
             ) : (
               <div className="space-y-3">
                 {assets.map((asset, index) => (
+<<<<<<< HEAD
                   <div key={asset.assetID} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-primary">
+=======
+                  <div key={asset.assetID} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-primary/20">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <div className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                         <Wrench className="w-5 h-5 text-primary" />
@@ -637,7 +694,11 @@ export function InitialOpeningBalancesPage() {
             ) : (
               <div className="space-y-3">
                 {inventoryItems.map((item, index) => (
+<<<<<<< HEAD
                   <div key={item.id} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-primary">
+=======
+                  <div key={item.id} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-primary/20">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <div className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                         <Package className="w-5 h-5 text-primary" />
@@ -705,7 +766,11 @@ export function InitialOpeningBalancesPage() {
             ) : (
               <div className="space-y-3">
                 {lines.filter(l => l.accountID > 0 && (l.balance ?? 0) !== 0 && !assets.some(a => a.accountID === l.accountID) && !inventoryItems.some(i => i.accountID === l.accountID)).map((line) => (
+<<<<<<< HEAD
                   <div key={line.accountID} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-primary">
+=======
+                  <div key={line.accountID} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-primary/20">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     <div className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                         <BookOpen className="w-5 h-5 text-primary" />
@@ -844,7 +909,11 @@ export function InitialOpeningBalancesPage() {
                 })()}
 
                 {/* Totals */}
+<<<<<<< HEAD
                 <div className="grid grid-cols-[1fr_100px_120px_120px] gap-4 px-4 py-3 bg-primary/5 rounded-lg items-center border-t-2 border-primary mt-2">
+=======
+                <div className="grid grid-cols-[1fr_100px_120px_120px] gap-4 px-4 py-3 bg-primary/5 rounded-lg items-center border-t-2 border-primary/20 mt-2">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                   <div className="font-bold text-sm">الإجمالي</div>
                   <span></span>
                   <div className="font-mono text-sm font-bold" dir="ltr">{totalDebit.toLocaleString()}</div>

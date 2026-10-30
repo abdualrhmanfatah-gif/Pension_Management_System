@@ -7,7 +7,10 @@ using PensionMS.Core.DTOs.Ministry;
 using PensionMS.Core.DTOs.MinistryApprovals;
 using PensionMS.Core.Interfaces;
 using System.Security.Claims;
+<<<<<<< HEAD
 using System.ComponentModel.DataAnnotations;
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 
 namespace PensionMS.API.Controllers;
 
@@ -60,19 +63,31 @@ public class MinistryApprovalsController : ControllerBase
 
     [HttpGet("batches/{id:int}/items")]
     [Authorize(Policy = "Ministry.View")]
+<<<<<<< HEAD
     public async Task<IActionResult> GetItems(int id, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? q = null,
         [FromQuery, Range(GenderConstants.Male, GenderConstants.Female, ErrorMessage = "قيمة الجنس يجب أن تكون 1 (ذكر) أو 2 (أنثى)")] byte? gender = null)
     {
         var result = await _approvalService.GetBatchItemsAsync(id, pageNumber, pageSize, q, gender);
+=======
+    public async Task<IActionResult> GetItems(int id, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? q = null)
+    {
+        var result = await _approvalService.GetBatchItemsAsync(id, pageNumber, pageSize, q);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         return result.ToActionResult();
     }
 
     [HttpGet("all-items")]
     [Authorize(Policy = "Ministry.View")]
+<<<<<<< HEAD
     public async Task<IActionResult> GetAllItems([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20, [FromQuery] string? q = null, [FromQuery] bool? isProcessed = null,
         [FromQuery, Range(GenderConstants.Male, GenderConstants.Female, ErrorMessage = "قيمة الجنس يجب أن تكون 1 (ذكر) أو 2 (أنثى)")] byte? gender = null)
     {
         var result = await _approvalService.GetAllItemsAsync(pageNumber, pageSize, q, isProcessed, gender);
+=======
+    public async Task<IActionResult> GetAllItems([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20, [FromQuery] string? q = null, [FromQuery] bool? isProcessed = null)
+    {
+        var result = await _approvalService.GetAllItemsAsync(pageNumber, pageSize, q, isProcessed);
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         return result.ToActionResult();
     }
 
@@ -102,6 +117,7 @@ public class MinistryApprovalsController : ControllerBase
         return result.ToActionResult();
     }
 
+<<<<<<< HEAD
     [HttpPut("items/{itemId:int}")]
     [Authorize(Policy = "Ministry.Manage")]
     public async Task<IActionResult> UpdateManualItem(int itemId, [FromBody] UpdateManualItemDto dto)
@@ -119,6 +135,8 @@ public class MinistryApprovalsController : ControllerBase
         return result.ToActionResult();
     }
 
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     [HttpPost("items/{itemId:int}/process")]
     [Authorize(Policy = "Ministry.Manage")]
     public async Task<IActionResult> ProcessItem(int itemId)
@@ -176,7 +194,11 @@ public class MinistryApprovalsController : ControllerBase
         var bytes = await _approvalService.ExportBatchReportAsync(id, format);
         if (bytes == null || bytes.Length == 0) return NotFound();
 
+<<<<<<< HEAD
         var fileName = $"Ministry_Batch_{id}_{PensionMS.Core.Time.YemenTime.Now:yyyyMMdd}";
+=======
+        var fileName = $"Ministry_Batch_{id}_{DateTime.Now:yyyyMMdd}";
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
         if (format.ToLower() == ExportFormatConstants.Pdf)
         {
             return File(bytes, "application/pdf", $"{fileName}.pdf");

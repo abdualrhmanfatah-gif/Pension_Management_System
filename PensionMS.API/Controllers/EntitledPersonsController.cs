@@ -82,7 +82,10 @@ public class EntitledPersonsController : ControllerBase
     /// </summary>
     [HttpPut("{id:int}/stop")]
     [Authorize(Policy = "EntitledPerson.Lifecycle")]
+<<<<<<< HEAD
     [Consumes("multipart/form-data")]
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public async Task<IActionResult> Stop(int id, [FromForm] StopEntitledPersonDto dto)
     {
         var userId = this.GetUserId();
@@ -96,7 +99,10 @@ public class EntitledPersonsController : ControllerBase
     /// </summary>
     [HttpPut("{id:int}/reactivate")]
     [Authorize(Policy = "EntitledPerson.Lifecycle")]
+<<<<<<< HEAD
     [Consumes("multipart/form-data")]
+=======
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
     public async Task<IActionResult> Reactivate(int id, [FromForm] ReactivateEntitledPersonDto dto)
     {
         var userId = this.GetUserId();

@@ -1,9 +1,17 @@
 import React, { useMemo } from 'react';
+<<<<<<< HEAD
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 
 import { Card, CardContent } from '@/components/ui/Card';
 import type { ChartConfig } from '@/components/ui/chart';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+=======
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+
+import { Card, CardContent } from '@/components/ui/Card';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import type { ChartConfig } from '@/components/ui/chart';
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
 import { chartColors } from '@/lib/chartColors';
 import { cn, formatNumber } from '@/lib/utils';
 
@@ -165,7 +173,11 @@ export const ReportPieChart: React.FC<ReportPieChartProps> = ({
 
   return (
     <Card className={cn(
+<<<<<<< HEAD
       "border border-border bg-card shadow-sm transition-shadow duration-200 hover:shadow-md flex flex-col overflow-hidden",
+=======
+      "border border-border/60 bg-card shadow-sm transition-shadow duration-200 hover:shadow-md flex flex-col overflow-hidden",
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
       className
     )}>
 
@@ -207,7 +219,11 @@ export const ReportPieChart: React.FC<ReportPieChartProps> = ({
                       <Cell
                         key={`cell-${index}`}
                         fill={chartConfig[key]?.color}
+<<<<<<< HEAD
                         className="stroke-background hover:opacity-100 transition-opacity duration-200 outline-none"
+=======
+                        className="stroke-background hover:opacity-85 transition-opacity duration-200 outline-none"
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                         strokeWidth={2}
                       />
                     );
@@ -260,7 +276,11 @@ export const ReportPieChart: React.FC<ReportPieChartProps> = ({
                     className="w-3 h-3 rounded-full shrink-0 shadow-sm ring-1 ring-background"
                     style={{ backgroundColor: color }}
                   />
+<<<<<<< HEAD
                   <span className="text-foreground font-medium text-sm truncate">
+=======
+                  <span className="text-foreground/90 font-medium text-sm truncate">
+>>>>>>> 6248c767575198505e27d690a9dbf7172eff0ad1
                     {name}
                   </span>
                 </div>

@@ -16,6 +16,8 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { retirementApi } from "@/api/retirement";
+import { ReactivateEntitledPersonDialog } from "@/components/domain/retirement/ReactivateEntitledPersonDialog";
+import { StopEntitledPersonDialog } from "@/components/domain/retirement/StopEntitledPersonDialog";
 import {
     Badge,
     BaseFormDialog,
@@ -23,11 +25,6 @@ import {
     CrudPageLayout,
     FormField,
     Input,
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
     StatCard,
     yemenPhoneSchema,
 } from "@/components/ui";
@@ -51,23 +48,8 @@ const editSchema = z.object({
     phone: yemenPhoneSchema.optional().or(z.literal("")),
 });
 
-const stopSchema = z.object({
-    stopCode: z.string().min(1, "سبب الإيقاف مطلوب"),
-    stopDate: z.string().min(1, "تاريخ الإيقاف مطلوب"),
-});
-
 type AddForm = z.infer<typeof addSchema>;
 type EditForm = z.infer<typeof editSchema>;
-type StopForm = z.infer<typeof stopSchema>;
-
-const STOP_CODES = [
-    { value: "AGE_LIMIT", label: "ابن >= 24 سنة" },
-    { value: "DAUGHTER_MARRIED", label: "بنت متزوجة" },
-    { value: "WIDOW_REMARRIED", label: "زوجة تزوجت مرة أخرى" },
-    { value: "DECEASED", label: "متوفى" },
-    { value: "ADMIN_DECISION", label: "قرار إداري" },
-    { value: "EMPLOYED", label: "توظيف" },
-];
 
 export function EntitledPersonsPage() {
     const queryClient = useQueryClient();
@@ -132,18 +114,13 @@ export function EntitledPersonsPage() {
         },
     });
 
-    const stopForm = useForm<StopForm>({
-        resolver: zodResolver(stopSchema),
-        defaultValues: { stopCode: "", stopDate: "" },
-    });
-
     const addMutation = useMutation({
         mutationFn: (data: AddForm) => {
             const formData = new FormData();
             formData.append("fullName", data.fullName);
             formData.append("nationalID", data.nationalID);
             formData.append("relationshipID", data.relationshipID);
-            if (data.birthDate) formData.append("birthDate", data.birthDate);
+            if (data.birthDate) formData.append("dateOfBirth", data.birthDate);
             if (data.phone) formData.append("phone", data.phone);
             return retirementApi.createEntitledPerson(fileId!, formData);
         },
@@ -173,42 +150,6 @@ export function EntitledPersonsPage() {
         },
         onError: () => {
             toast.error("خطأ في التحديث");
-        },
-    });
-
-    const stopMutation = useMutation({
-        mutationFn: (data: { id: number; stopCode: string; stopDate: string }) =>
-            retirementApi.stopEntitledPerson(data.id, {
-                stopCode: data.stopCode,
-                stopDate: data.stopDate,
-            }),
-        onSuccess: () => {
-            toast.success("تم إيقاف الاستحقاق بنجاح");
-            queryClient.invalidateQueries({
-                queryKey: queryKeys.retirement.entitledPersons.all,
-            });
-            setStopTarget(null);
-            stopForm.reset();
-        },
-        onError: () => {
-            toast.error("خطأ في إيقاف الاستحقاق");
-        },
-    });
-
-    const reactivateMutation = useMutation({
-        mutationFn: (data: { id: number; reactivationCode: string }) =>
-            retirementApi.reactivateEntitledPerson(data.id, {
-                reactivationCode: data.reactivationCode,
-            }),
-        onSuccess: () => {
-            toast.success("تم إعادة تفعيل الاستحقاق بنجاح");
-            queryClient.invalidateQueries({
-                queryKey: queryKeys.retirement.entitledPersons.all,
-            });
-            setReactivateTarget(null);
-        },
-        onError: () => {
-            toast.error("خطأ في إعادة التفعيل");
         },
     });
 
@@ -564,7 +505,7 @@ export function EntitledPersonsPage() {
                         formData.append("fullName", data.fullName);
                         formData.append("nationalID", data.nationalID);
                         formData.append("relationshipID", data.relationshipID);
-                        if (data.birthDate) formData.append("birthDate", data.birthDate);
+                        if (data.birthDate) formData.append("dateOfBirth", data.birthDate);
                         if (data.phone) formData.append("phone", data.phone);
                         updateMutation.mutate({ id: editTarget.entitledID, formData });
                     }
@@ -616,78 +557,22 @@ export function EntitledPersonsPage() {
                 </div>
             </BaseFormDialog>
 
-            <BaseFormDialog
-                title="إيقاف الاستحقاق"
-                description={stopTarget?.fullName || ""}
-                isOpen={!!stopTarget}
-                onClose={() => {
-                    setStopTarget(null);
-                    stopForm.reset();
-                }}
-                onSubmit={stopForm.handleSubmit((data) => {
-                    if (stopTarget) {
-                        stopMutation.mutate({
-                            id: stopTarget.entitledID,
-                            stopCode: data.stopCode,
-                            stopDate: data.stopDate,
-                        });
-                    }
-                })}
-                size="md"
-            >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <FormField
-                        label="سبب الإيقاف *"
-                        error={stopForm.formState.errors.stopCode?.message}
-                    >
-                        <Select
-                            value={stopForm.watch("stopCode") ?? ""}
-                            onValueChange={(value) => stopForm.setValue("stopCode", value)}
-                        >
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="اختر السبب" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {STOP_CODES.map((c) => (
-                                    <SelectItem key={c.value} value={c.value}>
-                                        {c.label}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </FormField>
-                    <FormField
-                        label="تاريخ الإيقاف *"
-                        error={stopForm.formState.errors.stopDate?.message}
-                    >
-                        <Input
-                            {...stopForm.register("stopDate")}
-                            type="date"
-                        />
-                    </FormField>
-                </div>
-            </BaseFormDialog>
-
-            <BaseFormDialog
-                title="إعادة التفعيل"
-                description={reactivateTarget?.fullName || ""}
-                isOpen={!!reactivateTarget}
-                onClose={() => setReactivateTarget(null)}
-                onSubmit={() => {
-                    if (reactivateTarget) {
-                        reactivateMutation.mutate({
-                            id: reactivateTarget.entitledID,
-                            reactivationCode: "ADMIN_DECISION",
-                        });
-                    }
-                }}
-                size="md"
-            >
-                <p className="text-sm text-muted-foreground">
-                    هل أنت متأكد من إعادة تفعيل استحقاق{" "}
-                    <strong>{reactivateTarget?.fullName}</strong>؟
-                </p>
-            </BaseFormDialog>
+            <StopEntitledPersonDialog
+                open={!!stopTarget}
+                onOpenChange={(open) => { if (!open) setStopTarget(null); }}
+                personId={stopTarget?.entitledID ?? 0}
+                targetName={stopTarget?.fullName ?? ""}
+                fileId={stopTarget?.fileID ?? fileId ?? 0}
+                onSuccess={() => { void queryClient.invalidateQueries({ queryKey: ["entitled-persons-search"] }); }}
+            />
+            <ReactivateEntitledPersonDialog
+                open={!!reactivateTarget}
+                onOpenChange={(open) => { if (!open) setReactivateTarget(null); }}
+                personId={reactivateTarget?.entitledID ?? 0}
+                targetName={reactivateTarget?.fullName ?? ""}
+                fileId={reactivateTarget?.fileID ?? fileId ?? 0}
+                onSuccess={() => { void queryClient.invalidateQueries({ queryKey: ["entitled-persons-search"] }); }}
+            />
         </CrudPageLayout>
     );
 }

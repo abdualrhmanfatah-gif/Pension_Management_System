@@ -6,7 +6,10 @@ using PensionMS.Core.DTOs.Documents;
 using PensionMS.Core.DTOs.EntitledPersons;
 using PensionMS.Core.Entities;
 using PensionMS.Core.Interfaces;
+using PensionMS.Core.Rules.Documents;
+using PensionMS.Core.Rules.Entitlements;
 using PensionMS.Infrastructure.Helpers;
+using PensionMS.Infrastructure.Data;
 
 namespace PensionMS.Infrastructure.Services.Pension.Beneficiaries;
 
@@ -245,6 +248,8 @@ public class EntitledPersonService : IEntitledPersonService
             return ApiResponse<EntitledPersonDto>.Fail("المستحق غير موجود");
 
         // التحقق من التعارض (Optimistic Concurrency)
+        if (dto.IsEligible.HasValue && dto.IsEligible.Value != ep.IsActive)
+            return ApiResponse<EntitledPersonDto>.Fail("لا يمكن تغيير حالة الاستحقاق من تعديل البيانات؛ استخدم إجراء الإيقاف أو إعادة التفعيل المخصص");
         if (dto.UpdatedAt.HasValue && ep.UpdatedAt.HasValue &&
             ep.UpdatedAt.Value > dto.UpdatedAt.Value)
         {
@@ -262,7 +267,7 @@ public class EntitledPersonService : IEntitledPersonService
         if (dto.HealthStatusID.HasValue) 
             ep.HealthStatusID = (dto.HealthStatusID.Value == 0) ? null : dto.HealthStatusID;
 
-        if (dto.IsEligible.HasValue) ep.IsActive = dto.IsEligible.Value;
+        // يبقى الحقل في العقد للتوافق؛ تغيير الحالة يتطلب مسار دورة الحياة وصلاحيته.
         if (dto.HasDisabilityException.HasValue) ep.HasDisabilityException = dto.HasDisabilityException.Value;
         if (dto.RelationshipID.HasValue) ep.RelationshipID = dto.RelationshipID.Value;
         if (dto.DateOfBirth.HasValue) ep.BirthDate = dto.DateOfBirth.Value;
@@ -409,54 +414,29 @@ public class EntitledPersonService : IEntitledPersonService
     // STOP — إيقاف الاستحقاق
     // ════════════════════════════════════════════════════════════
 
-    public async Task<ApiResponse<bool>> StopAsync(int id, StopEntitledPersonDto dto, int userId)
+    public Task<ApiResponse<bool>> StopAsync(int id, StopEntitledPersonDto dto, int userId)
+        => ExecuteLifecycleAsync(id, () => StopCoreAsync(id, dto, userId));
+
+    private async Task<ApiResponse<bool>> StopCoreAsync(int id, StopEntitledPersonDto dto, int userId)
     {
         var queries = await _access.ForCurrentOperationAsync();
         var ep = await queries.Query(_unitOfWork.EntitledPersons)
             .Include(e => e.Relationship)
+            .Include(e => e.Documents.Where(d => !d.IsDeleted))
             .FirstOrDefaultAsync(e => e.EntitledID == id);
 
         if (ep == null)
             return ApiResponse<bool>.Fail("المستحق غير موجود");
 
-        if (!ep.IsActive)
-            return ApiResponse<bool>.Fail("المستحق موقوف مسبقاً");
-
-        // ── تحقق من صحة السبب بحسب صلة القرابة ──────────────────
-        var rel = ep.Relationship?.RelationshipName ?? string.Empty;
-
-        var validationError = dto.StopCode switch
-        {
-            EntitledStopCodes.AgeLimit when rel != RelationshipConstants.Son =>
-                "إيقاف بسبب العمر مخصص للأبناء فقط",
-
-            EntitledStopCodes.AgeLimit when rel == RelationshipConstants.Son && ep.HasDisabilityException =>
-                "لا يمكن إيقاف هذا الابن بسبب العمر — لديه استثناء إعاقة/مرض نفسي",
-
-            EntitledStopCodes.AgeLimit when rel == RelationshipConstants.Son
-                && PensionMS.Core.Time.YemenTime.Age(ep.BirthDate) < 24 =>
-                $"الابن لم يبلغ 24 سنة بعد (العمر الحالي: {(int)(PensionMS.Core.Time.YemenTime.Age(ep.BirthDate))} سنة)",
-
-            EntitledStopCodes.DaughterMarried when rel != RelationshipConstants.Daughter =>
-                "إيقاف بسبب الزواج مخصص للبنات فقط",
-
-            EntitledStopCodes.WidowRemarried when rel != RelationshipConstants.Wife =>
-                "إيقاف بسبب إعادة الزواج مخصص للزوجات فقط",
-
-            _ => null
-        };
-
-        if (validationError != null)
-            return ApiResponse<bool>.Fail(validationError);
+        var decision = EntitledPersonRules.EvaluateStop(new EntitledPersonRules.StopState(
+            ep.IsActive, ep.Relationship?.RelationshipName, ep.BirthDate, ep.HasDisabilityException),
+            dto.StopCode, PensionMS.Core.Time.YemenTime.Today);
+        if (!decision.IsAllowed)
+            return ApiResponse<bool>.Fail(decision.ErrorMessage);
 
         // ── تحديد نوع الوثيقة المطلوبة ────────────────────────────
-        var missingDocTypeId = dto.StopCode switch
-        {
-            EntitledStopCodes.DaughterMarried when dto.Document == null => DocumentTypeConstants.MarriageContract,  // عقد زواج
-            EntitledStopCodes.WidowRemarried when dto.Document == null  => DocumentTypeConstants.MarriageContract,  // عقد زواج
-            EntitledStopCodes.Deceased when dto.Document == null        => DocumentTypeConstants.DeathCertificate,  // شهادة وفاة
-            _ => 0
-        };
+        var requiredDocTypeId = EntitledPersonRules.StopDocumentType(dto.StopCode);
+        var uploadedIds = new List<int>();
 
         ep.IsActive   = false;
         ep.StopDate   = DateTime.UtcNow;
@@ -464,6 +444,8 @@ public class EntitledPersonService : IEntitledPersonService
         ep.StopReason = dto.Notes ?? dto.StopCode;
         ep.UpdatedAt  = DateTime.UtcNow;
         ep.UpdatedByUserID = userId;
+        if (decision.SocialStatusID.HasValue)
+            ep.SocialStatusID = decision.SocialStatusID.Value;
 
         _unitOfWork.EntitledPersons.Update(ep);
 
@@ -479,26 +461,14 @@ public class EntitledPersonService : IEntitledPersonService
         // ── حفظ الوثيقة المرفقة أو تسجيل نقص ─────────────────────
         if (dto.Document != null)
         {
-            var docTypeId = dto.StopCode switch
+            if (requiredDocTypeId is int docTypeId)
             {
-                EntitledStopCodes.DaughterMarried => DocumentTypeConstants.MarriageContract,  // عقد زواج
-                EntitledStopCodes.WidowRemarried  => DocumentTypeConstants.MarriageContract,  // عقد زواج
-                EntitledStopCodes.Deceased        => DocumentTypeConstants.DeathCertificate,  // شهادة الوفاة
-                _ => 0
-            };
-            if (docTypeId > 0)
-            {
-                var uploadDto = new UploadDocumentDto
-                {
-                    DocumentTypeID = docTypeId,
-                    EntitledPersonID = ep.EntitledID,
-                    File = dto.Document
-                };
-                await _documentService.UploadAsync(uploadDto, userId);
+                var uploaded = await UploadLifecycleProofAsync(ep, docTypeId, dto.Document, userId, uploadedIds);
+                if (!uploaded.IsSuccess) return uploaded;
             }
             await _unitOfWork.SaveChangesAsync();
         }
-        else if (missingDocTypeId > 0)
+        else if (requiredDocTypeId is int missingDocTypeId && !HasProof(ep, missingDocTypeId))
         {
             // ── تسجيل نقص للوثيقة المطلوبة ────────────────────────
             await _unitOfWork.MissingDocuments.AddAsync(new MissingDocument
@@ -512,7 +482,8 @@ public class EntitledPersonService : IEntitledPersonService
             await _unitOfWork.SaveChangesAsync();
         }
 
-        await _reviewService.RequestReviewAsync(ep.FileID, userId, now);
+        var completed = await CompleteLifecycleAsync(ep, userId, now, uploadedIds);
+        if (!completed.IsSuccess) return completed;
         return ApiResponse<bool>.Success(true, "تم إيقاف الاستحقاق");
     }
 
@@ -520,34 +491,31 @@ public class EntitledPersonService : IEntitledPersonService
     // REACTIVATE — إعادة تفعيل الاستحقاق
     // ════════════════════════════════════════════════════════════
 
-    public async Task<ApiResponse<bool>> ReactivateAsync(int id, ReactivateEntitledPersonDto dto, int userId)
+    public Task<ApiResponse<bool>> ReactivateAsync(int id, ReactivateEntitledPersonDto dto, int userId)
+        => ExecuteLifecycleAsync(id, () => ReactivateCoreAsync(id, dto, userId));
+
+    private async Task<ApiResponse<bool>> ReactivateCoreAsync(int id, ReactivateEntitledPersonDto dto, int userId)
     {
         var queries = await _access.ForCurrentOperationAsync();
         var ep = await queries.Query(_unitOfWork.EntitledPersons)
             .Include(e => e.Relationship)
+            .Include(e => e.RetirementFile).ThenInclude(f => f.Retiree)
+            .Include(e => e.Documents.Where(d => !d.IsDeleted))
             .FirstOrDefaultAsync(e => e.EntitledID == id);
 
         if (ep == null)
             return ApiResponse<bool>.Fail("المستحق غير موجود");
 
-        if (ep.IsActive)
-            return ApiResponse<bool>.Fail("المستحق نشط بالفعل");
+        var decision = EntitledPersonRules.EvaluateReactivation(new EntitledPersonRules.ReactivationState(
+            ep.IsActive, ep.IsDeceased, ep.StopCode, ep.Relationship?.RelationshipName, ep.BirthDate,
+            ep.SocialStatusID, ep.HasDisabilityException, ep.RetirementFile?.Retiree?.IsAlive),
+            dto.ReactivationCode, PensionMS.Core.Time.YemenTime.Today);
+        if (!decision.IsAllowed)
+            return ApiResponse<bool>.Fail(decision.ErrorMessage);
 
-        if (ep.IsDeceased)
-            return ApiResponse<bool>.Fail("لا يمكن إعادة تفعيل مستحق متوفى");
-
-        // ── التحقق من توافق رمز الإيقاف مع رمز إعادة التفعيل ────
-        var allowedByStopCode = ep.StopCode switch
-        {
-            EntitledStopCodes.DaughterMarried => new[] { ReactivationCodes.Divorced, ReactivationCodes.HusbandDeceased },
-            EntitledStopCodes.WidowRemarried  => new[] { ReactivationCodes.Divorced, ReactivationCodes.HusbandDeceased },
-            EntitledStopCodes.AgeLimit        => new[] { ReactivationCodes.DisabilityReport },
-            EntitledStopCodes.AdminDecision   => new[] { ReactivationCodes.AdminDecision },
-            _ => Array.Empty<string>()
-        };
-
-        if (!allowedByStopCode.Contains(dto.ReactivationCode))
-            return ApiResponse<bool>.Fail($"رمز إعادة التفعيل ({dto.ReactivationCode}) غير متوافق مع سبب الإيقاف ({ep.StopCode})");
+        var requiredDocuments = EntitledPersonRules.ReactivationDocumentRequirements(dto.ReactivationCode);
+        var uploadedIds = new List<int>();
+        ep.SocialStatusID = decision.SocialStatusID;
 
         // ── تفعيل المستحق ─────────────────────────────────────────
         ep.IsActive   = true;
@@ -557,9 +525,7 @@ public class EntitledPersonService : IEntitledPersonService
         ep.UpdatedAt  = DateTime.UtcNow;
         ep.UpdatedByUserID = userId;
 
-        // عند إعادة تفعيل الابن بسبب تقرير طبي، تُفعَّل حالة الاستثناء
-        if (dto.ReactivationCode == ReactivationCodes.DisabilityReport)
-            ep.HasDisabilityException = true;
+        ep.HasDisabilityException = decision.HasDisabilityException;
 
         _unitOfWork.EntitledPersons.Update(ep);
         var now = DateTime.UtcNow;
@@ -568,34 +534,17 @@ public class EntitledPersonService : IEntitledPersonService
         // ── حفظ الوثائق المرفقة ───────────────────────────────────
         if (dto.Document != null)
         {
-            var docTypeId = dto.ReactivationCode switch
+            if (requiredDocuments.DocumentTypeID is int docTypeId)
             {
-                ReactivationCodes.Divorced        => DocumentTypeConstants.DivorceCertificate, // وثيقة طلاق
-                ReactivationCodes.HusbandDeceased => DocumentTypeConstants.DeathCertificate,  // شهادة وفاة الزوج
-                ReactivationCodes.DisabilityReport => DocumentTypeConstants.MedicalReport, // تقرير طبي
-                _ => 0
-            };
-            if (docTypeId > 0)
-            {
-                var uploadDto = new UploadDocumentDto
-                {
-                    DocumentTypeID = docTypeId,
-                    EntitledPersonID = ep.EntitledID,
-                    File = dto.Document
-                };
-                await _documentService.UploadAsync(uploadDto, userId);
+                var uploaded = await UploadLifecycleProofAsync(ep, docTypeId, dto.Document, userId, uploadedIds);
+                if (!uploaded.IsSuccess) return uploaded;
             }
         }
 
-        if (dto.CivilServiceProof != null && dto.ReactivationCode == ReactivationCodes.HusbandDeceased)
+        if (dto.CivilServiceProof != null && requiredDocuments.CivilServiceProofTypeID is int civilServiceTypeId)
         {
-            var uploadDto = new UploadDocumentDto
-            {
-                DocumentTypeID = DocumentTypeConstants.CivilServiceProof, // إثبات الخدمة المدنية
-                EntitledPersonID = ep.EntitledID,
-                File = dto.CivilServiceProof
-            };
-            await _documentService.UploadAsync(uploadDto, userId);
+            var uploaded = await UploadLifecycleProofAsync(ep, civilServiceTypeId, dto.CivilServiceProof, userId, uploadedIds);
+            if (!uploaded.IsSuccess) return uploaded;
         }
 
         await _unitOfWork.SaveChangesAsync();
@@ -603,34 +552,24 @@ public class EntitledPersonService : IEntitledPersonService
         // ── تسجيل النواقص للوثائق غير المرفقة ─────────────────────
         var missingDocs = new List<MissingDocument>();
 
-        if (dto.Document == null)
-        {
-            var missingTypeId = dto.ReactivationCode switch
-            {
-                ReactivationCodes.Divorced        => DocumentTypeConstants.DivorceCertificate, // وثيقة طلاق
-                ReactivationCodes.HusbandDeceased => DocumentTypeConstants.DeathCertificate,  // شهادة وفاة
-                ReactivationCodes.DisabilityReport => DocumentTypeConstants.MedicalReport, // تقرير طبي
-                _ => 0
-            };
-            if (missingTypeId > 0)
-            {
-                missingDocs.Add(new MissingDocument
-                {
-                    FileID = ep.FileID,
-                    DocumentTypeID = missingTypeId,
-                    EntitledID = ep.EntitledID,
-                    Status = MissingDocumentStatusConstants.Pending,
-                    Notes = $"وثيقة إعادة تفعيل المستحق ({dto.ReactivationCode}): {ep.EntitledID}"
-                });
-            }
-        }
-
-        if (dto.CivilServiceProof == null && dto.ReactivationCode == ReactivationCodes.HusbandDeceased)
+        if (dto.Document == null && requiredDocuments.DocumentTypeID is int missingTypeId && !HasProof(ep, missingTypeId))
         {
             missingDocs.Add(new MissingDocument
             {
                 FileID = ep.FileID,
-                DocumentTypeID = DocumentTypeConstants.CivilServiceProof, // إثبات الخدمة المدنية
+                DocumentTypeID = missingTypeId,
+                EntitledID = ep.EntitledID,
+                Status = MissingDocumentStatusConstants.Pending,
+                Notes = $"وثيقة إعادة تفعيل المستحق ({dto.ReactivationCode}): {ep.EntitledID}"
+            });
+        }
+
+        if (dto.CivilServiceProof == null && requiredDocuments.CivilServiceProofTypeID is int missingCivilServiceTypeId && !HasProof(ep, missingCivilServiceTypeId))
+        {
+            missingDocs.Add(new MissingDocument
+            {
+                FileID = ep.FileID,
+                DocumentTypeID = missingCivilServiceTypeId,
                 EntitledID = ep.EntitledID,
                 Status = MissingDocumentStatusConstants.Pending,
                 Notes = $"إثبات خدمة مدنية لإعادة تفعيل المستحق: {ep.EntitledID}"
@@ -644,7 +583,8 @@ public class EntitledPersonService : IEntitledPersonService
             await _unitOfWork.SaveChangesAsync();
         }
 
-        await _reviewService.RequestReviewAsync(ep.FileID, userId, now);
+        var completed = await CompleteLifecycleAsync(ep, userId, now, uploadedIds);
+        if (!completed.IsSuccess) return completed;
 
         var reasonLabel = dto.ReactivationCode switch
         {
@@ -661,7 +601,10 @@ public class EntitledPersonService : IEntitledPersonService
     // RECORD DEATH — تسجيل وفاة المستحق
     // ════════════════════════════════════════════════════════════
 
-    public async Task<ApiResponse<bool>> RecordDeathAsync(int id, RecordDeathDto dto, int userId)
+    public Task<ApiResponse<bool>> RecordDeathAsync(int id, RecordDeathDto dto, int userId)
+        => ExecuteLifecycleAsync(id, () => RecordDeathCoreAsync(id, dto, userId));
+
+    private async Task<ApiResponse<bool>> RecordDeathCoreAsync(int id, RecordDeathDto dto, int userId)
     {
         var queries = await _access.ForCurrentOperationAsync();
         var ep = await queries.Query(_unitOfWork.EntitledPersons).FirstOrDefaultAsync(e => e.EntitledID == id);
@@ -673,11 +616,13 @@ public class EntitledPersonService : IEntitledPersonService
 
         if (dto.DeathCertificate == null)
             return ApiResponse<bool>.Fail("يجب رفع شهادة الوفاة");
+        if (dto.DeathDate == default || dto.DeathDate > PensionMS.Core.Time.YemenTime.Today || dto.DeathDate < ep.BirthDate)
+            return ApiResponse<bool>.Fail("تاريخ الوفاة غير صحيح");
 
         ep.IsDeceased   = true;
         ep.DeceasedDate = dto.DeathDate;
         ep.IsActive     = false;
-        ep.StopDate     = dto.DeathDate.ToDateTime(TimeOnly.MinValue);
+        ep.StopDate     = PensionMS.Core.Time.YemenTime.StartUtc(dto.DeathDate);
         ep.StopCode     = EntitledStopCodes.Deceased;
         ep.StopReason   = "وفاة المستحق";
         ep.UpdatedAt    = DateTime.UtcNow;
@@ -695,22 +640,21 @@ public class EntitledPersonService : IEntitledPersonService
         await _unitOfWork.SaveChangesAsync();
 
         // حفظ شهادة الوفاة
-        var uploadDto = new UploadDocumentDto
-        {
-            DocumentTypeID = DocumentTypeConstants.DeathCertificate,
-            EntitledPersonID = ep.EntitledID,
-            File = dto.DeathCertificate
-        };
-        await _documentService.UploadAsync(uploadDto, userId);
+        var uploadedIds = new List<int>();
+        var uploaded = await UploadLifecycleProofAsync(ep, DocumentTypeConstants.DeathCertificate, dto.DeathCertificate, userId, uploadedIds);
+        if (!uploaded.IsSuccess) return uploaded;
         await _unitOfWork.SaveChangesAsync();
 
-        await _missingDocumentService.RefreshComplianceCacheAsync(ep.FileID);
-        await _reviewService.RequestReviewAsync(ep.FileID, userId, now);
+        var completed = await CompleteLifecycleAsync(ep, userId, now, uploadedIds);
+        if (!completed.IsSuccess) return completed;
 
         return ApiResponse<bool>.Success(true, "تم تسجيل وفاة المستحق وإيقاف صرفه");
     }
 
-    public async Task<ApiResponse<bool>> ManualActivateAsync(int id, ManualActivateEntitledPersonDto dto, int userId)
+    public Task<ApiResponse<bool>> ManualActivateAsync(int id, ManualActivateEntitledPersonDto dto, int userId)
+        => ExecuteLifecycleAsync(id, () => ManualActivateCoreAsync(id, dto, userId));
+
+    private async Task<ApiResponse<bool>> ManualActivateCoreAsync(int id, ManualActivateEntitledPersonDto dto, int userId)
     {
         var queries = await _access.ForCurrentOperationAsync();
         // جلب المستحق مع التأكد من وجوده وحالته
@@ -747,7 +691,7 @@ public class EntitledPersonService : IEntitledPersonService
             // جلب النواقص المرصودة آلياً (لتحويلها لسجلات رسمية متعهد بها)
             var autoResult = await _missingDocumentService.GetAutoDetectedByFileAsync(ep.FileID);
             var epAutoMissing = autoResult.Data?
-                .Where(a => a.EntityType == EntityTypeConstants.EntitledPerson && a.EntityName == ep.FullName)
+                .Where(a => a.EntityType == EntityTypeConstants.EntitledPerson && a.EntitledID == ep.EntitledID)
                 .ToList();
 
             if (manualMissing.Any() || (epAutoMissing != null && epAutoMissing.Any()))
@@ -805,8 +749,8 @@ public class EntitledPersonService : IEntitledPersonService
         // 4. حفظ كافة التغييرات النهائية
         var now = DateTime.UtcNow;
         await _unitOfWork.SaveChangesAsync();
-        await _missingDocumentService.RefreshComplianceCacheAsync(ep.FileID);
-        await _reviewService.RequestReviewAsync(ep.FileID, userId, now);
+        var completed = await CompleteLifecycleAsync(ep, userId, now, []);
+        if (!completed.IsSuccess) return completed;
 
         return ApiResponse<bool>.Success(true, "تم تفعيل المستحق يدوياً بنجاح");
     }
@@ -814,6 +758,58 @@ public class EntitledPersonService : IEntitledPersonService
     // ════════════════════════════════════════════════════════════
     // PRIVATE HELPERS
     // ════════════════════════════════════════════════════════════
+
+    private Task<ApiResponse<bool>> ExecuteLifecycleAsync(int id, Func<Task<ApiResponse<bool>>> action)
+        => UnitOfWorkTransaction.ExecuteAsync(_unitOfWork, async () =>
+        {
+            var queries = await _access.ForCurrentOperationAsync();
+            var fileId = await queries.Query(_unitOfWork.EntitledPersons).Where(e => e.EntitledID == id)
+                .Select(e => (int?)e.FileID).FirstOrDefaultAsync();
+            if (!fileId.HasValue) return ApiResponse<bool>.Fail("المستحق غير موجود");
+            await _unitOfWork.LockFileReviewAsync(fileId.Value);
+            return await action();
+        });
+
+    private static bool HasProof(EntitledPerson person, int type)
+    {
+        var owner = new RetirementDocumentRequirement(type, null, null, null, person.EntitledID, null, null);
+        return RetirementFileDocumentRules.FindValidDocument(person.Documents.Where(d => d.FileID == person.FileID),
+            owner, PensionMS.Core.Time.YemenTime.Today) != null;
+    }
+
+    private async Task<ApiResponse<bool>> UploadLifecycleProofAsync(EntitledPerson person, int type,
+        IRemoteFile proof, int userId, List<int> uploadedIds)
+    {
+        try
+        {
+            var result = await _documentService.UploadAsync(new UploadDocumentDto
+            {
+                DocumentTypeID = type, EntitledPersonID = person.EntitledID, File = proof
+            }, userId, deferPostProcessing: true);
+            if (!result.IsSuccess) return ApiResponse<bool>.Fail(result.Message ?? "تعذر حفظ وثيقة العملية");
+            if (result.Data?.DocumentID > 0) uploadedIds.Add(result.Data.DocumentID);
+        }
+        catch (PensionMS.Core.Exceptions.DuplicateDocumentException ex)
+        {
+            if (ex.Document.EntitledID != person.EntitledID || ex.Document.FileID != person.FileID || ex.Document.DocumentTypeID != type)
+                throw;
+            uploadedIds.Add(ex.Document.DocumentID);
+        }
+        return ApiResponse<bool>.Success(true);
+    }
+
+    private async Task<ApiResponse<bool>> CompleteLifecycleAsync(EntitledPerson person, int userId,
+        DateTime changedAt, List<int> uploadedIds)
+    {
+        if (uploadedIds.Count > 0)
+        {
+            var refreshed = await _documentService.RefreshAfterLifecycleUploadAsync(person.FileID,
+                uploadedIds.Distinct().ToList(), userId, changedAt);
+            return refreshed.IsSuccess ? ApiResponse<bool>.Success(true) : ApiResponse<bool>.Fail(refreshed.Message);
+        }
+        await _missingDocumentService.RefreshComplianceCacheAsync(person.FileID);
+        return await _reviewService.RequestReviewAsync(person.FileID, userId, changedAt);
+    }
 
     private async Task DeactivateLinkedSalaryRecipientsAsync(int entitledId)
     {
@@ -836,7 +832,10 @@ public class EntitledPersonService : IEntitledPersonService
     private EntitledPersonDto MapToDto(EntitledPerson e)
     {
         var ageYears = (int)(PensionMS.Core.Time.YemenTime.Age(e.BirthDate));
-        var nationalIdDoc = e.Documents.FirstOrDefault(d => d.DocumentTypeID == DocumentTypeConstants.NationalId);
+        var owner = new RetirementDocumentRequirement(DocumentTypeConstants.NationalId, null, null, null,
+            e.EntitledID, null, null);
+        var nationalIdDoc = RetirementFileDocumentRules.FindValidDocument(
+            e.Documents.Where(d => d.FileID == e.FileID), owner, PensionMS.Core.Time.YemenTime.Today);
 
         return new EntitledPersonDto
         {

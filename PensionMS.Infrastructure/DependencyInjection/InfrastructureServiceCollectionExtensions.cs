@@ -13,6 +13,7 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddAdministrationServices();
         services.AddSettlementsServices();
         services.AddHRServices();
+        services.AddPaymentBooksServices();
         services.AddPayrollServices();
         services.AddAccountingServices();
         services.AddInvestmentServices();

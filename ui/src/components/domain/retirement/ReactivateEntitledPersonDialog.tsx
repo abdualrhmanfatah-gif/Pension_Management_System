@@ -3,7 +3,7 @@ import { FileText, RefreshCcw, ShieldCheck } from "lucide-react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
-import api from "@/api/axios";
+import { retirementApi } from "@/api/retirement";
 import {
     BaseFormDialog,
     FileField,
@@ -45,14 +45,7 @@ export function ReactivateEntitledPersonDialog({ open, onOpenChange, personId, t
     const reactivationCode = useWatch({ control, name: "reactivationCode" });
 
     const mutation = useApiMutation(async (values: ReactivateFormValues) => {
-        const formData = new FormData();
-        formData.append("reactivationCode", values.reactivationCode);
-        if (values.document) formData.append("document", values.document);
-        if (values.civilServiceProof) formData.append("civilServiceProof", values.civilServiceProof);
-
-        return api.put(`/entitled-persons/${personId}/reactivate`, formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-        });
+        return retirementApi.reactivateEntitledPerson(personId, values);
     }, {
         successMessage: "تم إعادة تفعيل الصرف بنجاح",
         invalidateKeys: [["entitled-persons", fileId], ["retirement-file"]],

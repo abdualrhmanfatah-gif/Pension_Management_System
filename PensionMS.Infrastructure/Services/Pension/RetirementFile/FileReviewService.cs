@@ -192,12 +192,7 @@ public class FileReviewService : IFileReviewService
                 .Any(i => i.Status == FileReviewItemStatusConstants.Rejected)))
             return ApiResponse<bool>.Success(true, "الملف بانتظار المراجعة");
         var now = DateTime.UtcNow;
-        if (reinstate) file.PreviousStatusID = FileStatusConstants.Active;
-        else if (file.StatusID != FileStatusConstants.Pending) file.PreviousStatusID = file.StatusID;
-        file.StatusID = FileStatusConstants.Pending;
-        file.ReviewStatus = FileReviewStatus.PendingReview;
-        file.ReviewRequestedAt = now;
-        file.ReviewNotes = null;
+        BeginReview(file, file, now, automatic: false, reinstate: reinstate);
         file.UpdatedAt = now;
         var state = await ApprovedPensionSnapshot.CaptureAsync(_unitOfWork, fileId, file.RetireeID);
         await _unitOfWork.FileReviewItems.AddAsync(new FileReviewItem
@@ -218,14 +213,8 @@ public class FileReviewService : IFileReviewService
                 RecordID = fileId, Action = "RequestReview", CreatedAt = now },
             CreatedAt = now
         });
-        if (!await _unitOfWork.PensionSuspensions.Query().AnyAsync(s => s.FileID == fileId && !s.IsDeleted &&
-            s.SuspensionSource == RetirementReviewConstants.SuspensionSource && s.Status == SuspensionStatusConstants.Active))
-            await _unitOfWork.PensionSuspensions.AddAsync(new PensionSuspension
-            {
-                FileID = fileId, CreatedByUserID = userId, SuspensionDate = now, CreatedAt = now,
-                SuspensionSource = RetirementReviewConstants.SuspensionSource,
-                SuspensionReason = RetirementReviewConstants.SuspensionReason, Status = SuspensionStatusConstants.Active
-            });
+        await EnsureReviewHoldAsync(_unitOfWork.PensionSuspensions.Query(),
+            _unitOfWork.PensionSuspensions.AddAsync, fileId, userId, now);
         await _unitOfWork.SaveChangesAsync();
         return ApiResponse<bool>.Success(true, "تم إرسال الملف للمراجعة وإيقاف صرف المعاش");
     }
@@ -460,7 +449,7 @@ public class FileReviewService : IFileReviewService
         var items = await query.Include(i => i.AuditLog).ThenInclude(a => a!.User)
             .Where(i => i.RetirementFileID == file.FileID && file.ReviewRequestedAt.HasValue &&
                 i.CreatedAt >= file.ReviewRequestedAt.Value).ToListAsync();
-        // أحدث نسخة من السجل تحل محل القرار السابق في الدورة الحالية، مع حفظ البنود القديمة للتدقيق.
+
         return items.GroupBy(GetReviewItemKey).Select(g => g.OrderByDescending(i => i.CreatedAt)
             .ThenByDescending(i => i.ItemID).First()).OrderBy(i => i.CreatedAt).ToList();
     }
@@ -496,10 +485,7 @@ public class FileReviewService : IFileReviewService
             .ToListAsync();
         foreach (var r in recipients) r.PendingReviewStatus = (PendingReviewStatus)newStatus;
 
-        var documents = await _unitOfWork.Documents.Query()
-            .Where(d => d.FileID == fileId)
-            .ToListAsync();
-        foreach (var d in documents) d.PendingReviewStatus = (PendingReviewStatus)newStatus;
+        // فحص الوثيقة قرار مستقل؛ اعتماد الملف أو رفضه لا يغيّر نتيجة فحص وثيقة سابقة.
 
         var file = await _unitOfWork.RetirementFiles.Query()
             .Include(f => f.Retiree)
@@ -534,6 +520,119 @@ public class FileReviewService : IFileReviewService
             return ApiResponse<bool>.Success(true, "تم إرسال البيانات للمراجعة؛ يبقى الصرف موقوفًا حتى الاعتماد");
         });
     }
+
+    // Persistence adapters use these review operations without constructing the application
+    // service (which depends on the same DbContext). They never save or own a transaction.
+    internal static bool BeginReview(Core.Entities.RetirementFile file, Core.Entities.RetirementFile baseline,
+        DateTime now, bool automatic, bool reinstate = false)
+    {
+        if (automatic && baseline.StatusID == FileStatusConstants.New && baseline.ReviewStatus == FileReviewStatus.None)
+            return false;
+        var previousStatus = reinstate ? FileStatusConstants.Active
+            : baseline.StatusID != FileStatusConstants.Pending ? baseline.StatusID : baseline.PreviousStatusID;
+        var requestedAt = automatic && baseline.StatusID == FileStatusConstants.Pending &&
+            baseline.ReviewStatus == FileReviewStatus.PendingReview && baseline.ReviewRequestedAt.HasValue
+                ? baseline.ReviewRequestedAt : now;
+        file.PreviousStatusID = previousStatus;
+        file.StatusID = FileStatusConstants.Pending;
+        file.ReviewStatus = FileReviewStatus.PendingReview;
+        file.ReviewRequestedAt = requestedAt;
+        file.ReviewNotes = null;
+        return true;
+    }
+
+    internal static bool RequiresPreviousSnapshot(Core.Entities.RetirementFile file) =>
+        ApprovedPensionSnapshot.Read(file.LastReviewedFileState) == null &&
+        (file.StatusID == FileStatusConstants.Active || file.ReviewStatus == FileReviewStatus.Approved);
+
+    internal static void EnsureReviewHold(IQueryable<PensionSuspension> holds, Action<PensionSuspension> add,
+        int fileId, int userId, DateTime now)
+    {
+        if (!ReviewHolds(holds, fileId).Any()) add(CreateReviewHold(fileId, userId, now));
+    }
+
+    internal static async Task EnsureReviewHoldAsync(IQueryable<PensionSuspension> holds,
+        Func<PensionSuspension, Task> add, int fileId, int userId, DateTime now,
+        CancellationToken cancellationToken = default)
+    {
+        if (!await ReviewHolds(holds, fileId).AnyAsync(cancellationToken))
+            await add(CreateReviewHold(fileId, userId, now));
+    }
+
+    private static IQueryable<PensionSuspension> ReviewHolds(IQueryable<PensionSuspension> holds, int fileId) =>
+        holds.Where(s => s.FileID == fileId && !s.IsDeleted &&
+            s.SuspensionSource == RetirementReviewConstants.SuspensionSource && s.Status == SuspensionStatusConstants.Active);
+
+    private static PensionSuspension CreateReviewHold(int fileId, int userId, DateTime now) => new()
+    {
+        FileID = fileId, CreatedByUserID = userId, SuspensionDate = now, CreatedAt = now,
+        SuspensionSource = RetirementReviewConstants.SuspensionSource,
+        SuspensionReason = RetirementReviewConstants.SuspensionReason, Status = SuspensionStatusConstants.Active
+    };
+
+    internal sealed record ReviewDataChange(object Entity, int EntityID, int? SecondaryKey,
+        string SectionType, string? OldJson, string NewJson, bool IsDeleted, int UserID);
+
+    internal static FileReviewItem RecordDataChange(IQueryable<FileReviewItem> items,
+        Core.Entities.RetirementFile file, ReviewDataChange change, DateTime now) =>
+        CreateDataChange(file.FileID, change, FirstChangeVersion(items, file, change).FirstOrDefault(), now);
+
+    internal static async Task<FileReviewItem> RecordDataChangeAsync(IQueryable<FileReviewItem> items,
+        Core.Entities.RetirementFile file, ReviewDataChange change, DateTime now, CancellationToken cancellationToken) =>
+        CreateDataChange(file.FileID, change,
+            await FirstChangeVersion(items, file, change).FirstOrDefaultAsync(cancellationToken), now);
+
+    private static IOrderedQueryable<FileReviewItem> FirstChangeVersion(IQueryable<FileReviewItem> items,
+        Core.Entities.RetirementFile file, ReviewDataChange change) => items.AsNoTracking().Include(i => i.AuditLog)
+        .Where(i => i.RetirementFileID == file.FileID && i.CreatedAt >= file.ReviewRequestedAt &&
+            i.SectionType == change.SectionType && i.EntityID == change.EntityID &&
+            i.AuditLog != null && i.AuditLog.EntityKey == change.SecondaryKey)
+        .OrderBy(i => i.CreatedAt).ThenBy(i => i.ItemID);
+
+    private static FileReviewItem CreateDataChange(int fileId, ReviewDataChange change, FileReviewItem? firstVersion, DateTime now)
+    {
+        var originalJson = firstVersion?.AuditLog != null ? firstVersion.AuditLog.OldValues : change.OldJson;
+        var section = ReviewSection(change.Entity);
+        return new FileReviewItem
+        {
+            RetirementFileID = fileId, EntityType = ReviewEntityType(change.Entity), EntityID = change.EntityID,
+            AuditLog = new AuditLog
+            {
+                UserID = change.UserID, TableID = SystemTableConstants.RetirementFiles, RecordID = fileId,
+                Action = "ReviewDataChange", EntityKey = change.SecondaryKey, EntityDisplayName = section,
+                OldValues = originalJson, NewValues = change.NewJson, CreatedAt = now
+            },
+            FieldName = change.OldJson == null ? "إضافة" : change.IsDeleted ? "حذف" : "تعديل",
+            OldValue = change.OldJson == null ? null : "البيانات السابقة", NewValue = "بانتظار مراجعة البيانات",
+            SectionType = change.SectionType, SectionName = section,
+            FieldChangesJson = CreateFieldChanges(originalJson, change.NewJson), CreatedAt = now
+        };
+    }
+
+    private static string CreateFieldChanges(string? oldJson, string newJson)
+    {
+        var oldValues = oldJson == null ? new Dictionary<string, JsonElement>()
+            : JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(oldJson)!;
+        var values = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(newJson)!;
+        return JsonSerializer.Serialize(values.Where(p => !oldValues.TryGetValue(p.Key, out var old) || old.ToString() != p.Value.ToString())
+            .Select(p => new { fieldName = p.Key, oldValue = oldValues.TryGetValue(p.Key, out var old) ? old.ToString() : null, newValue = p.Value.ToString() }));
+    }
+
+    private static int ReviewEntityType(object entity) => entity switch
+    {
+        Retiree => 1, Core.Entities.RetirementFile => 2, EntitledPerson => 3, Agent => 4, Guardian => 5,
+        Document => 6, FinancialEntitlement => 13, SalaryRecipient => 12,
+        DocumentPledge => 7, MissingDocument => 8, DocumentExemption => 9, FileNote => 10, _ => 0
+    };
+
+    private static string ReviewSection(object entity) => entity switch
+    {
+        Retiree => "بيانات المتقاعد", Core.Entities.RetirementFile => "بيانات الملف", EntitledPerson => "المستحقون",
+        Agent => "الوكلاء", Guardian or GuardianEntitledPerson => "الأوصياء", Document => "الوثائق",
+        FinancialEntitlement => "الاستحقاقات المالية", SalaryRecipient => "مستلمو المعاش",
+        PaymentBook => "دفاتر الصرف", DocumentPledge => "التعهدات", DocumentExemption => "الإعفاءات",
+        MissingDocument => "نواقص الوثائق", FileNote => "ملاحظات الملف", _ => "بيانات مرتبطة بالملف"
+    };
 
     private static string GetArabicFieldName(string fieldName)
     {

@@ -101,12 +101,30 @@ public class InvestmentPropertiesController : ControllerBase
         if (file == null || file.Length == 0)
             return ApiResponse<string>.Fail("لم يتم اختيار ملف").ToActionResult();
 
+        var userId = this.GetUserId();
+        var property = await _service.GetPropertyByIdAsync(id);
+        if (!property.IsSuccess)
+            return ApiResponse<bool>.Fail(property.Message ?? "العقار غير موجود").ToActionResult();
+
         using var stream = file.OpenReadStream();
         var filePath = await _fileStorage.SaveFileAsync(stream, file.FileName, "properties");
 
-        var userId = this.GetUserId();
-        var result = await _service.UpdatePropertyMainPhotoPathAsync(id, filePath, userId);
-        
+        ApiResponse<bool> result;
+        try
+        {
+            result = await _service.UpdatePropertyMainPhotoPathAsync(id, filePath, userId);
+        }
+        catch (Exception updateError)
+        {
+            try { await _fileStorage.DeleteFileAsync(filePath); }
+            catch (Exception cleanupError)
+            {
+                throw new AggregateException("تعذر تحديث صورة العقار وتنظيف الملف الجديد", updateError, cleanupError);
+            }
+            throw;
+        }
+
+        if (!result.IsSuccess) await _fileStorage.DeleteFileAsync(filePath);
         return result.ToActionResult();
     }
 

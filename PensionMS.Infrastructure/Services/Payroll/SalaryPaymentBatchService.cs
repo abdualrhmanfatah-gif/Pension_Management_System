@@ -1,9 +1,11 @@
 using PensionMS.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
 using PensionMS.Infrastructure.Reporting.Exporters;
 using PensionMS.Core.Constants;
+using PensionMS.Core.Rules.Payroll;
 using PensionMS.Core.DTOs.Accounting;
 using PensionMS.Core.DTOs.Common;
 using PensionMS.Core.DTOs.Notifications;
@@ -16,6 +18,79 @@ namespace PensionMS.Infrastructure.Services.Payroll;
 
 public class SalaryPaymentBatchService : ISalaryPaymentBatchService
 {
+    // Persistence protection also covers direct DbContext writes. The persistence adapter
+    // has already locked all affected files; these operations never save or commit.
+    internal static List<EntityEntry<SalaryPaymentItem>> CapturePaymentChanges(PensionDbContext db) =>
+        db.ChangeTracker.Entries<SalaryPaymentItem>()
+            .Where(e => e.State == EntityState.Added && (e.Entity.StatusID == TransactionStatusConstants.Sent ||
+                e.Entity.StatusID == TransactionStatusConstants.Received || e.Entity.SendDate.HasValue) ||
+                e.State == EntityState.Modified && e.Properties.Any(p => p.IsModified &&
+                    (p.Metadata.Name is nameof(SalaryPaymentItem.StatusID) or nameof(SalaryPaymentItem.Amount) or
+                        nameof(SalaryPaymentItem.RecipientID) or nameof(SalaryPaymentItem.SendDate) or
+                        nameof(SalaryPaymentItem.ReceiveDate) or nameof(SalaryPaymentItem.IsDeleted)) &&
+                    !Equals(p.OriginalValue, p.CurrentValue))).ToList();
+
+    internal static void ValidatePaymentChanges(PensionDbContext db,
+        IEnumerable<EntityEntry<SalaryPaymentItem>> payments, ICollection<int> changedFiles)
+    {
+        foreach (var payment in payments)
+        {
+            if (!ValidatePaymentMutation(payment)) continue;
+            EnsurePaymentAllowed(ActivePaymentFiles(db, payment.Entity.FileID).Any(),
+                ActivePaymentHolds(db, payment.Entity.FileID).Any(),
+                HasPendingPaymentHold(db, payment.Entity.FileID), changedFiles.Contains(payment.Entity.FileID));
+        }
+    }
+
+    internal static async Task ValidatePaymentChangesAsync(PensionDbContext db,
+        IEnumerable<EntityEntry<SalaryPaymentItem>> payments, ICollection<int> changedFiles, CancellationToken cancellationToken)
+    {
+        foreach (var payment in payments)
+        {
+            if (!ValidatePaymentMutation(payment)) continue;
+            EnsurePaymentAllowed(await ActivePaymentFiles(db, payment.Entity.FileID).AnyAsync(cancellationToken),
+                await ActivePaymentHolds(db, payment.Entity.FileID).AnyAsync(cancellationToken),
+                HasPendingPaymentHold(db, payment.Entity.FileID), changedFiles.Contains(payment.Entity.FileID));
+        }
+    }
+
+    private static bool ValidatePaymentMutation(EntityEntry<SalaryPaymentItem> payment)
+    {
+        var failure = PensionPaymentStatusRules.EvaluateMutation(payment.State == EntityState.Modified,
+            payment.Property(i => i.StatusID).OriginalValue, payment.Entity.StatusID,
+            payment.Property(i => i.Amount).OriginalValue, payment.Entity.Amount,
+            payment.Property(i => i.RecipientID).OriginalValue, payment.Entity.RecipientID);
+        var error = failure switch
+        {
+            PensionPaymentStatusRules.MutationFailure.AlreadyReceived => "لا يمكن تغيير بند معاش سبق استلامه",
+            PensionPaymentStatusRules.MutationFailure.InvalidTransition => "انتقال حالة الحوالة غير مسموح؛ لا يجوز إعادة إرسال بند سبق صرفه أو إلغاؤه",
+            PensionPaymentStatusRules.MutationFailure.SentAmountOrRecipientChanged => "لا يمكن تغيير مبلغ أو مستلم بند سبق إرساله",
+            _ => null
+        };
+        if (error != null) throw new InvalidOperationException(error);
+        return payment.Entity.StatusID is TransactionStatusConstants.Sent or TransactionStatusConstants.Received ||
+            payment.Property(i => i.SendDate).IsModified && payment.Entity.SendDate.HasValue;
+    }
+
+    private static IQueryable<RetirementFile> ActivePaymentFiles(PensionDbContext db, int fileId) =>
+        db.RetirementFiles.AsNoTracking().Where(f => f.FileID == fileId &&
+            f.StatusID == FileStatusConstants.Active && f.ReviewStatus == FileReviewStatus.Approved);
+
+    private static IQueryable<PensionSuspension> ActivePaymentHolds(PensionDbContext db, int fileId) =>
+        db.PensionSuspensions.Where(s => s.FileID == fileId && !s.IsDeleted &&
+            (s.Status == SuspensionStatusConstants.Active || s.Status == SuspensionStatusConstants.CodeActive));
+
+    private static bool HasPendingPaymentHold(PensionDbContext db, int fileId) =>
+        db.ChangeTracker.Entries<PensionSuspension>().Any(e =>
+            (e.State == EntityState.Added || e.State == EntityState.Modified) && e.Entity.FileID == fileId && !e.Entity.IsDeleted &&
+            (e.Entity.Status == SuspensionStatusConstants.Active || e.Entity.Status == SuspensionStatusConstants.CodeActive));
+
+    private static void EnsurePaymentAllowed(bool active, bool held, bool pendingHold, bool hasFileChanges)
+    {
+        if (!active || held || pendingHold || hasFileChanges)
+            throw new InvalidOperationException("صرف المعاش موقوف حتى اعتماد المراجعة وزوال جميع الإيقافات");
+    }
+
     private readonly IUnitOfWork _unitOfWork;
     private readonly IAccessiblePensionRepository _access;
     private readonly IPensionSuspensionService _pensionSuspensionService;
@@ -403,9 +478,11 @@ public class SalaryPaymentBatchService : ISalaryPaymentBatchService
         if (!hold.IsSuccess) return ApiResponse<bool>.Fail(hold.Message!);
         if (hold.Data!.IsHeld)
             return ApiResponse<bool>.Fail(hold.Data.Reason!);
-        if (item.StatusID == TransactionStatusConstants.Received)
+        var mutation = PensionPaymentStatusRules.EvaluateMutation(true, item.StatusID, dto.StatusID,
+            item.Amount, item.Amount, item.RecipientID, item.RecipientID);
+        if (mutation == PensionPaymentStatusRules.MutationFailure.AlreadyReceived)
             return ApiResponse<bool>.Fail("لا يمكن تغيير بند سبق استلامه");
-        if (!PensionPaymentStatusRules.CanChange(item.StatusID, dto.StatusID))
+        if (mutation == PensionPaymentStatusRules.MutationFailure.InvalidTransition)
             return ApiResponse<bool>.Fail("انتقال حالة الحوالة غير مسموح");
         item.StatusID = dto.StatusID;
         if (dto.TransactionNumber != null) item.TransactionNumber = dto.TransactionNumber;

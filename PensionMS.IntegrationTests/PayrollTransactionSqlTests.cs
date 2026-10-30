@@ -15,6 +15,7 @@ using PensionMS.Infrastructure.Repositories;
 using PensionMS.Infrastructure.Services.Notifications;
 using PensionMS.Infrastructure.Services.Payroll;
 using PensionMS.Infrastructure.Services.Pension.Entitlements;
+using PensionMS.Infrastructure.Services.Pension.RetirementFile;
 
 namespace PensionMS.IntegrationTests;
 
@@ -30,7 +31,7 @@ public class PayrollTransactionSqlTests(SqlTestDatabase database) : IClassFixtur
             NullLogger<SalaryPaymentBatchService>.Instance,
             new PensionMS.Infrastructure.Reporting.Exporters.ExcelReportExporter(
                 new PensionMS.Infrastructure.Reporting.Exporters.ExcelReportTemplate()), PensionMS.Testing.TestPensionAccess.All(uow),
-            new PensionSuspensionService(uow, Mock.Of<INotificationService>(), PensionMS.Testing.TestPensionAccess.All(uow)));
+            new PensionSuspensionService(uow, Mock.Of<INotificationService>(), PensionMS.Testing.TestPensionAccess.All(uow), Mock.Of<IDocumentPledgeService>()));
 
     [Fact]
     public async Task Regeneration_ConcurrentRequests_AndFailureAfterSave_PreserveOneCompleteBatch()
@@ -56,6 +57,8 @@ public class PayrollTransactionSqlTests(SqlTestDatabase database) : IClassFixtur
             var batch = new SalaryPaymentBatch { ImportedByUser = actor, Bank = new Bank { BankName = "بنك اختبار" },
                 BatchMonth = YemenTime.TodayDateTime, Status = BatchStatusConstants.Draft };
             db.Add(batch);
+            await db.SaveChangesAsync();
+            file.LastReviewedFileState = (await ApprovedPensionSnapshot.CaptureAsync(db, file.FileID, retiree.RetireeID)).Serialize();
             await db.SaveChangesAsync();
             (batchId, actorId, fileId) = (batch.BatchID, actor.UserID, file.FileID);
         }

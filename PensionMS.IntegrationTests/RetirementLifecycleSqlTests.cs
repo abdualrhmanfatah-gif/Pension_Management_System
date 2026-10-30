@@ -1,4 +1,7 @@
 using PensionMS.Testing;
+using System.Data.Common;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Moq;
@@ -9,6 +12,7 @@ using PensionMS.Core.Entities;
 using PensionMS.Core.Interfaces;
 using PensionMS.Core.Interfaces.Accounting;
 using PensionMS.Core.Time;
+using PensionMS.API.Interceptors;
 using PensionMS.Infrastructure.Repositories;
 using PensionMS.Infrastructure.Services.Pension.RetirementFile;
 using PensionMS.Infrastructure.Services.Payroll;
@@ -18,6 +22,294 @@ namespace PensionMS.IntegrationTests;
 
 public class RetirementLifecycleSqlTests(SqlTestDatabase database) : IClassFixture<SqlTestDatabase>
 {
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task DirectSave_WithRealAudit_PreservesSnapshotKeysAndFirstValuesAcrossSaves(bool synchronous)
+    {
+        var seeded = await SeedAsync(FileStatusConstants.Active);
+        var http = new HttpContextAccessor { HttpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(new ClaimsIdentity([new Claim(ClaimTypes.NameIdentifier, seeded.UserID.ToString())], "test"))
+        } };
+        await using (var db = database.OpenContext(new AuditSaveChangesInterceptor(http)))
+        {
+            var retiree = await db.Retirees.FindAsync(seeded.RetireeID);
+            retiree!.UpdatedByUserID = seeded.UserID;
+            retiree.Phone = "777222001";
+            if (synchronous) db.SaveChanges(); else await db.SaveChangesAsync();
+            Assert.Null(db.Database.CurrentTransaction);
+            retiree.Phone = "777222002";
+            if (synchronous) db.SaveChanges(); else await db.SaveChangesAsync();
+        }
+        await using var verify = database.OpenContext();
+        var file = await verify.RetirementFiles.FindAsync(seeded.FileID);
+        Assert.Equal("777000111", ApprovedPensionSnapshot.Read(file!.LastReviewedFileState)!.Retiree.Phone);
+        var items = await verify.FileReviewItems.Include(i => i.AuditLog)
+            .Where(i => i.RetirementFileID == seeded.FileID).OrderBy(i => i.ItemID).ToListAsync();
+        Assert.Equal(2, items.Count);
+        Assert.All(items, item =>
+        {
+            Assert.Equal(seeded.RetireeID, item.EntityID);
+            Assert.Equal(seeded.UserID, item.AuditLog!.UserID);
+            Assert.Equal(seeded.FileID, item.AuditLog.RecordID);
+            Assert.Contains("777000111", item.AuditLog.OldValues!);
+        });
+        Assert.Contains("777222002", items[1].AuditLog!.NewValues!);
+        var hold = Assert.Single(await verify.PensionSuspensions.Where(h => h.FileID == seeded.FileID).ToListAsync());
+        // General audit currently fixes int keys only; review items have long keys.
+        // Check their audit creation separately, and key fixup against the int suspension key.
+        var audits = await verify.AuditLogs.Where(a => a.Action == "Create" &&
+            a.UserID == seeded.UserID && a.NewValues != null && a.NewValues.Contains("\"SectionType\"")).ToListAsync();
+        Assert.Equal(2, audits.Count);
+        var holdAudit = Assert.Single(await verify.AuditLogs.Where(a => a.Action == "Create" &&
+            a.UserID == seeded.UserID && a.NewValues != null && a.NewValues.Contains("\"SuspensionSource\"")).ToListAsync());
+        Assert.Equal(hold.SuspensionID, holdAudit.RecordID);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task FailureDuringAuditKeyFixup_RollsBackDocumentReviewHoldAndAudits(bool synchronous)
+    {
+        var seeded = await SeedAsync(FileStatusConstants.Active);
+        var http = new HttpContextAccessor { HttpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(new ClaimsIdentity([new Claim(ClaimTypes.NameIdentifier, seeded.UserID.ToString())], "test"))
+        } };
+        await using (var db = database.OpenContext(new AuditSaveChangesInterceptor(http), new FailOnSave(2)))
+        {
+            db.Documents.Add(new Document
+            {
+                FileID = seeded.FileID, OwnerType = DocumentOwnerType.RetirementFile,
+                DocumentTypeID = DocumentTypeConstants.NationalId, UploadedByUserID = seeded.UserID,
+                FileName = "فشل تدقيق اختبار", FilePath = "test/audit-failure.pdf"
+            });
+            if (synchronous) Assert.Throws<InvalidOperationException>(() => db.SaveChanges());
+            else await Assert.ThrowsAsync<InvalidOperationException>(() => db.SaveChangesAsync());
+        }
+        await AssertReviewUnchangedAsync(seeded.FileID, seeded.RetireeID);
+        await using var verify = database.OpenContext();
+        Assert.False(await verify.Documents.AnyAsync(d => d.FileID == seeded.FileID && d.FilePath == "test/audit-failure.pdf"));
+        Assert.False(await verify.AuditLogs.AnyAsync(a => a.UserID == seeded.UserID));
+    }
+
+    [Theory]
+    [InlineData(TransactionStatusConstants.Received, false, false)]
+    [InlineData(TransactionStatusConstants.Received, false, true)]
+    [InlineData(TransactionStatusConstants.Sent, false, false)]
+    [InlineData(TransactionStatusConstants.Sent, false, true)]
+    [InlineData(TransactionStatusConstants.Sent, true, false)]
+    [InlineData(TransactionStatusConstants.Sent, true, true)]
+    public async Task DirectPaymentMutation_CannotChangeReceivedOrSentValues(int status, bool changeRecipient, bool synchronous)
+    {
+        var seeded = await SeedAsync(FileStatusConstants.Active);
+        int paymentId;
+        int? recipientId;
+        await using (var db = database.OpenContext())
+        {
+            recipientId = await db.SalaryRecipients.Where(r => r.FileID == seeded.FileID).Select(r => (int?)r.RecipientID).SingleAsync();
+            var item = NewPayment(seeded.FileID, seeded.RetireeID, seeded.UserID);
+            item.StatusID = status;
+            item.RecipientID = recipientId;
+            db.Add(item);
+            await db.SaveChangesAsync();
+            paymentId = item.PaymentItemID;
+            if (changeRecipient) item.RecipientID = null; else item.Amount++;
+            var error = synchronous ? Assert.Throws<InvalidOperationException>(() => db.SaveChanges())
+                : await Assert.ThrowsAsync<InvalidOperationException>(() => db.SaveChangesAsync());
+            Assert.Equal(status == TransactionStatusConstants.Received ? "لا يمكن تغيير بند معاش سبق استلامه"
+                : "لا يمكن تغيير مبلغ أو مستلم بند سبق إرساله", error.Message);
+        }
+        await using var verify = database.OpenContext();
+        var stored = await verify.SalaryPaymentItems.FindAsync(paymentId);
+        Assert.Equal(1200, stored!.Amount);
+        Assert.Equal(recipientId, stored.RecipientID);
+        Assert.Equal(status, stored.StatusID);
+        Assert.False(await verify.FileReviewItems.AnyAsync(i => i.RetirementFileID == seeded.FileID));
+    }
+
+    [Theory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public async Task DirectPaymentSend_RejectsHoldOrFileChangeInSameSave(bool addHold, bool synchronous)
+    {
+        var seeded = await SeedAsync(FileStatusConstants.Active);
+        int paymentId;
+        await using (var db = database.OpenContext())
+        {
+            var item = NewPayment(seeded.FileID, seeded.RetireeID, seeded.UserID);
+            db.Add(item);
+            await db.SaveChangesAsync();
+            paymentId = item.PaymentItemID;
+            if (addHold) db.PensionSuspensions.Add(new PensionSuspension
+            {
+                FileID = seeded.FileID, CreatedByUserID = seeded.UserID, Status = SuspensionStatusConstants.CodeActive,
+                SuspensionSource = "إداري", SuspensionDate = DateTime.UtcNow
+            });
+            else (await db.Retirees.FindAsync(seeded.RetireeID))!.Phone = "777222007";
+            item.StatusID = TransactionStatusConstants.Sent;
+            if (synchronous) Assert.Throws<InvalidOperationException>(() => db.SaveChanges());
+            else await Assert.ThrowsAsync<InvalidOperationException>(() => db.SaveChangesAsync());
+        }
+        await AssertReviewUnchangedAsync(seeded.FileID, seeded.RetireeID);
+        await using var verify = database.OpenContext();
+        Assert.Equal(TransactionStatusConstants.PendingSend, (await verify.SalaryPaymentItems.FindAsync(paymentId))!.StatusID);
+    }
+
+    private static SalaryPaymentItem NewPayment(int fileId, int retireeId, int userId) => new()
+    {
+        FileID = fileId, RetireeID = retireeId, CreatedByUserID = userId, Amount = 1200,
+        StatusID = TransactionStatusConstants.PendingSend,
+        Batch = new SalaryPaymentBatch
+        {
+            ImportedByUserID = userId, Status = BatchStatusConstants.Approved,
+            Bank = new Bank { BankName = Guid.NewGuid().ToString("N") }, BatchMonth = YemenTime.TodayDateTime
+        }
+    };
+
+    [Theory]
+    [InlineData(false, 1)]
+    [InlineData(false, 2)]
+    [InlineData(true, 1)]
+    [InlineData(true, 2)]
+    public async Task FailureInEitherSave_RollsBackDataReviewAndHold(bool synchronous, int saveOrdinal)
+    {
+        var seeded = await SeedAsync(FileStatusConstants.Active);
+        await using (var db = database.OpenContext(new FailOnSave(saveOrdinal)))
+        {
+            (await db.Retirees.FindAsync(seeded.RetireeID))!.Phone = "777222003";
+            if (synchronous) Assert.Throws<InvalidOperationException>(() => db.SaveChanges());
+            else await Assert.ThrowsAsync<InvalidOperationException>(() => db.SaveChangesAsync());
+            Assert.Null(db.Database.CurrentTransaction);
+        }
+        await AssertReviewUnchangedAsync(seeded.FileID, seeded.RetireeID);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task FailureAfterAllSaveInterceptors_StillRollsBack(bool synchronous)
+    {
+        var seeded = await SeedAsync(FileStatusConstants.Active);
+        await using (var db = database.OpenContext())
+        {
+            (await db.Retirees.FindAsync(seeded.RetireeID))!.Phone = "777222004";
+            db.SavedChanges += (_, _) => throw new InvalidOperationException("فشل اختباري بعد الاعتراضات");
+            if (synchronous) Assert.Throws<InvalidOperationException>(() => db.SaveChanges());
+            else await Assert.ThrowsAsync<InvalidOperationException>(() => db.SaveChangesAsync());
+        }
+        await AssertReviewUnchangedAsync(seeded.FileID, seeded.RetireeID);
+    }
+
+    [Fact]
+    public async Task CancellationBeforeFollowupSave_DoesNotPreventRollback()
+    {
+        var seeded = await SeedAsync(FileStatusConstants.Active);
+        using var cancellation = new CancellationTokenSource();
+        await using (var db = database.OpenContext())
+        {
+            (await db.Retirees.FindAsync(seeded.RetireeID))!.Phone = "777222005";
+            db.SavedChanges += (_, _) => cancellation.Cancel();
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() => db.SaveChangesAsync(cancellation.Token));
+            Assert.Null(db.Database.CurrentTransaction);
+        }
+        await AssertReviewUnchangedAsync(seeded.FileID, seeded.RetireeID);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task DirectSave_LeavesCommitAndRollbackToCaller(bool commit)
+    {
+        var seeded = await SeedAsync(FileStatusConstants.Active);
+        await using (var db = database.OpenContext())
+        using (var unit = new UnitOfWork(db))
+        {
+            await unit.BeginTransactionAsync();
+            (await db.Retirees.FindAsync(seeded.RetireeID))!.Phone = "777222006";
+            await db.SaveChangesAsync();
+            Assert.True(unit.HasActiveTransaction);
+            Assert.Single(await db.FileReviewItems.Where(i => i.RetirementFileID == seeded.FileID).ToListAsync());
+            if (commit) await unit.CommitAsync(); else await unit.RollbackAsync();
+        }
+        if (!commit) await AssertReviewUnchangedAsync(seeded.FileID, seeded.RetireeID);
+        else
+        {
+            await using var verify = database.OpenContext();
+            Assert.Equal("777222006", (await verify.Retirees.FindAsync(seeded.RetireeID))!.Phone);
+            Assert.Equal(FileStatusConstants.Pending, (await verify.RetirementFiles.FindAsync(seeded.FileID))!.StatusID);
+            Assert.Single(await verify.PensionSuspensions.Where(h => h.FileID == seeded.FileID).ToListAsync());
+        }
+    }
+
+    [Fact]
+    public async Task ConcurrentDocumentChanges_WaitForFileLockAndShareOneReviewHold()
+    {
+        var seeded = await SeedAsync(FileStatusConstants.Active);
+        var attempted = new LockAttempt();
+        await using var firstDb = database.OpenContext();
+        await using var secondDb = database.OpenContext(attempted);
+        using var first = new UnitOfWork(firstDb);
+        await first.BeginTransactionAsync();
+        await first.LockFileReviewAsync(seeded.FileID);
+        firstDb.Documents.Add(NewDocument());
+        await firstDb.SaveChangesAsync();
+        secondDb.Documents.Add(NewDocument());
+        var secondSave = secondDb.SaveChangesAsync();
+        try
+        {
+            await attempted.Entered.Task.WaitAsync(TimeSpan.FromSeconds(10));
+            Assert.False(secondSave.IsCompleted);
+        }
+        finally { await first.CommitAsync(); }
+        await secondSave.WaitAsync(TimeSpan.FromSeconds(20));
+        await using var verify = database.OpenContext();
+        Assert.Equal(2, await verify.FileReviewItems.CountAsync(i => i.RetirementFileID == seeded.FileID));
+        Assert.Single(await verify.PensionSuspensions.Where(h => h.FileID == seeded.FileID).ToListAsync());
+
+        Document NewDocument() => new()
+        {
+            FileID = seeded.FileID, OwnerType = DocumentOwnerType.RetirementFile,
+            DocumentTypeID = DocumentTypeConstants.NationalId, UploadedByUserID = seeded.UserID,
+            FileName = "وثيقة تزامن اختبار", FilePath = "test/concurrent.pdf"
+        };
+    }
+
+    private async Task AssertReviewUnchangedAsync(int fileId, int retireeId)
+    {
+        await using var verify = database.OpenContext();
+        Assert.Equal("777000111", (await verify.Retirees.FindAsync(retireeId))!.Phone);
+        Assert.Equal(FileStatusConstants.Active, (await verify.RetirementFiles.FindAsync(fileId))!.StatusID);
+        Assert.False(await verify.FileReviewItems.AnyAsync(i => i.RetirementFileID == fileId));
+        Assert.False(await verify.PensionSuspensions.AnyAsync(h => h.FileID == fileId));
+    }
+
+    private sealed class FailOnSave(int ordinal) : SaveChangesInterceptor
+    {
+        private int _count;
+        public override int SavedChanges(SaveChangesCompletedEventData eventData, int result)
+        {
+            if (++_count == ordinal) throw new InvalidOperationException("فشل اختباري أثناء الحفظ");
+            return result;
+        }
+        public override ValueTask<int> SavedChangesAsync(SaveChangesCompletedEventData eventData, int result,
+            CancellationToken cancellationToken = default) => new(SavedChanges(eventData, result));
+    }
+
+    private sealed class LockAttempt : DbCommandInterceptor
+    {
+        public TaskCompletionSource Entered { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        public override ValueTask<InterceptionResult<int>> NonQueryExecutingAsync(DbCommand command,
+            CommandEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
+        {
+            if (command.CommandText.Contains("UPDLOCK", StringComparison.Ordinal)) Entered.TrySetResult();
+            return new(result);
+        }
+    }
+
     [Fact]
     public async Task SharedRetireeEdit_HoldsEveryAffectedFile_PreservesApprovedAmountsAndHistory()
     {
@@ -190,7 +482,7 @@ public class RetirementLifecycleSqlTests(SqlTestDatabase database) : IClassFixtu
             Mock.Of<INotificationService>(), journal.Object,
             Microsoft.Extensions.Logging.Abstractions.NullLogger<SalaryPaymentBatchService>.Instance,
             new Infrastructure.Reporting.Exporters.ExcelReportExporter(new Infrastructure.Reporting.Exporters.ExcelReportTemplate()), TestPensionAccess.All(uow),
-            new PensionSuspensionService(uow, Mock.Of<INotificationService>(), TestPensionAccess.All(uow)));
+            new PensionSuspensionService(uow, Mock.Of<INotificationService>(), TestPensionAccess.All(uow), Mock.Of<IDocumentPledgeService>()));
 
         var result = await service.ApproveAsync(item.BatchID, seeded.UserID);
         Assert.True(result.IsSuccess, result.Message);
@@ -327,7 +619,7 @@ public class RetirementLifecycleSqlTests(SqlTestDatabase database) : IClassFixtu
         Mock.Of<IPayrollGenerationService>(), Mock.Of<IWorkflowTaskService>(), Mock.Of<INotificationService>(),
         Mock.Of<IJournalEntryService>(), Microsoft.Extensions.Logging.Abstractions.NullLogger<SalaryPaymentBatchService>.Instance,
         new Infrastructure.Reporting.Exporters.ExcelReportExporter(new Infrastructure.Reporting.Exporters.ExcelReportTemplate()),
-        TestPensionAccess.All(unit), new PensionSuspensionService(unit, Mock.Of<INotificationService>(), TestPensionAccess.All(unit)));
+        TestPensionAccess.All(unit), new PensionSuspensionService(unit, Mock.Of<INotificationService>(), TestPensionAccess.All(unit), Mock.Of<IDocumentPledgeService>()));
 
     [Fact]
     public async Task Rollout_QueuesAllCurrentRecords_Once_AndPreservesEndedIntentAndIndependentHolds()
@@ -349,7 +641,9 @@ public class RetirementLifecycleSqlTests(SqlTestDatabase database) : IClassFixtu
         Assert.All(current, f => Assert.Equal(FileStatusConstants.Pending, f.StatusID));
         Assert.Equal(FileStatusConstants.EntitlementEnded, current.Single(f => f.FileID == ended.FileID).PreviousStatusID);
         Assert.Equal(2, await db.PensionSuspensions.CountAsync(s => s.FileID == suspended.FileID && s.Status == SuspensionStatusConstants.Active));
-        Assert.NotNull(ApprovedPensionSnapshot.Read(current.Single(f => f.FileID == draft.FileID).LastReviewedFileState));
+        var rolloutSnapshot = current.Single(f => f.FileID == draft.FileID).LastReviewedFileState;
+        Assert.NotNull(System.Text.Json.JsonSerializer.Deserialize<ApprovedPensionSnapshot>(rolloutSnapshot!));
+        Assert.NotNull(ApprovedPensionSnapshot.Read(rolloutSnapshot));
         var itemCount = await db.FileReviewItems.CountAsync();
         var holdCount = await db.PensionSuspensions.CountAsync();
         await RunScriptAsync();

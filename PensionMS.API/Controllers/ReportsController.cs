@@ -3,11 +3,9 @@ using PensionMS.Core.Interfaces.Reporting;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PensionMS.Core.Constants;
-using PensionMS.Core.DTOs.Common;
 using PensionMS.Core.Interfaces;
 using PensionMS.Core.Reporting;
 using PensionMS.API.Extensions;
-using PensionMS.Infrastructure.Reporting;
 using System;
 using System.Threading.Tasks;
 using ReportFilter = PensionMS.Core.DTOs.Reports.ReportFilter;
@@ -23,17 +21,20 @@ public class ReportsController : ControllerBase
     private readonly IReportRegistry _reportRegistry;
     private readonly IReportDataService _reportDataService;
     private readonly PdfReportExporter _pdfExporter;
+    private readonly ExcelReportExporter _excelExporter;
 
     public ReportsController(
         IReportService reportService,
         IReportRegistry reportRegistry,
         IReportDataService reportDataService,
-        PdfReportExporter pdfExporter)
+        PdfReportExporter pdfExporter,
+        ExcelReportExporter excelExporter)
     {
         _reportService = reportService;
         _reportRegistry = reportRegistry;
         _reportDataService = reportDataService;
         _pdfExporter = pdfExporter;
+        _excelExporter = excelExporter;
     }
 
     private IActionResult ReturnFile(byte[] bytes, string format, string baseName)
@@ -46,52 +47,15 @@ public class ReportsController : ControllerBase
 
     private async Task<IActionResult> ExportWithFormatAsync(string reportId, string format, string baseName, ReportFilter filter)
     {
-        if (format.ToLower() == ExportFormatConstants.Pdf)
-        {
-            var definition = _reportRegistry.GetById(reportId);
-            if (definition == null)
-                return BadRequest("تقرير غير موجود");
+        var definition = _reportRegistry.GetById(reportId);
+        if (definition == null)
+            return BadRequest("تقرير غير موجود");
 
-            var data = await _reportDataService.GetDataAsync(reportId, filter);
-            var pdfBytes = _pdfExporter.Export(definition, data);
-            return ReturnFile(pdfBytes, format, baseName);
-        }
+        var data = await _reportDataService.GetDataAsync(reportId, filter);
 
-        return await ExportExcelAsync(reportId, filter, baseName);
-    }
-
-    private async Task<IActionResult> ExportExcelAsync(string reportId, ReportFilter filter, string baseName)
-    {
-        byte[] bytes = reportId switch
-        {
-            "basic-retirees" => await _reportService.ExportRetireesAsync(filter.Search, branchId: filter.BranchId),
-            "basic-retirement-files" => await _reportService.ExportRetirementFilesAsync(filter.StatusId, branchId: filter.BranchId),
-            "basic-entitled-persons" => await _reportService.ExportEntitledPersonsAsync(filter.StatusId, branchId: filter.BranchId),
-            "basic-users" => await _reportService.ExportUsersAsync(branchId: filter.BranchId),
-            "inv-01" => await _reportService.ExportPortfolioPerformanceAsync(filter),
-            "inv-02" => await _reportService.ExportOccupancyReportAsync(filter),
-            "inv-03" => await _reportService.ExportRentCollectionAsync(filter),
-            "inv-04" => await _reportService.ExportContractStatusAsync(filter),
-            "inv-05" => await _reportService.ExportRiskExposureAsync(filter),
-            "inv-06" => await _reportService.ExportMaintenanceSummaryAsync(filter),
-            "inv-07" => await _reportService.ExportBudgetVsActualAsync(filter),
-            "ret-01" => await _reportService.ExportFileStatusReportAsync(filter),
-            "ret-02" => await _reportService.ExportActiveRetireesAsync(filter),
-            "ret-03" => await _reportService.ExportSuspensionsReportAsync(filter),
-            "fin-01" => await _reportService.ExportSalaryBatchesAsync(filter),
-            "fin-02" => await _reportService.ExportSettlementsReportAsync(filter),
-            "fin-03" => await _reportService.ExportFiscalPeriodReportAsync(filter),
-            "doc-01" => await _reportService.ExportMissingDocsReportAsync(filter),
-            "doc-01b" => await _reportService.ExportMissingDocsByPersonReportAsync(filter),
-            "doc-02" => await _reportService.ExportExpiredDocsReportAsync(filter),
-            "dep-01" => await _reportService.ExportBeneficiariesReportAsync(filter),
-            "kashf-01" => await _reportService.ExportKashfReportAsync(filter),
-            "com-02" => await _reportService.ExportPendingApprovalsAsync(filter),
-            "adm-01" => await _reportService.ExportAuditLogAsync(filter),
-            "adm-02" => await _reportService.ExportUserActivityAsync(filter),
-            _ => throw new InvalidOperationException($"Unknown report: {reportId}")
-        };
-        return ReturnFile(bytes, "excel", baseName);
+        return format.ToLower() == ExportFormatConstants.Pdf
+            ? ReturnFile(_pdfExporter.Export(definition, data), format, baseName)
+            : ReturnFile(_excelExporter.Export(definition, data), format, baseName);
     }
 
     // ── Basic Entity Exports ──

@@ -3,7 +3,7 @@ import { AlertTriangle, FileText } from "lucide-react";
 import { Controller,useForm } from "react-hook-form";
 import { z } from "zod";
 
-import api from "@/api/axios";
+import { retirementApi } from "@/api/retirement";
 import { 
   BaseFormDialog, 
   FileField, 
@@ -53,14 +53,7 @@ export function StopEntitledPersonDialog({
     const { control, register, formState: { errors, isDirty } } = form;
 
     const mutation = useApiMutation(async (values: StopFormValues) => {
-        const formData = new FormData();
-        formData.append("stopCode", values.stopCode);
-        if (values.notes) formData.append("notes", values.notes);
-        if (values.document) formData.append("document", values.document);
-
-        return api.put(`/entitled-persons/${personId}/stop`, formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-        });
+        return retirementApi.stopEntitledPerson(personId, values);
     }, {
         successMessage: "تم إيقاف الصرف بنجاح",
         invalidateKeys: [["entitled-persons", fileId], ["retirement-file"]],

@@ -77,7 +77,11 @@ public class ReportingScopeSqlTests(SqlTestDatabase database) : IClassFixture<Sq
         var pdfSource = await new ReportDataService(hq, uow, TestPensionAccess.From(uow, Scope(null, true))).GetDataAsync("basic-retirement-files", selectedBranch);
         var pdfRow = Assert.Single(pdfSource);
         Assert.Equal(fileB.FileNumber, pdfRow.GetType().GetProperty("FileNumber")!.GetValue(pdfRow));
-        using (var excel = new ExcelPackage(new MemoryStream(await hq.ExportRetirementFilesAsync(branchId: branchB.PensionBranchID))))
+        var fileReport = new RetirementFileReportService(uow,
+            new RetirementFileReportExporter(exporter, new PdfReportExporter()),
+            TestPensionAccess.From(uow, Scope(null, true)));
+        using (var excel = new ExcelPackage(new MemoryStream(await fileReport.ExportRetirementFileReportAsync(
+            new RetirementFileReportFilter { BranchId = branchB.PensionBranchID }, ExportFormatConstants.Excel))))
         {
             var sheet = excel.Workbook.Worksheets[0];
             var header = Enumerable.Range(1, sheet.Dimension.End.Row).Single(row => sheet.Cells[row, 2].Text == "رقم الملف");

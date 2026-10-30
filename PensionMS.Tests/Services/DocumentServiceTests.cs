@@ -26,12 +26,21 @@ public class DocumentServiceTests
         _auditMock = new Mock<IImmutableAuditService>();
         _missingService.Setup(m => m.GetRequiredPairsAsync(It.IsAny<int>()))
             .ReturnsAsync(new List<PensionMS.Core.DTOs.MissingDocuments.AutoDetectedMissingDocumentDto>());
+        var engine = new Mock<IEntitlementEngine>();
+        engine.Setup(e => e.ReEvaluateEntitlementStatusAsync(It.IsAny<int>()))
+            .ReturnsAsync(PensionMS.Core.DTOs.Common.ApiResponse<bool>.Success(true));
+        var review = new Mock<IFileReviewService>();
+        review.Setup(r => r.RequestReviewAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<DateTime?>()))
+            .ReturnsAsync(PensionMS.Core.DTOs.Common.ApiResponse<bool>.Success(true));
+        var missingRows = new Mock<IRepository<MissingDocument>>();
+        missingRows.Setup(r => r.Query()).Returns(new TestAsyncEnumerable<MissingDocument>([]));
+        _unitOfWorkMock.Setup(u => u.MissingDocuments).Returns(missingRows.Object);
 
         _service = new DocumentService(
             _unitOfWorkMock.Object,
             Mock.Of<IFileStorageService>(),
-            Mock.Of<IEntitlementEngine>(),
-            Mock.Of<IFileReviewService>(), TestPensionAccess.From(_unitOfWorkMock.Object, _branchScopeMock.Object),
+            engine.Object,
+            review.Object, TestPensionAccess.From(_unitOfWorkMock.Object, _branchScopeMock.Object),
             _auditMock.Object,
             Microsoft.Extensions.Logging.Abstractions.NullLogger<DocumentService>.Instance, _missingService.Object);
     }

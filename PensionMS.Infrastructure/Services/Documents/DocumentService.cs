@@ -7,6 +7,7 @@ using PensionMS.Core.DTOs.Documents;
 using PensionMS.Core.Entities;
 using PensionMS.Core.Interfaces;
 using PensionMS.Infrastructure.Helpers;
+using PensionMS.Infrastructure.Data;
 using PensionMS.Infrastructure.Services.Pension.RetirementFile;
 using PensionMS.Core.Rules.Documents;
 
@@ -272,8 +273,7 @@ public class DocumentService : IDocumentService
         var owner = new RetirementDocumentRequirement(DocumentTypeConstants.NationalId, file.RetireeID,
             null, null, null, null, null);
         var today = PensionMS.Core.Time.YemenTime.Today;
-        var identity = documents.FirstOrDefault(d => RetirementFileDocumentRules.IsValid(d, today) &&
-            RetirementFileDocumentRules.Owner(d) == owner);
+        var identity = RetirementFileDocumentRules.FindValidDocument(documents, owner, today);
         return ApiResponse<string?>.Success(identity?.FilePath);
     }
 
@@ -486,7 +486,7 @@ public class DocumentService : IDocumentService
         // ─── منع التكرار: بصمة محتوى + نطاق مالك (م24) ───
         if (fileId.HasValue)
         {
-            var duplicate = await (await _access.ForCurrentOperationAsync()).Query(_unitOfWork.Documents)
+            var candidates = await (await _access.ForCurrentOperationAsync()).Query(_unitOfWork.Documents)
                 .Where(d => !d.IsDeleted
                     && d.FileID == fileId.Value
                     && d.DocumentTypeID == dto.DocumentTypeID
@@ -497,7 +497,9 @@ public class DocumentService : IDocumentService
                     && ((d.Checksum != null && d.Checksum == contentHash)
                         || (d.Checksum == null && d.FileName == fileName && d.FileSize == fileSize)))
                 .OrderByDescending(d => d.CreatedAt)
-                .FirstOrDefaultAsync();
+                .ToListAsync();
+
+            var duplicate = candidates.FirstOrDefault(d => RetirementFileDocumentRules.IsValid(d, PensionMS.Core.Time.YemenTime.Today));
 
             if (duplicate != null)
             {
@@ -545,6 +547,13 @@ public class DocumentService : IDocumentService
             EmployeeID = dto.EmployeeID,
             CreatedAt = DateTime.UtcNow
         };
+
+        if (_unitOfWork.HasActiveTransaction)
+            _unitOfWork.OnRollback(async () =>
+            {
+                try { await _fileStorage.DeleteFileAsync(relativePath); }
+                catch (Exception ex) { _logger.LogError(ex, "تعذر تنظيف مرفق وثيقة بعد التراجع عن المعاملة: {Path}", relativePath); }
+            });
 
         var uploadTime = DateTime.UtcNow;
         try
@@ -624,8 +633,16 @@ public class DocumentService : IDocumentService
     /// آمن لإعادة التكرار: إيفاء النواقص لا يعيد فتح المنجز، والامتثال يعيد الحساب من الوثائق الفعلية،
     /// والمراجعة التفاضلية لا تكرر البنود. صفوف التدقيق الجديدة عند التكرار مقصودة (توثق كل استدعاء).
     /// </summary>
-    public async Task<ApiResponse<RefreshAfterUploadResult>> RefreshAfterUploadAsync(
+    public Task<ApiResponse<RefreshAfterUploadResult>> RefreshAfterUploadAsync(
         int fileId, List<int> documentIds, int userId, DateTime? requestedAt = null)
+        => RefreshAfterUploadCoreAsync(fileId, documentIds, userId, requestedAt, true);
+
+    public Task<ApiResponse<RefreshAfterUploadResult>> RefreshAfterLifecycleUploadAsync(
+        int fileId, List<int> documentIds, int userId, DateTime requestedAt)
+        => RefreshAfterUploadCoreAsync(fileId, documentIds, userId, requestedAt, false);
+
+    private async Task<ApiResponse<RefreshAfterUploadResult>> RefreshAfterUploadCoreAsync(
+        int fileId, List<int> documentIds, int userId, DateTime? requestedAt, bool reevaluate)
     {
         if (!await HasBranchAccessAsync(fileId))
             return ApiResponse<RefreshAfterUploadResult>.Fail("لا تملك صلاحية تحديث ملف في فرع آخر");
@@ -647,7 +664,7 @@ public class DocumentService : IDocumentService
 
         try
         {
-            var fulfilled = await ProcessFileLevelPostUploadAsync(fileId, docs, userId, timestamp);
+            var fulfilled = await ProcessFileLevelPostUploadAsync(fileId, docs, userId, timestamp, reevaluate);
             await _unitOfWork.SaveChangesAsync();
 
             var updated = await _unitOfWork.RetirementFiles.GetByIdAsync(fileId);
@@ -678,7 +695,7 @@ public class DocumentService : IDocumentService
     /// نفس الكود يخدم الرفع الفردي (قائمة بوثيقة واحدة) والتحديث النهائي الجماعي. يعيد عدد النواقص المستوفاة.
     /// </summary>
     private async Task<int> ProcessFileLevelPostUploadAsync(
-        int fileId, List<Document> docs, int userId, DateTime timestamp)
+        int fileId, List<Document> docs, int userId, DateTime timestamp, bool reevaluate = true)
     {
         var fulfilledTotal = 0;
         var affectedPledgeIds = new HashSet<int>();
@@ -740,16 +757,16 @@ public class DocumentService : IDocumentService
             }
         }
 
-        await _missingDocumentService.RefreshComplianceCacheAsync(fileId);
-
         // إعادة تقييم المستحقين مرة لكل شخص بدل مرة لكل وثيقة
-        foreach (var entitledId in docs
+        foreach (var entitledId in (reevaluate ? docs : new List<Document>())
             .Where(d => d.EntitledID.HasValue)
             .Select(d => d.EntitledID!.Value)
             .Distinct())
         {
             await _entitlementEngine.ReEvaluateEntitlementStatusAsync(entitledId);
         }
+
+        await _missingDocumentService.RefreshComplianceCacheAsync(fileId);
 
         var reviewResult = await _reviewService.RequestReviewAsync(fileId, userId, timestamp);
         if (!reviewResult.IsSuccess)
@@ -932,7 +949,10 @@ public class DocumentService : IDocumentService
         }
     }
 
-    public async Task<ApiResponse<bool>> DeleteAsync(int id, int deletedByUserId)
+    public Task<ApiResponse<bool>> DeleteAsync(int id, int deletedByUserId)
+        => ExecuteDocumentChangeAsync(id, () => DeleteCoreAsync(id, deletedByUserId));
+
+    private async Task<ApiResponse<bool>> DeleteCoreAsync(int id, int deletedByUserId)
     {
         var doc = await (await _access.ForCurrentOperationAsync()).Query(_unitOfWork.Documents).FirstOrDefaultAsync(d => d.DocumentID == id);
         if (doc == null)
@@ -973,14 +993,16 @@ public class DocumentService : IDocumentService
             await RecalculateMissingAsync(doc.FileID, doc.DocumentTypeID);
             await _unitOfWork.SaveChangesAsync();
 
-            await _missingDocumentService.RefreshComplianceCacheAsync(doc.FileID.Value);
-            await _reviewService.RequestReviewAsync(doc.FileID.Value, deletedByUserId, deleteTime);
+            await RefreshAfterDocumentChangeAsync([(doc.FileID, doc.EntitledID)], deletedByUserId, deleteTime);
         }
 
         return ApiResponse<bool>.Success(true, "تم حذف الوثيقة");
     }
 
-    public async Task<ApiResponse<DocumentDto>> UpdateAsync(int id, UpdateDocumentDto dto, int updatedByUserId)
+    public Task<ApiResponse<DocumentDto>> UpdateAsync(int id, UpdateDocumentDto dto, int updatedByUserId)
+        => ExecuteDocumentChangeAsync(id, () => UpdateCoreAsync(id, dto, updatedByUserId));
+
+    private async Task<ApiResponse<DocumentDto>> UpdateCoreAsync(int id, UpdateDocumentDto dto, int updatedByUserId)
     {
         var doc = await (await _access.ForCurrentOperationAsync()).Query(_unitOfWork.Documents)
             .Include(d => d.DocumentType)
@@ -1103,6 +1125,12 @@ public class DocumentService : IDocumentService
             }
 
             oldFilePath = doc.FilePath;
+            if (_unitOfWork.HasActiveTransaction)
+                _unitOfWork.OnRollback(async () =>
+                {
+                    try { await _fileStorage.DeleteFileAsync(newRelativePath); }
+                    catch (Exception ex) { _logger.LogError(ex, "تعذر تنظيف الملف البديل بعد التراجع: {Path}", newRelativePath); }
+                });
             doc.FileName = newFileName;
             doc.FilePath = newRelativePath;
             doc.FileSize = newFileSize;
@@ -1184,16 +1212,16 @@ public class DocumentService : IDocumentService
             await _unitOfWork.SaveChangesAsync();
         }
 
-        if (fileId.HasValue)
-        {
-            await _missingDocumentService.RefreshComplianceCacheAsync(fileId.Value);
-            await _reviewService.RequestReviewAsync(fileId.Value, updatedByUserId, updateTime);
-        }
+        await RefreshAfterDocumentChangeAsync([(oldFileId, oldEntitledId), (doc.FileID, doc.EntitledID)],
+            updatedByUserId, updateTime);
 
         return ApiResponse<DocumentDto>.Success(MapToDto(doc), "تم تحديث الوثيقة بنجاح");
     }
 
-    public async Task<ApiResponse<bool>> ReviewAsync(int id, ReviewDocumentDto dto, int reviewedByUserId)
+    public Task<ApiResponse<bool>> ReviewAsync(int id, ReviewDocumentDto dto, int reviewedByUserId)
+        => ExecuteDocumentChangeAsync(id, () => ReviewCoreAsync(id, dto, reviewedByUserId));
+
+    private async Task<ApiResponse<bool>> ReviewCoreAsync(int id, ReviewDocumentDto dto, int reviewedByUserId)
     {
         var doc = await (await _access.ForCurrentOperationAsync()).Query(_unitOfWork.Documents)
             .FirstOrDefaultAsync(d => d.DocumentID == id && !d.IsDeleted);
@@ -1236,7 +1264,38 @@ public class DocumentService : IDocumentService
             System.Text.Json.JsonSerializer.Serialize(new { PendingReviewStatus = oldStatus.ToString() }),
             System.Text.Json.JsonSerializer.Serialize(new { PendingReviewStatus = newStatus.ToString(), dto.RejectionReason }));
 
+        await RecalculateMissingAsync(doc.FileID, doc.DocumentTypeID);
+        await _unitOfWork.SaveChangesAsync();
+        await RefreshAfterDocumentChangeAsync([(doc.FileID, doc.EntitledID)], reviewedByUserId, DateTime.UtcNow);
+
         return ApiResponse<bool>.Success(true, "تم حفظ نتيجة الفحص بنجاح");
+    }
+
+    private Task<ApiResponse<T>> ExecuteDocumentChangeAsync<T>(int id, Func<Task<ApiResponse<T>>> change)
+        => UnitOfWorkTransaction.ExecuteAsync(_unitOfWork, async () =>
+        {
+            var scope = await (await _access.ForCurrentOperationAsync()).Query(_unitOfWork.Documents)
+                .Where(d => d.DocumentID == id).Select(d => new { d.FileID }).FirstOrDefaultAsync();
+            if (scope == null) return ApiResponse<T>.Fail("الوثيقة غير موجودة");
+            if (scope.FileID.HasValue) await _unitOfWork.LockFileReviewAsync(scope.FileID.Value);
+            return await change();
+        });
+
+    private async Task RefreshAfterDocumentChangeAsync(IEnumerable<(int? FileId, int? EntitledId)> affected,
+        int userId, DateTime changedAt)
+    {
+        var scopes = affected.Where(s => s.FileId.HasValue).Distinct().ToList();
+        foreach (var id in scopes.Where(s => s.EntitledId.HasValue).Select(s => s.EntitledId!.Value).Distinct())
+        {
+            var result = await _entitlementEngine.ReEvaluateEntitlementStatusAsync(id);
+            if (!result.IsSuccess) throw new InvalidOperationException(result.Message);
+        }
+        foreach (var fileId in scopes.Select(s => s.FileId!.Value).Distinct())
+        {
+            await _missingDocumentService.RefreshComplianceCacheAsync(fileId);
+            var review = await _reviewService.RequestReviewAsync(fileId, userId, changedAt);
+            if (!review.IsSuccess) throw new InvalidOperationException(review.Message);
+        }
     }
 
     private async Task<ApiResponse<List<DocumentDto>>> GetByPredicateAsync(System.Linq.Expressions.Expression<Func<Document, bool>> predicate)

@@ -29,6 +29,11 @@ public static class RetirementFileDocumentRules
         document.PendingReviewStatus != PendingReviewStatus.Rejected &&
         (!document.ExpiryDate.HasValue || document.ExpiryDate.Value >= today);
 
+    /// <summary>يختار أول وثيقة صحيحة للمالك المطلوب من مجموعة سبق تقييدها بنطاق الملف.</summary>
+    public static Document? FindValidDocument(IEnumerable<Document> documents,
+        RetirementDocumentRequirement requirement, DateOnly today) =>
+        documents.FirstOrDefault(d => IsValid(d, today) && Owner(d) == requirement);
+
     public static RetirementDocumentRequirement Owner(Document d) => new(d.DocumentTypeID, d.RetireeID,
         d.AgentID, d.GuardianID, d.EntitledID, d.PledgeID, d.ExemptionID);
 

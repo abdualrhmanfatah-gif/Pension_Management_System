@@ -55,6 +55,22 @@ public class DocumentPledgeService : IDocumentPledgeService
         return ApiResponse<DocumentPledgeDto>.Success(MapToDto(pledge));
     }
 
+    public async Task<ApiResponse<Dictionary<int, int>>> GetMissingDocumentCountsAsync(IReadOnlyCollection<int> pledgeIds)
+    {
+        if (pledgeIds == null || pledgeIds.Count == 0)
+            return ApiResponse<Dictionary<int, int>>.Success(new Dictionary<int, int>());
+
+        var queries = await _access.ForCurrentOperationAsync();
+        var ids = pledgeIds.Distinct().ToList();
+        var counts = await queries.Query(_unitOfWork.DocumentPledges)
+            .AsNoTracking()
+            .Where(p => ids.Contains(p.PledgeID) && !p.IsDeleted)
+            .Select(p => new { p.PledgeID, Count = p.MissingDocuments.Count })
+            .ToListAsync();
+
+        return ApiResponse<Dictionary<int, int>>.Success(counts.ToDictionary(c => c.PledgeID, c => c.Count));
+    }
+
     public async Task<ApiResponse<DocumentPledgeDto>> CreateAsync(CreateDocumentPledgeDto dto, int userId)
     {
         var queries = await _access.ForCurrentOperationAsync();
@@ -78,6 +94,7 @@ public class DocumentPledgeService : IDocumentPledgeService
         var pledge = new DocumentPledge
         {
             FileID          = dto.FileID,
+            SuspensionID    = dto.SuspensionID,
             CreatedByUserID = userId,
             PledgeDate      = DateTime.UtcNow,
             Deadline        = dto.Deadline,

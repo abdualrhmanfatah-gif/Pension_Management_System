@@ -63,7 +63,7 @@ public class SharedExcelReportTemplateTests
     [Fact]
     public async Task AccountingExport_UsesSharedTemplateAndPreservesNumericAmounts()
     {
-        var service = new AccountingExportService(new ExcelReportExporter(new ExcelReportTemplate()));
+        var service = new AccountingExportService(new ExcelReportExporter(new ExcelReportTemplate()), new PdfReportExporter());
         var response = ApiResponse<List<TrialBalanceItemDto>>.Success(new()
         {
             new TrialBalanceItemDto { AccountCode = "001", AccountName = "الصندوق", TotalDebit = 125.50m,

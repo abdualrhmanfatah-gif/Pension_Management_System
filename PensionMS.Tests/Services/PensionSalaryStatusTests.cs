@@ -2,6 +2,7 @@ using Moq;
 using PensionMS.Core.Constants;
 using PensionMS.Core.Entities;
 using PensionMS.Core.Interfaces;
+using PensionMS.Core.Rules.Payroll;
 using PensionMS.Infrastructure.Services.Pension.Entitlements;
 using PensionMS.Testing;
 
@@ -9,6 +10,22 @@ namespace PensionMS.Tests.Services;
 
 public class PensionSalaryStatusTests
 {
+    [Theory]
+    [InlineData(true, TransactionStatusConstants.Received, TransactionStatusConstants.Received, 100, 100, 1, 1, PensionPaymentStatusRules.MutationFailure.AlreadyReceived)]
+    [InlineData(true, TransactionStatusConstants.Sent, TransactionStatusConstants.PendingSend, 100, 100, 1, 1, PensionPaymentStatusRules.MutationFailure.InvalidTransition)]
+    [InlineData(true, TransactionStatusConstants.Sent, TransactionStatusConstants.Received, 100, 101, 1, 1, PensionPaymentStatusRules.MutationFailure.SentAmountOrRecipientChanged)]
+    [InlineData(true, TransactionStatusConstants.Sent, TransactionStatusConstants.Sent, 100, 100, 1, 2, PensionPaymentStatusRules.MutationFailure.SentAmountOrRecipientChanged)]
+    [InlineData(true, TransactionStatusConstants.Sent, TransactionStatusConstants.Received, 100, 100, 1, 1, PensionPaymentStatusRules.MutationFailure.None)]
+    [InlineData(true, TransactionStatusConstants.PendingSend, TransactionStatusConstants.Sent, 100, 101, 1, 2, PensionPaymentStatusRules.MutationFailure.None)]
+    [InlineData(true, TransactionStatusConstants.Failed, TransactionStatusConstants.PendingSend, 100, 100, 1, 1, PensionPaymentStatusRules.MutationFailure.None)]
+    [InlineData(false, TransactionStatusConstants.Received, TransactionStatusConstants.Received, 100, 100, null, null, PensionPaymentStatusRules.MutationFailure.None)]
+    public void PaymentMutation_PreservesSentValuesAndReceivedHistory(bool modification, int? current, int? next,
+        int oldAmount, int amount, int? oldRecipient, int? recipient, PensionPaymentStatusRules.MutationFailure expected)
+    {
+        Assert.Equal(expected, PensionPaymentStatusRules.EvaluateMutation(
+            modification, current, next, oldAmount, amount, oldRecipient, recipient));
+    }
+
     [Theory]
     [InlineData(FileStatusConstants.Active, FileReviewStatus.Approved, null, false, "قابل للصرف")]
     [InlineData(FileStatusConstants.Active, FileReviewStatus.Approved, "فعّال", false, "موقوف")]
@@ -30,7 +47,7 @@ public class PensionSalaryStatusTests
         holds.Setup(r => r.Query()).Returns(new TestAsyncEnumerable<PensionSuspension>(holdStatus == null ? [] :
             [new PensionSuspension { FileID = 1, Status = holdStatus, IsDeleted = deleted }]));
         unit.Setup(u => u.PensionSuspensions).Returns(holds.Object);
-        var service = new PensionSuspensionService(unit.Object, Mock.Of<INotificationService>(), TestPensionAccess.All(unit.Object));
+        var service = new PensionSuspensionService(unit.Object, Mock.Of<INotificationService>(), TestPensionAccess.All(unit.Object), Mock.Of<IDocumentPledgeService>());
 
         var result = await service.GetSalaryStatusAsync(1);
 
@@ -61,7 +78,7 @@ public class PensionSalaryStatusTests
         var identity = new Mock<ITestBranchScope>();
         identity.Setup(s => s.GetCurrentBranchId()).Returns(1);
         var service = new PensionSuspensionService(unit.Object, Mock.Of<INotificationService>(),
-            TestPensionAccess.From(unit.Object, identity.Object));
+            TestPensionAccess.From(unit.Object, identity.Object), Mock.Of<IDocumentPledgeService>());
         Assert.False((await service.GetSalaryStatusAsync(1)).IsSuccess);
         Assert.False((await service.CheckPaymentHoldAsync(1)).IsSuccess);
     }
@@ -80,7 +97,7 @@ public class PensionSalaryStatusTests
         var holds = new Mock<IRepository<PensionSuspension>>();
         holds.Setup(r => r.Query()).Returns(new TestAsyncEnumerable<PensionSuspension>([]));
         unit.Setup(u => u.PensionSuspensions).Returns(holds.Object);
-        var service = new PensionSuspensionService(unit.Object, Mock.Of<INotificationService>(), TestPensionAccess.All(unit.Object));
+        var service = new PensionSuspensionService(unit.Object, Mock.Of<INotificationService>(), TestPensionAccess.All(unit.Object), Mock.Of<IDocumentPledgeService>());
         var result = await service.CheckPaymentHoldAsync(1);
         Assert.False(result.IsSuccess);
         Assert.Null(result.Data);

@@ -11,10 +11,12 @@ namespace PensionMS.Infrastructure.Services.Investment;
 public class InvestmentPropertyService : IInvestmentPropertyService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAccessiblePensionRepository _access;
 
-    public InvestmentPropertyService(IUnitOfWork unitOfWork)
+    public InvestmentPropertyService(IUnitOfWork unitOfWork, IAccessiblePensionRepository access)
     {
         _unitOfWork = unitOfWork;
+        _access = access;
     }
 
     // ----------------------------------------------------------------------
@@ -23,9 +25,11 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<int>> CreatePropertyAsync(CreatePropertyDto dto, int userId)
     {
+        var queries = await _access.ForCurrentOperationAsync();
         if (dto.ProjectID.HasValue)
         {
-            var project = await _unitOfWork.InvestmentProjects.GetByIdAsync(dto.ProjectID.Value);
+            var project = await queries.Query(_unitOfWork.InvestmentProjects)
+                .FirstOrDefaultAsync(p => p.ProjectID == dto.ProjectID.Value);
             if (project == null || project.IsDeleted)
                 return ApiResponse<int>.Fail("المشروع غير موجود");
         }
@@ -36,6 +40,7 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
         var user = await _unitOfWork.Users.GetByIdAsync(userId);
         int branchId = dto.PensionBranchID > 0 ? dto.PensionBranchID : (user?.BranchID ?? 1);
+        queries.ResolveBranch(branchId);
 
         var property = new InvestmentProperty
         {
@@ -68,13 +73,18 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<bool>> UpdatePropertyAsync(int id, UpdatePropertyDto dto, int userId)
     {
-        var property = await _unitOfWork.InvestmentProperties.GetByIdAsync(id);
+        var queries = await _access.ForCurrentOperationAsync();
+        var property = await queries.Query(_unitOfWork.InvestmentProperties)
+            .FirstOrDefaultAsync(p => p.PropertyID == id);
         if (property == null || property.IsDeleted)
             return ApiResponse<bool>.Fail("العقار غير موجود");
 
+        if (dto.PensionBranchID > 0) queries.ResolveBranch(dto.PensionBranchID);
+
         if (dto.ProjectID.HasValue)
         {
-            var project = await _unitOfWork.InvestmentProjects.GetByIdAsync(dto.ProjectID.Value);
+            var project = await queries.Query(_unitOfWork.InvestmentProjects)
+                .FirstOrDefaultAsync(p => p.ProjectID == dto.ProjectID.Value);
             if (project == null || project.IsDeleted)
                 return ApiResponse<bool>.Fail("المشروع غير موجود");
         }
@@ -110,7 +120,9 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<bool>> DeletePropertyAsync(int id, int userId)
     {
-        var property = await _unitOfWork.InvestmentProperties.GetByIdAsync(id);
+        var queries = await _access.ForCurrentOperationAsync();
+        var property = await queries.Query(_unitOfWork.InvestmentProperties)
+            .FirstOrDefaultAsync(p => p.PropertyID == id);
         if (property == null || property.IsDeleted)
             return ApiResponse<bool>.Fail("العقار غير موجود");
 
@@ -126,8 +138,9 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<PropertyDetailDto>> GetPropertyByIdAsync(int id)
     {
-        var property = await _unitOfWork.InvestmentProperties.Query()
-            .Include(p => p.Project)
+        var queries = await _access.ForCurrentOperationAsync();
+        var property = await queries.Query(_unitOfWork.InvestmentProperties)
+            .AsNoTracking()
             .Include(p => p.PropertyType)
             .Include(p => p.Units.Where(u => !u.IsDeleted))
                 .ThenInclude(u => u.UnitType)
@@ -137,6 +150,7 @@ public class InvestmentPropertyService : IInvestmentPropertyService
         if (property == null)
             return ApiResponse<PropertyDetailDto>.Fail("العقار غير موجود");
 
+        var projectNames = await LoadProjectNamesAsync(queries, [property]);
         var latestValuation = property.Valuations
             .OrderByDescending(v => v.ValuationDate)
             .ThenByDescending(v => v.ValuationID)
@@ -146,7 +160,7 @@ public class InvestmentPropertyService : IInvestmentPropertyService
         {
             PropertyID = property.PropertyID,
             ProjectID = property.ProjectID,
-            ProjectName = property.Project?.Name,
+            ProjectName = property.ProjectID.HasValue ? projectNames.GetValueOrDefault(property.ProjectID.Value) : null,
             PropertyTypeID = property.PropertyTypeID,
             PropertyTypeName = property.PropertyType?.TypeName ?? string.Empty,
             PropertyName = property.PropertyName,
@@ -197,15 +211,18 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<List<PropertyDto>>> GetAllPropertiesAsync(int page = 1, int pageSize = 50)
     {
-        var properties = await _unitOfWork.InvestmentProperties.Query()
-            .Include(p => p.Project)
+        var queries = await _access.ForCurrentOperationAsync();
+        var properties = await queries.Query(_unitOfWork.InvestmentProperties)
+            .AsNoTracking()
             .Include(p => p.PropertyType)
             .Include(p => p.Valuations.Where(v => !v.IsDeleted))
             .Where(p => !p.IsDeleted)
+            .OrderBy(p => p.PropertyID)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
 
+        var projectNames = await LoadProjectNamesAsync(queries, properties);
         var result = properties.Select(p => {
             var latestValuation = p.Valuations
                 .OrderByDescending(v => v.ValuationDate)
@@ -215,7 +232,7 @@ public class InvestmentPropertyService : IInvestmentPropertyService
             {
                 PropertyID = p.PropertyID,
                 ProjectID = p.ProjectID,
-                ProjectName = p.Project?.Name,
+                ProjectName = p.ProjectID.HasValue ? projectNames.GetValueOrDefault(p.ProjectID.Value) : null,
                 PropertyTypeID = p.PropertyTypeID,
                 PropertyTypeName = p.PropertyType?.TypeName ?? string.Empty,
                 PropertyName = p.PropertyName,
@@ -235,13 +252,18 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<List<PropertyDto>>> GetPropertiesByProjectAsync(int projectId)
     {
-        var properties = await _unitOfWork.InvestmentProperties.Query()
-            .Include(p => p.Project)
+        var queries = await _access.ForCurrentOperationAsync();
+        if (!await queries.Query(_unitOfWork.InvestmentProjects).AnyAsync(p => p.ProjectID == projectId && !p.IsDeleted))
+            return ApiResponse<List<PropertyDto>>.Success(new List<PropertyDto>());
+
+        var properties = await queries.Query(_unitOfWork.InvestmentProperties)
+            .AsNoTracking()
             .Include(p => p.PropertyType)
             .Include(p => p.Valuations.Where(v => !v.IsDeleted))
             .Where(p => p.ProjectID == projectId && !p.IsDeleted)
             .ToListAsync();
 
+        var projectNames = await LoadProjectNamesAsync(queries, properties);
         var result = properties.Select(p => {
             var latestValuation = p.Valuations
                 .OrderByDescending(v => v.ValuationDate)
@@ -251,7 +273,7 @@ public class InvestmentPropertyService : IInvestmentPropertyService
             {
                 PropertyID = p.PropertyID,
                 ProjectID = p.ProjectID,
-                ProjectName = p.Project?.Name,
+                ProjectName = p.ProjectID.HasValue ? projectNames.GetValueOrDefault(p.ProjectID.Value) : null,
                 PropertyTypeID = p.PropertyTypeID,
                 PropertyTypeName = p.PropertyType?.TypeName ?? string.Empty,
                 PropertyName = p.PropertyName,
@@ -271,7 +293,9 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<bool>> UpdatePropertyMainPhotoPathAsync(int id, string photoPath, int userId)
     {
-        var property = await _unitOfWork.InvestmentProperties.GetByIdAsync(id);
+        var queries = await _access.ForCurrentOperationAsync();
+        var property = await queries.Query(_unitOfWork.InvestmentProperties)
+            .FirstOrDefaultAsync(p => p.PropertyID == id);
         if (property == null || property.IsDeleted)
             return ApiResponse<bool>.Fail("العقار غير موجود");
 
@@ -290,7 +314,9 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<int>> CreateUnitAsync(CreateUnitDto dto, int userId)
     {
-        var property = await _unitOfWork.InvestmentProperties.GetByIdAsync(dto.PropertyID);
+        var queries = await _access.ForCurrentOperationAsync();
+        var property = await queries.Query(_unitOfWork.InvestmentProperties)
+            .FirstOrDefaultAsync(p => p.PropertyID == dto.PropertyID);
         if (property == null || property.IsDeleted)
             return ApiResponse<int>.Fail("العقار غير موجود");
 
@@ -320,11 +346,14 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<bool>> UpdateUnitAsync(int id, UpdateUnitDto dto, int userId)
     {
-        var unit = await _unitOfWork.PropertyUnits.GetByIdAsync(id);
+        var queries = await _access.ForCurrentOperationAsync();
+        var unit = await queries.Query(_unitOfWork.PropertyUnits)
+            .FirstOrDefaultAsync(u => u.UnitID == id);
         if (unit == null || unit.IsDeleted)
             return ApiResponse<bool>.Fail("الوحدة غير موجودة");
 
-        var property = await _unitOfWork.InvestmentProperties.GetByIdAsync(dto.PropertyID);
+        var property = await queries.Query(_unitOfWork.InvestmentProperties)
+            .FirstOrDefaultAsync(p => p.PropertyID == dto.PropertyID);
         if (property == null || property.IsDeleted)
             return ApiResponse<bool>.Fail("العقار غير موجود");
 
@@ -351,7 +380,9 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<bool>> DeleteUnitAsync(int id, int userId)
     {
-        var unit = await _unitOfWork.PropertyUnits.GetByIdAsync(id);
+        var queries = await _access.ForCurrentOperationAsync();
+        var unit = await queries.Query(_unitOfWork.PropertyUnits)
+            .FirstOrDefaultAsync(u => u.UnitID == id);
         if (unit == null || unit.IsDeleted)
             return ApiResponse<bool>.Fail("الوحدة غير موجودة");
 
@@ -367,7 +398,9 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<List<PropertyUnitDto>>> GetUnitsByPropertyAsync(int propertyId)
     {
-        var units = await _unitOfWork.PropertyUnits.Query()
+        var queries = await _access.ForCurrentOperationAsync();
+        var units = await queries.Query(_unitOfWork.PropertyUnits)
+            .AsNoTracking()
             .Include(u => u.Property)
             .Include(u => u.UnitType)
             .Where(u => u.PropertyID == propertyId && !u.IsDeleted)
@@ -391,7 +424,9 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<List<PropertyUnitDto>>> GetAllUnitsAsync()
     {
-        var units = await _unitOfWork.PropertyUnits.Query()
+        var queries = await _access.ForCurrentOperationAsync();
+        var units = await queries.Query(_unitOfWork.PropertyUnits)
+            .AsNoTracking()
             .Include(u => u.Property)
             .Include(u => u.UnitType)
             .Where(u => !u.IsDeleted)
@@ -419,7 +454,9 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<int>> CreateValuationAsync(CreateValuationDto dto, int userId)
     {
-        var property = await _unitOfWork.InvestmentProperties.GetByIdAsync(dto.PropertyID);
+        var queries = await _access.ForCurrentOperationAsync();
+        var property = await queries.Query(_unitOfWork.InvestmentProperties)
+            .FirstOrDefaultAsync(p => p.PropertyID == dto.PropertyID);
         if (property == null || property.IsDeleted)
             return ApiResponse<int>.Fail("العقار غير موجود");
 
@@ -441,7 +478,9 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<List<ValuationDto>>> GetValuationsByPropertyAsync(int propertyId)
     {
-        var valuations = await _unitOfWork.AssetValuations.Query()
+        var queries = await _access.ForCurrentOperationAsync();
+        var valuations = await queries.Query(_unitOfWork.AssetValuations)
+            .AsNoTracking()
             .Where(v => v.PropertyID == propertyId && !v.IsDeleted)
             .OrderByDescending(v => v.ValuationDate)
             .Select(v => new ValuationDto
@@ -460,7 +499,9 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<bool>> DeleteValuationAsync(int id, int userId)
     {
-        var valuation = await _unitOfWork.AssetValuations.GetByIdAsync(id);
+        var queries = await _access.ForCurrentOperationAsync();
+        var valuation = await queries.Query(_unitOfWork.AssetValuations)
+            .FirstOrDefaultAsync(v => v.ValuationID == id);
         if (valuation == null || valuation.IsDeleted)
             return ApiResponse<bool>.Fail("التقييم غير موجود");
 
@@ -480,7 +521,9 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<int>> CreateDepreciationAsync(CreateDepreciationDto dto, int userId)
     {
-        var property = await _unitOfWork.InvestmentProperties.GetByIdAsync(dto.PropertyID);
+        var queries = await _access.ForCurrentOperationAsync();
+        var property = await queries.Query(_unitOfWork.InvestmentProperties)
+            .FirstOrDefaultAsync(p => p.PropertyID == dto.PropertyID);
         if (property == null || property.IsDeleted)
             return ApiResponse<int>.Fail("العقار غير موجود");
 
@@ -508,7 +551,9 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<List<DepreciationRecordDto>>> GetDepreciationByPropertyAsync(int propertyId)
     {
-        var records = await _unitOfWork.DepreciationRecords.Query()
+        var queries = await _access.ForCurrentOperationAsync();
+        var records = await queries.Query(_unitOfWork.DepreciationRecords)
+            .AsNoTracking()
             .Include(d => d.FiscalYear)
             .Where(d => d.PropertyID == propertyId && !d.IsDeleted)
             .OrderByDescending(d => d.CreatedAt)
@@ -529,7 +574,9 @@ public class InvestmentPropertyService : IInvestmentPropertyService
 
     public async Task<ApiResponse<bool>> DeleteDepreciationAsync(int id, int userId)
     {
-        var record = await _unitOfWork.DepreciationRecords.GetByIdAsync(id);
+        var queries = await _access.ForCurrentOperationAsync();
+        var record = await queries.Query(_unitOfWork.DepreciationRecords)
+            .FirstOrDefaultAsync(d => d.DeprecID == id);
         if (record == null || record.IsDeleted)
             return ApiResponse<bool>.Fail("سجل الإهلاك غير موجود");
 
@@ -541,5 +588,17 @@ public class InvestmentPropertyService : IInvestmentPropertyService
         await _unitOfWork.SaveChangesAsync();
 
         return ApiResponse<bool>.Success(true, "تم حذف سجل الإهلاك بنجاح");
+    }
+
+    private async Task<Dictionary<int, string>> LoadProjectNamesAsync(IPensionDataQuery queries,
+        IEnumerable<InvestmentProperty> properties)
+    {
+        var projectIds = properties.Where(p => p.ProjectID.HasValue)
+            .Select(p => p.ProjectID!.Value).Distinct().ToArray();
+        if (projectIds.Length == 0) return new Dictionary<int, string>();
+
+        return await queries.Query(_unitOfWork.InvestmentProjects).AsNoTracking()
+            .Where(p => projectIds.Contains(p.ProjectID) && !p.IsDeleted)
+            .ToDictionaryAsync(p => p.ProjectID, p => p.Name);
     }
 }

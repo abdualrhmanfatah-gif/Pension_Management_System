@@ -9,7 +9,7 @@ namespace PensionMS.Tests.Services;
 public class SupplementalReportExportTests
 {
     private readonly ExcelReportExporter _excel = new(new ExcelReportTemplate());
-    private AccountingExportService Accounting => new(_excel);
+    private AccountingExportService Accounting => new(_excel, new PdfReportExporter());
 
     [Theory]
     [InlineData(null, 3, 60)]

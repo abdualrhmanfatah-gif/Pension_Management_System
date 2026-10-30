@@ -55,38 +55,6 @@ public partial class ReportService
         });
     }
 
-    public async Task<byte[]> ExportPortfolioPerformanceAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Financial.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            PortfolioId = filter.PortfolioId,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetPortfolioPerformanceAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "المحفظة", "إجمالي الاستثمار", "القيمة الحالية", "الربح/الخسارة", "العائد ROI %", "المشاريع النشطة", "إجمالي الدخل", "إجمالي المصروفات" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.PortfolioName,
-            r.TotalInvested,
-            r.CurrentValue,
-            r.ProfitLoss,
-            Math.Round(r.ROI, 2),
-            r.ActiveProjects,
-            r.TotalIncome,
-            r.TotalExpenses,
-        }).ToArray();
-        return _excelExporter.ExportRows("أداء المحافظ", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي المحافظ: {data.Count}" });
-    }
-
     // ═══════════════════════════════════════
     // INV-02: Occupancy & Vacancy
     // ═══════════════════════════════════════
@@ -129,37 +97,6 @@ public partial class ReportService
             Page = filter.PageNumber,
             PageSize = filter.PageSize
         });
-    }
-
-    public async Task<byte[]> ExportOccupancyReportAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Financial.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            PropertyId = filter.PropertyId,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetOccupancyReportAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "العقار", "المشروع", "إجمالي الوحدات", "مؤجرة", "شاغرة", "صيانة", "نسبة الإشغال %" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.PropertyName,
-            r.ProjectName,
-            r.TotalUnits,
-            r.OccupiedUnits,
-            r.VacantUnits,
-            r.UnderMaintenance,
-            Math.Round(r.OccupancyRate, 2),
-        }).ToArray();
-        return _excelExporter.ExportRows("تقرير الإشغال", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي العقارات: {data.Count}" });
     }
 
     // ═══════════════════════════════════════
@@ -224,37 +161,6 @@ public partial class ReportService
         });
     }
 
-    public async Task<byte[]> ExportRentCollectionAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Financial.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetRentCollectionAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "المستأجر", "العقار", "الوحدة", "المبلغ المستحق", "المدفوع", "المتبقي", "أيام التأخير", "حالة الدفع" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.TenantName,
-            r.PropertyName,
-            r.UnitNumber,
-            r.DueAmount,
-            r.PaidAmount,
-            r.OutstandingAmount,
-            r.OverdueDays,
-            r.PaymentStatus,
-        }).ToArray();
-        return _excelExporter.ExportRows("تحصيل الإيجارات", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي الدفعات: {data.Count}" });
-    }
-
     // ═══════════════════════════════════════
     // INV-04: Active & Expiring Contracts
     // ═══════════════════════════════════════
@@ -314,38 +220,6 @@ public partial class ReportService
         });
     }
 
-    public async Task<byte[]> ExportContractStatusAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Financial.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            StatusId = filter.StatusId,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetContractStatusAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "المستأجر", "العقار", "الوحدة", "حالة العقد", "تاريخ البداية", "تاريخ النهاية", "القيمة السنوية", "أيام حتى الانتهاء" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.TenantName,
-            r.PropertyName,
-            r.UnitNumber,
-            r.Status,
-            r.StartDate.ToString("yyyy-MM-dd"),
-            r.EndDate.ToString("yyyy-MM-dd"),
-            r.AnnualRent,
-            r.DaysToExpiry,
-        }).ToArray();
-        return _excelExporter.ExportRows("حالة العقود", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي العقود: {data.Count}" });
-    }
-
     // ═══════════════════════════════════════
     // INV-05: Risk Exposure
     // ═══════════════════════════════════════
@@ -386,35 +260,6 @@ public partial class ReportService
             Page = filter.PageNumber,
             PageSize = filter.PageSize
         });
-    }
-
-    public async Task<byte[]> ExportRiskExposureAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Financial.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            ProjectId = filter.ProjectId,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetRiskExposureAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "المشروع", "نوع الخطر", "الخطورة", "الحالة", "تاريخ التقييم" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.ProjectName,
-            r.RiskType,
-            r.Severity,
-            r.Status,
-            r.IdentifiedDate?.ToString("yyyy-MM-dd") ?? "",
-        }).ToArray();
-        return _excelExporter.ExportRows("المخاطر", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي المخاطر: {data.Count}" });
     }
 
     // ═══════════════════════════════════════
@@ -472,37 +317,6 @@ public partial class ReportService
         });
     }
 
-    public async Task<byte[]> ExportMaintenanceSummaryAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Financial.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            PropertyId = filter.PropertyId,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetMaintenanceSummaryAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "العقار", "الوصف", "الأولوية", "الحالة", "التكلفة التقديرية", "التكلفة الفعلية", "تاريخ الطلب" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.PropertyName,
-            r.Description,
-            r.Priority,
-            r.Status,
-            r.EstimatedCost,
-            r.ActualCost,
-            r.ReportedDate.ToString("yyyy-MM-dd"),
-        }).ToArray();
-        return _excelExporter.ExportRows("طلبات الصيانة", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي الطلبات: {data.Count}" });
-    }
-
     // ═══════════════════════════════════════
     // INV-07: Budget vs Actual
     // ═══════════════════════════════════════
@@ -541,35 +355,5 @@ public partial class ReportService
             Page = filter.PageNumber,
             PageSize = filter.PageSize
         });
-    }
-
-    public async Task<byte[]> ExportBudgetVsActualAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Financial.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            FiscalYear = filter.FiscalYear,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetBudgetVsActualAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "المشروع", "السنة المالية", "المبلغ المخطط", "المنصرف الفعلي", "الفرق", "نسبة الانحراف %" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.ProjectName,
-            r.FiscalYear,
-            r.PlannedAmount,
-            r.ActualSpent,
-            r.Variance,
-            Math.Round(r.VariancePct, 2),
-        }).ToArray();
-        return _excelExporter.ExportRows("الميزانية", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي السجلات: {data.Count}" });
     }
 }

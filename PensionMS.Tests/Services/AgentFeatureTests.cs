@@ -11,6 +11,7 @@ using PensionMS.Core.Interfaces;
 using PensionMS.Core.Time;
 using PensionMS.Infrastructure.Services.Pension.Beneficiaries;
 using PensionMS.Infrastructure.Services.Payroll;
+using PensionMS.Infrastructure.Services.Pension.RetirementFile;
 
 namespace PensionMS.Tests.Services;
 
@@ -226,6 +227,7 @@ public class AgentFeatureTests
                     Agent = agent, StartDate = DateTime.UtcNow.AddDays(-2), SharePercent = percentages[i] });
             }
             Bind(new[] { file }, u => u.RetirementFiles);
+            Bind(new[] { retiree }, u => u.Retirees);
             Bind(Agents, u => u.Agents);
             Bind(persons, u => u.EntitledPersons);
             Bind(Recipients, u => u.SalaryRecipients);
@@ -242,8 +244,13 @@ public class AgentFeatureTests
                 Mock.Of<IMissingDocumentService>(), Review.Object, NullLogger<AgentService>.Instance, TestPensionAccess.From(Unit.Object, Scope.Object));
         }
 
-        public Task<PayrollGenerationResult> Generate() =>
-            new PayrollGenerationService(Unit.Object).GenerateForBatchAsync(new SalaryPaymentBatch { BatchID = 1 }, DateTime.UtcNow, 7);
+        public async Task<PayrollGenerationResult> Generate()
+        {
+            var file = Unit.Object.RetirementFiles.Query().Single();
+            file.LastReviewedFileState = (await ApprovedPensionSnapshot.CaptureAsync(Unit.Object, 1, 1)).Serialize();
+            return await new PayrollGenerationService(Unit.Object).GenerateForBatchAsync(
+                new SalaryPaymentBatch { BatchID = 1 }, DateTime.UtcNow, 7);
+        }
 
         private void Bind<T>(IEnumerable<T> values, Expression<Func<IUnitOfWork, IRepository<T>>> property) where T : class
         {

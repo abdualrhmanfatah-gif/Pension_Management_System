@@ -215,6 +215,8 @@ public interface IUnitOfWork : IDisposable
     Task<int> SaveChangesAsync();
     bool HasActiveTransaction { get; }
     Task BeginTransactionAsync();
+    /// <summary>Registers an external-resource cleanup for rollback by this transaction owner.</summary>
+    void OnRollback(Func<Task> compensation);
     /// <summary>Serializes review changes for one file until the active transaction ends.</summary>
     Task LockFileReviewAsync(int fileId);
     /// <summary>Serializes changes to a salary batch until the active transaction ends.</summary>

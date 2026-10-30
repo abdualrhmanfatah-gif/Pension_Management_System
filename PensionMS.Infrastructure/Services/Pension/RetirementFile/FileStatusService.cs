@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PensionMS.Core.Constants;
+using PensionMS.Core.Rules.Entitlements;
 using PensionMS.Core.DTOs.Common;
 using PensionMS.Core.DTOs.Notifications;
 using PensionMS.Core.DTOs.RetirementFiles;

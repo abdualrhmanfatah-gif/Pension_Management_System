@@ -69,42 +69,6 @@ public partial class ReportService
         });
     }
 
-    public async Task<byte[]> ExportFileStatusReportAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Pension.View");
-        if (filter == null)
-            throw new ArgumentNullException(nameof(filter));
-
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            StatusId = filter.StatusId,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetFileStatusReportAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-
-        var headers = new[] { "#", "رقم الملف", "المتقاعد", "الرتبة", "الحالة", "الفرع", "أيام الانتظار", "مستندات ناقصة", "تاريخ الإنشاء" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.FileNumber ?? "",
-            r.RetireeName ?? "",
-            r.RankName ?? "",
-            r.Status ?? "",
-            r.BranchName ?? "",
-            r.DaysPending,
-            r.MissingDocsCount,
-            r.CreatedAt.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture),
-        }).ToArray();
-        return _excelExporter.ExportRows("حالة الملفات", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي الملفات: {data.Count}" });
-    }
-
     // ═══════════════════════════════════════
     // RET-02: Retirees (alive and deceased)
     // ═══════════════════════════════════════
@@ -243,7 +207,7 @@ public partial class ReportService
             PageSize = 10000
         };
         var result = await GetActiveRetireesAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
+        var data = result.RequireComplete();
 
         var headers = new[] { "#", "الاسم", "الهوية", "الرقم العسكري", "الرتبة", "الفئة", "المعاش الشهري", "حالة الحياة", "المحافظة" };
         var rows = data.Select((r, i) => new object?[]
@@ -311,40 +275,5 @@ public partial class ReportService
             Page = filter.PageNumber,
             PageSize = filter.PageSize
         });
-    }
-
-    public async Task<byte[]> ExportSuspensionsReportAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Pension.View");
-        if (filter == null)
-            throw new ArgumentNullException(nameof(filter));
-
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            StatusId = filter.StatusId,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetSuspensionsReportAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-
-        var headers = new[] { "#", "المتقاعد", "رقم الملف", "السبب", "تاريخ الإيقاف", "تاريخ الرفع", "أيام الإيقاف", "نشط" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.RetireeName ?? "",
-            r.FileNumber ?? "",
-            r.Reason ?? "",
-            r.SuspendedDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture),
-            r.LiftedDate?.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture) ?? "",
-            r.DaysSuspended,
-            r.IsActive ? "نعم" : "لا",
-        }).ToArray();
-        return _excelExporter.ExportRows("الإيقافات", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي الإيقافات: {data.Count}" });
     }
 }

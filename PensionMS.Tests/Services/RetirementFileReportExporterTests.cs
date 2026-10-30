@@ -9,7 +9,8 @@ namespace PensionMS.Tests.Services;
 
 public class RetirementFileReportExporterTests
 {
-    private readonly RetirementFileReportExporter _exporter = new(new ExcelReportExporter(new ExcelReportTemplate()));
+    private readonly RetirementFileReportExporter _exporter =
+        new(new ExcelReportExporter(new ExcelReportTemplate()), new PdfReportExporter());
 
     [Fact]
     public void ExcelExport_PreservesArabicColumnsDateAndRightToLeftLayout()

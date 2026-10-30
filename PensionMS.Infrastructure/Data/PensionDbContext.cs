@@ -8,17 +8,84 @@ using PensionMS.Core.Entities.Assets;
 using PensionMS.Core.Entities.Financial;
 using PensionMS.Core.Entities.Accounting;
 using PensionMS.Core.Interfaces;
+using PensionMS.Infrastructure.Interceptors;
 using System.Linq.Expressions;
 
 namespace PensionMS.Infrastructure.Data;
 
 using PensionMS.Infrastructure.Data.Configurations;
 
-public partial class PensionDbContext : DbContext
+public class PensionDbContext : DbContext
 {
+    private readonly FileReviewChangeInterceptor _reviewChanges;
+    private bool _savingChanges;
+
     public PensionDbContext(DbContextOptions<PensionDbContext> options, ICurrentUserContext? lifecycleScope = null) : base(options)
     {
-        _lifecycleScope = lifecycleScope;
+        _reviewChanges = new FileReviewChangeInterceptor(lifecycleScope);
+    }
+
+    // Context-owned registration also covers callers constructing DbContext directly.
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.AddInterceptors(_reviewChanges);
+    }
+
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        if (_savingChanges || !_reviewChanges.Capture(this)) return base.SaveChanges(acceptAllChangesOnSuccess);
+        using var transaction = Database.CurrentTransaction == null ? Database.BeginTransaction() : null;
+        _savingChanges = true;
+        try
+        {
+            _reviewChanges.Prepare(this);
+            // Preserve the existing affected-save contract: accept generated keys after the
+            // first flush, return its count, and persist follow-up records in the same transaction.
+            var result = base.SaveChanges(true);
+            if (_reviewChanges.RequiresFollowupSave) base.SaveChanges(true);
+            transaction?.Commit();
+            return result;
+        }
+        catch
+        {
+            transaction?.Rollback();
+            throw;
+        }
+        finally
+        {
+            _reviewChanges.Reset();
+            _savingChanges = false;
+        }
+    }
+
+    public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
+        CancellationToken cancellationToken = default)
+    {
+        if (_savingChanges || !_reviewChanges.Capture(this))
+            return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        await using var transaction = Database.CurrentTransaction == null
+            ? await Database.BeginTransactionAsync(cancellationToken) : null;
+        _savingChanges = true;
+        try
+        {
+            await _reviewChanges.PrepareAsync(this, cancellationToken);
+            var result = await base.SaveChangesAsync(true, cancellationToken);
+            if (_reviewChanges.RequiresFollowupSave) await base.SaveChangesAsync(true, cancellationToken);
+            if (transaction != null) await transaction.CommitAsync(cancellationToken);
+            return result;
+        }
+        catch
+        {
+            // Cancellation must not prevent rollback of a transaction owned by this save.
+            if (transaction != null) await transaction.RollbackAsync(CancellationToken.None);
+            throw;
+        }
+        finally
+        {
+            _reviewChanges.Reset();
+            _savingChanges = false;
+        }
     }
 
     #region DbSets — Core

@@ -48,6 +48,7 @@ public class MissingDocumentService : IMissingDocumentService
 
     public async Task<ApiResponse<List<MissingDocumentDto>>> GetByFileAsync(int fileId)
     {
+        await EnsureFileAccessAsync(fileId);
         // إظهار فقط الوثائق المعلّقة والمتعهد بها — إخفاء المسلّمة والمعفاة
         var list = await _unitOfWork.MissingDocuments.Query()
             .AsNoTracking()
@@ -95,7 +96,8 @@ public class MissingDocumentService : IMissingDocumentService
 
     public async Task<ApiResponse<MissingDocumentDto>> GetByIdAsync(int id)
     {
-        var doc = await _unitOfWork.MissingDocuments.Query()
+        var queries = await _access.ForCurrentOperationAsync();
+        var doc = await queries.Query(_unitOfWork.MissingDocuments)
             .AsNoTracking()
             .Include(m => m.DocumentType)
             .Include(m => m.Agent)
@@ -131,6 +133,7 @@ public class MissingDocumentService : IMissingDocumentService
     public Task<ApiResponse<MissingDocumentDto>> CreateAsync(CreateMissingDocumentDto dto, int userId) =>
         PensionMS.Infrastructure.Data.UnitOfWorkTransaction.ExecuteAsync(_unitOfWork, async () =>
         {
+            await EnsureFileAccessAsync(dto.FileID);
             await _unitOfWork.LockFileReviewAsync(dto.FileID);
             return await CreateCoreAsync(dto, userId);
         });
@@ -138,10 +141,18 @@ public class MissingDocumentService : IMissingDocumentService
     private async Task<ApiResponse<MissingDocumentDto>> CreateCoreAsync(CreateMissingDocumentDto dto, int userId)
     {
         // 1. التحقق من وجود الملف
-        var fileExists = await _unitOfWork.RetirementFiles.Query()
+        var queries = await _access.ForCurrentOperationAsync();
+        var fileExists = await queries.Files()
             .AnyAsync(f => f.FileID == dto.FileID && !f.IsDeleted);
         if (!fileExists)
             return ApiResponse<MissingDocumentDto>.Fail("الملف المحدد غير موجود أو محذوف");
+
+        if (new[] { dto.AgentID, dto.GuardianID, dto.EntitledID }.Count(id => id.HasValue) > 1)
+            return ApiResponse<MissingDocumentDto>.Fail("يجب تحديد مالك واحد فقط للنقص");
+        if (dto.AgentID.HasValue && !await queries.Query(_unitOfWork.Agents).AnyAsync(a => a.AgentID == dto.AgentID && a.FileID == dto.FileID && !a.IsDeleted) ||
+            dto.GuardianID.HasValue && !await queries.Query(_unitOfWork.Guardians).AnyAsync(g => g.GuardianID == dto.GuardianID && g.FileID == dto.FileID && !g.IsDeleted) ||
+            dto.EntitledID.HasValue && !await queries.Query(_unitOfWork.EntitledPersons).AnyAsync(e => e.EntitledID == dto.EntitledID && e.FileID == dto.FileID && !e.IsDeleted))
+            return ApiResponse<MissingDocumentDto>.Fail("مالك النقص غير موجود ضمن الملف المحدد");
 
         // 2. التحقق من نوع الوثيقة
         var documentType = await _unitOfWork.DocumentTypes.Query()
@@ -175,6 +186,7 @@ public class MissingDocumentService : IMissingDocumentService
 
         await _unitOfWork.MissingDocuments.AddAsync(entity);
         await _unitOfWork.SaveChangesAsync();
+        await RefreshComplianceCacheAsync(entity.FileID);
         
         _logger.LogInformation("تم إنشاء وثيقة ناقصة جديدة بنجاح (ID: {DocId}) للملف {FileId} بواسطة المستخدم {UserId}", 
             entity.MissingDocumentID, dto.FileID, userId);
@@ -196,9 +208,12 @@ public class MissingDocumentService : IMissingDocumentService
         return ApiResponse<MissingDocumentDto>.Success(docDto, "تم تسجيل الوثيقة الناقصة");
     }
 
-    public async Task<ApiResponse<bool>> MarkFulfilledAsync(int id, int userId)
+    public Task<ApiResponse<bool>> MarkFulfilledAsync(int id, int userId)
+        => ChangeMissingAsync(id, () => MarkFulfilledCoreAsync(id, userId));
+
+    private async Task<ApiResponse<bool>> MarkFulfilledCoreAsync(int id, int userId)
     {
-        var doc = await _unitOfWork.MissingDocuments.Query()
+        var doc = await (await _access.ForCurrentOperationAsync()).Query(_unitOfWork.MissingDocuments)
             .FirstOrDefaultAsync(m => m.MissingDocumentID == id);
 
         if (doc == null)
@@ -210,20 +225,31 @@ public class MissingDocumentService : IMissingDocumentService
         if (doc.Status == MissingDocumentStatusConstants.Exempted)
             return ApiResponse<bool>.Fail("لا يمكن تسليم وثيقة معفاة");
 
+        var requirements = RetirementFileDocumentRules.Requirements(await GetRequiredPairsAsync(doc.FileID), [doc]);
+        var documents = await _unitOfWork.Documents.Query()
+            .Where(d => d.FileID == doc.FileID && d.DocumentTypeID == doc.DocumentTypeID).ToListAsync();
+        if (RetirementFileDocumentRules.FindValidDocument(documents,
+            RetirementFileDocumentRules.Owner(doc, requirements), PensionMS.Core.Time.YemenTime.Today) == null)
+            return ApiResponse<bool>.Fail("لا يمكن تسجيل التسليم دون وثيقة سارية وغير مرفوضة تخص المالك والملف نفسيهما");
+
         doc.Status      = MissingDocumentStatusConstants.Fulfilled;
         doc.SubmittedAt = DateTime.UtcNow;
 
         _unitOfWork.MissingDocuments.Update(doc);
         await _unitOfWork.SaveChangesAsync();
+        await RefreshComplianceCacheAsync(doc.FileID);
         
         _logger.LogInformation("تم تعليم الوثيقة الناقصة {DocId} كمسلّمة للمستخدم {UserId}", id, userId);
 
         return ApiResponse<bool>.Success(true, "تم تعليم الوثيقة كمسلّمة");
     }
 
-    public async Task<ApiResponse<bool>> DeleteAsync(int id, int userId)
+    public Task<ApiResponse<bool>> DeleteAsync(int id, int userId)
+        => ChangeMissingAsync(id, () => DeleteCoreAsync(id, userId));
+
+    private async Task<ApiResponse<bool>> DeleteCoreAsync(int id, int userId)
     {
-        var doc = await _unitOfWork.MissingDocuments.Query()
+        var doc = await (await _access.ForCurrentOperationAsync()).Query(_unitOfWork.MissingDocuments)
             .FirstOrDefaultAsync(m => m.MissingDocumentID == id);
 
         if (doc == null)
@@ -239,14 +265,26 @@ public class MissingDocumentService : IMissingDocumentService
         doc.DeletedAt = DateTime.UtcNow;
         doc.DeletedByUserID = userId;
         await _unitOfWork.SaveChangesAsync();
+        await RefreshComplianceCacheAsync(doc.FileID);
         
         _logger.LogInformation("تم حذف الوثيقة الناقصة {DocId} للملف {FileId} بواسطة المستخدم {UserId}", id, doc.FileID, userId);
 
         return ApiResponse<bool>.Success(true, "تم حذف سجل الوثيقة الناقصة");
     }
 
+    private Task<ApiResponse<bool>> ChangeMissingAsync(int id, Func<Task<ApiResponse<bool>>> change)
+        => PensionMS.Infrastructure.Data.UnitOfWorkTransaction.ExecuteAsync(_unitOfWork, async () =>
+        {
+            var fileId = await (await _access.ForCurrentOperationAsync()).Query(_unitOfWork.MissingDocuments)
+                .Where(m => m.MissingDocumentID == id).Select(m => (int?)m.FileID).FirstOrDefaultAsync();
+            if (!fileId.HasValue) return ApiResponse<bool>.Fail("الوثيقة الناقصة غير موجودة");
+            await _unitOfWork.LockFileReviewAsync(fileId.Value);
+            return await change();
+        });
+
     public async Task<List<AutoDetectedMissingDocumentDto>> GetRequiredPairsAsync(int fileId)
     {
+        await EnsureFileAccessAsync(fileId);
         var (pairs, _, _) = await BuildPairsCoreAsync(fileId);
         return pairs;
     }
@@ -255,6 +293,7 @@ public class MissingDocumentService : IMissingDocumentService
     {
         if (!_unitOfWork.HasActiveTransaction)
             throw new InvalidOperationException("تسجيل النواقص المطلوبة يستلزم معاملة نشطة");
+        await EnsureFileAccessAsync(fileId);
         await _unitOfWork.LockFileReviewAsync(fileId);
         var file = await _unitOfWork.RetirementFiles.Query().Include(f => f.MissingDocuments)
             .FirstOrDefaultAsync(f => f.FileID == fileId && !f.IsDeleted)
@@ -295,6 +334,7 @@ public class MissingDocumentService : IMissingDocumentService
 
     public async Task<ApiResponse<List<AutoDetectedMissingDocumentDto>>> GetAutoDetectedByFileAsync(int fileId)
     {
+        await EnsureFileAccessAsync(fileId);
         var (pairs, uploadedDocs, manualMissing) = await BuildPairsCoreAsync(fileId);
 
         var today = PensionMS.Core.Time.YemenTime.Today;
@@ -310,10 +350,15 @@ public class MissingDocumentService : IMissingDocumentService
                 !manuallyFlagged.Contains(RetirementFileDocumentRules.Owner(p))).ToList());
     }
 
+    private async Task EnsureFileAccessAsync(int fileId)
+    {
+        var queries = await _access.ForCurrentOperationAsync();
+        if (!await queries.Files().AnyAsync(f => f.FileID == fileId && !f.IsDeleted))
+            throw new PensionMS.Core.Exceptions.EntityNotFoundException("الملف غير موجود ضمن نطاق الصلاحية");
+    }
+
     private async Task<(List<AutoDetectedMissingDocumentDto> Pairs, List<Document> UploadedDocs, List<MissingDocument> ManualMissing)> BuildPairsCoreAsync(int fileId)
     {
-        var autoDetected = new List<AutoDetectedMissingDocumentDto>();
-
         // ── 1. جلب كافة الكيانات والبيانات النشطة المرتبطة بالملف ──
         
         var retiree = await _unitOfWork.Retirees.Query()
@@ -327,11 +372,6 @@ public class MissingDocumentService : IMissingDocumentService
             .Where(e => e.FileID == fileId && !e.IsDeleted && !e.IsDeceased)
             .Select(e => new { e.EntitledID, e.FullName, e.IsDeceased, e.HealthStatusID, e.SocialStatusID, e.HasDisabilityException, e.BirthDate, e.RelationshipID, e.StopCode })
             .ToListAsync();
-
-        // تصفية المستحقين: استبعاد غير المؤهلين قانونياً (تجاوز السن أو زواج البنت)
-        var entitledPersons = entitledPersonsRaw
-            .Where(e => e.StopCode != EntitledStopCodes.AgeLimit && e.StopCode != EntitledStopCodes.DaughterMarried)
-            .ToList();
 
         var activeAgents = await _unitOfWork.Agents.Query()
             .AsNoTracking()
@@ -387,136 +427,46 @@ public class MissingDocumentService : IMissingDocumentService
                 PendingReviewStatus = d.PendingReviewStatus, IsDeleted = d.IsDeleted })
             .ToListAsync();
 
-        // ── 3. الدالة الذكية للإضافة المتوافقة مع الكيان المحدد (زوج مطلوب فقط — فلتر الاستيفاء لاحقًا في المُظهر) ──
-        void AddRequiredDoc(int docTypeId, string entityType, string entityName, int? entityId = null, bool isOptional = false)
-        {
-            if (!allDocTypes.TryGetValue(docTypeId, out var docTypeName)) return;
+        // ── 3. اختيار المتطلبات من الحقائق المحملة، ثم إضافة أسماء العرض في الخدمة ──
+        var facts = new RetirementDocumentRequirementRules.FileFacts(
+            retiree == null ? null : new RetirementDocumentRequirementRules.RetireeFacts(retiree.RetireeID, retiree.IsAlive, retiree.HealthStatusID),
+            hasAnyPaymentBooks,
+            entitledPersonsRaw.Select(e => new RetirementDocumentRequirementRules.EntitledPersonFacts(
+                e.EntitledID, e.BirthDate, e.RelationshipID, e.SocialStatusID, e.HealthStatusID, e.HasDisabilityException, e.StopCode)).ToArray(),
+            activeAgents.Select(a => a.AgentID).ToArray(), activeGuardians.Select(g => g.GuardianID).ToArray(),
+            activePledges.Select(p => p.PledgeID).ToArray(), activeExemptions.Select(e => e.ExemptionID).ToArray());
+        var requirements = RetirementDocumentRequirementRules.SelectRequirements(facts, allDocTypes.Keys.ToHashSet(),
+            PensionMS.Core.Time.YemenTime.Today);
 
-            autoDetected.Add(new AutoDetectedMissingDocumentDto
+        var entitledNames = entitledPersonsRaw.ToDictionary(e => e.EntitledID, e => e.FullName);
+        var agentNames = activeAgents.ToDictionary(a => a.AgentID, a => a.FullName);
+        var guardianNames = activeGuardians.ToDictionary(g => g.GuardianID, g => g.FullName);
+        var pledgeNames = activePledges.ToDictionary(p => p.PledgeID, p => p.PledgedByName ?? p.PledgeNumber ?? "تعهد نشط");
+        var exemptionNames = activeExemptions.ToDictionary(e => e.ExemptionID,
+            e => string.IsNullOrEmpty(e.DirectiveSource) ? "إعفاء نشط" : e.DirectiveSource);
+
+        AutoDetectedMissingDocumentDto MapRequiredDoc(RetirementDocumentRequirement requirement)
+        {
+            var (entityType, entityName) = requirement switch
             {
-                DocumentTypeID = docTypeId,
-                DocumentTypeName = docTypeName,
-                IsRequired = !isOptional,
-                IsAutoDetected = true,
-                EntityType = entityType,
-                EntityName = entityName,
-                RetireeID = entityType == EntityTypeConstants.Retiree ? entityId : null,
-                AgentID = entityType == EntityTypeConstants.Agent ? entityId : null,
-                GuardianID = entityType == EntityTypeConstants.Guardian ? entityId : null,
-                EntitledID = entityType == EntityTypeConstants.EntitledPerson ? entityId : null,
-                PledgeID = entityType == EntityTypeConstants.Pledge ? entityId : null,
-                ExemptionID = entityType == EntityTypeConstants.Exemption ? entityId : null
-            });
-        }
-
-        // ════════════════════════════════════════════
-        // 4. تطبيق شروط الرصد حسب الجدول بدقة 100%
-        // ════════════════════════════════════════════
-
-        bool retireeIsAlive = retiree?.IsAlive ?? true;
-
-        // ── أوليات وثائق الملف (File Level) ──
-        // (ID=8) أوليات الملف: دائمًا
-        AddRequiredDoc(DocumentTypeConstants.FileOriginals, EntityTypeConstants.File, "الملف العام");
-
-        // (ID=13) صورة دفتر الصرف: في حال وجود أي دفتر صرف (قديم أو إلكتروني)
-        if (hasAnyPaymentBooks)
-            AddRequiredDoc(DocumentTypeConstants.PaymentBookImage, EntityTypeConstants.File, "دفتر الصرف");
-
-        // (ID=7) حصر ورثة / قسام شرعي: فقط عند وفاة المتقاعد
-        if (retiree != null && (!retiree.IsAlive || retiree.HealthStatusID == HealthStatusConstants.Deceased || retiree.HealthStatusID == HealthStatusConstants.Martyr))
-            AddRequiredDoc(DocumentTypeConstants.InheritanceCert, EntityTypeConstants.File, "الملف العام");
-
-        // ── سياق المتقاعد (Retiree Context) ──
-        if (retiree != null)
-        {
-            // الهوية الوطنية تُطلب فقط إذا كان المتقاعد حياً
-            if (retiree.IsAlive)
-                AddRequiredDoc(DocumentTypeConstants.NationalId, EntityTypeConstants.Retiree, retiree.FullName, retiree.RetireeID);
-
-            if (!retiree.IsAlive || retiree.HealthStatusID == HealthStatusConstants.Deceased || retiree.HealthStatusID == HealthStatusConstants.Martyr)
+                { RetireeID: int id } => (EntityTypeConstants.Retiree, retiree!.FullName),
+                { EntitledID: int id } => (EntityTypeConstants.EntitledPerson, entitledNames[id]),
+                { AgentID: int id } => (EntityTypeConstants.Agent, agentNames[id]),
+                { GuardianID: int id } => (EntityTypeConstants.Guardian, guardianNames[id]),
+                { PledgeID: int id } => (EntityTypeConstants.Pledge, pledgeNames[id]),
+                { ExemptionID: int id } => (EntityTypeConstants.Exemption, exemptionNames[id]),
+                _ => (EntityTypeConstants.File, requirement.DocumentTypeID == DocumentTypeConstants.PaymentBookImage ? "دفتر الصرف" : "الملف العام")
+            };
+            return new AutoDetectedMissingDocumentDto
             {
-                AddRequiredDoc(DocumentTypeConstants.DeathCertificate, EntityTypeConstants.Retiree, retiree.FullName, retiree.RetireeID); // شهادة وفاة
-            }
-
-            if (retiree.HealthStatusID == HealthStatusConstants.PartiallyDisabled || retiree.HealthStatusID == HealthStatusConstants.FullyDisabled)
-                AddRequiredDoc(DocumentTypeConstants.MedicalReport, EntityTypeConstants.Retiree, retiree.FullName, retiree.RetireeID); // تقرير طبي
+                DocumentTypeID = requirement.DocumentTypeID, DocumentTypeName = allDocTypes[requirement.DocumentTypeID],
+                IsRequired = true, IsAutoDetected = true, EntityType = entityType, EntityName = entityName,
+                RetireeID = requirement.RetireeID, EntitledID = requirement.EntitledID, AgentID = requirement.AgentID,
+                GuardianID = requirement.GuardianID, PledgeID = requirement.PledgeID, ExemptionID = requirement.ExemptionID
+            };
         }
 
-        // ── سياق المستحقين (Entitled Persons Context) ──
-        // وثائق المستحقين تُطلب فقط عند وفاة المتقاعد
-        if (!retireeIsAlive)
-        {
-            var today = PensionMS.Core.Time.YemenTime.Today;
-            var femaleRelationshipIds = new[] { 1, 3, 4, 6 }; // زوجة، ابنة، أم، أخت
-
-            foreach (var ep in entitledPersons)
-            {
-                // احتساب عمر المستحق، تطلب الهوية لمن تفوق أعمارهم أو تساوي 18 عاماً كبالغين
-                var age = today.Year - ep.BirthDate.Year;
-                if (ep.BirthDate > today.AddYears(-age)) age--;
-                
-                if (age >= 18)
-                {
-                    AddRequiredDoc(DocumentTypeConstants.NationalId, EntityTypeConstants.EntitledPerson, ep.FullName, ep.EntitledID); // الهوية الوطنية
-                }
-
-                bool isFemale = femaleRelationshipIds.Contains(ep.RelationshipID);
-
-                if (ep.IsDeceased || ep.HealthStatusID == HealthStatusConstants.Deceased || ep.HealthStatusID == HealthStatusConstants.Martyr)
-                {
-                    // شهادة الوفاة تطلب للإناث فقط (بناءً على طلب تعديل القواعد)
-                    if (isFemale)
-                        AddRequiredDoc(DocumentTypeConstants.DeathCertificate, EntityTypeConstants.EntitledPerson, ep.FullName, ep.EntitledID);
-                }
-                else if (isFemale)
-                {
-                    // القاصر الأنثى معفاة من إثبات العزوبية — فقط البالغة تُطالب بها
-                    if (ep.SocialStatusID == SocialStatusConstants.Single && age >= 18) 
-                        AddRequiredDoc(DocumentTypeConstants.SingleStatusCert, EntityTypeConstants.EntitledPerson, ep.FullName, ep.EntitledID); // شهادة عزوبية
-                        
-                    if (ep.SocialStatusID == SocialStatusConstants.Married) 
-                        AddRequiredDoc(DocumentTypeConstants.MarriageContract, EntityTypeConstants.EntitledPerson, ep.FullName, ep.EntitledID); // عقد زواج
-                        
-                    if (ep.SocialStatusID == SocialStatusConstants.Divorced) 
-                        AddRequiredDoc(DocumentTypeConstants.DivorceCertificate, EntityTypeConstants.EntitledPerson, ep.FullName, ep.EntitledID); // طلاق
-                }
-
-                if (ep.HasDisabilityException || ep.HealthStatusID == HealthStatusConstants.PartiallyDisabled || ep.HealthStatusID == HealthStatusConstants.FullyDisabled)
-                {
-                    AddRequiredDoc(DocumentTypeConstants.MedicalReport, EntityTypeConstants.EntitledPerson, ep.FullName, ep.EntitledID); // تقرير طبي
-                    AddRequiredDoc(DocumentTypeConstants.MaintenanceJudgment, EntityTypeConstants.EntitledPerson, ep.FullName, ep.EntitledID); // حكم إعالة
-                }
-            }
-        }
-
-        // ── سياق الوكلاء (Agents Context) ──
-        foreach (var agent in activeAgents)
-        {
-            AddRequiredDoc(DocumentTypeConstants.NationalId, EntityTypeConstants.Agent, agent.FullName, agent.AgentID); // الهوية الوطنية
-            AddRequiredDoc(DocumentTypeConstants.AgencyDocument, EntityTypeConstants.Agent, agent.FullName, agent.AgentID); // صك وكالة
-        }
-
-        // ── سياق الأوصياء (Guardians Context) ──
-        foreach (var guardian in activeGuardians)
-        {
-            AddRequiredDoc(DocumentTypeConstants.NationalId, EntityTypeConstants.Guardian, guardian.FullName, guardian.GuardianID); // الهوية الوطنية
-            AddRequiredDoc(DocumentTypeConstants.GuardianshipDocument, EntityTypeConstants.Guardian, guardian.FullName, guardian.GuardianID); // صك وصاية
-        }
-
-        // ── سياق التعهدات النشطة (Pledges Context) ──
-        foreach (var pledge in activePledges)
-        {
-            var pName = pledge.PledgedByName ?? pledge.PledgeNumber ?? "تعهد نشط";
-            AddRequiredDoc(DocumentTypeConstants.PledgeDocument, EntityTypeConstants.Pledge, pName, pledge.PledgeID); // وثيقة تعهد الزاميه
-        }
-
-        // ── سياق الإعفاءات النشطة (Exemptions Context) ──
-        foreach (var exemption in activeExemptions)
-        {
-            var eName = string.IsNullOrEmpty(exemption.DirectiveSource) ? "إعفاء نشط" : exemption.DirectiveSource;
-            AddRequiredDoc(DocumentTypeConstants.ExemptionDirective, EntityTypeConstants.Exemption, eName, exemption.ExemptionID); // مستند إعفاء الزاميه
-        }
+        var autoDetected = requirements.Select(MapRequiredDoc).ToList();
 
         return (autoDetected, uploadedDocs, manualMissing);
     }

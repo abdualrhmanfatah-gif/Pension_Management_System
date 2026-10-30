@@ -11,8 +11,12 @@ using Xunit.Abstractions;
 
 namespace PensionMS.Tests.Diagnostics;
 
+[CollectionDefinition("Document upload ordering", DisableParallelization = true)]
+public sealed class DocumentUploadOrderingCollection { }
+
 // Characterization of the actual service with controlled dependencies.
 // This proves response dependencies, not SQL timings or the user's root cause.
+[Collection("Document upload ordering")]
 public class DocumentUploadWaitDiagnostics(ITestOutputHelper output)
 {
     // These are deadlock limits for dependency ordering, not response-time assertions.

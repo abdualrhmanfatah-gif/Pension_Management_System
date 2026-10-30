@@ -1,12 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PensionMS.Core.Constants;
+using PensionMS.Core.Rules.Entitlements;
 using PensionMS.Core.DTOs.Common;
 using PensionMS.Core.DTOs.Financial;
 using PensionMS.Core.DTOs.Notifications;
 using PensionMS.Core.Entities;
 using PensionMS.Core.Interfaces;
 using PensionMS.Core.Helpers;
+using PensionMS.Core.Rules.RetirementFiles;
 
 namespace PensionMS.Infrastructure.Services.Pension.Entitlements;
 
@@ -190,14 +192,23 @@ public class FinancialEntitlementService : IFinancialEntitlementService
                     .FirstOrDefaultAsync(f => f.FileID == openingFileId.Value &&
                         f.RetireeID == retiree.RetireeID && !f.IsDeleted);
                 if (file == null) return await RejectAsync("الملف غير موجود ضمن نطاق الصلاحية");
-                if (file.FileOpenDate == default) return await RejectAsync("تاريخ فتح الملف مطلوب");
                 // تاريخ الفتح يحدد المعاش والرتبة المعادين للملف فقط؛ الفترات تتبع تواريخ مصادرها.
-                openingDate = PensionMS.Core.Time.YemenTime.LocalDate(new DateTimeOffset(
-                    DateTime.SpecifyKind(file.FileOpenDate, DateTimeKind.Utc))).ToDateTime(TimeOnly.MinValue);
-                if (openingDate < baselineDate) return await RejectAsync("تاريخ فتح الملف لا يمكن أن يسبق تاريخ التقاعد في كشف الإحالة");
+                DateOnly? openingDay = file.FileOpenDate == default ? null : PensionMS.Core.Time.YemenTime.LocalDate(
+                    new DateTimeOffset(DateTime.SpecifyKind(file.FileOpenDate, DateTimeKind.Utc)));
+                var openingDecision = RetirementFileOpeningRules.EvaluateSource(new(
+                    true, retiree.IsDeleted, true, approval.IsDeleted, approval.IsProcessed,
+                    approval.EnrollmentDate, approval.RetirementDate), openingDay);
+                if (!openingDecision.IsAllowed) return await RejectAsync(openingDecision.Message!);
+                openingDate = openingDay!.Value.ToDateTime(TimeOnly.MinValue);
             }
             if (plan.Select(p => p.EffectiveDate).Distinct().Count() != plan.Count)
                 return await RejectAsync("تواريخ مصادر الاستحقاق متعارضة في اليوم نفسه");
+            var selectedIndex = openingDate.HasValue
+                ? plan.FindLastIndex(p => p.EffectiveDate <= openingDate.Value)
+                : plan.Count - 1;
+            if (openingFileId.HasValue && (plan[selectedIndex].RankID is null or <= 0 ||
+                !await _unitOfWork.Ranks.Query().AnyAsync(r => r.RankID == plan[selectedIndex].RankID)))
+                return await RejectAsync("رتبة مصدر المعاش غير موجودة؛ صحح كشف الإحالة أو التسوية قبل فتح الملف");
             var existing = await queries.Query(_unitOfWork.FinancialEntitlements)
                 .Where(e => e.RetireeID == retiree.RetireeID && !e.IsDeleted).ToListAsync();
             if (existing.Any(e => e.EndDate.HasValue && e.EndDate.Value.Date < e.EffectiveDate.Date))
@@ -242,9 +253,6 @@ public class FinancialEntitlementService : IFinancialEntitlementService
                     changed = true;
                 }
             }
-            var selectedIndex = openingDate.HasValue
-                ? plan.FindLastIndex(p => p.EffectiveDate <= openingDate.Value)
-                : rows.Count - 1;
             var latest = rows[selectedIndex];
             latest.Retiree = retiree;
             if (changed)

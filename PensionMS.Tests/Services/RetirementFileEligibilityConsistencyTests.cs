@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using PensionMS.Core.Constants;
+using PensionMS.Core.Rules.Entitlements;
 using PensionMS.Core.DTOs.MissingDocuments;
 using PensionMS.Core.Entities;
 using PensionMS.Core.Interfaces;
@@ -180,11 +181,12 @@ public class RetirementFileEligibilityConsistencyTests
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
-    public async Task Payroll_IncludesTheWholeEndDate_WithLiveOrApprovedData(bool snapshot)
+    public async Task Payroll_IncludesTheWholeEndDate_WithInitialDraftOrApprovedData(bool snapshot)
     {
         var f = new RetirementLifecycleFixture();
-        f.File.StatusID = FileStatusConstants.Active;
-        f.File.ReviewStatus = FileReviewStatus.Approved;
+        f.File.StatusID = snapshot ? FileStatusConstants.Active : FileStatusConstants.Pending;
+        f.File.PreviousStatusID = snapshot ? null : FileStatusConstants.New;
+        f.File.ReviewStatus = snapshot ? FileReviewStatus.Approved : FileReviewStatus.PendingReview;
         f.Entitlements[0].EndDate = YemenTime.TodayDateTime;
         if (snapshot)
             f.File.LastReviewedFileState = (await ApprovedPensionSnapshot.CaptureAsync(f.Unit.Object, 1, 2)).Serialize();

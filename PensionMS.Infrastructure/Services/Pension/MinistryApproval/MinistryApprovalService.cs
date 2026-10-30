@@ -9,11 +9,6 @@ using PensionMS.Core.DTOs.Notifications;
 using PensionMS.Core.DTOs.MinistryApprovals;
 using PensionMS.Core.Entities;
 using PensionMS.Core.Interfaces;
-using QuestPDF.Fluent;
-using QuestPDF.Helpers;
-using QuestPDF.Infrastructure;
-using Color = System.Drawing.Color;
-using System.Drawing;
 using PensionMS.Core.Constants;
 
 namespace PensionMS.Infrastructure.Services.Pension.MinistryApproval;
@@ -23,12 +18,14 @@ public class MinistryApprovalService : IMinistryApprovalService
     private readonly IUnitOfWork _unitOfWork;
     private readonly INotificationService _notificationService;
     private readonly ExcelReportExporter _excelExporter;
+    private readonly PdfReportExporter _pdfExporter;
 
-    public MinistryApprovalService(IUnitOfWork unitOfWork, INotificationService notificationService, ExcelReportExporter excelExporter)
+    public MinistryApprovalService(IUnitOfWork unitOfWork, INotificationService notificationService, ExcelReportExporter excelExporter, PdfReportExporter pdfExporter)
     {
         _unitOfWork = unitOfWork;
         _notificationService = notificationService;
         _excelExporter = excelExporter;
+        _pdfExporter = pdfExporter;
     }
 
     public async Task<ApiResponse<List<MinistryApprovalBatchDto>>> GetAllBatchesAsync()
@@ -885,75 +882,30 @@ public class MinistryApprovalService : IMinistryApprovalService
         if (batch == null) return Array.Empty<byte>();
         var items = batch.MinistryApprovalItems.Where(i => !i.IsDeleted).OrderBy(i => i.SerialNumber).ToList();
 
-        if (format.ToLower() == ExportFormatConstants.Excel) {
-            var headers = new[] { "م", "الرقم العسكري", "الرتبة", "الاسم الكامل", "الوحدة", "تاريخ الالتحاق", "تاريخ الإحالة", "المعاش", "الفئة التقاعدية", "الربط", "الجنس", "الحالة" };
-            var rows = items.Select((it, i) => new object?[]
-            {
-                it.SerialNumber,
-                it.MilitaryNumber,
-                it.Rank?.RankName,
-                it.FullName,
-                it.UnitName,
-                it.EnrollmentDate?.ToString("yyyy/MM/dd"),
-                it.RetirementDate?.ToString("yyyy/MM/dd"),
-                it.Salary,
-                it.Category?.CategoryName,
-                it.LinkNumber,
-                it.Gender == 2 ? "أنثى" : "ذكر",
-                it.IsProcessed ? BatchStatusConstants.Processed : BatchStatusConstants.Pending,
-            }).ToArray();
+        var headers = new[] { "م", "الرقم العسكري", "الرتبة", "الاسم الكامل", "الوحدة", "تاريخ الالتحاق", "تاريخ الإحالة", "المعاش", "الفئة التقاعدية", "الربط", "الجنس", "الحالة" };
+        var rows = items.Select((it, i) => new object?[]
+        {
+            it.SerialNumber,
+            it.MilitaryNumber,
+            it.Rank?.RankName,
+            it.FullName,
+            it.UnitName,
+            it.EnrollmentDate?.ToString("yyyy/MM/dd"),
+            it.RetirementDate?.ToString("yyyy/MM/dd"),
+            it.Salary,
+            it.Category?.CategoryName,
+            it.LinkNumber,
+            it.Gender == 2 ? "أنثى" : "ذكر",
+            it.IsProcessed ? BatchStatusConstants.Processed : BatchStatusConstants.Pending,
+        }).ToArray();
+
+        if (format.ToLower() == ExportFormatConstants.Excel)
             return _excelExporter.ExportRows("كشف الإحالة إلى التقاعد", headers, rows,
                 new ExcelReportOptions { ReportId = batchId.ToString(), IncludeFooter = false });
-        } else if (format.ToLower() == ExportFormatConstants.Pdf) {
-            QuestPDF.Settings.DocumentLayoutExceptionThreshold = 1000;
-            return QuestPDF.Fluent.Document.Create(container => {
-                container.Page(page => {
-                    page.Size(PageSizes.A4.Landscape()); page.Margin(1, Unit.Centimetre); page.PageColor(Colors.White);
-                    page.ContentFromRightToLeft();
-                    page.DefaultTextStyle(x => x.FontSize(9).FontFamily("Arial"));
-                    page.Header().Row(row => {
-                        row.RelativeItem().Column(col => { col.Item().Text("الجمهورية اليمنية").Bold(); col.Item().Text("وزارة الداخلية"); col.Item().Text("صندوق التقاعد الأمني"); });
-                        row.ConstantItem(100).AlignCenter().Text("تقرير اعتماد القوة").FontSize(14).Bold();
-                        row.RelativeItem().AlignLeft().Column(col => { col.Item().Text($"التاريخ: {PensionMS.Core.Time.YemenTime.Now:yyyy/MM/dd}"); col.Item().Text($"رقم الكشف: {batch.BatchNumber}"); });
-                    });
-                    page.Content().PaddingVertical(10).Table(table => {
-                        table.ColumnsDefinition(cols => { 
-                            cols.ConstantColumn(25); // م
-                            cols.ConstantColumn(60); // العسكري
-                            cols.ConstantColumn(60); // الرتبة
-                            cols.RelativeColumn(3);  // الاسم
-                            cols.RelativeColumn(2);  // الوحدة
-                            cols.ConstantColumn(70); // الالتحاق
-                            cols.ConstantColumn(70); // الإحالة
-                            cols.ConstantColumn(50); // الحالة
-                        });
-                        table.Header(h => { 
-                            h.Cell().Element(CellStyle).Text("م"); 
-                            h.Cell().Element(CellStyle).Text("الرقم العسكري"); 
-                            h.Cell().Element(CellStyle).Text("الرتبة"); 
-                            h.Cell().Element(CellStyle).Text("الاسم الكامل"); 
-                            h.Cell().Element(CellStyle).Text("الوحدة"); 
-                            h.Cell().Element(CellStyle).Text("تاريخ الالتحاق"); 
-                            h.Cell().Element(CellStyle).Text("تاريخ الإحالة"); 
-                            h.Cell().Element(CellStyle).Text("الحالة");
-                            static IContainer CellStyle(IContainer c) => c.DefaultTextStyle(x => x.Bold()).PaddingVertical(5).BorderBottom(1).AlignCenter();
-                        });
-                        foreach (var it in items) {
-                            table.Cell().Element(ContentStyle).Text(it.SerialNumber.ToString()); 
-                            table.Cell().Element(ContentStyle).Text(it.MilitaryNumber);
-                            table.Cell().Element(ContentStyle).Text(it.Rank?.RankName ?? ""); 
-                            table.Cell().Element(ContentStyle).Text(it.FullName);
-                            table.Cell().Element(ContentStyle).Text(it.UnitName ?? ""); 
-                            table.Cell().Element(ContentStyle).Text(it.EnrollmentDate?.ToString("yyyy/MM/dd") ?? "---"); 
-                            table.Cell().Element(ContentStyle).Text(it.RetirementDate?.ToString("yyyy/MM/dd") ?? "---"); 
-                            table.Cell().Element(ContentStyle).Text(it.IsProcessed ? BatchStatusConstants.Processed : BatchStatusConstants.Pending);
-                            static IContainer ContentStyle(IContainer c) => c.BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5).AlignCenter();
-                        }
-                    });
-                    page.Footer().AlignCenter().Text(x => { x.Span("صفحة "); x.CurrentPageNumber(); x.Span(" من "); x.TotalPages(); });
-                });
-            }).GeneratePdf();
-        }
+
+        if (format.ToLower() == ExportFormatConstants.Pdf)
+            return _pdfExporter.ExportRows("تقرير اعتماد القوة", headers, rows, batch.BatchNumber);
+
         return Array.Empty<byte>();
     }
 

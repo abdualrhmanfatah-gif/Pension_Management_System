@@ -43,7 +43,7 @@ public class SalaryImportIdentityTests
         var service = new SalaryPaymentBatchService(unit.Object, Mock.Of<IPayrollGenerationService>(), Mock.Of<IWorkflowTaskService>(),
             Mock.Of<INotificationService>(), Mock.Of<IJournalEntryService>(),
             NullLogger<SalaryPaymentBatchService>.Instance, new ExcelReportExporter(new ExcelReportTemplate()), PensionMS.Testing.TestPensionAccess.All(unit.Object),
-            new PensionSuspensionService(unit.Object, Mock.Of<INotificationService>(), PensionMS.Testing.TestPensionAccess.All(unit.Object)));
+            new PensionSuspensionService(unit.Object, Mock.Of<INotificationService>(), PensionMS.Testing.TestPensionAccess.All(unit.Object), Mock.Of<IDocumentPledgeService>()));
 
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         using var package = new ExcelPackage();

@@ -121,6 +121,7 @@ public class MinistryApprovalServiceTests
         unit.Setup(u => u.MinistryApprovalItems).Returns(repository.Object);
         return new MinistryApprovalService(unit.Object, Mock.Of<INotificationService>(),
             new PensionMS.Infrastructure.Reporting.Exporters.ExcelReportExporter(
-                new PensionMS.Infrastructure.Reporting.Exporters.ExcelReportTemplate()));
+                new PensionMS.Infrastructure.Reporting.Exporters.ExcelReportTemplate()),
+            new PensionMS.Infrastructure.Reporting.Exporters.PdfReportExporter());
     }
 }

@@ -12,12 +12,12 @@ public sealed class ApprovedPensionSnapshot
 {
     public int Version { get; set; } = 1;
     public DateTime? ApprovedAtUtc { get; set; }
-    public Retiree Retiree { get; set; } = new();
-    public List<FinancialEntitlement> Entitlements { get; set; } = [];
-    public List<SalaryRecipient> Recipients { get; set; } = [];
-    public List<PaymentBook> Books { get; set; } = [];
-    public List<EntitledPerson> EntitledPersons { get; set; } = [];
-    public List<GuardianEntitledPerson> GuardianLinks { get; set; } = [];
+    [JsonRequired] public Retiree Retiree { get; set; } = new();
+    [JsonRequired] public List<FinancialEntitlement> Entitlements { get; set; } = [];
+    [JsonRequired] public List<SalaryRecipient> Recipients { get; set; } = [];
+    [JsonRequired] public List<PaymentBook> Books { get; set; } = [];
+    [JsonRequired] public List<EntitledPerson> EntitledPersons { get; set; } = [];
+    [JsonRequired] public List<GuardianEntitledPerson> GuardianLinks { get; set; } = [];
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -47,7 +47,8 @@ public sealed class ApprovedPensionSnapshot
         {
             using var document = JsonDocument.Parse(json);
             return document.RootElement.ValueKind == JsonValueKind.Object &&
-                document.RootElement.TryGetProperty(nameof(Version), out var version) && version.TryGetInt32(out var number) && number == 1
+                document.RootElement.TryGetProperty(nameof(Version), out var version) &&
+                version.ValueKind == JsonValueKind.Number && version.TryGetInt32(out var number) && number == 1
                 ? JsonSerializer.Deserialize<ApprovedPensionSnapshot>(json, JsonOptions) : null;
         }
         catch (JsonException) { return null; }
@@ -57,6 +58,18 @@ public sealed class ApprovedPensionSnapshot
         CancellationToken cancellationToken = default) => CaptureAsync(fileId, retireeId,
         db.Retirees, db.FinancialEntitlements, db.SalaryRecipients, db.PaymentBooks,
         db.EntitledPersons, db.GuardianEntitledPersons, cancellationToken);
+
+    internal static ApprovedPensionSnapshot Capture(PensionDbContext db, int fileId, int retireeId)
+    {
+        var queries = Queries(fileId, retireeId, db.Retirees, db.FinancialEntitlements,
+            db.SalaryRecipients, db.PaymentBooks, db.EntitledPersons, db.GuardianEntitledPersons);
+        return new ApprovedPensionSnapshot
+        {
+            Retiree = queries.Retirees.First(), Entitlements = queries.Entitlements.ToList(),
+            Recipients = queries.Recipients.ToList(), Books = queries.Books.ToList(),
+            EntitledPersons = queries.EntitledPersons.ToList(), GuardianLinks = queries.Links.ToList()
+        };
+    }
 
     public static Task<ApprovedPensionSnapshot> CaptureAsync(IUnitOfWork uow, int fileId, int retireeId) =>
         CaptureAsync(fileId, retireeId, uow.Retirees.Query(), uow.FinancialEntitlements.Query(),
@@ -69,17 +82,31 @@ public sealed class ApprovedPensionSnapshot
         IQueryable<EntitledPerson> entitledPersons, IQueryable<GuardianEntitledPerson> links,
         CancellationToken cancellationToken)
     {
+        var queries = Queries(fileId, retireeId, retirees, entitlements, recipients, books, entitledPersons, links);
         return new ApprovedPensionSnapshot
         {
-            Retiree = await retirees.AsNoTracking().FirstAsync(r => r.RetireeID == retireeId, cancellationToken),
-            Entitlements = await entitlements.AsNoTracking().Where(e => e.RetireeID == retireeId && !e.IsDeleted).ToListAsync(cancellationToken),
-            Recipients = await recipients.AsNoTracking().Where(r => r.FileID == fileId && !r.IsDeleted)
-                .Include(r => r.Agent).ThenInclude(a => a!.EntitledPerson)
-                .Include(r => r.Guardian).Include(r => r.EntitledPerson).Include(r => r.Retiree)
-                .ToListAsync(cancellationToken),
-            Books = await books.AsNoTracking().Where(b => b.FileID == fileId && !b.IsDeleted).ToListAsync(cancellationToken),
-            EntitledPersons = await entitledPersons.AsNoTracking().Where(e => e.FileID == fileId && !e.IsDeleted).ToListAsync(cancellationToken),
-            GuardianLinks = await links.AsNoTracking().Where(g => g.EntitledPerson.FileID == fileId && !g.IsDeleted).ToListAsync(cancellationToken)
+            Retiree = await queries.Retirees.FirstAsync(cancellationToken),
+            Entitlements = await queries.Entitlements.ToListAsync(cancellationToken),
+            Recipients = await queries.Recipients.ToListAsync(cancellationToken),
+            Books = await queries.Books.ToListAsync(cancellationToken),
+            EntitledPersons = await queries.EntitledPersons.ToListAsync(cancellationToken),
+            GuardianLinks = await queries.Links.ToListAsync(cancellationToken)
         };
     }
+
+    private sealed record SnapshotQueries(IQueryable<Retiree> Retirees, IQueryable<FinancialEntitlement> Entitlements,
+        IQueryable<SalaryRecipient> Recipients, IQueryable<PaymentBook> Books,
+        IQueryable<EntitledPerson> EntitledPersons, IQueryable<GuardianEntitledPerson> Links);
+
+    private static SnapshotQueries Queries(int fileId, int retireeId, IQueryable<Retiree> retirees,
+        IQueryable<FinancialEntitlement> entitlements, IQueryable<SalaryRecipient> recipients,
+        IQueryable<PaymentBook> books, IQueryable<EntitledPerson> entitledPersons, IQueryable<GuardianEntitledPerson> links) =>
+        new(retirees.AsNoTracking().Where(r => r.RetireeID == retireeId),
+            entitlements.AsNoTracking().Where(e => e.RetireeID == retireeId && !e.IsDeleted),
+            recipients.AsNoTracking().Where(r => r.FileID == fileId && !r.IsDeleted)
+                .Include(r => r.Agent).ThenInclude(a => a!.EntitledPerson)
+                .Include(r => r.Guardian).Include(r => r.EntitledPerson).Include(r => r.Retiree),
+            books.AsNoTracking().Where(b => b.FileID == fileId && !b.IsDeleted),
+            entitledPersons.AsNoTracking().Where(e => e.FileID == fileId && !e.IsDeleted),
+            links.AsNoTracking().Where(g => g.EntitledPerson.FileID == fileId && !g.IsDeleted));
 }

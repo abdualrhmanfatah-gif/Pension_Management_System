@@ -329,6 +329,33 @@ public class FinancialEntitlementTimelineTests
         f.Unit.Verify(u => u.SaveChangesAsync(), Times.Never);
     }
 
+    [Theory]
+    [InlineData("enrollment")]
+    [InlineData("equal")]
+    [InlineData("earlier")]
+    [InlineData("opening-missing")]
+    [InlineData("opening-before")]
+    [InlineData("rank-missing")]
+    public async Task FileOpening_CannotBypassOpeningRulesOrSourceRank(string scenario)
+    {
+        var f = new Fixture();
+        f.Unit.Setup(u => u.HasActiveTransaction).Returns(true);
+        var file = new RetirementFile { FileID = 1, RetireeID = 2, StatusID = 1,
+            FileOpenDate = new DateTime(2026, 10, 23, 0, 0, 0, DateTimeKind.Utc) };
+        f.Files.Add(file);
+        if (scenario == "enrollment") f.Retiree.ApprovalItem.EnrollmentDate = null;
+        if (scenario == "equal") f.Retiree.ApprovalItem.EnrollmentDate = f.Retiree.ApprovalItem.RetirementDate;
+        if (scenario == "earlier") f.Retiree.ApprovalItem.EnrollmentDate = new DateOnly(2021, 1, 1);
+        if (scenario == "opening-missing") file.FileOpenDate = default;
+        if (scenario == "opening-before") file.FileOpenDate = new DateTime(2019, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        if (scenario == "rank-missing") f.Retiree.ApprovalItem.RankID = 999;
+        var result = await f.Service.CreateForFileAsync(1, 7);
+        Assert.False(result.IsSuccess);
+        Assert.Empty(f.Rows);
+        f.Unit.Verify(u => u.SaveChangesAsync(), Times.Never);
+        f.Unit.Verify(u => u.CommitAsync(), Times.Never);
+    }
+
     private sealed class Fixture
     {
         public Mock<IUnitOfWork> Unit { get; } = new();
@@ -338,7 +365,8 @@ public class FinancialEntitlementTimelineTests
         public List<RetirementFile> Files { get; } = [];
         public Retiree Retiree { get; } = new() { RetireeID = 2, ApprovalItemID = 11,
             ApprovalItem = new MinistryApprovalItem { ApprovalItemID = 11, IsProcessed = true,
-                Salary = 90000, RankID = 1, RetirementDate = new DateOnly(2020, 1, 1) } };
+                Salary = 90000, RankID = 1, EnrollmentDate = new DateOnly(1980, 1, 1),
+                RetirementDate = new DateOnly(2020, 1, 1) } };
         public FinancialEntitlementService Service { get; }
         public Fixture()
         {
@@ -350,6 +378,7 @@ public class FinancialEntitlementTimelineTests
             Unit.Setup(u => u.FinancialEntitlements).Returns(financial.Object);
             Unit.Setup(u => u.SettlementItems).Returns(Repo(Settlements).Object);
             Unit.Setup(u => u.RetirementFiles).Returns(Repo(Files).Object);
+            Unit.Setup(u => u.Ranks).Returns(Repo(new List<Rank> { new() { RankID = 1 }, new() { RankID = 3 } }).Object);
             Unit.Setup(u => u.AuditLogs).Returns(Repo(new List<AuditLog>()).Object);
             Unit.Setup(u => u.SaveChangesAsync()).ReturnsAsync(1);
             Service = new FinancialEntitlementService(Unit.Object, Mock.Of<IMissingDocumentService>(),

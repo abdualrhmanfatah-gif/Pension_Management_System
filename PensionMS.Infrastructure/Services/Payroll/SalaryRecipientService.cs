@@ -204,7 +204,11 @@ public class SalaryRecipientService : ISalaryRecipientService
             }
 
             // ─── 2. رفع الوثائق المطلوبة (الصورة والهوية) ───
-            var hasNationalId = entitled.Documents.Any(d => d.DocumentTypeID == DocumentTypeConstants.NationalId);
+            var identityOwner = new PensionMS.Core.Rules.Documents.RetirementDocumentRequirement(
+                DocumentTypeConstants.NationalId, null, null, null, entitled.EntitledID, null, null);
+            var hasNationalId = PensionMS.Core.Rules.Documents.RetirementFileDocumentRules.FindValidDocument(
+                entitled.Documents.Where(d => d.FileID == entitled.FileID), identityOwner,
+                PensionMS.Core.Time.YemenTime.Today) != null;
 
             // حفظ الصورة الشخصية
             if (dto.PersonalPhoto != null)
@@ -226,7 +230,9 @@ public class SalaryRecipientService : ISalaryRecipientService
                     Notes = $"الهوية الوطنية للمستحق: {entitled.FullName}",
                     File = dto.NationalIdImage
                 };
-                await _documentService.UploadAsync(uploadDto, userId);
+                var uploaded = await _documentService.UploadAsync(uploadDto, userId);
+                if (!uploaded.IsSuccess)
+                    return ApiResponse<SalaryRecipientDto>.Fail(uploaded.Message ?? "تعذر رفع هوية المستحق");
             }
 
             // ─── 3. إعادة التقييم والتحقق النهائي من الحالة ───

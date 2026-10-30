@@ -1,6 +1,8 @@
 /**
  * عملاء API لنظام إدارة المعاشات 
  */
+import type { RecordEntitledPersonDeathRequest } from "@/lib/entitledPersonRequests";
+import { entitledPersonFormData, entitledPersonMultipart, reactivateEntitledPersonForm, recordEntitledPersonDeathForm, stopEntitledPersonForm } from "@/lib/entitledPersonRequests";
 import type { RecentActivity } from "@/types/dashboard";
 import type {
   CreateEntitledPersonDto,
@@ -222,28 +224,32 @@ export const entitledPersonApi = {
       .then(r => r.data.data),
 
   /** إنشاء مستحق جديد */
-  create: (dto: CreateEntitledPersonDto) =>
-    api.post<{ data: EntitledPersonDetail }>("/entitled-persons", dto)
-      .then(r => r.data.data),
+  create: (dto: CreateEntitledPersonDto) => {
+    const { birthDate, ...fields } = dto;
+    return api.post<{ data: EntitledPersonDetail }>("/entitled-persons", entitledPersonFormData({ ...fields, dateOfBirth: birthDate }), entitledPersonMultipart)
+      .then(r => r.data.data);
+  },
 
   /** تحديث بيانات مستحق */
-  update: (id: number, dto: UpdateEntitledPersonDto) =>
-    api.put<{ data: EntitledPersonDetail }>(`/entitled-persons/${id}`, dto)
-      .then(r => r.data.data),
+  update: (id: number, dto: UpdateEntitledPersonDto) => {
+    const { birthDate, ...fields } = dto;
+    return api.put<{ data: EntitledPersonDetail }>(`/entitled-persons/${id}`, entitledPersonFormData({ ...fields, dateOfBirth: birthDate }), entitledPersonMultipart)
+      .then(r => r.data.data);
+  },
 
   /** إيقاف الاستحقاق */
   stop: (id: number, dto: StopEntitledPersonDto) =>
-    api.post<{ data: boolean }>(`/entitled-persons/${id}/stop`, dto)
+    api.put<{ data: boolean }>(`/entitled-persons/${id}/stop`, stopEntitledPersonForm(dto), entitledPersonMultipart)
       .then(r => r.data.data),
 
   /** إعادة تفعيل الاستحقاق */
   reactivate: (id: number, dto: ReactivateEntitledPersonDto) =>
-    api.post<{ data: boolean }>(`/entitled-persons/${id}/reactivate`, dto)
+    api.put<{ data: boolean }>(`/entitled-persons/${id}/reactivate`, reactivateEntitledPersonForm(dto), entitledPersonMultipart)
       .then(r => r.data.data),
 
   /** تسجيل وفاة */
-  recordDeath: (id: number, data: { deathDate: string; deathCertificateNumber?: string }) =>
-    api.post<{ data: boolean }>(`/entitled-persons/${id}/death`, data)
+  recordDeath: (id: number, data: RecordEntitledPersonDeathRequest) =>
+    api.post<{ data: boolean }>(`/entitled-persons/${id}/death`, recordEntitledPersonDeathForm(data), entitledPersonMultipart)
       .then(r => r.data.data),
 
   /** حذف مستحق (حذف ناعم) */

@@ -158,6 +158,7 @@ export interface EntitledPersonDto {
 
 export interface EntitledPersonSummary {
     entitledID: number;
+    fileID?: number;
     fullName: string;
     nationalID?: string | null;
     relationshipName?: string;

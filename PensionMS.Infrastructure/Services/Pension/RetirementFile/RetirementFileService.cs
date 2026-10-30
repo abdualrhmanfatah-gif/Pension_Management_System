@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PensionMS.Core.Constants;
@@ -9,11 +10,8 @@ using PensionMS.Core.DTOs.RetirementFiles;
 using PensionMS.Core.DTOs.Retirees;
 using PensionMS.Core.Entities;
 using PensionMS.Core.Interfaces;
-using PensionMS.Core.Helpers;
-using PensionMS.Infrastructure.Helpers;
-
-using Microsoft.AspNetCore.Http;
-using System.Text.Json;
+using PensionMS.Core.Time;
+using static PensionMS.Core.Rules.RetirementFiles.RetirementFileOpeningRules;
 
 namespace PensionMS.Infrastructure.Services.Pension.RetirementFile;
 
@@ -31,11 +29,10 @@ public class RetirementFileService : IRetirementFileService
     private readonly IFinancialEntitlementService _financialEntitlementService;
     private readonly IPensionSuspensionService _pensionSuspensionService;
     private readonly ILogger<RetirementFileService> _logger;
-
     private readonly RetirementFileCompletenessEvaluator _completeness;
 
     public RetirementFileService(
-        IUnitOfWork unitOfWork, 
+        IUnitOfWork unitOfWork,
         IImmutableAuditService auditService,
         IMissingDocumentService missingDocumentService,
         IDocumentService documentService,
@@ -43,8 +40,10 @@ public class RetirementFileService : IRetirementFileService
         IEntitledPersonService entitledPersonService,
         INotificationService notificationService,
         IFileReviewService reviewService,
-        ILogger<RetirementFileService> logger, IRetireeService retireeService,
-        IFinancialEntitlementService financialEntitlementService, IPensionSuspensionService pensionSuspensionService)
+        ILogger<RetirementFileService> logger,
+        IRetireeService retireeService,
+        IFinancialEntitlementService financialEntitlementService,
+        IPensionSuspensionService pensionSuspensionService)
     {
         _unitOfWork = unitOfWork;
         _completeness = new RetirementFileCompletenessEvaluator(unitOfWork, missingDocumentService);
@@ -61,52 +60,49 @@ public class RetirementFileService : IRetirementFileService
         _pensionSuspensionService = pensionSuspensionService;
     }
 
+    /// <summary>ينسق فتح مسودة وتجهيز المتقاعد والاستحقاقات والمرفقات داخل معاملة واحدة.</summary>
     public async Task<ApiResponse<RetirementFileDto>> CreateAsync(CreateRetirementFileDto dto, int userId)
     {
         var queries = await _access.ForPermissionAsync("File.Create");
-        // ── Phase 1.2: منع إنشاء ملف مكرر لنفس المتقاعد ──
-        var existingActive = await _unitOfWork.RetirementFiles.Query()
-            .AnyAsync(f => f.RetireeID == dto.RetireeID
-                        );
-        if (existingActive)
-            return ApiResponse<RetirementFileDto>.Fail("يوجد ملف نشط لهذا المتقاعد بالفعل");
-
-        // ── Phase 2.4: فحص تواريخ منطقية ──
-        if (dto.ServiceStartDate.HasValue && dto.ServiceEndDate.HasValue
-            && dto.ServiceEndDate <= dto.ServiceStartDate)
-            return ApiResponse<RetirementFileDto>.Fail("تاريخ نهاية الخدمة يجب أن يكون بعد تاريخ البداية");
-
-        // جلب المستخدم لتحديد الفرع (بدون الاعتماد على Claims في JWT)
         var user = await _unitOfWork.Users.Query()
             .FirstOrDefaultAsync(u => u.UserID == userId && u.IsActive);
+        var branchId = user?.BranchID;
+        var activeBranch = branchId.HasValue && await _unitOfWork.PensionFundBranches.Query()
+            .AnyAsync(b => b.PensionBranchID == branchId && b.IsActive);
+        var branchDecision = EvaluateBranch(user != null, branchId, dto.BranchID, activeBranch,
+            branchId.HasValue && queries.Scope.Allows(branchId.Value));
+        if (!branchDecision.IsAllowed) return ApiResponse<RetirementFileDto>.Fail(branchDecision.Message!);
 
-        if (user == null)
-            return ApiResponse<RetirementFileDto>.Fail("المستخدم غير موجود أو غير فعّال");
-
-        var branchId = dto.BranchID ?? user.BranchID ??
-            (queries.Scope.BranchIds.Count == 1 ? queries.Scope.BranchIds[0] : 0);
-        if (!queries.Scope.Allows(branchId))
-            return ApiResponse<RetirementFileDto>.Fail("اختر فرعاً ضمن نطاق صلاحية إنشاء الملف");
-        if (!await _unitOfWork.PensionFundBranches.Query().AnyAsync(b => b.PensionBranchID == branchId && b.IsActive))
-            return ApiResponse<RetirementFileDto>.Fail("الفرع غير موجود أو غير فعّال");
-
-
-        // بيانات المتقاعد اللازمة لفتح الملف؛ المصدر المالي والرتبة تحددهما الخدمة المالية.
-        var retiree = await _unitOfWork.Retirees.Query()
-            .IgnoreQueryFilters() // Bypass MinistryApprovalItem IsDeleted filter cascade
-            .Where(r => !r.IsDeleted) // Ensure the Retiree itself is not soft-deleted
-            .Include(r => r.ApprovalItem)
-            .FirstOrDefaultAsync(r => r.RetireeID == dto.RetireeID);
-
-        if (retiree == null)
-            return ApiResponse<RetirementFileDto>.Fail("المتقاعد غير موجود");
-
-        // ── بدء المعاملة لضمان ذرَية العملية ──
+        ApiResponse<RetirementFileDto> response;
         await _unitOfWork.BeginTransactionAsync();
         try
         {
             // احجز المصدر المالي قبل أي حفظ حتى تتبع عمليات الفتح والإنشاء المالي ترتيب الأقفال نفسه.
-            await _unitOfWork.LockRetireeEntitlementsAsync(retiree.RetireeID);
+            await _unitOfWork.LockRetireeEntitlementsAsync(dto.RetireeID);
+            // فحص وجود عالمي فقط؛ لا تُعاد بيانات الملف السابق أو فرعه إلى المستخدم.
+            var duplicate = EvaluatePreviousFile(await _unitOfWork.RetirementFiles.Query().IgnoreQueryFilters()
+                .AnyAsync(f => f.RetireeID == dto.RetireeID));
+            if (!duplicate.IsAllowed)
+            {
+                await _unitOfWork.RollbackAsync();
+                return ApiResponse<RetirementFileDto>.Fail(duplicate.Message!);
+            }
+            // المتقاعد مصدر مشترك للفروع؛ تُفحص الإحالة والحذف صراحةً بعد تجاوز مرشحات الحذف.
+            var candidate = await _unitOfWork.Retirees.Query().IgnoreQueryFilters().Include(r => r.ApprovalItem)
+                .FirstOrDefaultAsync(r => r.RetireeID == dto.RetireeID);
+            var referral = candidate?.ApprovalItem;
+            var openedAt = DateTime.UtcNow;
+            var sourceDecision = EvaluateSource(new SourceFacts(candidate != null, candidate?.IsDeleted ?? false,
+                referral != null, referral?.IsDeleted ?? false, referral?.IsProcessed ?? false,
+                referral?.EnrollmentDate, referral?.RetirementDate), YemenTime.LocalDate(new DateTimeOffset(openedAt)));
+            if (!sourceDecision.IsAllowed)
+            {
+                await _unitOfWork.RollbackAsync();
+                return ApiResponse<RetirementFileDto>.Fail(sourceDecision.Message!);
+            }
+            // نجاح فحص المصدر يضمن وجود المتقاعد وقيد الإحالة وتواريخه قبل التجهيز.
+            var retiree = candidate!;
+            var approval = referral!;
             var staged = await _retireeService.StageFileOpeningAsync(retiree.RetireeID, new UpdateRetireeDto
             {
                 NationalID = dto.NationalID, Phone = dto.Phone, Address = dto.Address,
@@ -120,33 +116,32 @@ public class RetirementFileService : IRetirementFileService
                 return ApiResponse<RetirementFileDto>.Fail(staged.Message!);
             }
 
-
             var fileNumber = await GenerateNextFileNumberAsync();
 
             var file = new PensionMS.Core.Entities.RetirementFile
             {
                 RetireeID = dto.RetireeID,
                 FileNumber = fileNumber,
-                PensionBranchID = branchId, // Phase 1.5: استخدام الفرع الفعلي
-                // الحالة الافتراضية للملف: قيد المراجعة
+                PensionBranchID = branchId!.Value,
                 StatusID = FileStatusConstants.New,
                 Notes = dto.Notes,
-                
-                // Auto-populate from Ministry Data
-                ServiceStartDate = dto.ServiceStartDate ?? retiree.ApprovalItem?.EnrollmentDate,
-                ServiceEndDate = dto.ServiceEndDate ?? retiree.ApprovalItem?.RetirementDate,
-                RetirementDate = dto.RetirementDate ?? retiree.ApprovalItem?.RetirementDate,
 
-                FileOpenDate = DateTime.UtcNow,
+                ServiceStartDate = approval.EnrollmentDate,
+                ServiceEndDate = approval.RetirementDate,
+                RetirementDate = approval.RetirementDate,
+
+                FileOpenDate = openedAt,
                 CreatedAt = DateTime.UtcNow,
                 CreatedByUserID = userId
             };
 
             await _unitOfWork.RetirementFiles.AddAsync(file);
-            await _unitOfWork.SaveChangesAsync(); // Save to get FileID
+            // يلزم حفظ الملف للحصول على معرفه قبل تجهيز الاستحقاقات والمرفقات المرتبطة به.
+            await _unitOfWork.SaveChangesAsync();
 
             var financial = await _financialEntitlementService.CreateForFileAsync(file.FileID, userId);
-            if (!financial.IsSuccess || financial.Data?.RankID is null or <= 0)
+            if (!financial.IsSuccess || financial.Data?.RankID is null or <= 0 ||
+                !await _unitOfWork.Ranks.Query().AnyAsync(r => r.RankID == financial.Data.RankID))
             {
                 await _unitOfWork.RollbackAsync();
                 return ApiResponse<RetirementFileDto>.Fail(financial.IsSuccess
@@ -155,51 +150,58 @@ public class RetirementFileService : IRetirementFileService
             file.RankID = financial.Data.RankID;
             await _unitOfWork.SaveChangesAsync();
 
-            var uploadedDocumentIds = new List<int>();
-            bool idUploadFailed = false;
-            // Upload ID Document (if provided) - Unified Front+Back
-            if (dto.IdDocument != null || dto.IdDocumentBack != null)
+            var uploads = new List<UploadDocumentDto>();
+            var identityDocument = dto.IdDocument ?? dto.IdDocumentBack;
+            if (identityDocument != null)
             {
-                var uploadDto = new UploadDocumentDto
+                uploads.Add(new UploadDocumentDto
                 {
                     DocumentTypeID = DocumentTypeConstants.NationalId,
                     RetireeID = file.RetireeID,
                     RetirementFileID = file.FileID,
                     Notes = "الهوية الوطنية الموحدة (تم رفعها عند فتح الملف)",
-                    File = dto.IdDocument!,
-                    FileBack = dto.IdDocumentBack
-                };
-
-                if (dto.IdDocument == null && dto.IdDocumentBack != null)
-                {
-                    uploadDto.File = dto.IdDocumentBack;
-                    uploadDto.FileBack = null;
-                }
-                idUploadFailed = !await UploadInitialDocumentAsync(uploadDto, userId, uploadedDocumentIds);
+                    File = identityDocument,
+                    FileBack = dto.IdDocument != null ? dto.IdDocumentBack : null
+                });
             }
 
-            // Upload Death Certificate (if Dead and provided)
-            bool deathCertUploadFailed = false;
             if (!dto.IsAlive && dto.DeathCertificate != null)
             {
-                deathCertUploadFailed = !await UploadInitialDocumentAsync(new UploadDocumentDto
+                uploads.Add(new UploadDocumentDto
                 {
                     RetirementFileID = file.FileID, RetireeID = file.RetireeID,
                     DocumentTypeID = DocumentTypeConstants.DeathCertificate,
                     File = dto.DeathCertificate, Notes = "شهادة الوفاة"
-                }, userId, uploadedDocumentIds);
+                });
             }
 
-            // Upload Primary Document (أوليات الملف) (if provided)
-            bool primaryDocUploadFailed = false;
             if (dto.PrimaryDocument != null)
             {
-                primaryDocUploadFailed = !await UploadInitialDocumentAsync(new UploadDocumentDto
+                uploads.Add(new UploadDocumentDto
                 {
                     RetirementFileID = file.FileID,
                     DocumentTypeID = DocumentTypeConstants.FileOriginals,
                     File = dto.PrimaryDocument, Notes = "أوليات الملف (تم رفعها عند فتح الملف)"
-                }, userId, uploadedDocumentIds);
+                });
+            }
+
+            // تؤجل معالجة النواقص والامتثال إلى التحديث النهائي بعد رفع المرفقات.
+            var uploadedDocumentIds = new List<int>();
+            foreach (var upload in uploads)
+            {
+                var uploaded = await _documentService.UploadAsync(upload, userId, deferPostProcessing: true);
+                if (!uploaded.IsSuccess)
+                {
+                    await _unitOfWork.RollbackAsync();
+                    return new ApiResponse<RetirementFileDto>
+                    {
+                        IsSuccess = false,
+                        Message = uploaded.Message,
+                        Errors = uploaded.Errors
+                    };
+                }
+                uploadedDocumentIds.Add(uploaded.Data?.DocumentID ??
+                    throw new InvalidOperationException("لم تُعد خدمة الوثائق بيانات المرفق المرفوع"));
             }
 
             await _missingDocumentService.StageRequiredAsync(file.FileID, userId);
@@ -216,15 +218,7 @@ public class RetirementFileService : IRetirementFileService
             if (!salaryStatus.IsSuccess) throw new InvalidOperationException(salaryStatus.Message);
             var identity = await _documentService.GetRetireeIdentityPathAsync(file.FileID);
             if (!identity.IsSuccess) throw new InvalidOperationException(identity.Message);
-            await _unitOfWork.CommitAsync();
-
-            string warning = "";
-            if (idUploadFailed || deathCertUploadFailed || primaryDocUploadFailed)
-            {
-                warning = " (مع تنبيه: فشل رفع بعض الوثائق وتم تسجيلها كنواقص)";
-            }
-
-            // Load relationships for DTO mapping (بعد الـ commit)
+            
             var newFile = await _unitOfWork.RetirementFiles.Query()
                 .Include(f => f.Retiree)
                 .Include(f => f.Rank)
@@ -232,11 +226,18 @@ public class RetirementFileService : IRetirementFileService
                 .Include(f => f.Status)
                 .FirstOrDefaultAsync(f => f.FileID == file.FileID);
 
-            // حساب البيانات الناقصة للملف الجديد
             var fileId = newFile?.FileID ?? file.FileID;
             var missingData = await _completeness.CalculateMissingDataAsync(fileId);
 
-            await _notificationService.SendNotificationAsync(new CreateNotificationDto
+            response = ApiResponse<RetirementFileDto>.Success(RetirementFileDtoMapper.MapToDto(newFile ?? file, retiree, new RetirementFileDto
+            {
+                FileStatusName = FileStatusConstants.Name((newFile ?? file).StatusID ?? 0),
+                SalaryStatus = salaryStatus.Data!, IdDocumentPath = identity.Data,
+                MissingDataCount = missingData.Count, MissingDataList = missingData.Items
+            }), "تم إنشاء الملف بنجاح");
+
+            // يحفظ الإشعار وطلب إرساله في Outbox مع الملف؛ الإرسال الفعلي لدى المعالج الخلفي.
+            await _notificationService.EnqueueAsync(new CreateNotificationDto
             {
                 UserID = userId,
                 Title = "إنشاء ملف تقاعد جديد",
@@ -249,20 +250,19 @@ public class RetirementFileService : IRetirementFileService
                 RelatedRecordID = fileId
             });
 
-            return ApiResponse<RetirementFileDto>.Success(RetirementFileDtoMapper.MapToDto(newFile ?? file, retiree, new RetirementFileDto
-            {
-                FileStatusName = FileStatusConstants.Name((newFile ?? file).StatusID ?? 0),
-                SalaryStatus = salaryStatus.Data!, IdDocumentPath = identity.Data,
-                MissingDataCount = missingData.Count, MissingDataList = missingData.Items
-            }), "تم إنشاء الملف بنجاح" + warning);
+            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.CommitAsync();
         }
         catch
         {
-            await _unitOfWork.RollbackAsync();
+            if (_unitOfWork.HasActiveTransaction) await _unitOfWork.RollbackAsync();
             throw;
         }
+
+        return response;
     }
 
+    /// <summary>يسجل الوفاة وينسق آثارها على الملف والصرف والمستحقين داخل معاملة واحدة.</summary>
     public async Task<ApiResponse<bool>> HandleRetireeDeathAsync(
         int fileId, DateOnly deathDate, int userId)
     {
@@ -289,89 +289,83 @@ public class RetirementFileService : IRetirementFileService
         await _unitOfWork.BeginTransactionAsync();
         try
         {
+            file.Retiree.IsAlive = false;
+            file.Retiree.DeathDate = deathDate;
+            file.Retiree.HealthStatusID = HealthStatusConstants.Deceased;
+            file.Retiree.UpdatedAt = DateTime.UtcNow;
+            _unitOfWork.Retirees.Update(file.Retiree);
 
-        // ═════ 1. تسجيل الوفاة ═════
-        file.Retiree.IsAlive = false;
-        file.Retiree.DeathDate = deathDate;
-        file.Retiree.HealthStatusID = HealthStatusConstants.Deceased;
-        file.Retiree.UpdatedAt = DateTime.UtcNow;
-        _unitOfWork.Retirees.Update(file.Retiree);
+            // تبقى المسودة الجديدة في التجهيز، وتعلق بقية الملفات لاستكمال إجراءات الورثة.
+            var oldFileStatus = file.StatusID;
+            if (file.StatusID != FileStatusConstants.New) file.StatusID = FileStatusConstants.Pending;
+            file.StatusReason = "وفاة المتقاعد — إيقاف مؤقت لاستكمال إجراءات الورثة";
+            file.UpdatedAt = DateTime.UtcNow;
+            file.UpdatedByUserID = userId;
+            _unitOfWork.RetirementFiles.Update(file);
 
-        // إعداد التغيير للمراجعة، مع بقاء المسودة الجديدة في مرحلة التجهيز.
-        var oldFileStatus = file.StatusID;
-        if (file.StatusID != FileStatusConstants.New) file.StatusID = FileStatusConstants.Pending;
-        file.StatusReason = "وفاة المتقاعد — إيقاف مؤقت لاستكمال إجراءات الورثة";
-        file.UpdatedAt = DateTime.UtcNow;
-        file.UpdatedByUserID = userId;
-        _unitOfWork.RetirementFiles.Update(file);
+            await _unitOfWork.StatusTransitionLogs.AddAsync(new StatusTransitionLog
+            {
+                TableID = SystemTableConstants.RetirementFiles,
+                RecordID = file.FileID,
+                OldStatusID = oldFileStatus,
+                NewStatusID = file.StatusID ?? FileStatusConstants.New,
+                Reason = $"وفاة المتقاعد بتاريخ {deathDate:yyyy-MM-dd}",
+                ChangedByUserID = userId,
+                TransitionDate = DateTime.UtcNow
+            });
 
-        // سجل انتقال الحالة
-        await _unitOfWork.StatusTransitionLogs.AddAsync(new StatusTransitionLog
-        {
-            TableID = SystemTableConstants.RetirementFiles,
-            RecordID = file.FileID,
-            OldStatusID = oldFileStatus,
-            NewStatusID = file.StatusID ?? FileStatusConstants.New,
-            Reason = $"وفاة المتقاعد بتاريخ {deathDate:yyyy-MM-dd}",
-            ChangedByUserID = userId,
-            TransitionDate = DateTime.UtcNow
-        });
+            var retireeRecipients = await _unitOfWork.SalaryRecipients.Query()
+                .Where(r => r.FileID == fileId
+                         && r.RetireeID == file.RetireeID
+                         && r.IsActive)
+                .ToListAsync();
 
-        // ═════ 3. إيقاف المتقاعد كمستلم صرف ═════
-        var retireeRecipients = await _unitOfWork.SalaryRecipients.Query()
-            .Where(r => r.FileID == fileId
-                     && r.RetireeID == file.RetireeID
-                     && r.IsActive)
-            .ToListAsync();
+            foreach (var r in retireeRecipients)
+            {
+                r.IsActive = false;
+                r.EndDate = deathDate.ToDateTime(TimeOnly.MinValue);
+                r.Notes = (r.Notes ?? "") + " | إيقاف تلقائي — وفاة المتقاعد";
+                r.UpdatedAt = DateTime.UtcNow;
+            }
 
-        foreach (var r in retireeRecipients)
-        {
-            r.IsActive = false;
-            r.EndDate = deathDate.ToDateTime(TimeOnly.MinValue);
-            r.Notes = (r.Notes ?? "") + " | إيقاف تلقائي — وفاة المتقاعد";
-            r.UpdatedAt = DateTime.UtcNow;
-        }
+            var activeBooks = await _unitOfWork.PaymentBooks.Query()
+                .Where(pb => pb.FileID == fileId
+                          && pb.Status == PaymentBookStatus.Active
+                          && !pb.IsDeleted)
+                .ToListAsync();
 
-        // ═════ 4. إلغاء دفتر الصرف الحالي ═════
-        var activeBooks = await _unitOfWork.PaymentBooks.Query()
-            .Where(pb => pb.FileID == fileId
-                      && pb.Status == PaymentBookStatus.Active
-                      && !pb.IsDeleted)
-            .ToListAsync();
+            foreach (var book in activeBooks)
+            {
+                book.Status = PaymentBookStatus.Cancelled;
+                book.Notes = (book.Notes ?? "") + " | إلغاء تلقائي — وفاة المتقاعد";
+                book.UpdatedAt = DateTime.UtcNow;
+            }
 
-        foreach (var book in activeBooks)
-        {
-            book.Status = PaymentBookStatus.Cancelled;
-            book.Notes = (book.Notes ?? "") + " | إلغاء تلقائي — وفاة المتقاعد";
-            book.UpdatedAt = DateTime.UtcNow;
-        }
+            // تحفظ الوفاة داخل المعاملة قبل أن تقرأها خدمات إعادة التقييم أو كشف المتطلبات.
+            await _unitOfWork.SaveChangesAsync();
 
-        // ═════ 5. فحص أهلية المستحقين ═════
-        var entitledPersons = await _unitOfWork.EntitledPersons.Query()
-            .Where(e => e.FileID == fileId && !e.IsDeleted
-                     && (e.StopCode == EntitledStopCodes.RetireeAlive || e.StopCode == null))
-            .ToListAsync();
+            // تعاد حالة المستحق للتقييم عند غياب سبب الإيقاف أو ارتباطه بحياة المتقاعد.
+            var entitledPersons = await _unitOfWork.EntitledPersons.Query()
+                .Where(e => e.FileID == fileId && !e.IsDeleted
+                         && (e.StopCode == EntitledStopCodes.RetireeAlive || e.StopCode == null))
+                .ToListAsync();
 
-        foreach (var ep in entitledPersons)
-        {
-            // استدعاء الخدمة المتخصصة لإعادة تقييم الحالة تلقائياً
-            // ستقوم الخدمة بفحص البيانات والوثائق وتحديث IsActive و StopCode
-            var result = await _entitledPersonService.ReEvaluateEntitlementStatusAsync(ep.EntitledID);
-            if (!result.IsSuccess)
-                throw new InvalidOperationException(result.Message);
-        }
+            foreach (var ep in entitledPersons)
+            {
+                var result = await _entitledPersonService.ReEvaluateEntitlementStatusAsync(ep.EntitledID);
+                if (!result.IsSuccess)
+                    throw new InvalidOperationException(result.Message);
+            }
 
-        // احفظ حالة الحياة أولاً حتى يقرأ كشف المتطلبات الحالة الجديدة داخل المعاملة نفسها.
-        await _unitOfWork.SaveChangesAsync();
-        await _missingDocumentService.StageRequiredAsync(fileId, userId);
-        await _unitOfWork.SaveChangesAsync();
+            await _missingDocumentService.StageRequiredAsync(fileId, userId);
+            await _unitOfWork.SaveChangesAsync();
 
-        await _missingDocumentService.RefreshComplianceCacheAsync(fileId);
+            await _missingDocumentService.RefreshComplianceCacheAsync(fileId);
 
-        await _auditService.LogAsync(userId, "", "RecordRetireeDeath", "Retiree",
-            file.RetireeID, JsonSerializer.Serialize(new { IsAlive = true, DeathDate = (DateOnly?)null }),
-            JsonSerializer.Serialize(new { IsAlive = false, DeathDate = deathDate }), file.PensionBranchID);
-        await _unitOfWork.CommitAsync();
+            await _auditService.LogAsync(userId, "", "RecordRetireeDeath", "Retiree",
+                file.RetireeID, JsonSerializer.Serialize(new { IsAlive = true, DeathDate = (DateOnly?)null }),
+                JsonSerializer.Serialize(new { IsAlive = false, DeathDate = deathDate }), file.PensionBranchID);
+            await _unitOfWork.CommitAsync();
         }
         catch
         {
@@ -416,6 +410,7 @@ public class RetirementFileService : IRetirementFileService
             "تم تسجيل وفاة المتقاعد وإيقاف الملف مؤقتاً لاستكمال إجراءات الورثة");
     }
 
+    /// <summary>يصحح حالة حياة المتقاعد ويوقف سجلات الصرف المرتبطة قبل طلب المراجعة.</summary>
     public async Task<ApiResponse<bool>> CorrectRetireeLifeStatusAsync(
         int fileId, CorrectRetireeLifeStatusDto dto, int userId)
     {
@@ -571,17 +566,11 @@ public class RetirementFileService : IRetirementFileService
             "تم تصحيح حالة المتقاعد وإحالة الملف للمراجعة مع إبقاء الصرف موقوفاً");
     }
 
-
-    // Phase 4.3: إصلاح Race condition مع retry logic
-
-
     private async Task<string> GenerateNextFileNumberAsync()
     {
         var year = DateTime.UtcNow.Year;
         var prefix = $"{year}-";
-        
-        // This is safe under a serialized transaction or table lock. 
-        // Best practice is to use a DB Sequence (e.g. NEXT VALUE FOR FileNumberSeq)
+
         var lastFile = await _unitOfWork.RetirementFiles.Query()
             .Where(f => f.FileNumber.StartsWith(prefix))
             .OrderByDescending(f => f.FileNumber)
@@ -600,6 +589,7 @@ public class RetirementFileService : IRetirementFileService
         return $"{prefix}{nextSeq:D5}";
     }
 
+    /// <summary>ينسق تعديل البيانات والمرفقات وطلب المراجعة ضمن المعاملة الحالية أو معاملة جديدة.</summary>
     public Task<ApiResponse<RetirementFileDto>> UpdateAsync(int id, UpdateRetirementFileDto dto, int userId) =>
         PensionMS.Infrastructure.Data.UnitOfWorkTransaction.ExecuteAsync(_unitOfWork, () => UpdateCoreAsync(id, dto, userId));
 
@@ -609,133 +599,90 @@ public class RetirementFileService : IRetirementFileService
         var file = await queries.Files()
             .Include(f => f.Retiree)
             .FirstOrDefaultAsync(f => f.FileID == id);
-        
+
         if (file == null)
             return ApiResponse<RetirementFileDto>.Fail("الملف غير موجود");
-        if (file.Retiree == null)
+        var retiree = file.Retiree;
+        if (retiree == null)
             return ApiResponse<RetirementFileDto>.Fail("بيانات المتقاعد غير مرتبطة بهذا الملف");
 
         if (!await queries.CanEditRetireeAsync(file.RetireeID))
             throw new PensionMS.Core.Exceptions.BranchScopeAccessException();
 
-        // ── Phase 2.3: فحص التزامن (Optimistic Concurrency) ──
         if (dto.RowVersion != null && file.RowVersion != null
             && !dto.RowVersion.SequenceEqual(file.RowVersion))
             return ApiResponse<RetirementFileDto>.Fail(
                 "تم تعديل الملف من قبل مستخدم آخر. يرجى تحديث الصفحة والمحاولة مرة أخرى");
 
-        if (file.Retiree != null &&
-            ((dto.IsAlive.HasValue && dto.IsAlive.Value != file.Retiree.IsAlive) ||
-             (dto.DeathDate.HasValue && dto.DeathDate != file.Retiree.DeathDate)))
+        if ((dto.IsAlive.HasValue && dto.IsAlive.Value != retiree.IsAlive) ||
+            (dto.DeathDate.HasValue && dto.DeathDate != retiree.DeathDate))
             return ApiResponse<RetirementFileDto>.Fail("تغيير حالة حياة المتقاعد يتطلب الإجراء المخصص من صفحة الملف");
 
         if (dto.BranchID.HasValue && dto.BranchID.Value != file.PensionBranchID)
             return ApiResponse<RetirementFileDto>.Fail("لا يمكن تغيير فرع الملف بعد إنشائه");
         if (dto.RankID.HasValue && dto.RankID != file.RankID)
             return ApiResponse<RetirementFileDto>.Fail("رتبة الملف تحددها مصادر المعاش؛ يجب تصحيح كشف الإحالة أو التسوية لتغييرها");
-        if (file.Retiree != null)
+        var staged = await _retireeService.StageProfileUpdateAsync(file.RetireeID, new UpdateRetireeDto
         {
-            var staged = await _retireeService.StageProfileUpdateAsync(file.RetireeID, new UpdateRetireeDto
-            {
-                FullName = dto.FullName, NationalID = dto.NationalID, Gender = dto.Gender,
-                BirthDate = dto.BirthDate, MilitaryNumber = dto.MilitaryNumber,
-                SocialStatusID = dto.SocialStatusID, HealthStatusID = dto.HealthStatusID,
-                Phone = dto.Phone, Address = dto.Address, City = dto.City, Governorate = dto.Governorate,
-                PersonalPhoto = dto.PersonalPhoto
-            }, userId);
-            if (!staged.IsSuccess) return ApiResponse<RetirementFileDto>.Fail(staged.Message!);
-        }
+            FullName = dto.FullName, NationalID = dto.NationalID, Gender = dto.Gender,
+            BirthDate = dto.BirthDate, MilitaryNumber = dto.MilitaryNumber,
+            SocialStatusID = dto.SocialStatusID, HealthStatusID = dto.HealthStatusID,
+            Phone = dto.Phone, Address = dto.Address, City = dto.City, Governorate = dto.Governorate,
+            PersonalPhoto = dto.PersonalPhoto
+        }, userId);
+        if (!staged.IsSuccess) return ApiResponse<RetirementFileDto>.Fail(staged.Message!);
 
-        // م27: أخطاء المرفقات تُجمع وتظهر في الاستجابة بدلاً من إخفائها
-        var attachmentErrors = new List<string>();
-
-        // Update file fields
-        // تغيير حالة الملف يتم عبر IFileStatusService، وليس عبر تحديث بيانات الملف.
+        // تغييرات الحالة تمر بمسار الحالات والمراجعة؛ لا تطبق من طلب تعديل البيانات.
         if (dto.RetirementDate.HasValue) file.RetirementDate = dto.RetirementDate;
         if (dto.ServiceStartDate.HasValue) file.ServiceStartDate = dto.ServiceStartDate;
         if (dto.ServiceEndDate.HasValue) file.ServiceEndDate = dto.ServiceEndDate;
         if (dto.Notes != null) file.Notes = dto.Notes;
-        
+
         file.UpdatedAt = DateTime.UtcNow;
         file.UpdatedByUserID = userId;
 
-        // تظل مرفقات الملف تحت تنسيق العملية؛ الحقول والصورة تُحدّث عبر خدمة المتقاعد.
-        if (file.Retiree != null)
+        // مرفقات اختيارية؛ التحقق والرفع ومعالجة الوثائق عند مالكها.
+        var uploads = new List<UploadDocumentDto>();
+        var identityDocument = dto.IdDocument ?? dto.IdDocumentBack;
+        if (identityDocument != null)
+            uploads.Add(new UploadDocumentDto
+            {
+                DocumentTypeID = DocumentTypeConstants.NationalId,
+                RetireeID = file.RetireeID,
+                RetirementFileID = file.FileID,
+                Notes = $"تحديث الهوية الوطنية للمتقاعد: {retiree.FullName}",
+                File = identityDocument,
+                FileBack = dto.IdDocument != null ? dto.IdDocumentBack : null
+            });
+        if (dto.DeathCertificate != null)
+            uploads.Add(new UploadDocumentDto
+            {
+                DocumentTypeID = DocumentTypeConstants.DeathCertificate,
+                RetireeID = file.RetireeID,
+                RetirementFileID = file.FileID,
+                Notes = $"تحديث شهادة الوفاة للمتقاعد: {retiree.FullName}",
+                File = dto.DeathCertificate
+            });
+        foreach (var upload in uploads)
         {
-            // تحديث الهوية الوطنية  
-            if (dto.IdDocument != null || dto.IdDocumentBack != null)
-            {
-                try
+            var uploaded = await _documentService.UploadAsync(upload, userId);
+            if (!uploaded.IsSuccess)
+                return new ApiResponse<RetirementFileDto>
                 {
-                    var uploadDto = new UploadDocumentDto
-                    {
-                        DocumentTypeID = DocumentTypeConstants.NationalId,
-                        RetireeID = file.RetireeID,
-                        RetirementFileID = file.FileID,
-                        Notes = $"تحديث الهوية الوطنية للمتقاعد: {file.Retiree.FullName}",
-                        File = dto.IdDocument!,
-                        FileBack = dto.IdDocumentBack
-                    };
-
-                    if (dto.IdDocument == null && dto.IdDocumentBack != null)
-                    {
-                        uploadDto.File = dto.IdDocumentBack;
-                        uploadDto.FileBack = null;
-                    }
-
-                    var idResult = await _documentService.UploadAsync(uploadDto, userId);
-                    if (!idResult.IsSuccess)
-                    {
-                        _logger.LogWarning("فشل في تحديث هوية المتقاعد (ملف {FileID}): {Message}", file.FileID, idResult.Message);
-                        attachmentErrors.Add($"الهوية الوطنية: {idResult.Message}");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "فشل في تحديث هوية المتقاعد (ملف {FileID})", file.FileID);
-                    attachmentErrors.Add("الهوية الوطنية: تعذر الرفع بشكل غير متوقع");
-                }
-            }
-
-            // تحديث شهادة الوفاة
-            if (dto.DeathCertificate != null && dto.DeathCertificate.Length > 0)
-            {
-                try
-                {
-                    var uploadDto = new UploadDocumentDto
-                    {
-                        DocumentTypeID = DocumentTypeConstants.DeathCertificate,
-                        RetireeID = file.RetireeID,
-                        RetirementFileID = file.FileID,
-                        Notes = $"تحديث شهادة الوفاة للمتقاعد: {file.Retiree.FullName}",
-                        File = dto.DeathCertificate,
-                    };
-                    var deathResult = await _documentService.UploadAsync(uploadDto, userId);
-                    if (!deathResult.IsSuccess)
-                    {
-                        _logger.LogWarning("فشل في تحديث شهادة الوفاة (ملف {FileID}): {Message}", file.FileID, deathResult.Message);
-                        attachmentErrors.Add($"شهادة الوفاة: {deathResult.Message}");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "فشل في تحديث شهادة الوفاة (ملف {FileID})", file.FileID);
-                    attachmentErrors.Add("شهادة الوفاة: تعذر الرفع بشكل غير متوقع");
-                }
-            }
+                    IsSuccess = false,
+                    Message = uploaded.Message,
+                    Errors = uploaded.Errors
+                };
         }
         var now = DateTime.UtcNow;
         await _unitOfWork.SaveChangesAsync();
 
-        // ── Immutable Audit Log ──
         await _auditService.LogAsync(userId, "", "Update", "RetirementFile", file.FileID, null, null);
 
-        // ── طلب مراجعة بعد التعديل ──
         var review = await _reviewService.RequestReviewAsync(file.FileID, userId, now);
         if (!review.IsSuccess) return ApiResponse<RetirementFileDto>.Fail(review.Message ?? "تعذر طلب مراجعة تعديل الملف");
         await _retireeService.RefreshProfileAsync(file.RetireeID);
 
-        // Reload with all relationships for DTO mapping
         var updated = await queries.Files()
             .AsNoTracking()
             .Include(f => f.Retiree)
@@ -745,19 +692,18 @@ public class RetirementFileService : IRetirementFileService
             .Include(f => f.AssignedEmployee)
             .FirstAsync(f => f.FileID == id);
 
-        // Get counts for statistics
         var entitledCount = await _unitOfWork.EntitledPersons.Query()
             .AsNoTracking()
             .CountAsync(e => e.FileID == id && !e.IsDeleted);
-        
+
         var agentsCount = await _unitOfWork.Agents.Query()
             .AsNoTracking()
             .CountAsync(a => a.FileID == id && !a.IsDeleted);
-        
+
         var guardiansCount = await _unitOfWork.Guardians.Query()
             .AsNoTracking()
             .CountAsync(g => g.FileID == id && !g.IsDeleted);
-        
+
         var missingDocsList = await _completeness.GetMissingDocsListAsync(id);
 
         var activeBook = await _unitOfWork.PaymentBooks.Query()
@@ -766,7 +712,6 @@ public class RetirementFileService : IRetirementFileService
             .OrderByDescending(pb => pb.CreatedAt)
             .FirstOrDefaultAsync();
 
-        // حساب البيانات الناقصة
         var missingData = await _completeness.CalculateMissingDataAsync(id);
 
         var notifyUserId = updated.AssignedEmployeeID;
@@ -795,16 +740,11 @@ public class RetirementFileService : IRetirementFileService
             });
         }
 
-        // م27: نتيجة منفصلة وواضحة للمرفقات
-        var fileMessage = "تم تحديث الملف وبيانات المتقاعد";
-        if (attachmentErrors.Count > 0)
-            fileMessage += " — تعذر رفع بعض المرفقات: " + string.Join("؛ ", attachmentErrors);
-
         var salaryStatus = await _pensionSuspensionService.GetSalaryStatusAsync(id);
         if (!salaryStatus.IsSuccess) return ApiResponse<RetirementFileDto>.Fail(salaryStatus.Message!);
         var identity = await _documentService.GetRetireeIdentityPathAsync(id);
         if (!identity.IsSuccess) return ApiResponse<RetirementFileDto>.Fail(identity.Message!);
-        var fileResponse = ApiResponse<RetirementFileDto>.Success(RetirementFileDtoMapper.MapToDto(updated, file.Retiree, new RetirementFileDto
+        return ApiResponse<RetirementFileDto>.Success(RetirementFileDtoMapper.MapToDto(updated, retiree, new RetirementFileDto
         {
             FileStatusName = FileStatusConstants.Name(updated.StatusID ?? 0),
             SalaryStatus = salaryStatus.Data!, IdDocumentPath = identity.Data,
@@ -813,10 +753,7 @@ public class RetirementFileService : IRetirementFileService
             MissingDataCount = missingData.Count, MissingDataList = missingData.Items,
             ActivePaymentBookNumber = activeBook?.BookNumber, ActivePaymentBookExpiry = activeBook?.ExpiryDate,
             ActivePaymentBookStatus = activeBook?.Status
-        }), fileMessage);
-        if (attachmentErrors.Count > 0)
-            fileResponse.Errors = attachmentErrors;
-        return fileResponse;
+        }), "تم تحديث الملف وبيانات المتقاعد");
     }
 
     public async Task<ApiResponse<bool>> DeleteAsync(int id, int deletedByUserId)
@@ -826,7 +763,6 @@ public class RetirementFileService : IRetirementFileService
         if (file == null)
             return ApiResponse<bool>.Fail("الملف غير موجود");
 
-        // ── Phase 1.4: منع حذف الملفات النشطة أو الهامة ──
         if (file.StatusID != FileStatusConstants.New || file.ReviewStatus != FileReviewStatus.None)
         {
             return ApiResponse<bool>.Fail("الحذف متاح للمسودة الجديدة فقط؛ يُحتفظ بسجل الملفات التي أُرسلت للمراجعة");
@@ -841,34 +777,4 @@ public class RetirementFileService : IRetirementFileService
 
         return ApiResponse<bool>.Success(true, "تم حذف الملف");
     }
-
-    private async Task<bool> UploadInitialDocumentAsync(UploadDocumentDto dto, int userId, List<int> uploadedIds)
-    {
-        try
-        {
-            var result = await _documentService.UploadAsync(dto, userId, deferPostProcessing: true);
-            if (result.IsSuccess && result.Data != null)
-            {
-                uploadedIds.Add(result.Data.DocumentID);
-                return true;
-            }
-            _logger.LogWarning("تعذر رفع الوثيقة {TypeId} عند فتح الملف {FileId}: {Message}",
-                dto.DocumentTypeID, dto.RetirementFileID, result.Message);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "فشل رفع الوثيقة {TypeId} عند فتح الملف {FileId}", dto.DocumentTypeID, dto.RetirementFileID);
-        }
-        return false;
-    }
-
-    private async Task<MemoryStream> ToMemoryStreamAsync(Stream stream)
-    {
-        if (stream is MemoryStream ms) return ms;
-        var memoryStream = new MemoryStream();
-        await stream.CopyToAsync(memoryStream);
-        memoryStream.Position = 0;
-        return memoryStream;
-    }
-
 }

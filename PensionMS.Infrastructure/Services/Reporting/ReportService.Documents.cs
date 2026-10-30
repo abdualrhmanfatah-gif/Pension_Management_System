@@ -177,37 +177,6 @@ public partial class ReportService
         });
     }
 
-    public async Task<byte[]> ExportMissingDocsReportAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Documents.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetMissingDocsReportAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "رقم الملف", "اسم المتقاعد", "الرقم العسكري", "عدد النواقص", "المستندات الناقصة", "أقصى أيام التأخير", "رقم الهاتف", "رقم هاتف الوكيل" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.FileNumber,
-            r.RetireeName,
-            r.MilitaryNumber,
-            r.MissingCount,
-            r.MissingDocsList,
-            r.MaxDaysMissing,
-            r.Phone,
-            r.AgentPhone,
-        }).ToArray();
-        return _excelExporter.ExportRows("المستندات الناقصة", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي الملفات: {data.Count}" });
-    }
-
     // ═══════════════════════════════════════
     // DOC-01: Missing Documents by Person (beneficiaries/heirs)
     // ═══════════════════════════════════════
@@ -369,39 +338,6 @@ public partial class ReportService
         });
     }
 
-    public async Task<byte[]> ExportMissingDocsByPersonReportAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Documents.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetMissingDocsByPersonReportAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "رقم الملف", "اسم المتقاعد", "الرقم العسكري", "نوع الشخص", "اسم الشخص", "صلة القرابة", "رقم الهاتف", "عدد النواقص", "المستندات الناقصة", "أقصى أيام التأخير" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.FileNumber,
-            r.RetireeName,
-            r.MilitaryNumber,
-            r.PersonType,
-            r.PersonName,
-            r.Relationship,
-            r.PersonPhone,
-            r.MissingCount,
-            r.MissingDocsList,
-            r.MaxDaysMissing,
-        }).ToArray();
-        return _excelExporter.ExportRows(" المستندات الناقصة حسب الشخص", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي السجلات: {data.Count}" });
-    }
-
     // ═══════════════════════════════════════
     // DOC-02: Expired Documents
     // ═══════════════════════════════════════
@@ -442,34 +378,5 @@ public partial class ReportService
             Page = filter.PageNumber,
             PageSize = filter.PageSize
         });
-    }
-
-    public async Task<byte[]> ExportExpiredDocsReportAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Documents.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetExpiredDocsReportAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "نوع المستند", "صاحب المستند", "نوع الصاحب", "تاريخ الانتهاء", "أيام الانتهاء", "موثق" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.DocTypeName,
-            r.OwnerName,
-            r.OwnerType,
-            r.ExpiryDate?.ToString("yyyy-MM-dd") ?? "",
-            r.DaysExpired,
-            r.IsVerified ? "نعم" : "لا",
-        }).ToArray();
-        return _excelExporter.ExportRows("المستندات المنتهية", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي المستندات: {data.Count}" });
     }
 }

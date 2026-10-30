@@ -106,7 +106,8 @@ public class EligibilityAndPermissionSqlTests(SqlTestDatabase database) : IClass
         using var uow = new UnitOfWork(db);
         var service = new DiscrepancyService(uow, TestPensionAccess.From(uow, scope.Object),
             new PensionMS.Infrastructure.Reporting.Exporters.ExcelReportExporter(
-                new PensionMS.Infrastructure.Reporting.Exporters.ExcelReportTemplate()));
+                new PensionMS.Infrastructure.Reporting.Exporters.ExcelReportTemplate()),
+            new PensionMS.Infrastructure.Reporting.Exporters.PdfReportExporter());
         var summary = (await service.GetKashfReportSummaryAsync(new DiscrepancyFilterDto { UnitName = "اختبار وحدة" })).Data!;
         Assert.Equal(2, summary.TotalCount);
         Assert.Equal(1, summary.ProcessedCount);

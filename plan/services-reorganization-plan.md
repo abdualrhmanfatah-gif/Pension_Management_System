@@ -32,6 +32,7 @@ PensionMS.Infrastructure/
 │   │   ├── Beneficiaries/
 │   │   └── Entitlements/
 │   ├── Payroll/
+│   ├── PaymentBooks/
 │   ├── Settlements/
 │   ├── Documents/
 │   ├── Accounting/
@@ -62,7 +63,8 @@ PensionMS.Infrastructure/
 | `Pension/Files` | `RetirementFileService`, `FileStatusService`, `FileReviewService`, `FileNoteService`, `AchievementObstacleService`, `MinistryApprovalService`, `ComplianceEngine`, `WorkflowEngine` |
 | `Pension/Beneficiaries` | `RetireeService`, `EntitledPersonService`, `AgentService`, `GuardianService` |
 | `Pension/Entitlements` | `FinancialEntitlementService`, `EntitlementEngine`, `PensionSuspensionService` |
-| `Payroll` | `PayrollGenerationService`, `SalaryPaymentBatchService`, `SalaryRecipientService`, `PaymentBookService` |
+| `Payroll` | `PayrollGenerationService`, `SalaryPaymentBatchService`, `SalaryRecipientService` |
+| `PaymentBooks` | `PaymentBookService` |
 | `Settlements` | `SettlementService` |
 | `Documents` | `DocumentService`, `DocumentTypeService`, `DocumentPledgeService`, `DocumentExemptionService`, `MissingDocumentService`, `LocalFileStorageService` |
 | `Accounting` | الخدمات العشر الحالية، مع نقل `BankService` إليها |
@@ -79,7 +81,7 @@ PensionMS.Infrastructure/
 
 - `ComplianceEngine` يحسب اكتمال وثائق ملف التقاعد، لذلك ينتمي إلى Files. أما `ComplianceService` فتدير أحداث المخاطر والتجاوزات، ولذلك تنتمي إلى Security مع `RiskScoringService`.
 - `DiscrepancyService` تقدم تقارير مقارنة بيانات الوزارة والمتقاعدين والملفات، لذلك تنتمي إلى Reporting.
-- `PaymentBookService` و`SalaryRecipientService` ترتبطان بتسليم المعاش؛ تُجمعان مع Payroll.
+- `PaymentBookService` مستقلة تنظيميًا في `PaymentBooks`؛ تبقى `SalaryRecipientService` مع خدمات الصرف في `Payroll`، وتُستخدم عبر عقدها عند إنشاء مستلم من دفتر الصرف.
 - `DocumentService` مشتركة بين عدة مجالات، و`HrDocumentService` تستخدمها بالفعل. تبقى خدمة HR داخل HR، والخدمة المشتركة داخل Documents.
 - `WorkflowEngine` يتعامل حاليًا مع ملفات التقاعد ومهام اعتماد الرواتب. يوضع في Files باعتباره موضعه الأساسي الحالي، وتوثق هذه الاعتمادية؛ تقسيمه حسب المجال مهمة لاحقة إذا احتاج ذلك تغيرًا حقيقيًا.
 - `NotificationHub` يبقى في مشروع Infrastructure في هذه الخطة، مع انتقاله إلى Notifications واستمرار ربطه من API على `/hubs/notifications`.
@@ -120,7 +122,7 @@ PensionMS.Infrastructure/
 
 - تنفيذ جدول عقود Core السابق.
 - إنشاء `DependencyInjection/InfrastructureServiceCollectionExtensions.cs` بمدخل واحد `AddPensionInfrastructureServices()` يستدعي تسجيلات المجالات.
-- إنشاء ملفات تسجيل المجالات داخل DependencyInjection: Pension وPayroll وSettlements وDocuments وAccounting وHR وInvestment وInventory وAssets وCitizen وSecurity وAudit وNotifications وAdministration وReporting، مع تسجيلات Persistence وBackgroundJobs.
+- إنشاء ملفات تسجيل المجالات داخل DependencyInjection: Pension وPayroll وPaymentBooks وSettlements وDocuments وAccounting وHR وInvestment وInventory وAssets وCitizen وSecurity وAudit وNotifications وAdministration وReporting، مع تسجيلات Persistence وBackgroundJobs.
 - كل دالة تسجل خدمات مجالها صراحة؛ لا assembly scanning ولا تسجيل تلقائي للخدمات غير المفعلة.
 - استدعاء المدخل الجديد من Program.cs وإزالة التسجيلات المنقولة منه لمنع الازدواجية.
 - تبقى إعدادات DbContext والاتصال وJWT والسياسات وMiddleware وSignalR وValidators في المضيف API.

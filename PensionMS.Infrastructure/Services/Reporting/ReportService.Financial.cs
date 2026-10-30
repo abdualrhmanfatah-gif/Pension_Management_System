@@ -67,35 +67,6 @@ public partial class ReportService
         });
     }
 
-    public async Task<byte[]> ExportSalaryBatchesAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Financial.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetSalaryBatchesAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "الفترة", "الحالة", "إجمالي المبلغ", "عدد المستفيدين", "تاريخ الإنشاء", "تاريخ الاعتماد" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.Period,
-            r.Status,
-            r.TotalAmount,
-            r.RecipientCount,
-            r.CreatedAt.ToString("yyyy-MM-dd"),
-            r.ApprovedAt?.ToString("yyyy-MM-dd") ?? "",
-        }).ToArray();
-        return _excelExporter.ExportRows("مسيرات المعاشات", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي المسيرات: {data.Count}" });
-    }
-
     // ═══════════════════════════════════════
     // FIN-02: Settlements (item-level)
     // ═══════════════════════════════════════
@@ -171,37 +142,6 @@ public partial class ReportService
         return ApiResponse<SettlementSummaryDto>.Success(summary);
     }
 
-    public async Task<byte[]> ExportSettlementsReportAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Financial.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            DecisionType = filter.DecisionType,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetSettlementsReportAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "رقم القرار", "تاريخ القرار", "المتقاعد", "الرقم العسكري", "الرتبة السابقة", "الرتبة المعالجة", "نوع القرار" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.DecisionNumber,
-            r.DecisionDate.ToString("yyyy-MM-dd"),
-            r.RetireeName,
-            r.MilitaryNumber,
-            r.PreviousRank,
-            r.ProcessedRank,
-            r.Status,
-        }).ToArray();
-        return _excelExporter.ExportRows("التسويات", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي القيود: {data.Count}" });
-    }
-
     // ═══════════════════════════════════════
     // FIN-03: Fiscal Period Report
     // ═══════════════════════════════════════
@@ -249,36 +189,5 @@ public partial class ReportService
             Page = filter.PageNumber,
             PageSize = filter.PageSize
         });
-    }
-
-    public async Task<byte[]> ExportFiscalPeriodReportAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Financial.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            FiscalYear = filter.FiscalYear,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetFiscalPeriodReportAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "القائمة", "الحساب", "الفترة", "المخصص", "المنصرف", "المتبقي", "نسبة الصرف %", "المدور" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.ChapterName,
-            r.SectionName,
-            r.Period,
-            r.Allocated,
-            r.Spent,
-            r.Remaining,
-            Math.Round(r.SpentPct, 2),
-            r.Carryover,
-        }).ToArray();
-        return _excelExporter.ExportRows("تقارير الفترات", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي السجلات: {data.Count}" });
     }
 }

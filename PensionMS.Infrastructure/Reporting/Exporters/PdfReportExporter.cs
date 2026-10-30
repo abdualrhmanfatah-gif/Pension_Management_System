@@ -41,7 +41,29 @@ public class PdfReportExporter
     }
 
     public byte[] Export(ReportDefinition report, object[] data)
+        => Render(report.NameAr, report.Id, report.Columns, data, null);
+
+    /// <summary>تصدير صفوف جاهزة عبر نفس قالب التقرير الرسمي — مكافئ لإصدار Excel المبني على ExportRows.</summary>
+    public byte[] ExportRows(string nameAr, string[] headers, IReadOnlyList<object?[]> rows, string? reportId = null)
     {
+        if (headers.Length == 0)
+            throw new ArgumentException("أعمدة التقرير غير صالحة");
+        if (rows.Any(row => row.Length > headers.Length))
+            throw new ArgumentException("بنية صفوف التقرير غير صالحة");
+
+        var report = new ReportDefinition
+        {
+            Id = reportId ?? nameAr,
+            NameAr = nameAr,
+            Columns = headers.Select(label => new ReportColumn { Label = label }).ToArray()
+        };
+        return Render(report.NameAr, report.Id, report.Columns, Array.Empty<object>(), rows);
+    }
+
+    private byte[] Render(string reportName, string reportId, ReportColumn[] columns, object[] data, IReadOnlyList<object?[]>? rawRows)
+    {
+        var recordCount = rawRows?.Count ?? data.Length;
+
         QuestPDF.Settings.License = LicenseType.Community;
         RegisterFonts();
         QuestPDF.Settings.DocumentLayoutExceptionThreshold = 5000;
@@ -81,13 +103,13 @@ public class PdfReportExporter
                         .Column(contentCol =>
                         {
                             // الترويسة — تظهر مرة واحدة فقط
-                            contentCol.Item().ShowOnce().Element(header => ComposePageHeader(header, report, data));
+                            contentCol.Item().ShowOnce().Element(header => ComposePageHeader(header, reportId, recordCount));
 
                             // عنوان التقرير
-                            contentCol.Item().PaddingVertical(4).AlignCenter().Text(report.NameAr).FontSize(14).Bold();
+                            contentCol.Item().PaddingVertical(4).AlignCenter().Text(reportName).FontSize(14).Bold();
 
                             // الجدول
-                            contentCol.Item().Element(c => ComposeTable(c, report, data));
+                            contentCol.Item().Element(c => ComposeTable(c, columns, data, rawRows, recordCount));
                         });
 
                     // الشعار فوق المحتوى — كل صفحة
@@ -118,7 +140,7 @@ public class PdfReportExporter
         }).GeneratePdf();
     }
 
-    private void ComposePageHeader(IContainer container, ReportDefinition report, object[] data)
+    private void ComposePageHeader(IContainer container, string reportId, int recordCount)
     {
         container.Column(col =>
         {
@@ -136,7 +158,7 @@ public class PdfReportExporter
                 {
                     rightCol.Item().AlignCenter().Element(c => LoadImageOrDefault(c, "republic_header.png", "الجمهورية اليمنية", 90, 9));
                     rightCol.Item().AlignCenter().PaddingTop(2).Element(c => LoadImageOrDefault(c, "ministry_header.png", "وزارة الداخلية", 75, 8));
-                    
+
                     rightCol.Item().AlignCenter().PaddingTop(1)
                         .Text("الإدارة العامة للصندوق التقاعد الأمني")
                         .FontSize(8).Bold().FontColor(Colors.Blue.Medium);
@@ -170,14 +192,14 @@ public class PdfReportExporter
                     {
                         text.Span("الرقـــــــم :").Bold().FontSize(8);
                         text.Span("  ");
-                        text.Span(report.Id.ToString()).FontSize(8);
+                        text.Span(reportId).FontSize(8);
                     });
 
                     leftCol.Item().AlignRight().PaddingTop(2).Text(text =>
                     {
                         text.Span("عدد السجلات:").Bold().FontSize(8);
                         text.Span("  ");
-                        text.Span(data.Length.ToString()).FontSize(8);
+                        text.Span(recordCount.ToString()).FontSize(8);
                     });
                 });
             });
@@ -202,30 +224,29 @@ public class PdfReportExporter
                 // Fallthrough to text if image is corrupted
             }
         }
-        
+
         container.Text(fallbackText)
             .FontSize(fontSize)
             .Bold()
             .FontColor(Colors.Grey.Darken3);
     }
 
-    private void ComposeTable(IContainer container, ReportDefinition report, object[] data)
+    private void ComposeTable(IContainer container, ReportColumn[] columns, object[] data, IReadOnlyList<object?[]>? rawRows, int recordCount)
     {
-        if (data.Length == 0)
+        if (recordCount == 0)
         {
             container.AlignCenter().PaddingVertical(15)
                 .Text("لا توجد بيانات لعرضها").FontSize(11).FontColor(Colors.Grey.Medium);
             return;
         }
 
-        var columns = report.Columns.ToList();
         int totalWidth = columns.Sum(c => c.Width ?? 30);
-        if (totalWidth == 0) totalWidth = columns.Count * 30;
+        if (totalWidth == 0) totalWidth = columns.Length * 30;
 
         // ═══ تحسين الأداء: تخزين خصائص النوع مرة واحدة ═══
-        Dictionary<string, PropertyInfo> propertyMap = data[0]?.GetType()
-            .GetProperties()
-            .ToDictionary(p => p.Name, StringComparer.OrdinalIgnoreCase) ?? new Dictionary<string, PropertyInfo>();
+        Dictionary<string, PropertyInfo> propertyMap = new(StringComparer.OrdinalIgnoreCase);
+        if (rawRows is null && data.Length > 0)
+            propertyMap = data[0].GetType().GetProperties().ToDictionary(p => p.Name, StringComparer.OrdinalIgnoreCase);
 
         container.Table(table =>
         {
@@ -249,18 +270,24 @@ public class PdfReportExporter
             });
 
             // ═══ صفوف البيانات ═══
-            int rowIndex = 0;
-            foreach (var item in data)
+            for (var rowIndex = 0; rowIndex < recordCount; rowIndex++)
             {
                 bool isEven = rowIndex % 2 == 0;
 
-                foreach (var column in columns)
+                for (var columnIndex = 0; columnIndex < columns.Length; columnIndex++)
                 {
-                    object? value = null;
-                    // التحقق من أن المفتاح موجود لتجنب الأخطاء
-                    if (!string.IsNullOrEmpty(column.Key) && propertyMap.TryGetValue(column.Key, out var prop))
+                    var column = columns[columnIndex];
+                    object? value;
+                    if (rawRows is not null)
                     {
-                        value = prop.GetValue(item);
+                        value = rawRows[rowIndex][columnIndex];
+                    }
+                    else
+                    {
+                        // التحقق من أن المفتاح موجود لتجنب الأخطاء
+                        value = !string.IsNullOrEmpty(column.Key) && propertyMap.TryGetValue(column.Key, out var prop)
+                            ? prop.GetValue(data[rowIndex])
+                            : null;
                     }
 
                     var text = FormatCellValue(value, column.Type);
@@ -273,7 +300,6 @@ public class PdfReportExporter
                         .DefaultTextStyle(x => x.FontSize(7))
                         .Text(text);
                 }
-                rowIndex++;
             }
         });
     }

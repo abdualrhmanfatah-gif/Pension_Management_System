@@ -11,9 +11,11 @@ namespace PensionMS.Infrastructure.Services.Investment;
 public class InvestmentLeasingService : IInvestmentLeasingService
 {
     private readonly IUnitOfWork _unitOfWork;
-    public InvestmentLeasingService(IUnitOfWork unitOfWork)
+    private readonly IAccessiblePensionRepository _access;
+    public InvestmentLeasingService(IUnitOfWork unitOfWork, IAccessiblePensionRepository access)
     {
         _unitOfWork = unitOfWork;
+        _access = access;
     }
 
     // ----------------------------------------------------------------------
@@ -22,10 +24,12 @@ public class InvestmentLeasingService : IInvestmentLeasingService
 
     public async Task<ApiResponse<int>> CreateTenantAsync(CreateTenantDto dto, int userId)
     {
+        await _access.ForCurrentOperationAsync();
+        // Tenant identity is globally unique; check existence without loading another tenant's profile.
         var existing = await _unitOfWork.Tenants.Query()
-            .FirstOrDefaultAsync(t => t.NationalIDOrCR == dto.NationalIDOrCR && !t.IsDeleted);
+            .AnyAsync(t => t.NationalIDOrCR == dto.NationalIDOrCR && !t.IsDeleted);
 
-        if (existing != null)
+        if (existing)
             return ApiResponse<int>.Fail("يوجد مستأجر مسجل بنفس رقم الهوية/السجل التجاري");
 
         var tenant = new Tenant
@@ -46,14 +50,15 @@ public class InvestmentLeasingService : IInvestmentLeasingService
 
     public async Task<ApiResponse<bool>> UpdateTenantAsync(int id, UpdateTenantDto dto, int userId)
     {
-        var tenant = await _unitOfWork.Tenants.GetByIdAsync(id);
+        var queries = await _access.ForCurrentOperationAsync();
+        var tenant = await TenantProfiles(queries).FirstOrDefaultAsync(t => t.TenantID == id);
         if (tenant == null || tenant.IsDeleted)
             return ApiResponse<bool>.Fail("المستأجر غير موجود");
 
         var existing = await _unitOfWork.Tenants.Query()
-            .FirstOrDefaultAsync(t => t.NationalIDOrCR == dto.NationalIDOrCR && t.TenantID != id && !t.IsDeleted);
+            .AnyAsync(t => t.NationalIDOrCR == dto.NationalIDOrCR && t.TenantID != id && !t.IsDeleted);
 
-        if (existing != null)
+        if (existing)
             return ApiResponse<bool>.Fail("يوجد مستأجر آخر مسجل بنفس رقم الهوية/السجل التجاري");
 
         tenant.FullName = dto.FullName;
@@ -71,7 +76,8 @@ public class InvestmentLeasingService : IInvestmentLeasingService
 
     public async Task<ApiResponse<bool>> DeleteTenantAsync(int id, int userId)
     {
-        var tenant = await _unitOfWork.Tenants.GetByIdAsync(id);
+        var queries = await _access.ForCurrentOperationAsync();
+        var tenant = await TenantProfiles(queries).FirstOrDefaultAsync(t => t.TenantID == id);
         if (tenant == null || tenant.IsDeleted)
             return ApiResponse<bool>.Fail("المستأجر غير موجود");
 
@@ -87,31 +93,33 @@ public class InvestmentLeasingService : IInvestmentLeasingService
 
     public async Task<ApiResponse<TenantDto>> GetTenantByIdAsync(int id)
     {
-        var tenant = await _unitOfWork.Tenants.Query()
-            .Include(t => t.LeaseContracts.Where(c => c.Status == LeaseStatusConstants.Active && !c.IsDeleted))
-            .FirstOrDefaultAsync(t => t.TenantID == id && !t.IsDeleted);
+        var queries = await _access.ForCurrentOperationAsync();
+        var contracts = queries.Query(_unitOfWork.LeaseContracts);
+        var tenant = await TenantProfiles(queries).AsNoTracking()
+            .Where(t => t.TenantID == id && !t.IsDeleted)
+            .Select(t => new TenantDto
+            {
+                TenantID = t.TenantID,
+                FullName = t.FullName,
+                TenantType = t.TenantType,
+                NationalIDOrCR = t.NationalIDOrCR,
+                Phone = t.Phone,
+                RatingScore = t.RatingScore,
+                ActiveContractsCount = contracts.Count(c => c.TenantID == t.TenantID &&
+                    c.Status == LeaseStatusConstants.Active && !c.IsDeleted)
+            }).FirstOrDefaultAsync();
 
         if (tenant == null)
             return ApiResponse<TenantDto>.Fail("المستأجر غير موجود");
 
-        var dto = new TenantDto
-        {
-            TenantID = tenant.TenantID,
-            FullName = tenant.FullName,
-            TenantType = tenant.TenantType,
-            NationalIDOrCR = tenant.NationalIDOrCR,
-            Phone = tenant.Phone,
-            RatingScore = tenant.RatingScore,
-            ActiveContractsCount = tenant.LeaseContracts.Count
-        };
-
-        return ApiResponse<TenantDto>.Success(dto);
+        return ApiResponse<TenantDto>.Success(tenant);
     }
 
     public async Task<ApiResponse<List<TenantDto>>> GetAllTenantsAsync()
     {
-        var tenants = await _unitOfWork.Tenants.Query()
-            .Include(t => t.LeaseContracts.Where(c => c.Status == LeaseStatusConstants.Active && !c.IsDeleted))
+        var queries = await _access.ForCurrentOperationAsync();
+        var contracts = queries.Query(_unitOfWork.LeaseContracts);
+        var tenants = await TenantProfiles(queries).AsNoTracking()
             .Where(t => !t.IsDeleted)
             .Select(t => new TenantDto
             {
@@ -121,7 +129,8 @@ public class InvestmentLeasingService : IInvestmentLeasingService
                 NationalIDOrCR = t.NationalIDOrCR,
                 Phone = t.Phone,
                 RatingScore = t.RatingScore,
-                ActiveContractsCount = t.LeaseContracts.Count
+                ActiveContractsCount = contracts.Count(c => c.TenantID == t.TenantID &&
+                    c.Status == LeaseStatusConstants.Active && !c.IsDeleted)
             })
             .ToListAsync();
 
@@ -130,11 +139,12 @@ public class InvestmentLeasingService : IInvestmentLeasingService
 
     public async Task<ApiResponse<List<PropertyDto>>> GetPropertiesByTenantAsync(int tenantId)
     {
-        var tenantExists = await _unitOfWork.Tenants.GetByIdAsync(tenantId);
-        if (tenantExists == null || tenantExists.IsDeleted)
+        var queries = await _access.ForCurrentOperationAsync();
+        if (!await CanReferenceTenantAsync(queries, tenantId))
             return ApiResponse<List<PropertyDto>>.Fail("المستأجر غير موجود");
 
-        var properties = await _unitOfWork.LeaseContracts.Query()
+        var properties = await queries.Query(_unitOfWork.LeaseContracts)
+            .AsNoTracking()
             .Include(c => c.Unit)
                 .ThenInclude(u => u.Property)
                     .ThenInclude(p => p.PropertyType)
@@ -168,12 +178,12 @@ public class InvestmentLeasingService : IInvestmentLeasingService
 
     private async Task<ApiResponse<int>> CreateLeaseContractCoreAsync(CreateLeaseDto dto, int userId)
     {
-        var unit = await _unitOfWork.PropertyUnits.GetByIdAsync(dto.UnitID);
+        var queries = await _access.ForCurrentOperationAsync();
+        var unit = await queries.Query(_unitOfWork.PropertyUnits).FirstOrDefaultAsync(u => u.UnitID == dto.UnitID);
         if (unit == null || unit.IsDeleted)
             return ApiResponse<int>.Fail("الوحدة غير موجودة");
 
-        var tenant = await _unitOfWork.Tenants.GetByIdAsync(dto.TenantID);
-        if (tenant == null || tenant.IsDeleted)
+        if (!await CanReferenceTenantAsync(queries, dto.TenantID))
             return ApiResponse<int>.Fail("المستأجر غير موجود");
 
         if (dto.EndDate <= dto.StartDate)
@@ -266,12 +276,18 @@ public class InvestmentLeasingService : IInvestmentLeasingService
 
     public async Task<ApiResponse<bool>> UpdateLeaseContractAsync(int id, UpdateLeaseDto dto, int userId)
     {
-        var contract = await _unitOfWork.LeaseContracts.GetByIdAsync(id);
+        var queries = await _access.ForCurrentOperationAsync();
+        var contract = await queries.Query(_unitOfWork.LeaseContracts).FirstOrDefaultAsync(c => c.ContractID == id);
         if (contract == null || contract.IsDeleted)
             return ApiResponse<bool>.Fail("العقد غير موجود");
 
         if (dto.EndDate <= dto.StartDate)
             return ApiResponse<bool>.Fail("تاريخ النهاية يجب أن يكون بعد تاريخ البداية");
+
+        if (!await queries.Query(_unitOfWork.PropertyUnits).AnyAsync(u => u.UnitID == dto.UnitID && !u.IsDeleted))
+            return ApiResponse<bool>.Fail("الوحدة غير موجودة");
+        if (!await CanReferenceTenantAsync(queries, dto.TenantID))
+            return ApiResponse<bool>.Fail("المستأجر غير موجود");
 
         contract.UnitID = dto.UnitID;
         contract.TenantID = dto.TenantID;
@@ -292,7 +308,8 @@ public class InvestmentLeasingService : IInvestmentLeasingService
 
     public async Task<ApiResponse<bool>> DeleteLeaseContractAsync(int id, int userId)
     {
-        var contract = await _unitOfWork.LeaseContracts.GetByIdAsync(id);
+        var queries = await _access.ForCurrentOperationAsync();
+        var contract = await queries.Query(_unitOfWork.LeaseContracts).FirstOrDefaultAsync(c => c.ContractID == id);
         if (contract == null || contract.IsDeleted)
             return ApiResponse<bool>.Fail("العقد غير موجود");
 
@@ -308,36 +325,37 @@ public class InvestmentLeasingService : IInvestmentLeasingService
 
     public async Task<ApiResponse<LeaseContractDto>> GetLeaseContractByIdAsync(int id)
     {
-        var contract = await _unitOfWork.LeaseContracts.Query()
-            .Include(c => c.Unit).ThenInclude(u => u.Property)
-            .Include(c => c.Tenant)
-            .FirstOrDefaultAsync(c => c.ContractID == id && !c.IsDeleted);
+        var queries = await _access.ForCurrentOperationAsync();
+        var contract = await queries.Query(_unitOfWork.LeaseContracts)
+            .AsNoTracking()
+            .Where(c => c.ContractID == id && !c.IsDeleted)
+            .Select(c => new LeaseContractDto
+            {
+                ContractID = c.ContractID,
+                UnitID = c.UnitID,
+                UnitNumber = c.Unit != null ? c.Unit.UnitNumber : string.Empty,
+                PropertyName = c.Unit != null && c.Unit.Property != null ? c.Unit.Property.PropertyName : string.Empty,
+                TenantID = c.TenantID,
+                TenantName = c.Tenant != null ? c.Tenant.FullName : string.Empty,
+                StartDate = c.StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture),
+                EndDate = c.EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture),
+                TotalContractValue = c.TotalContractValue,
+                PaymentFrequency = c.PaymentFrequency,
+                Status = c.Status,
+                SignedContractPath = c.SignedContractPath
+            }).FirstOrDefaultAsync();
 
         if (contract == null)
             return ApiResponse<LeaseContractDto>.Fail("العقد غير موجود");
 
-        var dto = new LeaseContractDto
-        {
-            ContractID = contract.ContractID,
-            UnitID = contract.UnitID,
-            UnitNumber = contract.Unit?.UnitNumber ?? string.Empty,
-            PropertyName = contract.Unit?.Property?.PropertyName ?? string.Empty,
-            TenantID = contract.TenantID,
-            TenantName = contract.Tenant?.FullName ?? string.Empty,
-            StartDate = contract.StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture),
-            EndDate = contract.EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture),
-            TotalContractValue = contract.TotalContractValue,
-            PaymentFrequency = contract.PaymentFrequency,
-            Status = contract.Status,
-            SignedContractPath = contract.SignedContractPath
-        };
-
-        return ApiResponse<LeaseContractDto>.Success(dto);
+        return ApiResponse<LeaseContractDto>.Success(contract);
     }
 
     public async Task<ApiResponse<List<LeaseContractDto>>> GetLeasesByPropertyAsync(int propertyId)
     {
-        var contracts = await _unitOfWork.LeaseContracts.Query()
+        var queries = await _access.ForCurrentOperationAsync();
+        var contracts = await queries.Query(_unitOfWork.LeaseContracts)
+            .AsNoTracking()
             .Include(c => c.Unit).ThenInclude(u => u.Property)
             .Include(c => c.Tenant)
             .Where(c => c.Unit.PropertyID == propertyId && !c.IsDeleted)
@@ -363,7 +381,9 @@ public class InvestmentLeasingService : IInvestmentLeasingService
 
     public async Task<ApiResponse<List<LeaseContractDto>>> GetAllLeasesAsync()
     {
-        var contracts = await _unitOfWork.LeaseContracts.Query()
+        var queries = await _access.ForCurrentOperationAsync();
+        var contracts = await queries.Query(_unitOfWork.LeaseContracts)
+            .AsNoTracking()
             .Include(c => c.Unit).ThenInclude(u => u.Property)
             .Include(c => c.Tenant)
             .Where(c => !c.IsDeleted)
@@ -389,7 +409,8 @@ public class InvestmentLeasingService : IInvestmentLeasingService
 
     public async Task<ApiResponse<bool>> UpdateLeaseContractFilePathAsync(int id, string filePath, int userId)
     {
-        var contract = await _unitOfWork.LeaseContracts.GetByIdAsync(id);
+        var queries = await _access.ForCurrentOperationAsync();
+        var contract = await queries.Query(_unitOfWork.LeaseContracts).FirstOrDefaultAsync(c => c.ContractID == id);
         if (contract == null || contract.IsDeleted)
             return ApiResponse<bool>.Fail("العقد غير موجود");
 
@@ -408,7 +429,8 @@ public class InvestmentLeasingService : IInvestmentLeasingService
 
     public async Task<ApiResponse<int>> CreatePaymentScheduleAsync(CreatePaymentScheduleDto dto, int userId)
     {
-        var contract = await _unitOfWork.LeaseContracts.GetByIdAsync(dto.ContractID);
+        var queries = await _access.ForCurrentOperationAsync();
+        var contract = await queries.Query(_unitOfWork.LeaseContracts).FirstOrDefaultAsync(c => c.ContractID == dto.ContractID);
         if (contract == null || contract.IsDeleted)
             return ApiResponse<int>.Fail("العقد غير موجود");
 
@@ -430,7 +452,8 @@ public class InvestmentLeasingService : IInvestmentLeasingService
 
     public async Task<ApiResponse<bool>> UpdatePaymentStatusAsync(int scheduleId, UpdatePaymentStatusDto dto, int userId)
     {
-        var schedule = await _unitOfWork.PaymentSchedules.GetByIdAsync(scheduleId);
+        var queries = await _access.ForCurrentOperationAsync();
+        var schedule = await queries.Query(_unitOfWork.PaymentSchedules).FirstOrDefaultAsync(s => s.ScheduleID == scheduleId);
         if (schedule == null || schedule.IsDeleted)
             return ApiResponse<bool>.Fail("الدفعة غير موجودة");
 
@@ -448,7 +471,9 @@ public class InvestmentLeasingService : IInvestmentLeasingService
 
     public async Task<ApiResponse<List<PaymentScheduleDto>>> GetSchedulesByContractAsync(int contractId)
     {
-        var schedules = await _unitOfWork.PaymentSchedules.Query()
+        var queries = await _access.ForCurrentOperationAsync();
+        var schedules = await queries.Query(_unitOfWork.PaymentSchedules)
+            .AsNoTracking()
             .Where(s => s.ContractID == contractId && !s.IsDeleted)
             .OrderBy(s => s.DueDate)
             .Select(s => new PaymentScheduleDto
@@ -467,7 +492,9 @@ public class InvestmentLeasingService : IInvestmentLeasingService
 
     public async Task<ApiResponse<List<PaymentScheduleDto>>> GetAllSchedulesAsync()
     {
-        var schedules = await _unitOfWork.PaymentSchedules.Query()
+        var queries = await _access.ForCurrentOperationAsync();
+        var schedules = await queries.Query(_unitOfWork.PaymentSchedules)
+            .AsNoTracking()
             .Where(s => !s.IsDeleted)
             .OrderByDescending(s => s.DueDate)
             .Select(s => new PaymentScheduleDto
@@ -482,5 +509,21 @@ public class InvestmentLeasingService : IInvestmentLeasingService
             .ToListAsync();
 
         return ApiResponse<List<PaymentScheduleDto>>.Success(schedules);
+    }
+
+    private IQueryable<Tenant> TenantProfiles(IPensionDataQuery queries)
+    {
+        var scopedIds = queries.Query(_unitOfWork.Tenants).Select(t => t.TenantID);
+        // No branch/creator owner exists for unlinked tenants. Preserve that workflow pending a business decision.
+        // Linked shared profiles retain the existing all-associated-branches scope rule.
+        return _unitOfWork.Tenants.Query().Where(t => !t.LeaseContracts.Any() || scopedIds.Contains(t.TenantID));
+    }
+
+    private Task<bool> CanReferenceTenantAsync(IPensionDataQuery queries, int tenantId)
+    {
+        var contracts = queries.Query(_unitOfWork.LeaseContracts);
+        // Referencing a party on an authorized lease does not grant access to its other leases or shared profile.
+        return _unitOfWork.Tenants.Query().AnyAsync(t => t.TenantID == tenantId && !t.IsDeleted &&
+            (!t.LeaseContracts.Any() || contracts.Any(c => c.TenantID == t.TenantID)));
     }
 }

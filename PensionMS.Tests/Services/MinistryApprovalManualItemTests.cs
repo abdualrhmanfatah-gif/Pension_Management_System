@@ -187,7 +187,8 @@ public class MinistryApprovalManualItemTests
         var service = new MinistryApprovalService(
             unitOfWork.Object,
             notifications.Object,
-            new ExcelReportExporter(new ExcelReportTemplate()));
+            new ExcelReportExporter(new ExcelReportTemplate()),
+            new PdfReportExporter());
 
         return (service, batch, items);
     }

@@ -1,5 +1,6 @@
 using PensionMS.Core.Interfaces.Reporting;
 using Microsoft.EntityFrameworkCore;
+using PensionMS.Core.DTOs.Common;
 using PensionMS.Core.DTOs.Reports;
 using PensionMS.Core.Entities;
 using PensionMS.Core.Interfaces;
@@ -169,7 +170,7 @@ public class ReportDataService : IReportDataService
         };
 
         var result = await serviceCall(pagedFilter);
-        var items = ReportExportGuard.RequireComplete(result);
+        var items = result.RequireComplete();
         return items.Cast<object>().ToArray();
     }
 }

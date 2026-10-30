@@ -4,13 +4,6 @@ using PensionMS.Core.Constants;
 using PensionMS.Core.DTOs.Discrepancy;
 using PensionMS.Core.DTOs.Common;
 using PensionMS.Core.Interfaces;
-using QuestPDF.Fluent;
-using QuestPDF.Helpers;
-using QuestPDF.Infrastructure;
-using QuestPDF.Drawing;
-using Color = System.Drawing.Color;
-using System.Drawing;
-using System.Diagnostics;
 
 namespace PensionMS.Infrastructure.Services.Reporting;
 
@@ -19,37 +12,14 @@ public class DiscrepancyService : IDiscrepancyService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IAccessiblePensionRepository _access;
     private readonly ExcelReportExporter _excelExporter;
-    private static bool _fontsRegistered;
+    private readonly PdfReportExporter _pdfExporter;
 
-    public DiscrepancyService(IUnitOfWork unitOfWork, IAccessiblePensionRepository access, ExcelReportExporter excelExporter)
+    public DiscrepancyService(IUnitOfWork unitOfWork, IAccessiblePensionRepository access, ExcelReportExporter excelExporter, PdfReportExporter pdfExporter)
     {
         _unitOfWork = unitOfWork;
         _access = access;
         _excelExporter = excelExporter;
-    }
-
-    private static void RegisterFonts()
-    {
-        if (_fontsRegistered) return;
-        try
-        {
-            QuestPDF.Settings.UseEnvironmentFonts = false;
-            var fontDir = Path.Combine(AppContext.BaseDirectory, "fonts");
-            if (Directory.Exists(fontDir))
-            {
-                foreach (var file in Directory.GetFiles(fontDir, "*.ttf"))
-                {
-                    using var stream = File.OpenRead(file);
-                    FontManager.RegisterFont(stream);
-                }
-            }
-            _fontsRegistered = true;
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"[DiscrepancyService] Font error: {ex.Message}");
-            _fontsRegistered = true;
-        }
+        _pdfExporter = pdfExporter;
     }
 
     public async Task<ApiResponse<PagedResult<RetireeDiscrepancyDto>>> GetDiscrepancyReportAsync(DiscrepancyFilterDto filter)
@@ -165,112 +135,29 @@ public class DiscrepancyService : IDiscrepancyService
 
         var items = await query.OrderByDescending(x => x.ApprovalItemID).ToListAsync();
 
-        if (format.ToLower() == ExportFormatConstants.Excel)
+        var headers = new[] { "م", "الرقم العسكري", "الرتبة", "الاسم الكامل", "الوحدة", "الفئة", "الربط", "الجنس", "المعاش", "تاريخ الإحالة", "الحالة", "الملف" };
+        var rows = items.Select((it, i) => new object?[]
         {
-            var headers = new[] { "م", "الرقم العسكري", "الرتبة", "الاسم الكامل", "الوحدة", "الفئة", "الربط", "الجنس", "المعاش", "تاريخ الإحالة", "الحالة", "الملف" };
-            var rows = items.Select((it, i) => new object?[]
-            {
-                i + 1,
-                it.MilitaryNumber,
-                it.ApprovalRankName,
-                it.ApprovalFullName,
-                it.ApprovalUnitName,
-                it.CategoryName,
-                it.LinkNumber,
-                it.Gender == 2 ? "أنثى" : "ذكر",
-                it.Salary,
-                it.ApprovalRetirementDate?.ToString("yyyy/MM/dd"),
-                it.IsProcessed ? "معالج" : "معلق",
-                it.FileID.HasValue ? "ملف مكتمل" : (it.IsProcessed ? "تمت المعالجة" : "كشف إحالة فقط"),
-            }).ToArray();
+            i + 1,
+            it.MilitaryNumber,
+            it.ApprovalRankName,
+            it.ApprovalFullName,
+            it.ApprovalUnitName,
+            it.CategoryName,
+            it.LinkNumber,
+            it.Gender == 2 ? "أنثى" : "ذكر",
+            it.Salary,
+            it.ApprovalRetirementDate?.ToString("yyyy/MM/dd"),
+            it.IsProcessed ? "معالج" : "معلق",
+            it.FileID.HasValue ? "ملف مكتمل" : (it.IsProcessed ? "تمت المعالجة" : "كشف إحالة فقط"),
+        }).ToArray();
+
+        if (format.ToLower() == ExportFormatConstants.Excel)
             return _excelExporter.ExportRows("تقرير كشوفات الإحالة", headers, rows,
                 new ExcelReportOptions { IncludeFooter = false });
-        }
-        else if (format.ToLower() == ExportFormatConstants.Pdf)
-        {
-            QuestPDF.Settings.License = LicenseType.Community;
-            RegisterFonts();
-            QuestPDF.Settings.DocumentLayoutExceptionThreshold = 1000;
-            return QuestPDF.Fluent.Document.Create(container =>
-            {
-                container.Page(page =>
-                {
-                    page.Size(PageSizes.A4.Landscape());
-                    page.Margin(1, Unit.Centimetre);
-                    page.PageColor(Colors.White);
-                    page.ContentFromRightToLeft();
-                    page.DefaultTextStyle(x => x.FontSize(9).FontFamily("Noto Kufi Arabic"));
 
-                    page.Header().Row(row =>
-                    {
-                        row.RelativeItem().Column(col =>
-                        {
-                            col.Item().Text("الجمهورية اليمنية").Bold();
-                            col.Item().Text("وزارة الداخلية");
-                            col.Item().Text("صندوق التقاعد الأمني");
-                        });
-                        row.ConstantItem(120).AlignCenter().Text("تقرير كشوفات الإحالة إلى التقاعد").FontSize(14).Bold();
-                        row.RelativeItem().AlignLeft().Column(col =>
-                        {
-                            col.Item().Text($"التاريخ: {PensionMS.Core.Time.YemenTime.Now:yyyy/MM/dd}");
-                        });
-                    });
-
-                    page.Content().PaddingVertical(10).Table(table =>
-                    {
-                        table.ColumnsDefinition(cols =>
-                        {
-                            cols.ConstantColumn(25);
-                            cols.ConstantColumn(60);
-                            cols.ConstantColumn(60);
-                            cols.RelativeColumn(3);
-                            cols.RelativeColumn(2);
-                            cols.ConstantColumn(70);
-                            cols.ConstantColumn(50);
-                            cols.ConstantColumn(50);
-                        });
-
-                        table.Header(h =>
-                        {
-                            h.Cell().Element(CellStyle).Text("م");
-                            h.Cell().Element(CellStyle).Text("الرقم العسكري");
-                            h.Cell().Element(CellStyle).Text("الرتبة");
-                            h.Cell().Element(CellStyle).Text("الاسم الكامل");
-                            h.Cell().Element(CellStyle).Text("الوحدة");
-                            h.Cell().Element(CellStyle).Text("الجنس");
-                            h.Cell().Element(CellStyle).Text("تاريخ الإحالة");
-                            h.Cell().Element(CellStyle).Text("الحالة");
-
-                            static IContainer CellStyle(IContainer c) => c.DefaultTextStyle(x => x.Bold()).PaddingVertical(5).BorderBottom(1).AlignCenter();
-                        });
-
-                        int rowNumber = 1;
-                        foreach (var it in items)
-                        {
-                            table.Cell().Element(ContentStyle).Text(rowNumber.ToString());
-                            table.Cell().Element(ContentStyle).Text(it.MilitaryNumber ?? "");
-                            table.Cell().Element(ContentStyle).Text(it.ApprovalRankName ?? "");
-                            table.Cell().Element(ContentStyle).Text(it.ApprovalFullName ?? "");
-                            table.Cell().Element(ContentStyle).Text(it.ApprovalUnitName ?? "");
-                            table.Cell().Element(ContentStyle).Text(it.Gender == 2 ? "أنثى" : "ذكر");
-                            table.Cell().Element(ContentStyle).Text(it.ApprovalRetirementDate?.ToString("yyyy/MM/dd") ?? "---");
-                            table.Cell().Element(ContentStyle).Text(it.IsProcessed ? "معالج" : "معلق");
-
-                            static IContainer ContentStyle(IContainer c) => c.BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5).AlignCenter();
-                            rowNumber++;
-                        }
-                    });
-
-                    page.Footer().AlignCenter().Text(x =>
-                    {
-                        x.Span("صفحة ");
-                        x.CurrentPageNumber();
-                        x.Span(" من ");
-                        x.TotalPages();
-                    });
-                });
-            }).GeneratePdf();
-        }
+        if (format.ToLower() == ExportFormatConstants.Pdf)
+            return _pdfExporter.ExportRows("تقرير كشوفات الإحالة إلى التقاعد", headers, rows);
 
         return Array.Empty<byte>();
     }

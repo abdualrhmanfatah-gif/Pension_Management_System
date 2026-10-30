@@ -1,6 +1,7 @@
 using PensionMS.Infrastructure.Services.Pension.RetirementFile;
 using Microsoft.EntityFrameworkCore;
 using PensionMS.Core.Constants;
+using PensionMS.Core.Rules.Entitlements;
 using PensionMS.Core.DTOs.Salary;
 using PensionMS.Core.Time;
 using PensionMS.Core.Entities;
@@ -10,7 +11,8 @@ using PensionMS.Infrastructure.Helpers;
 namespace PensionMS.Infrastructure.Services.Payroll;
 
 /// <summary>
-/// تطبيق قواعد أهلية توليد عناصر الصرف (إيقاف، مستلم، استحقاق، دفتر صرف).
+/// اختيار بيانات الاحتساب المعتمدة وتطبيق قواعد المستلم والاستحقاق ودفتر الصرف.
+/// تستمر المراجعة والإيقافات في منع الصرف دون منع الاحتساب من آخر نسخة معتمدة.
 /// يعيد البنود دون إضافتها أو حفظها؛ المستدعي يملك استبدال البنود والإشعار.
 /// البيانات المرتبطة تُحمّل مسبقاً في الذاكرة لتجنب استعلامات N+1.
 /// </summary>
@@ -31,8 +33,7 @@ public class PayrollGenerationService : IPayrollGenerationService
             ? YemenTime.LocalDate(new DateTimeOffset(DateTime.SpecifyKind(runAt, DateTimeKind.Utc)))
             : DateOnly.FromDateTime(batch.BatchMonth);
         var periodEnd = new DateOnly(onDate.Year, onDate.Month, DateTime.DaysInMonth(onDate.Year, onDate.Month));
-        var effectiveForPeriod = PensionEntitlementRules.EffectiveDuring(onDate, periodEnd);
-        var isEffectiveForPeriod = effectiveForPeriod.Compile();
+        var isEffectiveForPeriod = PensionEntitlementRules.EffectiveDuring(onDate, periodEnd).Compile();
 
         var activeFiles = await _unitOfWork.RetirementFiles.Query()
             .AsNoTracking()
@@ -45,48 +46,14 @@ public class PayrollGenerationService : IPayrollGenerationService
             return result;
         }
 
-        var fileIds = activeFiles.Select(f => f.FileID).ToHashSet();
-        var retireeIds = activeFiles.Select(f => f.RetireeID).ToHashSet();
         var recordedFiles = await _unitOfWork.SalaryPaymentItems.Query().AsNoTracking()
             .Where(i => !i.IsDeleted && i.BatchID != batchId && !i.Batch.IsDeleted &&
                 i.Batch.BatchMonth.Year == onDate.Year && i.Batch.BatchMonth.Month == onDate.Month)
             .Select(i => i.FileID).Distinct().ToListAsync();
 
-        // Preload: active recipients per file (multiple allowed)
-        var recipientsByFile = await _unitOfWork.SalaryRecipients.Query()
-            .AsNoTracking()
-            .Include(r => r.Agent).ThenInclude(a => a!.EntitledPerson)
-            .Include(r => r.EntitledPerson)
-            .Include(r => r.Guardian)
-            .Include(r => r.Retiree)
-            .Where(r => r.IsActive && !r.IsDeleted && fileIds.Contains(r.FileID))
-            .ToListAsync();
-        var recipientsLookup = recipientsByFile.ToLookup(r => r.FileID);
-        var entitledPersons = await _unitOfWork.EntitledPersons.Query().AsNoTracking()
-            .Where(e => fileIds.Contains(e.FileID) && !e.IsDeleted && !e.IsDeceased && e.IsActive)
-            .ToListAsync();
-        var entitledLookup = entitledPersons.ToLookup(e => e.FileID);
-        var guardianLinks = await _unitOfWork.GuardianEntitledPersons.Query().AsNoTracking()
-            .Where(g => g.IsActive && fileIds.Contains(g.EntitledPerson.FileID))
-            .Select(g => new { g.GuardianID, g.EntitledID }).ToListAsync();
-
-        // Preload: active financial entitlements (most recent per retiree)
-        var allEntitlements = await _unitOfWork.FinancialEntitlements.Query()
-            .AsNoTracking()
-            .Where(e => retireeIds.Contains(e.RetireeID)).Where(effectiveForPeriod)
-            .OrderByDescending(e => e.EffectiveDate)
-            .ThenByDescending(e => e.EntitlementID)
-            .ToListAsync();
-        var entitlementLookup = allEntitlements
-            .GroupBy(e => e.RetireeID)
-            .ToDictionary(g => g.Key, g => g.First());
-
-        // Preload: active payment books
-        var activeBooks = await _unitOfWork.PaymentBooks.Query()
-            .AsNoTracking()
-            .Where(b => b.Status == PaymentBookStatus.Active && !b.IsDeleted && b.IssueDate <= onDate && b.ExpiryDate >= onDate && fileIds.Contains(b.FileID))
-            .ToListAsync();
-        var booksLookup = activeBooks.GroupBy(b => b.FileID).ToDictionary(g => g.Key, g => g.OrderByDescending(b => b.CreatedAt).First());
+        // Only first-review drafts may read live financial data. All other files use their snapshot.
+        var initialDrafts = await LoadInitialDraftsAsync(activeFiles
+            .Where(f => IsInitialDraft(f) && !recordedFiles.Contains(f.FileID)).ToList(), onDate, periodEnd);
 
         foreach (var file in activeFiles)
         {
@@ -100,36 +67,30 @@ public class PayrollGenerationService : IPayrollGenerationService
             }
 
             // Suspension prevents payment, never accrual. Use approved data during review.
-            var approved = ApprovedPensionSnapshot.Read(file.LastReviewedFileState);
-            if (approved == null && file.StatusID == FileStatusConstants.Pending)
+            var approved = ReadCalculationState(file, out var stateError);
+            if (stateError != null)
+            {
+                result.SkippedItems.Add(new SkippedItemDto { FileNumber = fileNumber,
+                    RetireeFullName = retireeName, Reason = stateError });
+                continue;
+            }
+            if (approved == null)
             {
                 // Initial submitted amounts are retained in a draft batch under a hold;
                 // first approval of the file is required before accounting approval.
-                approved = new ApprovedPensionSnapshot
-                {
-                    Retiree = file.Retiree!, Recipients = recipientsLookup[file.FileID].ToList(),
-                    Books = activeBooks.Where(b => b.FileID == file.FileID).ToList(),
-                    Entitlements = allEntitlements.Where(e => e.RetireeID == file.RetireeID).ToList(),
-                    EntitledPersons = entitledLookup[file.FileID].ToList(),
-                    GuardianLinks = guardianLinks.Select(g => new GuardianEntitledPerson { GuardianID = g.GuardianID, EntitledID = g.EntitledID, IsActive = true }).ToList()
-                };
+                approved = initialDrafts[file.FileID];
+                // This detached draft is not saved as an approved version.
+                approved.MarkReviewed();
             }
-            if (file.StatusID == FileStatusConstants.Pending) approved?.MarkReviewed();
-            entitlementLookup.TryGetValue(file.RetireeID, out var entitlement);
-            if (approved != null)
-            {
-                file.Retiree = approved.Retiree;
-                var book = approved.Books.Where(b => b.Status == PaymentBookStatus.Active && !b.IsDeleted && b.IssueDate <= onDate && b.ExpiryDate >= onDate)
-                    .OrderByDescending(b => b.CreatedAt).FirstOrDefault();
-                if (book != null) booksLookup[file.FileID] = book;
-                else booksLookup.Remove(file.FileID);
-                var financial = approved.Entitlements.Where(isEffectiveForPeriod)
-                    .OrderByDescending(e => e.EffectiveDate).ThenByDescending(e => e.EntitlementID).FirstOrDefault();
-                entitlement = financial;
-            }
+            var retiree = approved.Retiree;
+            retireeName = retiree.FullName;
+            var book = approved.Books.Where(b => b.Status == PaymentBookStatus.Active && !b.IsDeleted && b.IssueDate <= onDate && b.ExpiryDate >= onDate)
+                .OrderByDescending(b => b.CreatedAt).FirstOrDefault();
+            var entitlement = approved.Entitlements.Where(isEffectiveForPeriod)
+                .OrderByDescending(e => e.EffectiveDate).ThenByDescending(e => e.EntitlementID).FirstOrDefault();
 
             // 3. Skip if no active payment book
-            if (!booksLookup.ContainsKey(file.FileID))
+            if (book == null)
             {
                 result.SkippedItems.Add(new SkippedItemDto { FileNumber = fileNumber, RetireeFullName = retireeName, Reason = "لا يوجد دفتر صرف نشط" });
                 continue;
@@ -143,16 +104,16 @@ public class PayrollGenerationService : IPayrollGenerationService
             }
 
             // 5. Get recipients
-            var recipients = (approved?.Recipients ?? recipientsLookup[file.FileID].ToList()).Where(r => r.IsActive && !r.IsDeleted).OrderBy(r => r.RecipientID).ToList();
+            var recipients = approved.Recipients.Where(r => r.IsActive && !r.IsDeleted).OrderBy(r => r.RecipientID).ToList();
             if (recipients.Count == 0)
             {
                 result.SkippedItems.Add(new SkippedItemDto { FileNumber = fileNumber, RetireeFullName = retireeName, Reason = "لا يوجد مستلم نشط" });
                 continue;
             }
 
-            var required = (approved?.EntitledPersons ?? entitledLookup[file.FileID].ToList()).Where(e => e.IsActive && !e.IsDeleted && !e.IsDeceased).ToList();
-            var fileGuardianLinks = approved?.GuardianLinks.Where(g => g.IsActive).Select(g => (g.GuardianID, g.EntitledID)).ToList()
-                ?? guardianLinks.Select(g => (g.GuardianID, g.EntitledID)).ToList();
+            var required = approved.EntitledPersons.Where(e => e.IsActive && !e.IsDeleted && !e.IsDeceased).ToList();
+            var fileGuardianLinks = approved.GuardianLinks.Where(g => g.IsActive && !g.IsDeleted)
+                .Select(g => (g.GuardianID, g.EntitledID)).ToList();
             var scopeIds = recipients.Select(RecipientScope.EntitledId).ToList();
             string? invalid = null;
             if (recipients.Any(r => RecipientScope.CalendarDate(r.StartDate) > onDate ||
@@ -163,7 +124,7 @@ public class PayrollGenerationService : IPayrollGenerationService
             else if (recipients.Any(r => r.GuardianID.HasValue && (r.Guardian == null || !r.Guardian.IsActive || r.Guardian.FileID != file.FileID || !RecipientScope.Reviewed(r.Guardian.PendingReviewStatus) ||
                     !r.EntitledID.HasValue || !fileGuardianLinks.Any(g => g.GuardianID == r.GuardianID && g.EntitledID == r.EntitledID))))
                 invalid = "يوجد وصي غير صالح أو غير مرتبط بالمستحق";
-            else if (recipients.Any(r => r.RetireeID.HasValue && (r.RetireeID != file.RetireeID || file.Retiree?.IsAlive != true)))
+            else if (recipients.Any(r => r.RetireeID.HasValue && (r.RetireeID != file.RetireeID || !retiree.IsAlive)))
                 invalid = "المتقاعد غير مؤهل للاستلام المباشر";
             else if (scopeIds.Distinct().Count() != scopeIds.Count || (scopeIds.Contains(null) && recipients.Count != 1))
                 invalid = "تعارض في نطاقات مستلمي المعاش";
@@ -247,7 +208,7 @@ public class PayrollGenerationService : IPayrollGenerationService
                     Amount = splitAmounts[idx],
                     StatusID = TransactionStatusConstants.PendingSend,
                     CreatedByUserID = userId,
-                    PaymentBookID = booksLookup[file.FileID].PaymentBookID,
+                    PaymentBookID = book.PaymentBookID,
                     CreatedAt = runAt
                 };
                 result.GeneratedItems.Add(item);
@@ -256,5 +217,86 @@ public class PayrollGenerationService : IPayrollGenerationService
         }
 
         return result;
+    }
+
+    private async Task<Dictionary<int, ApprovedPensionSnapshot>> LoadInitialDraftsAsync(
+        List<Core.Entities.RetirementFile> files, DateOnly onDate, DateOnly periodEnd)
+    {
+        if (files.Count == 0) return [];
+        var fileIds = files.Select(f => f.FileID).ToHashSet();
+        var retireeIds = files.Select(f => f.RetireeID).ToHashSet();
+        var recipients = await _unitOfWork.SalaryRecipients.Query().AsNoTracking()
+            .Include(r => r.Agent).ThenInclude(a => a!.EntitledPerson)
+            .Include(r => r.EntitledPerson).Include(r => r.Guardian).Include(r => r.Retiree)
+            .Where(r => r.IsActive && !r.IsDeleted && fileIds.Contains(r.FileID)).ToListAsync();
+        var entitledPersons = await _unitOfWork.EntitledPersons.Query().AsNoTracking()
+            .Where(e => fileIds.Contains(e.FileID) && !e.IsDeleted && !e.IsDeceased && e.IsActive).ToListAsync();
+        var guardianLinks = await _unitOfWork.GuardianEntitledPersons.Query().AsNoTracking()
+            .Where(g => g.IsActive && !g.IsDeleted && fileIds.Contains(g.EntitledPerson.FileID))
+            .Select(g => new { g.EntitledPerson.FileID, g.GuardianID, g.EntitledID }).ToListAsync();
+        var entitlements = await _unitOfWork.FinancialEntitlements.Query().AsNoTracking()
+            .Where(e => retireeIds.Contains(e.RetireeID))
+            .Where(PensionEntitlementRules.EffectiveDuring(onDate, periodEnd)).ToListAsync();
+        var books = await _unitOfWork.PaymentBooks.Query().AsNoTracking()
+            .Where(b => b.Status == PaymentBookStatus.Active && !b.IsDeleted && b.IssueDate <= onDate &&
+                b.ExpiryDate >= onDate && fileIds.Contains(b.FileID)).ToListAsync();
+
+        var recipientsByFile = recipients.ToLookup(r => r.FileID);
+        var entitledByFile = entitledPersons.ToLookup(e => e.FileID);
+        var linksByFile = guardianLinks.ToLookup(g => g.FileID);
+        var entitlementsByRetiree = entitlements.ToLookup(e => e.RetireeID);
+        var booksByFile = books.ToLookup(b => b.FileID);
+        return files.ToDictionary(f => f.FileID, f => new ApprovedPensionSnapshot
+        {
+            Retiree = f.Retiree,
+            Recipients = recipientsByFile[f.FileID].ToList(),
+            EntitledPersons = entitledByFile[f.FileID].ToList(),
+            GuardianLinks = linksByFile[f.FileID].Select(g => new GuardianEntitledPerson
+                { GuardianID = g.GuardianID, EntitledID = g.EntitledID, IsActive = true }).ToList(),
+            Entitlements = entitlementsByRetiree[f.RetireeID].ToList(),
+            Books = booksByFile[f.FileID].ToList()
+        });
+    }
+
+    private static bool IsInitialDraft(Core.Entities.RetirementFile file) =>
+        string.IsNullOrWhiteSpace(file.LastReviewedFileState) &&
+        file.StatusID == FileStatusConstants.Pending && file.PreviousStatusID == FileStatusConstants.New &&
+        file.ReviewStatus == FileReviewStatus.PendingReview &&
+        file.Retiree != null && !file.Retiree.IsDeleted && file.Retiree.RetireeID == file.RetireeID;
+
+    // Source selection belongs to generation; capturing and persisting approval belongs to review.
+    // A missing initial version permits a held draft only. An unreadable stored version never
+    // permits falling back to live data, even during the first review.
+    private static ApprovedPensionSnapshot? ReadCalculationState(Core.Entities.RetirementFile file, out string? error)
+    {
+        error = null;
+        if (string.IsNullOrWhiteSpace(file.LastReviewedFileState))
+        {
+            if (IsInitialDraft(file)) return null;
+
+            error = "لا توجد نسخة محفوظة من آخر بيانات معتمدة للملف";
+            return null;
+        }
+
+        var state = ApprovedPensionSnapshot.Read(file.LastReviewedFileState);
+        if (state == null)
+        {
+            error = "تعذر قراءة آخر بيانات معتمدة للملف أو أن إصدارها غير مدعوم";
+            return null;
+        }
+
+        if (state.Retiree == null || state.Retiree.IsDeleted || state.Retiree.RetireeID != file.RetireeID ||
+            state.Entitlements == null || state.Entitlements.Any(e => e == null || e.RetireeID != file.RetireeID) ||
+            state.Books == null || state.Books.Any(b => b == null || b.FileID != file.FileID) ||
+            state.Recipients == null || state.Recipients.Any(r => r == null || r.FileID != file.FileID) ||
+            state.EntitledPersons == null || state.EntitledPersons.Any(e => e == null || e.FileID != file.FileID) ||
+            state.GuardianLinks == null || state.GuardianLinks.Any(g => g == null ||
+                !state.EntitledPersons.Any(e => e.EntitledID == g.EntitledID)))
+        {
+            error = "النسخة المعتمدة غير مكتملة أو لا تطابق الملف والمتقاعد";
+            return null;
+        }
+
+        return state;
     }
 }

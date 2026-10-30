@@ -3,7 +3,6 @@ import { Briefcase, CheckCircle2, ChevronDown, Clock, FileWarning, Pencil, Plus,
 import { useCallback, useEffect, useMemo, useRef,useState } from "react";
 
 import { documentsApi } from "@/api/documents";
-import { entitledPersonApi } from "@/api/pension";
 import { retirementApi } from "@/api/retirement";
 import { Button } from "@/components/ui";
 import { Badge } from "@/components/ui";
@@ -29,6 +28,7 @@ import { DocumentViewerDialog } from "../DocumentViewerDialog";
 import { EntitledPersonFormDialog } from "../EntitledPersonFormDialog";
 import { GuardianDialog } from "../GuardianDialog";
 import { PersonDocCard } from "../PersonDocCard";
+import { RecordEntitledPersonDeathDialog } from "../RecordEntitledPersonDeathDialog";
 import { UploadDocumentDialog } from "../UploadDocumentDialog";
 
 interface PeopleSectionProps {
@@ -233,16 +233,6 @@ export function PeopleSection({ fileId, fileNumber }: PeopleSectionProps) {
         {
             successMessage: "تم حذف الوثيقة بنجاح",
             invalidateKeys: [["person-documents", fileId], ["retirement-file", fileId]],
-        }
-    );
-
-    const recordDeathMutation = useApiMutation(
-        async ({ personId, deathDate }: { personId: number; deathDate: string }) =>
-            entitledPersonApi.recordDeath(personId, { deathDate }),
-        {
-            successMessage: "تم تسجيل الوفاة بنجاح",
-            invalidateKeys: [["entitled-persons", fileId], ["retirement-file", fileId]],
-            onSuccess: () => setDeathDialogOpen(false),
         }
     );
 
@@ -744,33 +734,13 @@ export function PeopleSection({ fileId, fileNumber }: PeopleSectionProps) {
 
             {/* حوار تسجيل وفاة المستحق */}
             {deathDialogOpen && selectedPerson && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <div className="bg-card rounded-xl border border-border p-6 w-full max-w-md mx-4 space-y-4">
-                        <Heading level="h3" className="font-bold text-lg text-destructive">تسجيل وفاة المستحق</Heading>
-                        <p className="text-sm text-muted-foreground">
-                            أنت بصدد تسجيل وفاة: <strong>{selectedPerson.name}</strong>
-                        </p>
-                        <p className="text-xs text-destructive bg-destructive/10 p-3 rounded-lg">
-                            سيتم إيقاف الصرف تلقائياً لهذا المستحق.
-                        </p>
-                        <div className="flex gap-2 justify-end">
-                            <Button variant="outline" size="sm" onClick={() => setDeathDialogOpen(false)}>
-                                إلغاء
-                            </Button>
-                            <Button
-                                variant="destructive"
-                                size="sm"
-                                loading={recordDeathMutation.isPending}
-                                onClick={() => {
-                                    const today = new Date().toISOString().split('T')[0];
-                                    recordDeathMutation.mutate({ personId: selectedPerson.id, deathDate: today });
-                                }}
-                            >
-                                تأكيد التسجيل
-                            </Button>
-                        </div>
-                    </div>
-                </div>
+                <RecordEntitledPersonDeathDialog
+                    open={deathDialogOpen}
+                    onOpenChange={setDeathDialogOpen}
+                    personId={selectedPerson.id}
+                    personName={selectedPerson.name}
+                    fileId={fileId}
+                />
             )}
         </div>
     );

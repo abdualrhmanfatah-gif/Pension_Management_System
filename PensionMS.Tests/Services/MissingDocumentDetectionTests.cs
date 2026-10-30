@@ -131,7 +131,7 @@ public class MissingDocumentDetectionTests
         Assert.False((await f.Service.CreateAsync(dto, 7)).IsSuccess);
         Assert.Single(f.Missing);
         f.Unit.Verify(u => u.LockFileReviewAsync(1), Times.Exactly(2));
-        f.Unit.Verify(u => u.SaveChangesAsync(), Times.Once);
+        f.Unit.Verify(u => u.SaveChangesAsync(), Times.Exactly(2));
         f.Unit.Verify(u => u.CommitAsync(), Times.Never);
     }
 
@@ -153,6 +153,47 @@ public class MissingDocumentDetectionTests
         f.Unit.Verify(u => u.BeginTransactionAsync(), Times.Never);
         f.Unit.Verify(u => u.CommitAsync(), Times.Never);
         f.Unit.Verify(u => u.RollbackAsync(), Times.Never);
+    }
+
+    [Theory]
+    [InlineData("valid", true)]
+    [InlineData("expired", false)]
+    [InlineData("rejected", false)]
+    [InlineData("deleted", false)]
+    [InlineData("wrong-file", false)]
+    [InlineData("wrong-owner", false)]
+    [InlineData("mixed-owner", false)]
+    [InlineData("absent", false)]
+    public async Task ManualFulfillment_RequiresAnActualValidDocumentForTheExactOwner(string scenario, bool allowed)
+    {
+        var f = new Fixture();
+        var missing = new MissingDocument { MissingDocumentID = 33, FileID = 1, AgentID = 8,
+            DocumentTypeID = DocumentTypeConstants.NationalId, Status = MissingDocumentStatusConstants.Pending };
+        f.Missing.Add(missing);
+        var proof = new Document { FileID = 1, AgentID = 8, DocumentTypeID = DocumentTypeConstants.NationalId };
+        if (scenario == "expired") proof.ExpiryDate = YemenTime.Today.AddDays(-1);
+        if (scenario == "rejected") proof.PendingReviewStatus = PendingReviewStatus.Rejected;
+        if (scenario == "deleted") proof.IsDeleted = true;
+        if (scenario == "wrong-file") proof.FileID = 2;
+        if (scenario == "wrong-owner") proof.AgentID = 99;
+        if (scenario == "mixed-owner") proof.EntitledID = 7;
+        if (scenario != "absent") f.Documents.Add(proof);
+        Assert.Equal(allowed, (await f.Service.MarkFulfilledAsync(33, 7)).IsSuccess);
+        Assert.Equal(allowed ? MissingDocumentStatusConstants.Fulfilled : MissingDocumentStatusConstants.Pending, missing.Status);
+        if (!allowed) f.Unit.Verify(u => u.SaveChangesAsync(), Times.Never);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task ManualCreate_RejectsAnUnknownOrConflictingOwnerBeforeSaving(bool mixed)
+    {
+        var f = new Fixture();
+        var result = await f.Service.CreateAsync(new CreateMissingDocumentDto { FileID = 1,
+            DocumentTypeID = DocumentTypeConstants.NationalId, AgentID = mixed ? 8 : 99, EntitledID = mixed ? 7 : null }, 7);
+        Assert.False(result.IsSuccess);
+        Assert.Empty(f.Missing);
+        f.Unit.Verify(u => u.SaveChangesAsync(), Times.Never);
     }
 
     [Theory]

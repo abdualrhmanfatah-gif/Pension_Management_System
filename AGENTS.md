@@ -1,221 +1,198 @@
 # AGENTS.md — Pension Management System (PensionMS)
 
-Government pension/retirement fund system for Yemen's General Directorate of Security Retirement Fund.
-**ASP.NET Core 8 Web API (SQL Server, EF Core 8) + React 19 SPA (Vite 7, TS 5.9, Tailwind 3.4).**
+Yemen government pension/retirement fund system. ASP.NET Core Web API, EF Core/SQL Server,
+and React/Vite/TypeScript SPA. All user-facing messages and UI text are **Arabic**.
+Framework/package versions come from project files and `ui/package.json`; preserve their targets.
 
-All user-facing text (errors, validation, UI labels) is **Arabic**.
+## Working agreement
 
----
+- Keep changes within the task scope and preserve unrelated tracked/untracked work.
+- Before substantial edits, briefly identify the existing owner, intended change, and verification.
+  Proceed with authorized work; routine implementation choices need no extra approval.
+- Preserve public contracts and business behavior unless the task changes them. Report policy
+  conflicts explicitly; do not silently choose new business rules.
+- Check relevant callers and tests before changing shared behavior. Existing code can contain
+  violations; choose examples that satisfy the rules below.
+- Keep credentials and real personal data out of code, logs, fixtures, and reports. Deployment
+  and writes to existing development/production databases require explicit authorization.
 
-## Commands
+## Discover and reuse existing implementations
 
-### Frontend — run from `ui/`
-```bash
-npm ci            # clean install
-npm run dev       # Vite dev server; proxies /api /hubs /uploads -> http://localhost:5001
-npm run lint      # ESLint (flat config)
-npm run build     # tsc -b && vite build
-npm test          # tsc --noEmit -p tsconfig.test.json && node --test (81 tests)
-npm run preview   # serve dist/ for visual verification
-```
+Applies to services, rules, components, hooks, utilities, repositories, DTOs, interfaces,
+constants, validators, authorization, auditing, caching, and transaction workflows.
 
-**Verification order for UI work: `npm run lint` → `npm run build` → `npm test` → `npm run preview`.**
+- Before adding/replacing behavior, use `rg`/`rg --files` to search by responsibility and behavior.
+  Read candidate implementations, callers, and tests; filename matching alone is insufficient.
+- Reuse the existing owner when its contract fits; otherwise extend that owner within scope.
+  Check authorization, transaction ownership, side effects, failure handling, and lifecycle first.
+- Keep one authoritative implementation per business responsibility. Orchestration delegates
+  owned operations: opening a file should reuse the existing agent operation when adding an agent,
+  rather than rebuild its validation, persistence, attachments, and audit.
+- Sharing a Core predicate alone does not justify duplicating its surrounding workflow.
+  Avoid parallel definitions/implementations for an existing concept.
+- New implementations need evidence of a missing responsibility or materially different contract.
+  Explain why the closest existing candidates are unsuitable. Similar syntax alone does not justify reuse.
+- Preserve layer direction and avoid circular dependencies. Report out-of-scope dependencies
+  and continue unaffected work; do not silently build a substitute.
+- For extraction/replacement, update affected callers and remove the superseded implementation
+  within scope. Review inline logic as well as new files for duplication.
+- When introducing/replacing production responsibilities, report:
+  **Responsibility | Existing path/symbol | Reused/extended/new | Reason**.
+  Routine edits introducing no new responsibility do not need a separate inventory.
 
-> **`npm run lint` does not pass and is not expected to.** Baseline is ~308 errors / 79 warnings
-> (`plan/m0-baseline-lint.txt`). The gate is **no *new* problems vs. baseline**, not zero. Always
-> capture lint output before and after your change rather than assuming you broke it.
+## Architecture and ownership
 
-`npm run build` and `npm test` must pass cleanly.
+Layered monolith; application services currently live in Infrastructure.
+The required dependency direction is toward Core. Existing violations are not templates.
 
-### Backend — run from the specific project dir
-There is **no `.sln` and no project file at the repo root**. `dotnet build` / `dotnet test` from root
-fail with MSB1003.
+| Location | Responsibility |
+| --- | --- |
+| `PensionMS.Core/` | Entities, DTOs, contracts, constants, independent business decisions |
+| `PensionMS.Infrastructure/` | Application orchestration, EF/repositories, transactions, storage, integrations, jobs |
+| `PensionMS.API/` | HTTP contracts, input validation, authentication/authorization pipeline, composition root |
+| `PensionMS.Tests/` | Core/Infrastructure unit and structural tests; selected API code is link-included |
+| `PensionMS.IntegrationTests/` | SQL Server and HTTP/security integration tests; references API |
+| `ui/src/` | React presentation, forms, client state, typed API consumers |
 
-```bash
-cd PensionMS.Tests  && dotnet test --nologo   # ~86 xUnit tests
-cd PensionMS.API    && dotnet run             # Kestrel on http://0.0.0.0:5001, Swagger at /swagger
-```
+- Contracts belong in `PensionMS.Core/Interfaces/`. Core must not reference API, Infrastructure,
+  EF Core, or ASP.NET Core.
+- Policies in `PensionMS.Core/Rules/` accept explicit facts/evaluation dates and return decisions.
+  Keep I/O and application of decisions in Infrastructure.
+- Distinguish business policy from transport validation, informational completeness, queries,
+  and presentation. A conditional is not automatically a domain rule.
+- Reuse shared rules; context-specific decisions stay with their owner. File approval consumes
+  individual eligibility results rather than reimplementing person eligibility.
+- Preserve existing command/query/report separation. Mappers transform data, not eligibility,
+  activation, or payment permission. Add abstractions for concrete needs, not for every predicate.
 
-Tests need **no live database** — xUnit + Moq, services hand-mocked via `Mock<IUnitOfWork>` +
-`Mock<IRepository<T>>`. Two tests build a `PensionDbContext` against
-`Server=(localdb)\MSSQLLocalDB` but only inspect `db.Model` / `ToQueryString()`, so the SQL Server
-*provider* is required, not a reachable server.
+## Code conventions and composition
 
-> `PensionMS.Tests` references `PensionMS.Core` + `PensionMS.Infrastructure` only — **not**
-> `PensionMS.API` (it link-includes one file, `Converters/YemenDateTimeConverter.cs`). Controllers,
-> `Program.cs`, `ControllerExtensions` and the middleware/JWT pipeline are therefore **not testable**.
+- Follow local C# style: PascalCase types/methods, camelCase parameters, `_camelCase` private fields,
+  and `Async` suffixes. Preserve nullable contracts and handle absent data explicitly.
+- Avoid silent business defaults, swallowed failures, blocking async calls, and fire-and-forget writes.
+  Forward cancellation where the contract supports it. Use `decimal` for money and existing rounding rules.
+- Controllers delegate to application services and return `ApiResponse<T>` through `.ToActionResult()`.
+  Keep database work and tracked entities out of controller responses.
+- Use existing repository/UnitOfWork and scoped queries. Project reads, use `AsNoTracking`
+  where appropriate, preserve server-side filtering, and avoid N+1 queries.
+- Use constructor injection. Explicit registrations live in
+  `PensionMS.Infrastructure/DependencyInjection/*ServiceCollectionExtensions.cs`;
+  `PensionMS.API/Program.cs` calls `AddPensionInfrastructureServices()`.
+  Update the owning registration, lifetimes, and affected constructor mocks.
+- `PensionMS.Tests/DependencyInjectionTests.cs` checks DI and selected structural contracts,
+  not full Clean Architecture compliance. Keep refactors, package changes, and upgrades within scope.
 
-### Database
-`PensionMS.Infrastructure/Migrations/` is **empty** and there is **no `dotnet-ef` tooling**. The
-documented `dotnet ef migrations add` flow will not produce a working baseline. Schema changes are
-applied via **hand-written SQL** in `scripts/*.sql` and `plan/*.sql`, plus EF `HasData` seed data
-baked into `PensionMS.Infrastructure/Data/Configurations/**`. `Program.cs` calls
-`db.Database.MigrateAsync()` on non-Development startup, but the migration assembly is empty — it is
-effectively a no-op.
+## Authorization, persistence, and side effects
 
-### Deploy (IIS / Windows Server)
-```powershell
-.\deploy-api.ps1    # -> E:\inetpub\PensionAPI, site+apppool "PensionAPI"; -SkipBuild, -RestartOnly
-.\deploy-ui.ps1     # -> E:\inetpub\PensionUI, site "PensionUI";        -SkipBuild, -RestartOnly
-```
-There is **no combined `deploy.ps1`** and no `-SkipDbReset` / `-SkipIISConfig` flags.
+- Use explicit permission policies. Plain `[Authorize]` authenticates but does not establish
+  operation permission or branch scope. See `PensionMS.API/Security/PermissionHandler.cs` and `Program.cs`.
+- Use existing identity helpers and `IAccessiblePensionRepository` for operation-specific pension scope.
+  HQ status or client-supplied branch/user IDs do not establish unrestricted permission.
+- Scope reads, mutations, exports, and owner lookups. Raw UnitOfWork queries require previously
+  verified scoped aggregate access and constraints retaining that scope. Trace callers before
+  declaring an authorization defect or assuming an internal query is safe.
+- Preserve applicable approval/segregation-of-duties policies through current implementations;
+  do not restore retired guards from old documentation.
+- For `ISoftDeletable`, update deletion fields through its owner. Global filters hide deleted rows;
+  `Repository.Delete/DeleteRange` reject these entities. Neither implements branch authorization.
+  Inspect the model before `IgnoreQueryFilters`, which disables global filters.
+- Composite mutations have one transaction owner. Reuse
+  `PensionMS.Infrastructure/Data/UnitOfWorkTransaction.cs` where applicable:
+  nested operations join and propagate failures; only the owner commits/rolls back.
+- Preserve database locks/concurrency checks and evaluate mutation decisions under the relevant lock.
+  In-process locking or check-then-insert alone does not prove cross-instance safety/idempotency.
+- Preserve audit/review effects using existing `IImmutableAuditService`,
+  `PensionMS.API/Interceptors/AuditSaveChangesInterceptor.cs`, and notification/outbox paths.
+- Propagate required upload failures and reuse storage cleanup/UnitOfWork rollback compensation.
+  Database rollback does not undo filesystem changes.
 
-### Toolchain
-All projects target `net8.0` (ScannerAgent is `net8.0-windows`), but **no `global.json` exists**, so
-the default CLI SDK is 10.0.400 building net8.0.
+## Pension decision sources
 
----
+Consult these sources for the affected decision; avoid copying their business-policy tables here.
 
-## Layout & boundaries
+| Behavior | Starting points |
+| --- | --- |
+| File statuses | `PensionMS.Core/Constants/FileStatusConstants.cs`, `ui/src/constants/retirement.ts` |
+| Review, approval, transitions | `PensionMS.Infrastructure/Services/Pension/RetirementFile/` |
+| Person eligibility/lifecycle | `PensionMS.Core/Rules/Entitlements/`, `PensionMS.Infrastructure/Services/Pension/Beneficiaries/`, `PensionMS.Infrastructure/Services/Pension/Entitlements/` |
+| Document requirements/satisfaction | `PensionMS.Core/Rules/Documents/`, `PensionMS.Infrastructure/Services/Documents/` |
+| Financial periods | `PensionMS.Core/Rules/Entitlements/PensionEntitlementRules.cs`, `PensionMS.Infrastructure/Services/Pension/Entitlements/FinancialEntitlementService.cs` |
 
-```
-PensionMS.Core/          → entities, DTOs, interfaces, constants   (no dependencies)
-PensionMS.Infrastructure/ → EF DbContext, repositories, services, jobs
-PensionMS.API/           → controllers, Program.cs (DI wiring), FluentValidation
-PensionMS.Tests/         → xUnit + Moq
-PensionMS.ScannerAgent/  → WinForms console exe. NOT a Windows Service/BackgroundService,
-                            has ZERO project references, hardcodes http://localhost:5000
-ui/src/                  → components/ pages/ hooks/ queries/ stores/ lib/ types/ routes/
-docs/                    → Architecture.md, API.md, BusinessRules.md, DESIGN_SYSTEM.md, adr/, audits/
-```
+`FileStatus` is a lookup entity, not an enum; distinguish current constants from
+`LegacyFileStatusConstants`. Read `FileStatusService`, `FileReviewService`, and
+`RetirementFileActivationValidator` together for approval/transitions. Eligibility, active state,
+file review, financial entitlement, and payment permission are separate decisions.
 
-Interfaces belong in `PensionMS.Core/Interfaces/` (93 files). A handful leak into Infrastructure —
-follow the majority, don't copy the leak.
+## Dates and time
 
-**There is no `PensionMS.CitizenAPI`** project, despite what `docs/README.md` claims. Some
-`ICitizen*Service` implementations in Infrastructure are dead code (unregistered, no controller).
+For date, age, expiry, or serialization changes, read `docs/adr/0001-date-time-contract.md`
+alongside `PensionMS.Core/Time/YemenTime.cs`, `PensionMS.API/Converters/YemenDateTimeConverter.cs`,
+`PensionMS.Tests/DateTimeContractTests.cs`, and relevant `ui/src/lib/date.ts` helpers.
 
-### DI is manual — no assembly scanning
-`AddControllers()` finds controllers by default, but **every service is registered by hand**
-(~120 explicit `AddScoped` lines in `Program.cs:71-186`). Adding a service means editing
-`Program.cs` or nothing resolves. `AddValidatorsFromAssemblyContaining<Program>()` is the only
-assembly-scanning registration; all validators live in one file,
-`PensionMS.API/Validators/Validators.cs`. Two services are registered by **fully-qualified name**
-(`SmsService`, `OtpService`).
+**Known conflict:** ADR 0001 describes legacy unqualified Yemen wall-time output; the current
+converter and contract tests use UTC instants with `Z`. Identify this mismatch before changing
+the contract; preserve current behavior unless the task explicitly changes it.
 
-Registered hosted services: `ExpiredPledgesJob` (24h), `NotificationOutboxProcessor` (30s poll).
-`PledgeExpiryCheckerService` is a `BackgroundService` that is **never added to DI**.
-
----
-
-## Backend conventions
-
-- Controllers: `[ApiController]`, `[Route("api/...")]`, `[Authorize]`. Get identity from
-  `ControllerExtensions` — `this.GetUserId()`, `this.GetBranchId()`, `this.IsHQ()`
-  (`PensionMS.API/Extensions/ControllerExtensions.cs`).
-- Return `ApiResponse<T>` via `.ToActionResult()`. `ApiResponse<T>` lives in Core;
-  `ToActionResult()` lives in the API project.
-- **Never** return raw `DbContext` results. All DB work goes through services in
-  `PensionMS.Infrastructure/Services/` using `IUnitOfWork` (~180 repositories).
-- **Branch scoping**: filter by branch ID unless `IsHQ()` is true.
-- **SoD**: validate state-changing / financial operations via `ISoDGuard`
-  (`Core/Interfaces/ISoDGuard.cs`, impl `Infrastructure/Services/SoDGuardService.cs`, rules in
-  `Services/SoDRules/SoDRules.cs`). Only 3 services currently consume it:
-  `FileStatusService`, `RetirementFileService`, `SalaryPaymentBatchService`.
-- **Audit**: emit audit logs for status changes, financial calculations and admin actions via
-  `IImmutableAuditService` (SHA-256 hash chain) or the `AuditSaveChangesInterceptor`.
-- **Authorization**: `[Authorize(Policy = "...")]` where **policy name == permission name**, handled
-  by `PermissionHandler`. ~145 `AddPolicy` calls, ~81 constants in
-  `Core/Constants/PermissionConstants.cs`. There is **no default policy** — plain `[Authorize]`
-  means "any authenticated user". Examples: `File.View.Sensitive` (`RetirementFilesController`),
-  `Accounting.Manage`, `HR.Employee.Edit`.
-- **Soft deletion is convention only.** `ISoftDeletable` is enforced by a **global query filter**
-  (`PensionDbContext.cs:286-296`, applied by reflection over the interface), which hides soft-deleted
-  rows from queries. But `Repository.Delete`/`DeleteRange` (`Repositories/Repository.cs:63-67`) calls
-  `_dbSet.Remove(...)` — a real hard DELETE — and there is **no `SaveChanges` override or
-  interceptor** converting deletes to soft deletes. Set `IsDeleted = true` in services; never call
-  `Delete` on a soft-deletable entity.
-
-### File status lifecycle
-There is **no `FileStatus` enum**. `Core/Entities/FileStatus.cs` is a *lookup entity/table*
-(`StatusID`, `StatusName`, `StatusColor`). Values live in
-`Core/Constants/FileStatusConstants.cs` and are mirrored in `ui/src/constants/retirement.ts`:
-
-```
-New=1  Active=2  Suspended=3  Closed=4  Incomplete=5  Pending=6  UnderReview=7  Rejected=8
-```
-
-`Closed(4)` is terminal. The authoritative transition matrix is
-`PensionMS.Infrastructure/Services/FileStatusService.cs:369-380` — read it, don't guess.
-`Core/Entities/CommonEnums.cs` has separate `PendingReviewStatus` / `FileReviewStatus` enums.
-
----
+- Store instants in UTC; keep calendar dates as calendar dates. Use `YemenTime` for Asia/Aden
+  conversion and explicit evaluation dates inside Core rules.
+- Use the shared UI date helpers. Avoid direct `toLocaleDateString("ar-YE")` and ISO slicing
+  for calendar dates; see `ui/eslint.restricted-date-patterns.js`.
+  Determine whether a value is a date, wall time, or instant before adding/converting an offset.
 
 ## Frontend conventions
 
-- Server state → TanStack Query v5. Mutations → `useApiMutation` from
-  `@/hooks/useApiMutation` (handles cache invalidation, toasts, Arabic error extraction).
-- Client state → Zustand in `ui/src/stores/`: `authStore`, `useNotificationStore` (note the `use`
-  prefix), `themeStore`, `sidebarStore`, `navStore`.
-- Forms → `react-hook-form` + `zod` v4 via `zodResolver`.
-- RTL-first layout; use directional Tailwind classes.
-- Radix UI primitives + `class-variance-authority` + `tailwind-merge` in `@/components/ui/`.
+- Keep React/Vite patterns: TanStack Query for server state, Zustand for client state,
+  react-hook-form + Zod for forms. Reuse `ui/src/hooks/useApiMutation.ts`, shared domain components,
+  hooks, schemas, and typed API functions.
+- Use `ui/src/api/axios.ts`. It defaults to JSON; reuse the multipart convention for files
+  and verify file binding. Preserve types instead of masking missing contracts with `any` or double casts.
+- Reuse `@/` imports and Radix/CVA/tailwind-merge primitives in `ui/src/components/ui/`.
+  Keep Arabic content, RTL layout, and directional spacing.
+- Use `ui/src/index.css` color tokens as `hsl(var(--...))` and `ui/src/lib/chartColors.ts`.
+  Avoid hardcoded component colors. Verify light/dark modes, reduced motion, and relevant printing
+  in `ui/src/styles/print.css`.
+- For token remediation, read `docs/design-token-audit.md` and
+  `plan/design-token-remediation-plan.md`; update affected audit entries.
+  Read `ui/eslint.config.js` for current lint rules.
 
-### Date/time contract — ADR 0001 (`docs/adr/0001-date-time-contract.md`)
-This is the single most-violated convention. Read the ADR before touching any date code.
+## Verification and commands
 
-- DB stores **UTC**. API serializes via `YemenDateTimeConverter` (`Converters/YemenDateTimeConverter.cs`),
-  writing **Asia/Aden local time without a `Z` suffix**.
-- Frontend: **never** use `toLocaleDateString("ar-YE")` directly.
-- Use `@/lib/date`: `todayYemen()`, `toDateOnlyYemen()`, `formatYemenDate()`,
-  `formatYemenDateTime()`, `normalizeDateInputValue()`, `ageOnDate()`, `daysBetweenDateOnly()`.
-- **`toISOString().split("T")[0]` and `.slice()` / `.substring()` on a `toISOString()` result are
-  ESLint `error`s** (`no-restricted-syntax`, `ui/eslint.restricted-date-patterns.js`) — they are
-  *wrong*, not just stylistically banned, because they silently shift the calendar day.
-- Only `CreatedAt`/`UpdatedAt`/audit logs/`Date.now()` genuinely stay UTC/ISO.
-- Known trap: `RiskScoringService.cs:31` uses "Arab Standard Time" (`Asia/Baghdad`, +03:00) —
-  same offset as Yemen, so no bug today, but it is not what ADR 0001 mandates.
-- Historical bug class: adding `+03:00` to a string already in local Yemen time converts it to UTC
-  and shifts the date back a day.
+Use checks appropriate to the change; commands do not authorize deployment or existing database writes.
+Backend commands below use explicit project paths from the repository root.
 
-### Design tokens
-Source of truth is `ui/src/index.css` (~165 custom properties). Tokens are **bare HSL channel
-triples** and must be wrapped:
+| Check | Command / location |
+| --- | --- |
+| API build | `dotnet build .\PensionMS.API\PensionMS.API.csproj --nologo` |
+| Unit/structural tests | `dotnet test .\PensionMS.Tests\PensionMS.Tests.csproj --nologo` |
+| SQL/HTTP integration | Read `PensionMS.IntegrationTests/README.md`, set `PENSIONMS_TEST_SQLSERVER` for an isolated test server, then `dotnet test .\PensionMS.IntegrationTests\PensionMS.IntegrationTests.csproj --nologo`; filter to affected tests when appropriate |
+| Frontend, from `ui/` | `npm run lint` → `npm run build` → `npm test` → `npm run preview` |
+| Local API host | `dotnet run --project .\PensionMS.API\PensionMS.API.csproj`; inspect configuration first |
+| Whitespace | `git diff --check` |
 
-```css
---gov-primary-700: 215 85% 22%;          /* in index.css */
-/* usage */  bg-[hsl(var(--gov-primary-700))]  text-[hsl(var(--gov-success))]
-```
+- In PowerShell use `npm.cmd` if `npm.ps1` is blocked. Install from the lockfile with `npm ci`
+  when needed, not on every task.
+- Unit tests need no live database; some inspect EF metadata/query translation.
+  Integration tests use disposable `PensionMS_Test_<GUID>` databases with synthetic data;
+  follow their README, not application database credentials/configuration.
+  Their host does not prove production `Program.cs`, jobs, or seed correctness.
+- UI lint acceptance is no new problems: capture before/after output rather than demand zero
+  existing errors. Build/tests must pass; preview affected screens when possible.
+- Test changed policies directly and affected callers through observable behavior.
+  Use SQL tests to substantiate transaction/concurrency/constraint claims; mocks alone cannot.
+  Update tests with shared contract/constructor changes.
+- Report actual commands/results, baseline failures, and gaps. Do not weaken assertions,
+  hide relevant failures, or fix unrelated code to report success.
+- Documentation-only changes need reference/consistency checks, not application builds/tests.
 
-- Families: `--gov-*` (brand/semantic), `--transition-*`, `--font-*`, chart + KPI color tokens.
-- **Hardcoded hex/`hsl()` literals in components are the bug class being actively remediated**
-  (`docs/design-token-audit.md`, `plan/design-token-remediation-plan.md`). Don't add new ones.
-- Charts: import from `@/lib/chartColors` (`chartColors`, `pieChartColors`) rather than inlining.
-- Theming: light/dark via the token blocks in `index.css`; verify both.
-- Printing is a separate surface — `ui/src/styles/print.css` has its own rules.
-- Honour `prefers-reduced-motion`: transitions must collapse to ~0.01ms.
-- Audit workflow: fix in waves (M0–M6 in `plan/design-token-remediation-plan.md`), each F-ID traced
-  to `file:line` in `docs/design-token-audit.md`. Update `docs/design-token-audit.md` in the same
-  commit.
+## Database, operations, and guidance maintenance
 
-### ESLint (`ui/eslint.config.js`, flat config)
-- `simple-import-sort/imports` and `unused-imports/no-unused-imports` are **warn** (auto-fixable).
-- `react-hooks/purity`, `react-hooks/preserve-manual-memoization`,
-  `react-hooks/set-state-in-effect` are **off** — setState-in-effect is idiomatic here.
-- `@typescript-eslint/no-explicit-any` is an **error** and a major contributor to the lint baseline.
-
----
-
-## Testing gotchas
-
-- Backend tests hand-mock service constructors. **Adding a parameter to an Infrastructure service
-  constructor breaks `PensionMS.Tests` compilation** (CS7036) — update the mocks in the same change.
-- There are **no Clean Architecture boundary tests**. `HrSchemaBoundaryTests` only asserts HR table
-  names lack a `_` prefix and that HR entities don't FK to pension aggregates.
-- UI tests live in both `ui/src/lib/*.test.ts` and `ui/tests/*.test.ts`; `npm test` globs both.
-- A second lint pass exists: `npm run lint:dates` (`eslint.dates.config.js`) applies **only** the
-  date restrictions in `no-restricted-syntax`. `npm run lint` already includes them.
-
----
-
-## Anti-patterns
-
-- Do NOT use Next.js, SWR, RSC, or Server Actions — this is Vite + ASP.NET Core.
-- Do NOT make raw EF queries in controllers.
-- Do NOT bypass `ISoDGuard` for financial/approval paths.
-- Do NOT hard-delete soft-deletable entities (see the soft-deletion caveat above).
-- Do NOT hardcode hex/hsl colors in components — use `index.css` tokens.
-- Do NOT write raw `toISOString().split("T")[0]`, `.slice()`, or `.substring()` for calendar dates.
-- Do NOT create an EF migration expecting the standard flow — hand-written SQL in `scripts/` is the
-  current schema path.
-- Do NOT add a service without registering it in `Program.cs`.
+- Schema changes currently use SQL under `scripts/` and `plan/`, plus model/seed configuration
+  in `PensionMS.Infrastructure/Data/Configurations/`. Do not assume EF migrations supply a baseline
+  or that startup migration updates the schema.
+- Deployment entry points are `deploy-api.ps1` and `deploy-ui.ps1`. Inspect their current parameters
+  and targets when deployment is requested; building/testing is not deployment authorization.
+- Keep this file for durable agreements and non-obvious constraints. Refer to sources for
+  changing facts; avoid counts, line-number inventories, task plans, and repeated policy tables.
+- Architecture/business documents can lag code. Identify discrepancies and distinguish required
+  standards from observed gaps. Update affected guidance within scope; add local instructions
+  only for distinct directory needs, without copying root rules.

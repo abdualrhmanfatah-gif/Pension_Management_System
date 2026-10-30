@@ -62,39 +62,6 @@ public partial class ReportService
         });
     }
 
-    public async Task<byte[]> ExportBeneficiariesReportAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Entitlements.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetBeneficiariesReportAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "رقم الملف", "اسم المتقاعد", "الرقم العسكري", "اسم المستفيد", "الهوية", "القرابة", "نوع الشخص", "الوصي", "رقم هاتف المستفيد", "المبلغ الشهري" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.FileNumber,
-            r.RetireeName,
-            r.MilitaryNumber,
-            r.FullName,
-            r.NationalID,
-            r.Relationship,
-            r.PersonType,
-            r.GuardianName,
-            r.PersonPhone,
-            r.MonthlyAmount,
-        }).ToArray();
-        return _excelExporter.ExportRows("المستفيدين", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي المستفيدين: {data.Count}" });
-    }
-
     // ═══════════════════════════════════════
     // COM-01: Ministry Batches
     // ═══════════════════════════════════════
@@ -150,7 +117,7 @@ public partial class ReportService
             PageSize = 10000
         };
         var result = await GetMinistryBatchesAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
+        var data = result.RequireComplete();
         var headers = new[] { "#", "رقم الدفعة", "الحالة", "العدد الكلي", "العدد المعالج", "عدد العناصر", "تاريخ الدفعة", "تاريخ الإنشاء" };
         var rows = data.Select((r, i) => new object?[]
         {
@@ -208,35 +175,6 @@ public partial class ReportService
         });
     }
 
-    public async Task<byte[]> ExportPendingApprovalsAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Admin.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetPendingApprovalsAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "نوع الطلب", "المشروع", "مقدم الطلب", "المبلغ", "أيام الانتظار", "تاريخ الإنشاء" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.RequestType,
-            r.ProjectName,
-            r.RequestedBy,
-            r.Amount,
-            r.DaysPending,
-            r.CreatedAt.ToString("yyyy-MM-dd"),
-        }).ToArray();
-        return _excelExporter.ExportRows("الموافقات المعلقة", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي الموافقات: {data.Count}" });
-    }
-
     // ═══════════════════════════════════════
     // ADM-01: Audit Log
     // ═══════════════════════════════════════
@@ -284,37 +222,6 @@ public partial class ReportService
         });
     }
 
-    public async Task<byte[]> ExportAuditLogAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Admin.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetAuditLogAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "المستخدم", "الإجراء", "الجدول", "رقم السجل", "القيم القديمة", "القيم الجديدة", "الوقت", "IP" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.UserName,
-            r.Action,
-            r.TableName,
-            r.RecordID,
-            r.OldValues,
-            r.NewValues,
-            r.Timestamp.ToString("yyyy-MM-dd HH:mm:ss"),
-            r.IPAddress,
-        }).ToArray();
-        return _excelExporter.ExportRows("سجل النظام", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي السجلات: {data.Count}" });
-    }
-
     // ═══════════════════════════════════════
     // ADM-02: User Activity
     // ═══════════════════════════════════════
@@ -352,36 +259,6 @@ public partial class ReportService
             Page = filter.PageNumber,
             PageSize = filter.PageSize
         });
-    }
-
-    public async Task<byte[]> ExportUserActivityAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Report.Admin.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 10000
-        };
-        var result = await GetUserActivityAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "اسم المستخدم", "الاسم", "الدور", "الفرع", "عدد الدخول", "آخر دخول", "نشط" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.UserName,
-            r.FullName,
-            r.RoleName,
-            r.BranchName,
-            r.LoginCount,
-            r.LastLogin?.ToString("yyyy-MM-dd HH:mm:ss") ?? "",
-            r.IsActive ? "نعم" : "لا",
-        }).ToArray();
-        return _excelExporter.ExportRows("نشاط المستخدمين", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي المستخدمين: {data.Count}" });
     }
 
     // ═══════════════════════════════════════
@@ -431,39 +308,6 @@ public partial class ReportService
             Page = filter.PageNumber,
             PageSize = filter.PageSize
         });
-    }
-
-    public async Task<byte[]> ExportKashfReportAsync(ReportFilter filter, string format = "excel")
-    {
-        var queries = await _access.ForPermissionAsync("Ministry.View");
-        var pagedFilter = new ReportFilter
-        {
-            FromDate = filter.FromDate,
-            ToDate = filter.ToDate,
-            Search = filter.Search,
-            BranchId = filter.BranchId,
-            PageNumber = 1,
-            PageSize = 100000
-        };
-        var result = await GetKashfReportAsync(pagedFilter);
-        var data = ReportExportGuard.RequireComplete(result);
-        var headers = new[] { "#", "الرقم العسكري", "الاسم", "الرتبة", "الوحدة", "الفئة", "الجنس", "المعاش", "تاريخ الإحالة", "الحالة", "رقم الملف" };
-        var rows = data.Select((r, i) => new object?[]
-        {
-            i + 1,
-            r.MilitaryNumber,
-            r.FullName,
-            r.RankName,
-            r.UnitName,
-            r.CategoryName,
-            r.Gender,
-            r.Salary ?? 0,
-            r.RetirementDate?.ToString("yyyy/MM/dd") ?? "",
-            r.Status,
-            r.FileNumber,
-        }).ToArray();
-        return _excelExporter.ExportRows("كشوفات الإحالة", headers, rows,
-            new ExcelReportOptions { FooterText = $"إجمالي السجلات: {data.Count}" });
     }
 
     public async Task<ApiResponse<object>> GetKashfReportSummaryAsync(ReportFilter filter)

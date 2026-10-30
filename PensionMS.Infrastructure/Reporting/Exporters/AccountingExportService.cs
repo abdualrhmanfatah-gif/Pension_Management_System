@@ -1,19 +1,19 @@
 using PensionMS.Core.Interfaces.Reporting;
-using Color = System.Drawing.Color;
-using System.Drawing;
 using PensionMS.Core.DTOs.Accounting;
 using PensionMS.Core.DTOs.Common;
-using QuestPDF.Fluent;
-using QuestPDF.Helpers;
-using QuestPDF.Infrastructure;
 
 namespace PensionMS.Infrastructure.Reporting.Exporters;
 
 public partial class AccountingExportService : IAccountingExportService
 {
     private readonly ExcelReportExporter _excelExporter;
+    private readonly PdfReportExporter _pdfExporter;
 
-    public AccountingExportService(ExcelReportExporter excelExporter) => _excelExporter = excelExporter;
+    public AccountingExportService(ExcelReportExporter excelExporter, PdfReportExporter pdfExporter)
+    {
+        _excelExporter = excelExporter;
+        _pdfExporter = pdfExporter;
+    }
 
     public Task<byte[]> ExportTrialBalanceAsync(ApiResponse<List<TrialBalanceItemDto>> data, string format, int? accountLevel = null)
     {
@@ -165,72 +165,6 @@ public partial class AccountingExportService : IAccountingExportService
     // ═══════════════════════════════════════
     // PDF Generator
     // ═══════════════════════════════════════
-    private static byte[] GeneratePdf(string title, string[] headers, object[][] data)
-    {
-        QuestPDF.Settings.DocumentLayoutExceptionThreshold = 1000;
-
-        return Document.Create(container =>
-        {
-            container.Page(page =>
-            {
-                page.Size(PageSizes.A4.Landscape());
-                page.Margin(1, Unit.Centimetre);
-                page.PageColor(Colors.White);
-                page.ContentFromRightToLeft();
-                page.DefaultTextStyle(x => x.FontSize(9).FontFamily("Arial"));
-
-                page.Header().Row(row =>
-                {
-                    row.RelativeItem().Column(col =>
-                    {
-                        col.Item().Text("الجمهورية اليمنية").Bold();
-                        col.Item().Text("صندوق التقاعد الأمني");
-                    });
-                    row.ConstantItem(150).AlignCenter().Text(title).FontSize(14).Bold();
-                    row.RelativeItem().AlignLeft().Text($"التاريخ: {PensionMS.Core.Time.YemenTime.Now:yyyy/MM/dd}");
-                });
-
-                page.Content().PaddingVertical(10).Table(table =>
-                {
-                    table.ColumnsDefinition(cols =>
-                    {
-                        for (int i = 0; i < headers.Length; i++)
-                            cols.RelativeColumn(1);
-                    });
-
-                    table.Header(h =>
-                    {
-                        foreach (var header in headers)
-                            h.Cell().Element(c => c.DefaultTextStyle(x => x.Bold()).PaddingVertical(5).BorderBottom(1).AlignCenter())
-                                .Text(header);
-                    });
-
-                    foreach (var row in data)
-                    {
-                        foreach (var cell in row)
-                        {
-                            var text = cell switch
-                            {
-                                decimal d => d.ToString("N2"),
-                                double dbl => dbl.ToString("N2"),
-                                DateTime dt => dt.ToString("yyyy/MM/dd"),
-                                null => "",
-                                _ => cell.ToString()
-                            };
-                            table.Cell().Element(c => c.BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5).AlignCenter())
-                                .Text(text);
-                        }
-                    }
-                });
-
-                page.Footer().AlignCenter().Text(x =>
-                {
-                    x.Span("صفحة ");
-                    x.CurrentPageNumber();
-                    x.Span(" من ");
-                    x.TotalPages();
-                });
-            });
-        }).GeneratePdf();
-    }
+    private byte[] GeneratePdf(string title, string[] headers, object[][] data) =>
+        _pdfExporter.ExportRows(title, headers, data);
 }

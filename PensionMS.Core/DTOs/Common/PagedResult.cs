@@ -19,3 +19,19 @@ public class PagedResult<T>
     /// <summary>يوجد بيانات بعد هذا المؤشر</summary>
     public bool HasMore { get; set; }
 }
+
+/// <summary>
+/// حارس قابلية استكمال التصدير — يمنع تصدير ناقص بصمت عند عبور حدود البيانات المقطعة
+/// </summary>
+public static class PagedResultGuards
+{
+    public static List<T> RequireComplete<T>(this ApiResponse<PagedResult<T>> result, string? context = null)
+    {
+        if (!result.IsSuccess || result.Data == null)
+            throw new InvalidOperationException(result.Message ?? $"تعذر إعداد بيانات التصدير{(string.IsNullOrEmpty(context) ? "" : $": {context}")}");
+        if (result.Data.TotalCount > result.Data.Items.Count)
+            throw new InvalidOperationException(
+                $"عدد النتائج ({result.Data.TotalCount:N0}) يتجاوز حد التصدير ({result.Data.PageSize:N0}). ضيّق نطاق البحث أو التاريخ ثم أعد التصدير.{(string.IsNullOrEmpty(context) ? "" : $" ({context})")}");
+        return result.Data.Items;
+    }
+}

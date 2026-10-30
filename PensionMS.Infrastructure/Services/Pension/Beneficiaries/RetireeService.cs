@@ -8,6 +8,7 @@ using PensionMS.Core.DTOs.Retirees;
 using PensionMS.Core.Entities;
 using PensionMS.Core.Interfaces;
 using PensionMS.Core.Helpers;
+using PensionMS.Core.Rules.RetirementFiles;
 
 namespace PensionMS.Infrastructure.Services.Pension.Beneficiaries;
 
@@ -130,26 +131,31 @@ public class RetireeService : IRetireeService
             .Take(pageSize)
             .ToListAsync();
 
-        var items = retirees.Select(r => new RetireeListDto
+        var items = retirees.Select(r =>
         {
-            RetireeID = r.RetireeID,
-            NationalID = r.NationalID,
-            FullName = r.FullName,
-            MilitaryNumber = r.MilitaryNumber,
-            LinkNumber = r.LinkNumber,
-            Phone = r.Phone,
-            City = r.City,
-            Governorate = r.Governorate,
-            RankName = r.ApprovalItem?.Rank?.RankName,
-            RankId = r.ApprovalItem?.RankID,
-            CategoryId = r.ApprovalItem?.CategoryID,
-            Gender = r.Gender,
-            UnitName = r.ApprovalItem?.UnitName,
-            SocialStatusName = r.SocialStatus?.StatusName,
-            HealthStatusName = r.HealthStatus?.HealthStatusName,
-            IsAlive = r.IsAlive,
-            FileCount = r.RetirementFiles.Count,
-            FileID = r.RetirementFiles.OrderByDescending(f => f.CreatedAt).Select(f => f.FileID).Cast<int?>().FirstOrDefault()
+            var visibleFiles = r.RetirementFiles.Where(f => !f.IsDeleted &&
+                (queries.Scope.AllBranches || queries.Scope.BranchIds.Contains(f.PensionBranchID))).ToList();
+            return new RetireeListDto
+            {
+                RetireeID = r.RetireeID,
+                NationalID = r.NationalID,
+                FullName = r.FullName,
+                MilitaryNumber = r.MilitaryNumber,
+                LinkNumber = r.LinkNumber,
+                Phone = r.Phone,
+                City = r.City,
+                Governorate = r.Governorate,
+                RankName = r.ApprovalItem?.Rank?.RankName,
+                RankId = r.ApprovalItem?.RankID,
+                CategoryId = r.ApprovalItem?.CategoryID,
+                Gender = r.Gender,
+                UnitName = r.ApprovalItem?.UnitName,
+                SocialStatusName = r.SocialStatus?.StatusName,
+                HealthStatusName = r.HealthStatus?.HealthStatusName,
+                IsAlive = r.IsAlive,
+                FileCount = visibleFiles.Count,
+                FileID = visibleFiles.OrderByDescending(f => f.CreatedAt).Select(f => (int?)f.FileID).FirstOrDefault()
+            };
         }).ToList();
 
         return ApiResponse<PagedResult<RetireeListDto>>.Success(new PagedResult<RetireeListDto>
@@ -220,9 +226,12 @@ public class RetireeService : IRetireeService
             return ApiResponse<bool>.Fail("المتقاعد غير موجود");
 
         // حالة الحياة الأولية لا يجوز إعادة ضبطها باستعمال فتح ملف جديد أو بعد حذف ملف قديم.
-        if (initialIsAlive.HasValue && await _unitOfWork.RetirementFiles.Query()
-            .IgnoreQueryFilters().AnyAsync(f => f.RetireeID == id))
-            return ApiResponse<bool>.Fail("يوجد ملف سابق للمتقاعد؛ تغيير حالة الحياة يتطلب الإجراء المخصص");
+        if (initialIsAlive.HasValue)
+        {
+            var duplicate = RetirementFileOpeningRules.EvaluatePreviousFile(await _unitOfWork.RetirementFiles.Query()
+                .IgnoreQueryFilters().AnyAsync(f => f.RetireeID == id));
+            if (!duplicate.IsAllowed) return ApiResponse<bool>.Fail(duplicate.Message!);
+        }
 
         var healthStatusId = dto.HealthStatusID ?? (initialIsAlive.HasValue ? retiree.HealthStatusID : null);
         if (healthStatusId.HasValue &&
@@ -240,6 +249,11 @@ public class RetireeService : IRetireeService
                 using var stream = dto.PersonalPhoto.OpenReadStream();
                 photoPath = await _fileStorage.SaveFileAsync(stream, dto.PersonalPhoto.FileName, "photos",
                     new[] { ".jpg", ".jpeg", ".png" }, 2L * 1024 * 1024);
+                if (initialIsAlive.HasValue)
+                {
+                    var stagedPhotoPath = photoPath;
+                    _unitOfWork.OnRollback(() => _fileStorage.DeleteFileAsync(stagedPhotoPath));
+                }
             }
             catch (Exception ex)
             {

@@ -54,60 +54,76 @@ public class RetirementFileReportService : IRetirementFileReportService
     public async Task<ApiResponse<RetirementFileReportSummaryDto>> GetRetirementFileReportSummaryAsync(RetirementFileReportFilter filter)
     {
         var queries = await _access.ForPermissionAsync("File.View");
-        var query = BuildReportQuery(queries, filter.BranchId);
-        query = ApplyReportFilters(query, filter);
+        var query = ApplyReportFilters(BuildReportQuery(queries, filter.BranchId), filter);
 
-        var allItems = await query.ToListAsync();
+        var totalCount = await query.CountAsync();
+
+        var statusCounts = await query
+            .Where(x => x.StatusName != null && x.StatusName != "")
+            .GroupBy(x => x.StatusName)
+            .Select(g => new NameValuePairDto { Name = g.Key!, Count = g.Count() })
+            .ToListAsync();
+
+        var reviewStatusCounts = await query
+            .Where(x => x.ReviewStatusName != null)
+            .GroupBy(x => x.ReviewStatusName)
+            .Select(g => new NameValuePairDto { Name = g.Key!, Count = g.Count() })
+            .ToListAsync();
+
+        var aliveCounts = await query
+            .GroupBy(x => x.IsAlive)
+            .Select(g => new { Alive = g.Key, Count = g.Count() })
+            .ToListAsync();
+
+        var byRank = await query
+            .Where(x => x.RankName != null && x.RankName != "")
+            .GroupBy(x => x.RankName)
+            .Select(g => new NameValuePairDto { Name = g.Key!, Count = g.Count() })
+            .ToListAsync();
+
+        var byBranch = await query
+            .Where(x => x.BranchName != null && x.BranchName != "")
+            .GroupBy(x => x.BranchName)
+            .Select(g => new NameValuePairDto { Name = g.Key!, Count = g.Count() })
+            .ToListAsync();
+
+        var byGovernorate = await query
+            .Where(x => x.GovernorateName != null && x.GovernorateName != "")
+            .GroupBy(x => x.GovernorateName)
+            .Select(g => new NameValuePairDto { Name = g.Key!, Count = g.Count() })
+            .ToListAsync();
+
+        var byGender = await query
+            .GroupBy(x => x.Gender)
+            .Select(g => new { Name = g.Key == 2 ? "أنثى" : "ذكر", Count = g.Count() })
+            .ToListAsync();
+
+        var bySocialStatus = await query
+            .Where(x => x.SocialStatusName != null && x.SocialStatusName != "")
+            .GroupBy(x => x.SocialStatusName)
+            .Select(g => new NameValuePairDto { Name = g.Key!, Count = g.Count() })
+            .ToListAsync();
+
+        int CountContaining(List<NameValuePairDto> counts, string token) =>
+            counts.Where(c => c.Name.Contains(token)).Sum(c => c.Count);
 
         var summary = new RetirementFileReportSummaryDto
         {
-            TotalCount = allItems.Count,
-            ActiveCount = allItems.Count(x => x.StatusName != null && x.StatusName.Contains("نشط")),
-            SuspendedCount = allItems.Count(x => x.StatusName != null && x.StatusName.Contains("معلق")),
-            ClosedCount = allItems.Count(x => x.StatusName != null && x.StatusName.Contains("مغلق")),
-            IncompleteCount = allItems.Count(x => x.StatusName != null && x.StatusName.Contains("ناقص")),
-            PendingReviewCount = allItems.Count(x => x.ReviewStatusName != null && x.ReviewStatusName.Contains("بانتظار")),
-            AliveCount = allItems.Count(x => x.IsAlive),
-            DeceasedCount = allItems.Count(x => !x.IsAlive),
-            ByRank = allItems
-                .Where(x => !string.IsNullOrEmpty(x.RankName))
-                .GroupBy(x => x.RankName)
-                .Select(g => new NameValuePairDto { Name = g.Key!, Count = g.Count() })
-                .OrderByDescending(x => x.Count)
-                .ToList(),
-            ByBranch = allItems
-                .Where(x => !string.IsNullOrEmpty(x.BranchName))
-                .GroupBy(x => x.BranchName)
-                .Select(g => new NameValuePairDto { Name = g.Key!, Count = g.Count() })
-                .OrderByDescending(x => x.Count)
-                .ToList(),
-            ByGovernorate = allItems
-                .Where(x => !string.IsNullOrEmpty(x.GovernorateName))
-                .GroupBy(x => x.GovernorateName)
-                .Select(g => new NameValuePairDto { Name = g.Key!, Count = g.Count() })
-                .OrderByDescending(x => x.Count)
-                .ToList(),
-            ByGender = allItems
-                .GroupBy(x => x.Gender)
-                .Select(g => new NameValuePairDto
-                {
-                    Name = g.Key == 2 ? "أنثى" : "ذكر",
-                    Count = g.Count()
-                })
-                .OrderByDescending(x => x.Count)
-                .ToList(),
-            ByStatus = allItems
-                .Where(x => !string.IsNullOrEmpty(x.StatusName))
-                .GroupBy(x => x.StatusName)
-                .Select(g => new NameValuePairDto { Name = g.Key!, Count = g.Count() })
-                .OrderByDescending(x => x.Count)
-                .ToList(),
-            BySocialStatus = allItems
-                .Where(x => !string.IsNullOrEmpty(x.SocialStatusName))
-                .GroupBy(x => x.SocialStatusName)
-                .Select(g => new NameValuePairDto { Name = g.Key!, Count = g.Count() })
-                .OrderByDescending(x => x.Count)
-                .ToList()
+            TotalCount = totalCount,
+            ActiveCount = CountContaining(statusCounts, "نشط"),
+            SuspendedCount = CountContaining(statusCounts, "معلق"),
+            ClosedCount = CountContaining(statusCounts, "مغلق"),
+            IncompleteCount = CountContaining(statusCounts, "ناقص"),
+            PendingReviewCount = CountContaining(reviewStatusCounts, "بانتظار"),
+            AliveCount = aliveCounts.FirstOrDefault(c => c.Alive)?.Count ?? 0,
+            DeceasedCount = aliveCounts.FirstOrDefault(c => !c.Alive)?.Count ?? 0,
+            ByRank = byRank.OrderByDescending(x => x.Count).ToList(),
+            ByBranch = byBranch.OrderByDescending(x => x.Count).ToList(),
+            ByGovernorate = byGovernorate.OrderByDescending(x => x.Count).ToList(),
+            ByGender = byGender.Select(x => new NameValuePairDto { Name = x.Name, Count = x.Count })
+                .OrderByDescending(x => x.Count).ToList(),
+            ByStatus = statusCounts.OrderByDescending(x => x.Count).ToList(),
+            BySocialStatus = bySocialStatus.OrderByDescending(x => x.Count).ToList(),
         };
 
         return ApiResponse<RetirementFileReportSummaryDto>.Success(summary);

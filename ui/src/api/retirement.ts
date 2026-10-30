@@ -1,3 +1,5 @@
+import type { ReactivateEntitledPersonRequest, RecordEntitledPersonDeathRequest, StopEntitledPersonRequest } from "@/lib/entitledPersonRequests";
+import { entitledPersonMultipart, reactivateEntitledPersonForm, recordEntitledPersonDeathForm, stopEntitledPersonForm } from "@/lib/entitledPersonRequests";
 import type { ApiResponse, PagedResult } from "@/types/api";
 import type {
     AgentSearchResult,
@@ -258,21 +260,25 @@ export const retirementApi = {
             headers: { "Content-Type": "multipart/form-data" }
         }).then(r => r.data),
 
-    createEntitledPerson: (fileId: number, formData: FormData) =>
-        api.post<ApiResponse<EntitledPersonSummary>>(
+    createEntitledPerson: (fileId: number, formData: FormData) => {
+        formData.set("fileID", String(fileId));
+        return api.post<ApiResponse<EntitledPersonSummary>>(
             `/entitled-persons`,
             formData,
             {
                 headers: { "Content-Type": "multipart/form-data" },
-                params: { fileId },
             }
-        ).then(r => r.data),
+        ).then(r => r.data);
+    },
 
-    stopEntitledPerson: (id: number, data: { stopCode: string; stopDate: string }) =>
-        api.put<ApiResponse<boolean>>(`/entitled-persons/${id}/stop`, data).then(r => r.data),
+    stopEntitledPerson: (id: number, data: StopEntitledPersonRequest) =>
+        api.put<ApiResponse<boolean>>(`/entitled-persons/${id}/stop`, stopEntitledPersonForm(data), entitledPersonMultipart).then(r => r.data),
 
-    reactivateEntitledPerson: (id: number, data: { reactivationCode: string }) =>
-        api.put<ApiResponse<boolean>>(`/entitled-persons/${id}/reactivate`, data).then(r => r.data),
+    reactivateEntitledPerson: (id: number, data: ReactivateEntitledPersonRequest) =>
+        api.put<ApiResponse<boolean>>(`/entitled-persons/${id}/reactivate`, reactivateEntitledPersonForm(data), entitledPersonMultipart).then(r => r.data),
+
+    recordEntitledPersonDeath: (id: number, data: RecordEntitledPersonDeathRequest) =>
+        api.post<ApiResponse<boolean>>(`/entitled-persons/${id}/death`, recordEntitledPersonDeathForm(data), entitledPersonMultipart).then(r => r.data),
 
     deleteEntitledPerson: (id: number) =>
         api.delete<ApiResponse<boolean>>(`/entitled-persons/${id}`).then(r => r.data),

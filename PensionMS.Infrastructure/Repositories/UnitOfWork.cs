@@ -20,6 +20,7 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly PensionDbContext _context;
     private IDbContextTransaction? _transaction;
+    private readonly List<Func<Task>> _rollbackCompensations = [];
     private bool _disposed;
 
     public UnitOfWork(PensionDbContext context)
@@ -446,14 +447,24 @@ public class UnitOfWork : IUnitOfWork
 
     public bool HasActiveTransaction => _context.Database.CurrentTransaction != null;
 
-    public async Task LockFileReviewAsync(int fileId)
-    {
-        if (!HasActiveTransaction)
-            throw new InvalidOperationException("يتطلب قفل المراجعة معاملة نشطة");
+    public Task LockFileReviewAsync(int fileId) => LockFileReviewAsync(_context, fileId);
 
-        // A database row lock coordinates all API instances, including review decisions.
-        await _context.Database.ExecuteSqlInterpolatedAsync(
+    internal static void LockFileReview(PensionDbContext context, int fileId)
+    {
+        if (context.Database.CurrentTransaction == null)
+            throw new InvalidOperationException("يتطلب قفل المراجعة معاملة نشطة");
+        context.Database.ExecuteSqlInterpolated(
             $"SELECT [FileID] FROM [RetirementFiles] WITH (UPDLOCK, HOLDLOCK) WHERE [FileID] = {fileId}");
+    }
+
+    internal static async Task LockFileReviewAsync(PensionDbContext context, int fileId,
+        CancellationToken cancellationToken = default)
+    {
+        if (context.Database.CurrentTransaction == null)
+            throw new InvalidOperationException("يتطلب قفل المراجعة معاملة نشطة");
+        // A database row lock coordinates all API instances, including review decisions.
+        await context.Database.ExecuteSqlInterpolatedAsync(
+            $"SELECT [FileID] FROM [RetirementFiles] WITH (UPDLOCK, HOLDLOCK) WHERE [FileID] = {fileId}", cancellationToken);
     }
 
     public async Task LockSalaryBatchAsync(int batchId)
@@ -490,6 +501,12 @@ public class UnitOfWork : IUnitOfWork
     public async Task BeginTransactionAsync()
         => _transaction = await _context.Database.BeginTransactionAsync();
 
+    public void OnRollback(Func<Task> compensation)
+    {
+        if (!HasActiveTransaction) throw new InvalidOperationException("تسجيل التعويض يستلزم معاملة نشطة");
+        _rollbackCompensations.Add(compensation);
+    }
+
     public async Task CommitAsync()
     {
         if (_transaction != null)
@@ -497,6 +514,7 @@ public class UnitOfWork : IUnitOfWork
             await _transaction.CommitAsync();
             await _transaction.DisposeAsync();
             _transaction = null;
+            _rollbackCompensations.Clear();
         }
     }
 
@@ -507,6 +525,9 @@ public class UnitOfWork : IUnitOfWork
             await _transaction.RollbackAsync();
             await _transaction.DisposeAsync();
             _transaction = null;
+            var compensations = _rollbackCompensations.ToArray();
+            _rollbackCompensations.Clear();
+            foreach (var compensation in compensations.Reverse()) await compensation();
         }
     }
 

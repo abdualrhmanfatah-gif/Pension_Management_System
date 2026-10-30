@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using PensionMS.Core.Constants;
+using PensionMS.Core.Rules.Payroll;
 using PensionMS.Core.DTOs.Common;
+using PensionMS.Core.DTOs.DocumentPledges;
 using PensionMS.Core.DTOs.Notifications;
 using PensionMS.Core.DTOs.Suspensions;
 using PensionMS.Core.Entities;
@@ -9,19 +11,23 @@ using PensionMS.Core.Interfaces;
 namespace PensionMS.Infrastructure.Services.Pension.Entitlements;
 
 /// <summary>
-/// خدمة إدارة إيقاف المعاش والتعهدات والإعفاءات
+/// منسق إيقاف المعاش: إنشاء الإيقاف وتفويض تعهد النواقص إلى مالك التعهدات،
+/// وإنهاء الإيقاف (إعادة التفعيل)، وقوائم الإيقافات وفحص منع الصرف.
 /// </summary>
 public class PensionSuspensionService : IPensionSuspensionService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IAccessiblePensionRepository _access;
     private readonly INotificationService _notificationService;
+    private readonly IDocumentPledgeService _documentPledgeService;
 
-    public PensionSuspensionService(IUnitOfWork unitOfWork, INotificationService notificationService, IAccessiblePensionRepository access)
+    public PensionSuspensionService(IUnitOfWork unitOfWork, INotificationService notificationService, IAccessiblePensionRepository access,
+        IDocumentPledgeService documentPledgeService)
     {
         _access = access;
         _unitOfWork = unitOfWork;
         _notificationService = notificationService;
+        _documentPledgeService = documentPledgeService;
     }
 
     // ════════════════════════════════════════
@@ -62,7 +68,37 @@ public class PensionSuspensionService : IPensionSuspensionService
         if (dto.SuspensionSource == RetirementReviewConstants.SuspensionSource)
             return ApiResponse<SuspensionDto>.Fail("إيقاف المراجعة يديره مسار المراجعة تلقائياً");
 
-        // 1. Create Suspension
+        // 1. إنشاء التعهد عبر مالك التعهدات قبل أي كتابة؛ رفض المالك يلغي الطلب كاملًا
+        PledgeSummaryDto? pledgeSummary = null;
+        if (dto.MissingDocumentIDs?.Any() == true)
+        {
+            var missingIds = dto.MissingDocumentIDs!;
+            var pledgeResult = await _documentPledgeService.CreateAsync(new CreateDocumentPledgeDto
+            {
+                FileID = dto.FileID,
+                MissingDocumentIDs = missingIds,
+                Deadline = DateTime.UtcNow.AddDays(dto.DeadlineDays ?? 30),
+                PledgedByType = dto.PledgedByType ?? "متقاعد",
+                PledgedByName = dto.PledgedByName
+            }, userId);
+
+            if (!pledgeResult.IsSuccess || pledgeResult.Data == null)
+                return ApiResponse<SuspensionDto>.Fail(pledgeResult.Message ?? "فشل إنشاء التعهد");
+
+            pledgeSummary = new PledgeSummaryDto
+            {
+                PledgeID = pledgeResult.Data.PledgeID,
+                PledgeDate = pledgeResult.Data.PledgeDate,
+                Deadline = pledgeResult.Data.Deadline,
+                Status = pledgeResult.Data.Status,
+                FulfilledAt = pledgeResult.Data.FulfilledAt,
+                PledgedByType = pledgeResult.Data.PledgedByType ?? string.Empty,
+                PledgedByName = pledgeResult.Data.PledgedByName,
+                MissingDocumentCount = missingIds.Count
+            };
+        }
+
+        // 2. Create Suspension
         var suspension = new PensionSuspension
         {
             FileID = dto.FileID,
@@ -76,51 +112,19 @@ public class PensionSuspensionService : IPensionSuspensionService
         await _unitOfWork.PensionSuspensions.AddAsync(suspension);
         await _unitOfWork.SaveChangesAsync();
 
-        PledgeSummaryDto? pledgeSummary = null;
-
-        // 2. Auto-create Pledge if missing docs specified
-        if (dto.MissingDocumentIDs?.Any() == true)
+        // 3. ربط التعهد بالإيقاف — دور المنسق فقط
+        if (pledgeSummary != null)
         {
-            var pledge = new DocumentPledge
-            {
-                FileID = dto.FileID,
-                SuspensionID = suspension.SuspensionID,
-                PledgeDate = DateTime.UtcNow,
-                Deadline = DateTime.UtcNow.AddDays(dto.DeadlineDays ?? 30),
-                Status = PledgeStatusConstants.Pending,
-                PledgedByType = dto.PledgedByType ?? "متقاعد",
-                PledgedByName = dto.PledgedByName,
-                CreatedByUserID = userId,
-                CreatedAt = DateTime.UtcNow
-            };
-            await _unitOfWork.DocumentPledges.AddAsync(pledge);
-            await _unitOfWork.SaveChangesAsync();
+            var pledge = await _unitOfWork.DocumentPledges.GetByIdAsync(pledgeSummary.PledgeID);
+            if (pledge == null)
+                return ApiResponse<SuspensionDto>.Fail("تعذر ربط التعهد بالإيقاف");
 
-            // Link missing docs to pledge
-            foreach (var mdId in dto.MissingDocumentIDs)
-            {
-                var md = await queries.Query(_unitOfWork.MissingDocuments).FirstOrDefaultAsync(e => e.MissingDocumentID == mdId);
-                if (md != null)
-                {
-                    md.PledgeID = pledge.PledgeID;
-                    md.Status = MissingDocumentStatusConstants.PendingPledge;
-                    _unitOfWork.MissingDocuments.Update(md);
-                }
-            }
+            pledge.SuspensionID = suspension.SuspensionID;
+            _unitOfWork.DocumentPledges.Update(pledge);
             await _unitOfWork.SaveChangesAsync();
-
-            pledgeSummary = new PledgeSummaryDto
-            {
-                PledgeID = pledge.PledgeID,
-                PledgeDate = pledge.PledgeDate,
-                Deadline = pledge.Deadline,
-                Status = pledge.Status,
-                PledgedByType = pledge.PledgedByType,
-                PledgedByName = pledge.PledgedByName,
-                MissingDocumentCount = dto.MissingDocumentIDs.Count
-            };
         }
 
+        // 4. الإشعار
         await SendFileNotificationAsync(
             dto.FileID,
             userId,
@@ -220,11 +224,14 @@ public class PensionSuspensionService : IPensionSuspensionService
                     Status = p.Status,
                     FulfilledAt = p.FulfilledAt,
                     PledgedByType = p.PledgedByType,
-                    PledgedByName = p.PledgedByName,
-                    MissingDocumentCount = p.MissingDocuments.Count
+                    PledgedByName = p.PledgedByName
                 }).FirstOrDefault()
             })
             .ToListAsync();
+
+        var fillResult = await FillPledgeMissingDocumentCountsAsync(suspensions);
+        if (!fillResult.IsSuccess)
+            return ApiResponse<List<SuspensionDto>>.Fail(fillResult.Message ?? "تعذر جلب أعداد النواقص المرتبطة بالتعهدات");
 
         return ApiResponse<List<SuspensionDto>>.Success(suspensions);
     }
@@ -296,11 +303,14 @@ public class PensionSuspensionService : IPensionSuspensionService
                     Status = p.Status,
                     FulfilledAt = p.FulfilledAt,
                     PledgedByType = p.PledgedByType,
-                    PledgedByName = p.PledgedByName,
-                    MissingDocumentCount = p.MissingDocuments.Count
+                    PledgedByName = p.PledgedByName
                 }).FirstOrDefault()
             })
             .ToListAsync();
+
+        var fillResult = await FillPledgeMissingDocumentCountsAsync(suspensions);
+        if (!fillResult.IsSuccess)
+            return ApiResponse<PagedResult<SuspensionDto>>.Fail(fillResult.Message ?? "تعذر جلب أعداد النواقص المرتبطة بالتعهدات");
 
         var result = new PagedResult<SuspensionDto>
         {
@@ -313,90 +323,28 @@ public class PensionSuspensionService : IPensionSuspensionService
         return ApiResponse<PagedResult<SuspensionDto>>.Success(result);
     }
 
-    // ════════════════════════════════════════
-    // EXEMPTIONS (Item 12)
-    // ════════════════════════════════════════
-
-    public async Task<ApiResponse<ExemptionDto>> CreateExemptionAsync(CreateExemptionDto dto, int userId)
+    private async Task<ApiResponse<bool>> FillPledgeMissingDocumentCountsAsync(IEnumerable<SuspensionDto> suspensions)
     {
-        var queries = await _access.ForCurrentOperationAsync();
-        var file = await queries.Query(_unitOfWork.RetirementFiles).FirstOrDefaultAsync(e => e.FileID == dto.FileID);
-        if (file == null)
-            return ApiResponse<ExemptionDto>.Fail("الملف غير موجود");
+        var pledgeIds = suspensions
+            .Where(s => s.LinkedPledge != null)
+            .Select(s => s.LinkedPledge!.PledgeID)
+            .Distinct()
+            .ToList();
 
-        if (!dto.MissingDocumentIDs.Any())
-            return ApiResponse<ExemptionDto>.Fail("يجب تحديد وثيقة واحدة على الأقل للإعفاء");
+        if (pledgeIds.Count == 0)
+            return ApiResponse<bool>.Success(true);
 
-        // Create exemption
-        var exemption = new DocumentExemption
+        var countsResult = await _documentPledgeService.GetMissingDocumentCountsAsync(pledgeIds);
+        if (!countsResult.IsSuccess || countsResult.Data == null)
+            return ApiResponse<bool>.Fail(countsResult.Message ?? "تعذر جلب أعداد النواقص المرتبطة بالتعهدات");
+
+        foreach (var suspension in suspensions)
         {
-            FileID = dto.FileID,
-            DirectiveSource = dto.DirectiveSource,
-            ExemptionDate = DateTime.UtcNow,
-            Notes = dto.Notes,
-            CreatedByUserID = userId,
-            CreatedAt = DateTime.UtcNow
-        };
-        await _unitOfWork.DocumentExemptions.AddAsync(exemption);
-        await _unitOfWork.SaveChangesAsync();
-
-        // Link missing documents to this exemption
-        foreach (var mdId in dto.MissingDocumentIDs)
-        {
-            var md = await queries.Query(_unitOfWork.MissingDocuments).FirstOrDefaultAsync(e => e.MissingDocumentID == mdId);
-            if (md != null)
-            {
-                md.ExemptionID = exemption.ExemptionID;
-                md.Status = MissingDocumentStatusConstants.ExemptedAr;
-                _unitOfWork.MissingDocuments.Update(md);
-            }
+            if (suspension.LinkedPledge != null)
+                suspension.LinkedPledge.MissingDocumentCount = countsResult.Data.GetValueOrDefault(suspension.LinkedPledge.PledgeID);
         }
-        await _unitOfWork.SaveChangesAsync();
 
-        await SendFileNotificationAsync(
-            dto.FileID,
-            userId,
-            "إعفاء وثائق",
-            $"تم إعفاء {dto.MissingDocumentIDs.Count} وثيقة/وثائق للملف رقم ({file.FileNumber}).",
-            NotificationConstants.Types.Info,
-            NotificationConstants.Categories.Workflow,
-            NotificationConstants.Priorities.Normal);
-
-        return ApiResponse<ExemptionDto>.Success(new ExemptionDto
-        {
-            ExemptionID = exemption.ExemptionID,
-            FileID = exemption.FileID,
-            DirectiveSource = exemption.DirectiveSource,
-            ExemptionDate = exemption.ExemptionDate,
-            Notes = exemption.Notes,
-            CreatedAt = exemption.CreatedAt,
-            ExemptedDocumentCount = dto.MissingDocumentIDs.Count
-        }, "تم إعفاء الوثائق بنجاح");
-    }
-
-    public async Task<ApiResponse<List<ExemptionDto>>> GetExemptionsByFileIdAsync(int fileId)
-    {
-        var queries = await _access.ForCurrentOperationAsync();
-        var exemptions = await queries.Query(_unitOfWork.DocumentExemptions)
-            .AsNoTracking()
-            .Where(e => e.FileID == fileId)
-            .Include(e => e.CreatedByUser)
-            .Include(e => e.MissingDocuments)
-            .OrderByDescending(e => e.CreatedAt)
-            .Select(e => new ExemptionDto
-            {
-                ExemptionID = e.ExemptionID,
-                FileID = e.FileID,
-                DirectiveSource = e.DirectiveSource,
-                ExemptionDate = e.ExemptionDate,
-                Notes = e.Notes,
-                CreatedByUser = e.CreatedByUser.FullName,
-                CreatedAt = e.CreatedAt,
-                ExemptedDocumentCount = e.MissingDocuments.Count
-            })
-            .ToListAsync();
-
-        return ApiResponse<List<ExemptionDto>>.Success(exemptions);
+        return ApiResponse<bool>.Success(true);
     }
 
     private async Task SendFileNotificationAsync(int fileId, int currentUserId, string title, string message, string type, string category, byte priority)

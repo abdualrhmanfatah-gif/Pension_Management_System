@@ -65,6 +65,7 @@ public class UpdateEntitledPersonDto
     public string? Phone { get; set; }
     public int? SocialStatusID { get; set; }
     public int? HealthStatusID { get; set; }
+    /// <summary>حقل توافق قديم؛ تغيير قيمته مرفوض. تستخدم إجراءات دورة الحياة لتغيير الحالة.</summary>
     public bool? IsEligible { get; set; }
     public bool? HasDisabilityException { get; set; }
     public int? RelationshipID { get; set; }

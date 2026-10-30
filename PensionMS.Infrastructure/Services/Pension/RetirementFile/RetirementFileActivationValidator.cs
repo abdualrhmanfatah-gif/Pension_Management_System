@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using PensionMS.Core.Constants;
+using PensionMS.Core.Rules.Entitlements;
 using PensionMS.Core.Entities;
 using PensionMS.Core.Interfaces;
 using PensionMS.Core.Time;
-using PensionMS.Core.Rules.Documents;
+using PensionMS.Core.Rules.RetirementFiles;
 
 namespace PensionMS.Infrastructure.Services.Pension.RetirementFile;
 
@@ -28,44 +29,44 @@ internal static class RetirementFileActivationValidator
         if (file == null) return "الملف غير موجود";
         var now = DateTime.UtcNow;
         var today = YemenTime.LocalDate(new DateTimeOffset(now));
-        if (!await uow.FinancialEntitlements.Query().Where(e => e.RetireeID == file.RetireeID)
-            .AnyAsync(PensionEntitlementRules.EffectiveOn(today)))
-            return "لا يمكن اعتماد التفعيل دون استحقاق مالي سارٍ";
-        if (!await uow.PaymentBooks.Query().AnyAsync(b => b.FileID == fileId && !b.IsDeleted &&
-            b.Status == PaymentBookStatus.Active && b.IssueDate <= today && b.ExpiryDate >= today))
-            return "لا يمكن اعتماد التفعيل دون دفتر صرف سارٍ";
+        var hasEffectiveEntitlement = await uow.FinancialEntitlements.Query().Where(e => e.RetireeID == file.RetireeID)
+            .AnyAsync(PensionEntitlementRules.EffectiveOn(today));
+        var financialDecision = RetirementFileActivationRules.EvaluateFinancialPrerequisite(hasEffectiveEntitlement);
+        if (!financialDecision.IsAllowed) return RejectionMessage(financialDecision);
         var recipients = await uow.SalaryRecipients.Query().Where(r => r.FileID == fileId && !r.IsDeleted && r.IsActive).ToListAsync();
-        if (recipients.Count == 0) return "لا يمكن اعتماد التفعيل دون مستلم معاش نشط";
-        if (recipients.Any(r => r.RetireeID.HasValue && (r.RetireeID != file.RetireeID || !file.Retiree.IsAlive)))
-            return "المتقاعد غير مؤهل للاستلام المباشر";
-        if (recipients.Any(r => r.EntitledID.HasValue))
+        var recipientFacts = recipients.Select(r => new RetirementFileActivationRules.RecipientFacts(
+            r.RetireeID, r.EntitledID, r.SharePercent)).ToArray();
+        var recipientDecision = RetirementFileActivationRules.EvaluateRecipients(file.RetireeID, file.Retiree.IsAlive, recipientFacts);
+        if (recipientDecision.Reason != RetirementFileActivationRules.RejectionReason.None) return RejectionMessage(recipientDecision);
+        if (recipientDecision.RequiresEntitledPersonFacts)
         {
             var entitledIds = await uow.EntitledPersons.Query().Where(e => e.FileID == fileId &&
                 !e.IsDeleted && e.IsActive && !e.IsDeceased).Select(e => e.EntitledID).ToListAsync();
-            if (recipients.Any(r => !r.EntitledID.HasValue || !entitledIds.Contains(r.EntitledID.Value)) ||
-                entitledIds.Any(id => !recipients.Any(r => r.EntitledID == id)) ||
-                recipients.Select(r => r.EntitledID).Distinct().Count() != recipients.Count ||
-                recipients.Any(r => r.SharePercent is null or <= 0 or > 100) || recipients.Sum(r => r.SharePercent ?? 0) != 100)
-                return "يجب استكمال مستلمي حصص المستحقين ومجموع النسب 100٪";
+            recipientDecision = RetirementFileActivationRules.EvaluateRecipients(file.RetireeID, file.Retiree.IsAlive, recipientFacts, entitledIds);
+            if (!recipientDecision.IsAllowed) return RejectionMessage(recipientDecision);
         }
         var automatic = await missingDocuments.GetRequiredPairsAsync(fileId);
         var manual = await uow.MissingDocuments.Query().AsNoTracking()
             .Where(m => m.FileID == fileId && !m.IsDeleted).ToListAsync();
-        var required = RetirementFileDocumentRules.Requirements(automatic, manual);
         var documents = await uow.Documents.Query().AsNoTracking()
             .Where(d => d.FileID == fileId && !d.IsDeleted).ToListAsync();
-        var uploaded = documents.Where(d => RetirementFileDocumentRules.IsValid(d, today))
-            .Select(RetirementFileDocumentRules.Owner).ToHashSet();
         var pledges = await uow.DocumentPledges.Query().Where(p => p.FileID == fileId && !p.IsDeleted &&
             p.Deadline > now && p.Status != PledgeStatusConstants.Expired && p.Status != PledgeStatusConstants.Fulfilled)
             .Select(p => p.PledgeID).ToListAsync();
         var exemptions = await uow.DocumentExemptions.Query().AsNoTracking()
             .Where(e => e.FileID == fileId && !e.IsDeleted).Select(e => e.ExemptionID).ToListAsync();
-        var validPledges = pledges.ToHashSet();
-        var validExemptions = exemptions.ToHashSet();
-        if (required.Any(r => !uploaded.Contains(r) &&
-            !RetirementFileDocumentRules.IsCovered(r, required, manual, validPledges, validExemptions)))
-            return "يجب تسوية الوثائق الناقصة بوثائق أو إعفاءات أو تعهدات سارية قبل الاعتماد";
-        return null;
+        var documentDecision = RetirementFileActivationRules.EvaluateDocuments(
+            new RetirementFileActivationRules.DocumentFacts(automatic, manual, documents, pledges.ToHashSet(), exemptions.ToHashSet()), today);
+        return RejectionMessage(documentDecision);
     }
+
+    private static string? RejectionMessage(RetirementFileActivationRules.Decision decision) => decision.Reason switch
+    {
+        RetirementFileActivationRules.RejectionReason.None => null,
+        RetirementFileActivationRules.RejectionReason.MissingEffectiveFinancialEntitlement => "لا يمكن اعتماد التفعيل دون استحقاق مالي سارٍ",
+        RetirementFileActivationRules.RejectionReason.IneligibleDirectRetireeRecipient => "المتقاعد غير مؤهل للاستلام المباشر",
+        RetirementFileActivationRules.RejectionReason.InvalidEntitledRecipients => "يجب استكمال مستلمي حصص المستحقين ومجموع النسب 100٪",
+        RetirementFileActivationRules.RejectionReason.UnsatisfiedDocuments => "يجب تسوية الوثائق الناقصة بوثائق أو إعفاءات أو تعهدات سارية قبل الاعتماد",
+        _ => throw new ArgumentOutOfRangeException(nameof(decision))
+    };
 }

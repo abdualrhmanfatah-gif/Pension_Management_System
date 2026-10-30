@@ -97,6 +97,48 @@ public class ReportingBranchScopeTests
     }
 
     [Fact]
+    public void RetirementFileReportSummaryAggregates_TranslateOnSqlServerWithoutConnection()
+    {
+        using var db = new PensionDbContext(new DbContextOptionsBuilder<PensionDbContext>()
+            .UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=PensionMSStructureTests;Integrated Security=True").Options);
+        using var uow = new UnitOfWork(db);
+        var queries = TestPensionAccess.Query(uow, Scope(2));
+        var rows = queries.Query(uow.RetirementFiles, 2).AsNoTracking()
+            .Where(f => !f.IsDeleted)
+            .Select(f => new
+            {
+                StatusName = f.Status != null ? f.Status.StatusName : null,
+                RankName = f.Rank != null ? f.Rank.RankName : null,
+                BranchName = f.PensionBranch != null ? f.PensionBranch.BranchName : null,
+                GovernorateName = f.Retiree.Governorate,
+                SocialStatusName = f.Retiree.SocialStatus != null ? f.Retiree.SocialStatus.StatusName : null,
+                ReviewStatusName = f.ReviewStatus == FileReviewStatus.PendingReview ? "بانتظار المراجعة" :
+                                   f.ReviewStatus == FileReviewStatus.Approved ? "تمت المراجعة" :
+                                   f.ReviewStatus == FileReviewStatus.Rejected ? "مرفوض" : "---",
+                Gender = f.Retiree.Gender,
+                IsAlive = f.Retiree.IsAlive
+            });
+        Assert.All(new[]
+        {
+            rows.Where(x => x.StatusName != null && x.StatusName != "")
+                .GroupBy(x => x.StatusName).Select(g => new { Name = g.Key!, Count = g.Count() }).ToQueryString(),
+            rows.Where(x => x.ReviewStatusName != null)
+                .GroupBy(x => x.ReviewStatusName).Select(g => new { Name = g.Key!, Count = g.Count() }).ToQueryString(),
+            rows.GroupBy(x => x.IsAlive).Select(g => new { Alive = g.Key, Count = g.Count() }).ToQueryString(),
+            rows.Where(x => x.RankName != null && x.RankName != "")
+                .GroupBy(x => x.RankName).Select(g => new { Name = g.Key!, Count = g.Count() }).ToQueryString(),
+            rows.Where(x => x.BranchName != null && x.BranchName != "")
+                .GroupBy(x => x.BranchName).Select(g => new { Name = g.Key!, Count = g.Count() }).ToQueryString(),
+            rows.Where(x => x.GovernorateName != null && x.GovernorateName != "")
+                .GroupBy(x => x.GovernorateName).Select(g => new { Name = g.Key!, Count = g.Count() }).ToQueryString(),
+            rows.GroupBy(x => x.Gender)
+                .Select(g => new { Name = g.Key == 2 ? "أنثى" : "ذكر", Count = g.Count() }).ToQueryString(),
+            rows.Where(x => x.SocialStatusName != null && x.SocialStatusName != "")
+                .GroupBy(x => x.SocialStatusName).Select(g => new { Name = g.Key!, Count = g.Count() }).ToQueryString()
+        }, sql => Assert.False(string.IsNullOrWhiteSpace(sql)));
+    }
+
+    [Fact]
     public void ScopedAuditDocumentsAndBatchQueries_TranslateOnSqlServerWithoutConnection()
     {
         using var db = new PensionDbContext(new DbContextOptionsBuilder<PensionDbContext>()

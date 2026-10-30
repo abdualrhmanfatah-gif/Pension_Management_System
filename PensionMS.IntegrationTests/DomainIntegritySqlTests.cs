@@ -77,12 +77,12 @@ public class DomainIntegritySqlTests(SqlTestDatabase database) : IClassFixture<S
             TotalContractValue = 1000, GenerateSchedules = true, PaymentFrequency = PaymentFrequencyConstants.Monthly };
         await using (var db = database.OpenContext(new FailOnSave(2)))
         using (var uow = new UnitOfWork(db))
-            await Assert.ThrowsAsync<InvalidOperationException>(() => new InvestmentLeasingService(uow).CreateLeaseContractAsync(dto, 1));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => new InvestmentLeasingService(uow, PensionMS.Testing.TestPensionAccess.All(uow)).CreateLeaseContractAsync(dto, 1));
         await using (var db = database.OpenContext())
         using (var uow = new UnitOfWork(db))
         {
             Assert.False(await db.Set<LeaseContract>().AnyAsync(c => c.UnitID == unitId));
-            var result = await new InvestmentLeasingService(uow).CreateLeaseContractAsync(dto, 1);
+            var result = await new InvestmentLeasingService(uow, PensionMS.Testing.TestPensionAccess.All(uow)).CreateLeaseContractAsync(dto, 1);
             Assert.True(result.IsSuccess, result.Message);
             var schedules = await db.Set<PaymentSchedule>().Where(s => s.ContractID == result.Data).ToListAsync();
             Assert.Equal(12, schedules.Count);

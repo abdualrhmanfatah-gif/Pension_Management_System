@@ -5,8 +5,10 @@ namespace PensionMS.Core.DTOs.RetirementFiles;
 
 public class CreateRetirementFileDto
 {
+    /// <summary>عند إرساله يجب أن يطابق فرع المستخدم المسجل في الخادم.</summary>
     public int? BranchID { get; set; }
     public int RetireeID { get; set; }
+    // حقول توافق مع المستهلكين السابقين؛ مصدر تواريخ الفتح حصرياً قيد كشف الإحالة.
     public DateOnly? RetirementDate { get; set; }
     public DateOnly? ServiceStartDate { get; set; }
     public DateOnly? ServiceEndDate { get; set; }

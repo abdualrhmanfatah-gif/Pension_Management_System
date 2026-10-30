@@ -69,29 +69,6 @@ public class PensionSuspensionsController : ControllerBase
         var result = await _service.GetAllSuspensionsAsync(page, pageSize, status, fromDate, toDate, search);
         return result.ToActionResult();
     }
-
-    /// <summary>
-    /// إعفاء وثائق ناقصة
-    /// </summary>
-    [HttpPost("exemptions")]
-    [Authorize(Policy = "Suspension.Manage")]
-    public async Task<IActionResult> CreateExemption([FromBody] CreateExemptionDto dto)
-    {
-        var userId = this.GetUserId();
-        var result = await _service.CreateExemptionAsync(dto, userId);
-        return result.ToActionResult();
-    }
-
-    /// <summary>
-    /// قائمة إعفاءات ملف معين
-    /// </summary>
-    [HttpGet("exemptions/by-file/{fileId:int}")]
-    [Authorize(Policy = "Suspension.View")]
-    public async Task<IActionResult> GetExemptionsByFile(int fileId)
-    {
-        var result = await _service.GetExemptionsByFileIdAsync(fileId);
-        return result.ToActionResult();
-    }
 }
 
 

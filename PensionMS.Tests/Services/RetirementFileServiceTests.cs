@@ -37,6 +37,18 @@ public class RetirementFileServiceTests
     }
 
     [Fact]
+    public async Task UpdateAsync_RejectsMissingRetireeBeforeSaving()
+    {
+        var file = new RetirementFile { FileID = 7, RetireeID = 42 };
+        SetupQuery(new[] { file }, u => u.RetirementFiles);
+        var result = await _service.UpdateAsync(7, new UpdateRetirementFileDto { Notes = "تعديل" }, 1);
+        Assert.False(result.IsSuccess);
+        Assert.Equal("بيانات المتقاعد غير مرتبطة بهذا الملف", result.Message);
+        Assert.Null(file.Notes);
+        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(), Times.Never);
+    }
+
+    [Fact]
     public async Task UpdateAsync_RejectsLifeStatusChangeBeforeSaving()
     {
         var retiree = new Retiree { RetireeID = 42, IsAlive = false, DeathDate = new DateOnly(2024, 3, 4) };
@@ -141,19 +153,24 @@ public class RetirementFileServiceTests
         SetupQuery(new[] { file }, u => u.RetirementFiles);
         SetupQuery(new[] { recipient }, u => u.SalaryRecipients);
         SetupQuery(new[] { book }, u => u.PaymentBooks);
-        SetupQuery(Array.Empty<EntitledPerson>(), u => u.EntitledPersons);
+        SetupQuery(new[] { new EntitledPerson { EntitledID = 12, FileID = 7, StopCode = EntitledStopCodes.RetireeAlive } }, u => u.EntitledPersons);
         SetupQuery(Array.Empty<Document>(), u => u.Documents);
         _unitOfWorkMock.Setup(u => u.Retirees).Returns(Mock.Of<IRepository<Retiree>>());
         _unitOfWorkMock.Setup(u => u.StatusTransitionLogs).Returns(Mock.Of<IRepository<StatusTransitionLog>>());
         var missingRepo = new Mock<IRepository<MissingDocument>>();
         missingRepo.Setup(r => r.Query()).Returns(new TestAsyncEnumerable<MissingDocument>(Array.Empty<MissingDocument>()));
         _unitOfWorkMock.Setup(u => u.MissingDocuments).Returns(missingRepo.Object);
-        _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).ReturnsAsync(1);
+        var persistedAlive = true;
+        _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).Callback(() => persistedAlive = retiree.IsAlive).ReturnsAsync(1);
+        var entitledService = new Mock<IEntitledPersonService>();
+        entitledService.Setup(e => e.ReEvaluateEntitlementStatusAsync(12)).Callback(() =>
+            Assert.False(persistedAlive, "يجب حفظ حالة الوفاة قبل إعادة تقييم المستحقين"))
+            .ReturnsAsync(PensionMS.Core.DTOs.Common.ApiResponse<bool>.Success(true));
         var scoped = new Mock<ITestBranchScope>();
         scoped.Setup(s => s.IsHQ()).Returns(true);
         var service = new RetirementFileService(_unitOfWorkMock.Object, _auditMock.Object,
             _missingService.Object, Mock.Of<IDocumentService>(),
-            TestPensionAccess.From(_unitOfWorkMock.Object, scoped.Object), Mock.Of<IEntitledPersonService>(),
+            TestPensionAccess.From(_unitOfWorkMock.Object, scoped.Object), entitledService.Object,
             Mock.Of<INotificationService>(), Mock.Of<IFileReviewService>(),
             Microsoft.Extensions.Logging.Abstractions.NullLogger<RetirementFileService>.Instance, Mock.Of<IRetireeService>(), Mock.Of<IFinancialEntitlementService>(), Mock.Of<IPensionSuspensionService>());
 
